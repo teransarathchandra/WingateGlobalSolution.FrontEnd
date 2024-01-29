@@ -7,9 +7,9 @@ import { green, red, yellow, lightBlue, grey } from "@mui/material/colors";
 import { PaletteMode } from "@mui/material";
 
 // Create a context
-const ThemeContext = createContext({});
+export const ThemeContext = createContext({});
 
-const ThemeProvider = ({ children }) => {
+export const ThemeProvider = ({ children }) => {
   const [themeMode, setThemeMode] = useState<PaletteMode>("light");
 
   const theme = createTheme({
@@ -43,5 +43,3 @@ const ThemeProvider = ({ children }) => {
     </ThemeContext.Provider>
   );
 };
-
-export { ThemeContext, ThemeProvider };

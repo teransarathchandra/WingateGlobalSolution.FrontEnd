@@ -2,7 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes ,Route } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from "./routes/routes";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { ThemeProvider } from "./contexts/themeContext";
 
 function App() {
 
