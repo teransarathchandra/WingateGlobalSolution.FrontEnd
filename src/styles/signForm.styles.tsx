@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const SignInSection = styled.div`
+const SignSection = styled.div`
   max-width: 500px;
   min-width: 400px;
   width: 100%;
@@ -12,19 +12,23 @@ const CompanyLogo = styled.div`
 `;
 
 const CompanyLogoImage = styled.img`
-  max-width: 200px;
-  max-height: 200px;
-  width: 100%;
-  -webkit-filter: drop-shadow(5px 5px 5px #222);
+  max-width: 160px;
+  max-height: 160px;
   filter: drop-shadow(5px 5px 5px #222);
 `;
 
-const SignInHeading = styled.div`
-  padding-top: 1em;
+const SignForm = styled.form`
+  padding: 1em 0em;
 `;
 
-const SignInForm = styled.form`
-  padding: 1em 0em;
+const FlexRow = styled.div`
+  display: flex;
+  gap: 1em;
+  padding: 0.5em 0;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const FieldGroup = styled.div`
@@ -37,7 +41,7 @@ const PasswordHandleSection = styled.div`
   justify-content: space-between;
 `;
 
-const SignInButton = styled.button`
+const SignButton = styled.button`
   width: 100%;
   padding: 0.8em 0;
   border-radius: 5px;
@@ -48,7 +52,8 @@ const SignInButton = styled.button`
     rgba(225, 189, 5, 1) 100%
   );
   color: #ffffff;
-  filter: drop-shadow(0px 1px 2px rgba(225, 189, 5, 1));
+  font-size: 1rem;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   &:hover {
     cursor: pointer;
   }
@@ -60,7 +65,7 @@ const AccountOption = styled.div`
   padding: 0.3em 0;
 `;
 
-const SignUpButton = styled.span`
+const HaveAccountButton = styled.span`
   font-weight: 600;
   color: #05961d;
   padding-left: 0.5em;
@@ -70,14 +75,14 @@ const SignUpButton = styled.span`
 `;
 
 export {
-  SignInSection,
+  SignSection,
   CompanyLogo,
   CompanyLogoImage,
-  SignInHeading,
-  SignInForm,
+  FlexRow,
+  SignForm,
   FieldGroup,
   PasswordHandleSection,
-  SignInButton,
+  SignButton,
   AccountOption,
-  SignUpButton,
+  HaveAccountButton,
 };

@@ -26,10 +26,6 @@ const BlobImageBackground = styled.div`
   height: 100vh;
   background-color: #e1bd05;
   border-radius: 0 13% 0 0;
-  -webkit-border-radius: 0 13% 0 0;
-  -moz-border-radius: 0 13% 0 0;
-  -ms-border-radius: 0 13% 0 0;
-  -o-border-radius: 0 13% 0 0;
   z-index: -1;
 `;
 
