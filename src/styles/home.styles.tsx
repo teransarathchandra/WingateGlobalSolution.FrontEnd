@@ -29,4 +29,10 @@ const BlobImageBackground = styled.div`
   z-index: -1;
 `;
 
-export { HomeSection, WelcomeImage, BlobImageBackground };
+const HomePageBackground = styled.div`
+  min-width: 100%;
+  padding-top:5rem;
+  background-color: #e1bd05;
+`;
+
+export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground };
