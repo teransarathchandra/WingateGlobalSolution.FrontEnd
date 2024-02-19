@@ -10,23 +10,33 @@ import welcomeImage from "../assets/images/man-carrying-a-package.png";
 import floatAnimation from "../common/animations/floatAnimation";
 import SignUp from "../components/forms/SignUp";
 import fadeInOut from "../common/animations/fadeInOutAnimation";
+import Navbar from "../components/shared/Navbar";
 
 const Home = () => {
   const [showSignUp, setShowSignUp] = useState(false);
 
   const toggleSignUp = () => setShowSignUp(!showSignUp);
 
+  const FormComponent = showSignUp ? SignUp : SignIn;
+
   return (
     <>
+      <Navbar isVisible={true} />
       <HomeSection>
-        <motion.div
+        {/* <motion.div
           className="welcome-image"
           initial={floatAnimation.initial}
           animate={floatAnimation.animate}
         >
           <WelcomeImage src={welcomeImage} alt="Man carrying a package" />
+        </motion.div> */}
+        <motion.div className="welcome-image" {...floatAnimation}>
+          <WelcomeImage src={welcomeImage} alt="Man carrying a package" />
         </motion.div>
-        <div>
+        <motion.div key={showSignUp ? "signup" : "signin"} {...fadeInOut}>
+          <FormComponent onSignUpClick={toggleSignUp} />
+        </motion.div>
+        {/* <div>
           {showSignUp ? (
             <motion.div
               key="signup"
@@ -48,7 +58,7 @@ const Home = () => {
               <SignIn onSignUpClick={toggleSignUp} />
             </motion.div>
           )}
-        </div>
+        </div> */}
       </HomeSection>
       <BlobImageBackground />
     </>

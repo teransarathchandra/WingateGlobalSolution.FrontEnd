@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import {
   Nav,
   NavbarNav,
@@ -7,13 +7,39 @@ import {
   NavLink,
   LinkText,
 } from "../../styles/navbar.styles";
+import { useEffect, useState } from "react";
 
-const Navbar = () => {
+interface NavbarProps {
+  isVisible: boolean;
+}
 
-  const username = useSelector((state: any) => state.auth?.user?.user?.name?.firstName);
+const Navbar: React.FC<NavbarProps> = ({ isVisible }) => {
+  const [scrolled, setScrolled] = useState  (false);
+  const username = useSelector(
+    (state: any) => state.auth?.user?.data?.name?.firstName
+  );
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50; // You can adjust the scroll distance as needed
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrolled]);
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
-    <Nav>
+    <Nav scrolled={scrolled}>
       <NavbarNav>
         <NavItem>
           <NavLink to="/home">

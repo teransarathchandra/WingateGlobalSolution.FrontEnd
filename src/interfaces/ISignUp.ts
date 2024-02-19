@@ -12,7 +12,7 @@ export default interface SignUpFormData {
   };
   email: string;
   password: string;
-  countryId?: number;
-  designationId?: number;
+  countryId?: string;
+  designationId?: string;
   contactNumber?: number;
 }
