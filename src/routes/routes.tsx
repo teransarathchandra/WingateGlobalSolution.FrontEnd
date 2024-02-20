@@ -1,11 +1,20 @@
 import { lazy } from "react";
 
-import Home from "../pages/Home";
-
 // const ReportedPost = lazy(() => import("./pages/ReportedPost"));
+const Home = lazy(() => import("../pages/Home"));
+const Order = lazy(() => import("../pages/Order"));
+
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 export const privateRoutes = [
+    {
+        path: "/",
+        element: <Home/>,
+    },
+    {
+        path: "order",
+        element: <Order />,
+    },
     {
         path: "*",
         element: <NotFound />,
