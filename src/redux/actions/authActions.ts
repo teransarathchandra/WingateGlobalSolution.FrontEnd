@@ -1,11 +1,6 @@
-// import axios from 'axios';
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS } from '../constants/authConstants';
 import { startLoading, stopLoading } from './loadingActions';
-// import toastUtil from "../../utils/toastUtil"
 import api, { authenticateWithGoogle } from '../../utils/apiUtils';
-
-// eslint-disable-next-line no-undef
-// const BASE_URL = process.env.API_URL;
 
 export const loginRequest = () => ({
     type: LOGIN_REQUEST,

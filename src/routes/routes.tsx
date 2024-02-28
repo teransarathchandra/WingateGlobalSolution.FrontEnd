@@ -1,6 +1,6 @@
 import { lazy } from "react";
+import VerifyEmail from "../pages/VerifyEmail";
 
-// const ReportedPost = lazy(() => import("./pages/ReportedPost"));
 const Home = lazy(() => import("../pages/Home"));
 const Order = lazy(() => import("../pages/Order"));
 
@@ -29,6 +29,10 @@ export const publicRoutes = [
     {
         path: "/home",
         element: <Home />,
+    },
+    {
+        path: "/verify-email/:token",
+        element: <VerifyEmail />,
     },
     {
         path: "*",
