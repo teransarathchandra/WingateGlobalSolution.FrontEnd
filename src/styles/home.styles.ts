@@ -50,4 +50,4 @@ const HomePageBackground = styled.div`
   background-color: #e1bd05;
 `;
 
-export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground, HomePageBackground, WhoWeAreCardImage, FlightImage };
+export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground, WhoWeAreCardImage, FlightImage };
