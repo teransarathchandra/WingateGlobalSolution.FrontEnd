@@ -43,11 +43,11 @@ const BlobImageBackground = styled.div`
 `;
 
 const HomePageBackground = styled.div`
-  padding-top: 5rem;
+  min-width: 100%;
+  padding-top:5rem;
   width: 100%;
   height: 150vh;
   background-color: #e1bd05;
-
 `;
 
-export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground, WhoWeAreCardImage, FlightImage };
+export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground, HomePageBackground, WhoWeAreCardImage, FlightImage };
