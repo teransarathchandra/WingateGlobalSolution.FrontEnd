@@ -19,14 +19,10 @@ import {
 import ServiceImage1 from "../assets/images/serviceImage1.jpg";
 import ServiceImage2 from "../assets/images/serviceImage2.jpg";
 import ServiceImage3 from "../assets/images/serviceImage3.jpg";
-
 import welcomeImage from "../assets/images/man-carrying-a-package.png";
 import whoWeAreCardImage01 from "../assets/images/satellite-dish.png";
 import flightImage from "../assets/images/plane.png";
 import whoWeAreCardImage02 from "../assets/images/cogwheel.png";
-
-
-
 import floatAnimation from "../common/animations/floatAnimation";
 import SignUp from "../components/forms/SignUp";
 import fadeInOut from "../common/animations/fadeInOutAnimation";
@@ -38,8 +34,6 @@ import { FlightCard } from "../styles/shared/card.styles";
 import { FlexRow } from "../styles/signForm.styles";
 import { BrownCard } from "../styles/shared/card.styles";
 import { FlightContainer } from "../styles/shared/card.styles";
-
-import { FlexRow } from "../styles/signForm.styles";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faMotorcycle, faMoneyBills, faTruck, faMagnifyingGlassLocation, faCity, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 const Home = () => {
