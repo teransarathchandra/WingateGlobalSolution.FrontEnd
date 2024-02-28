@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from './theme';
 
 const HomeSection = styled.div`
   display: flex;
@@ -6,16 +7,13 @@ const HomeSection = styled.div`
   align-items: center;
   column-gap: 5em;
   min-height: 100vh;
+  padding: 0 2rem;
 `;
 
 const WelcomeImage = styled.img`
   max-width: 700px;
   width: 100%;
   border-radius: 20%;
-  -webkit-border-radius: 20%;
-  -moz-border-radius: 20%;
-  -ms-border-radius: 20%;
-  -o-border-radius: 20%;
 `;
 
 const WhoWeAreCardImage = styled.img`
@@ -37,9 +35,9 @@ const BlobImageBackground = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  min-width: 550px;
+  min-width: 35vw;
   height: 100vh;
-  background-color: #e1bd05;
+  background-color: ${theme.colors.primary};
   border-radius: 0 13% 0 0;
   z-index: -1;
 `;

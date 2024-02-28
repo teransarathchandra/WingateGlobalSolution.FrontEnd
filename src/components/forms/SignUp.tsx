@@ -16,7 +16,7 @@ import {
   AccountOption,
   HaveAccountButton,
 } from "../../styles/signForm.styles";
-import toastUtil from '../../utils/toastUtil';
+// import toastUtil from '../../utils/toastUtil';
 import useAuth from "../../hooks/useAuth";
 import SignUpFormData from "../../interfaces/ISignUp";
 
@@ -36,9 +36,9 @@ const SignUp = ({ onSignUpClick }) => {
   };
 
   useEffect(() => {
-    console.log('authError', authError);
+    // console.log('authError', authError);
     if (authError) {
-      toastUtil.error(authError.message);
+      // toastUtil.error(authError.message);
       Object.keys(authError).forEach((field) => {
         setError(field as keyof SignUpFormData, {
           type: "server",

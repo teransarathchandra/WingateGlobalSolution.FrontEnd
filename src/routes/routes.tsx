@@ -1,11 +1,20 @@
 import { lazy } from "react";
+import VerifyEmail from "../pages/VerifyEmail";
 
-import Home from "../pages/Home";
+const Home = lazy(() => import("../pages/Home"));
+const Order = lazy(() => import("../pages/Order"));
 
-// const ReportedPost = lazy(() => import("./pages/ReportedPost"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 export const privateRoutes = [
+    {
+        path: "/",
+        element: <Home/>,
+    },
+    {
+        path: "order",
+        element: <Order />,
+    },
     {
         path: "*",
         element: <NotFound />,
@@ -20,6 +29,10 @@ export const publicRoutes = [
     {
         path: "/home",
         element: <Home />,
+    },
+    {
+        path: "/verify-email/:token",
+        element: <VerifyEmail />,
     },
     {
         path: "*",

@@ -19,6 +19,7 @@ import whoWeAreCardImage02 from "../assets/images/cogwheel.png";
 import floatAnimation from "../common/animations/floatAnimation";
 import SignUp from "../components/forms/SignUp";
 import fadeInOut from "../common/animations/fadeInOutAnimation";
+import Navbar from "../components/shared/Navbar";
 import { WhoCard } from "../styles/shared/card.styles";
 import { WhoWeAreCard } from "../styles/shared/card.styles";
 import { WeatherCard } from "../styles/shared/card.styles";
@@ -33,18 +34,27 @@ const Home = () => {
 
   const toggleSignUp = () => setShowSignUp(!showSignUp);
 
+  const FormComponent = showSignUp ? SignUp : SignIn;
+
   return (
     <>
+      <Navbar isVisible={true} />
 
       <HomeSection>
-        <motion.div
+        {/* <motion.div
           className="welcome-image"
           initial={floatAnimation.initial}
           animate={floatAnimation.animate}
         >
           <WelcomeImage src={welcomeImage} alt="Man carrying a package" />
+        </motion.div> */}
+        <motion.div className="welcome-image" {...floatAnimation}>
+          <WelcomeImage src={welcomeImage} alt="Man carrying a package" />
         </motion.div>
-        <div>
+        <motion.div key={showSignUp ? "signup" : "signin"} {...fadeInOut}>
+          <FormComponent onSignUpClick={toggleSignUp} />
+        </motion.div>
+        {/* <div>
           {showSignUp ? (
             <motion.div
               key="signup"
@@ -66,7 +76,7 @@ const Home = () => {
               <SignIn onSignUpClick={toggleSignUp} />
             </motion.div>
           )}
-        </div>
+        </div> */}
       </HomeSection>
 
       <HomePageBackground>
