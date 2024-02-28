@@ -5,7 +5,9 @@ import {
   HomeSection,
   BlobImageBackground,
   WelcomeImage,
-  HomePageBackground
+  HomePageBackground,
+  WhoWeAreCardImage,
+  FlightImage
 } from "../styles/home.styles"; // Import from where you defined them
 import {
   ServiceCard,
@@ -19,10 +21,24 @@ import ServiceImage2 from "../assets/images/serviceImage2.jpg";
 import ServiceImage3 from "../assets/images/serviceImage3.jpg";
 
 import welcomeImage from "../assets/images/man-carrying-a-package.png";
+import whoWeAreCardImage01 from "../assets/images/satellite-dish.png";
+import flightImage from "../assets/images/plane.png";
+import whoWeAreCardImage02 from "../assets/images/cogwheel.png";
+
+
+
 import floatAnimation from "../common/animations/floatAnimation";
 import SignUp from "../components/forms/SignUp";
 import fadeInOut from "../common/animations/fadeInOutAnimation";
 import Navbar from "../components/shared/Navbar";
+import { WhoCard } from "../styles/shared/card.styles";
+import { WhoWeAreCard } from "../styles/shared/card.styles";
+import { WeatherCard } from "../styles/shared/card.styles";
+import { FlightCard } from "../styles/shared/card.styles";
+import { FlexRow } from "../styles/signForm.styles";
+import { BrownCard } from "../styles/shared/card.styles";
+import { FlightContainer } from "../styles/shared/card.styles";
+
 import { FlexRow } from "../styles/signForm.styles";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBolt, faMotorcycle, faMoneyBills, faTruck, faMagnifyingGlassLocation, faCity, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
@@ -36,6 +52,7 @@ const Home = () => {
   return (
     <>
       <Navbar isVisible={true} />
+
       <HomeSection>
         {/* <motion.div
           className="welcome-image"
@@ -74,7 +91,39 @@ const Home = () => {
           )}
         </div> */}
       </HomeSection>
-      <BlobImageBackground />
+
+      <HomePageBackground>
+        <div style={{ backgroundColor: '#e1bd05' }}>
+          <WhoCard>
+            <h1>Who We Are</h1>
+          </WhoCard>
+            
+          <WhoWeAreCard>
+         
+            
+            <FlexRow>
+              <WeatherCard>
+                <WhoWeAreCardImage src={whoWeAreCardImage01} alt="Sattellite-Dish" />
+                <h4>Calculated Weather</h4>Optimize routes with precision Calculated Weather for efficient logistics
+              </WeatherCard>
+
+            <FlightContainer>
+              <FlightCard>
+                <FlightImage src={flightImage} alt="Flight" />
+                <h4>BestFLights</h4>Reach destinations swiftly Discover Best Flights for streamlined transport.               
+              </FlightCard>
+              <BrownCard/>
+              </FlightContainer>
+              
+              <WeatherCard>
+                <WhoWeAreCardImage src={whoWeAreCardImage02} alt="CogWheel" />
+                <h4>Customization</h4> Tailored solutions at your fingertips Customization for personalized logistics
+              </WeatherCard>
+
+            </FlexRow>
+          </WhoWeAreCard>
+        </div>
+        <BlobImageBackground />
       <HomePageBackground>
         <FlexRow style={{ gap: "5rem" }}>
           <FlexRow>
@@ -112,6 +161,7 @@ const Home = () => {
             </FlexRow>
           </FlexRow>
         </FlexRow>
+      </HomePageBackground>
       </HomePageBackground>
     </>
   );
