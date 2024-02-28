@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// import { ScaleLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import { SpinnerOverlay } from "../../styles/shared/spinnerOverlay.styles";
 import { square } from "ldrs";
@@ -11,11 +9,6 @@ const CommonLoading = ({ loading }) => {
   if (!isLoading) return null;
 
   return (
-    // <SpinnerOverlay>
-    //   <ScaleLoader color="#36d6c4" height={30} width={3} />
-    // </SpinnerOverlay>
-
-    // Default values shown
     <SpinnerOverlay>
       <l-square
         size="35"
