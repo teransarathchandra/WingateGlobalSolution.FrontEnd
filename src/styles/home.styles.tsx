@@ -18,6 +18,21 @@ const WelcomeImage = styled.img`
   -o-border-radius: 20%;
 `;
 
+const WhoWeAreCardImage = styled.img`
+  max-width: 130px;
+  /* width: 100%; */
+
+`;
+
+const FlightImage = styled.img`
+  max-width: 180px;
+  rotate: 330deg;
+  /* width: 100%; */
+  margin-left: 2em;
+
+`;
+
+
 const BlobImageBackground = styled.div`
   position: absolute;
   top: 0;
@@ -29,4 +44,12 @@ const BlobImageBackground = styled.div`
   z-index: -1;
 `;
 
-export { HomeSection, WelcomeImage, BlobImageBackground };
+const HomePageBackground = styled.div`
+  padding-top: 5rem;
+  width: 100%;
+  height: 150vh;
+  background-color: #e1bd05;
+
+`;
+
+export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground, WhoWeAreCardImage, FlightImage };
