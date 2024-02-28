@@ -19,7 +19,6 @@ import {
 import ServiceImage1 from "../assets/images/serviceImage1.jpg";
 import ServiceImage2 from "../assets/images/serviceImage2.jpg";
 import ServiceImage3 from "../assets/images/serviceImage3.jpg";
-
 import welcomeImage from "../assets/images/man-carrying-a-package.png";
 import whoWeAreCardImage01 from "../assets/images/satellite-dish.png";
 import flightImage from "../assets/images/plane.png";
