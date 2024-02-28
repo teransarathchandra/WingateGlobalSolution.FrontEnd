@@ -4,7 +4,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
 import Checkbox from "@mui/material/Checkbox";
 import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import signInSchema from "../../schemas/signInSchema";
@@ -53,8 +52,6 @@ const SignIn = ({ onSignUpClick }) => {
   const dispatch = useDispatch();
 
   const handleGoogleSuccess = (credentialResponse) => {
-    // const decodedToken = jwtDecode(credentialResponse.credential);
-    // Assuming the decoded token includes the Google OAuth token you need to send to your backend
     dispatch(googleLogin(credentialResponse.credential));
   };
 
@@ -114,13 +111,6 @@ const SignIn = ({ onSignUpClick }) => {
             <GoogleLogin
               width="360px"
               onSuccess={handleGoogleSuccess}
-              // onSuccess={(credentialResponse: any) => {
-              //   console.log(credentialResponse);
-              //   const credentialResponseDecode = jwtDecode(
-              //     credentialResponse.credential
-              //   );
-              //   console.log(credentialResponseDecode);
-              // }}
               onError={() => {
                 console.log("Login Failed");
               }}
@@ -128,16 +118,10 @@ const SignIn = ({ onSignUpClick }) => {
           </FieldGroup>
           <AccountOption>
             Don’t have an account?{" "}
-            {/* <HaveAccountButton onClick={() => setIsSignUp(true)}>
-              Sign Up for free!
-            </HaveAccountButton> */}
             <HaveAccountButton onClick={onSignUpClick}>
               Sign Up
             </HaveAccountButton>
           </AccountOption>
-          {/* <AccountOption>
-            Don't have an account?{" "}<ToggleFormLink to="/signup">Sign up</ToggleFormLink>
-          </AccountOption> */}
         </StyledForm>
       </SignSection>
     </>
