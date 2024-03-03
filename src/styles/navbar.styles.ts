@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { Link as RouterLink } from "react-router-dom";
 
 type NavbarProps = {
-  scrolled: boolean
-}
+  scrolled: boolean;
+};
 
 const Nav = styled.nav<NavbarProps>`
   position: fixed;
@@ -11,8 +11,9 @@ const Nav = styled.nav<NavbarProps>`
   left: 0;
   width: 100%;
   z-index: 2;
-  background-color: ${({ scrolled }) => scrolled ? '#F6F6F6' : 'transparent'};
-  box-shadow: ${({ scrolled }) => scrolled ? '6px 4px 20px 2px rgba(0,0,0,0.3)' : 'none'};
+  background-color: ${({ scrolled }) => (scrolled ? "#F6F6F6" : "transparent")};
+  box-shadow: ${({ scrolled }) =>
+    scrolled ? "6px 4px 20px 2px rgba(0,0,0,0.3)" : "none"};
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 `;
 
