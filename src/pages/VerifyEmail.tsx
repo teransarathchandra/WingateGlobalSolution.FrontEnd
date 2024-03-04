@@ -19,7 +19,7 @@ const VerifyEmail = () => {
       setVerificationStatus(
         response.data.message || "Email verified successfully!"
       );
-    } catch (error) {
+    } catch(error) {
       setVerificationStatus(
         error?.response?.data.message || "Failed to verify email."
       );

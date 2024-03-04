@@ -15,7 +15,7 @@ export const ThemeProvider = ({ children }) => {
   const theme = createTheme({
     palette: {
       primary: {
-        main: grey[900],
+        main: grey[900]
       },
       secondary: {
         main: green[500],
