@@ -3,9 +3,7 @@ import { lazy } from "react";
 const Home = lazy(() => import("../pages/Home"));
 const Order = lazy(() => import("../pages/dashboard/Order"));
 const VerifyEmail = lazy(() => import("../pages/VerifyEmail"));
-const ChooseDestination = lazy(() => import("../pages/customer/order/ChooseDestination"));
-const ShipmentDetails = lazy(() => import("../pages/customer/order/ShipmentDetails"));
-const RequiredDocuments = lazy(() => import("../pages/customer/order/RequiredDocuments"));
+const PlaceOrder = lazy(() => import("../pages/customer/order/Order"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 export const privateRoutes = [
@@ -33,16 +31,8 @@ export const publicRoutes = [
         component: VerifyEmail,
     },
     {
-        path: "/order/destination",
-        component: ChooseDestination,
-    },
-    {
-        path: "/order/shipment",
-        component: ShipmentDetails,
-    },
-    {
-        path: "/order/required-documents",
-        component: RequiredDocuments,
+        path: "/order",
+        component: PlaceOrder,
     },
     {
         path: "*",

@@ -24,6 +24,7 @@ import useAuth from "../../hooks/useAuth";
 import SignInFormData from "../../interfaces/ISignIn";
 import { googleLogin } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = ({ onSignUpClick }) => {
   const {
@@ -35,7 +36,19 @@ const SignIn = ({ onSignUpClick }) => {
 
   const { loginUser, authError } = useAuth();
 
-  const onSubmit = (data: SignInFormData) => loginUser(data);
+  // const onSubmit = (data: SignInFormData) => loginUser(data);
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: SignInFormData) => {
+    // You might want to await the loginUser function if it returns a Promise
+    await loginUser(data);
+
+    // Navigate after successful login
+    if (!authError) {
+      navigate('/order');
+    }
+  };
 
   useEffect(() => {
     console.log(authError);
@@ -51,8 +64,10 @@ const SignIn = ({ onSignUpClick }) => {
 
   const dispatch = useDispatch();
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    dispatch(googleLogin(credentialResponse.credential));
+  const handleGoogleSuccess = async (credentialResponse) => {
+    await dispatch(googleLogin(credentialResponse.credential));
+
+    navigate('/order');
   };
 
   return (
