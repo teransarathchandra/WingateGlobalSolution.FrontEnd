@@ -59,7 +59,7 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
                     return (
                       <TableCell
                         key={column.id}
-                        align={column.numeric ? "right" : "left"}
+                        align={column.numeric ? "right" : (column.id == 'edit' || column.id == 'delete' ? "center" : "left")}
                         padding={column.disablePadding ? "none" : "normal"}
                       >
                         {column.label}
@@ -73,7 +73,7 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (
-                        <TableCell key={column.id}>{row[column.id]}</TableCell>
+                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id == 'edit' || column.id == 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
                       ))}
                     </TableRow>
                   );

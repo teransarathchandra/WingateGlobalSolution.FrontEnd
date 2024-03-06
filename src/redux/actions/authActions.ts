@@ -1,6 +1,7 @@
 import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS } from '../constants/authConstants';
 import { startLoading, stopLoading } from './loadingActions';
 import api, { authenticateWithGoogle } from '../../utils/apiUtils';
+import SignUpFormData from '../../interfaces/ISignUp';
 
 export const loginRequest = () => ({
     type: LOGIN_REQUEST,
@@ -39,17 +40,15 @@ export const registerFailure = (error) => ({
     payload: error,
 });
 
-export const login = (credentials) => async (dispatch) => {
+export const login = (credentials):any => async (dispatch) => {
     dispatch(startLoading());
     dispatch(loginRequest());
     try {
-        const { data } = await api.post(`/user/login`, { email: credentials.email, password: credentials.password });
+        const { data } = await api.post(`/user/login`, credentials);
         dispatch(loginSuccess(data));
         dispatch(resetLoginErrors());
-        // toastUtil.success(data.message);
     } catch (error: any) {
         dispatch(loginFailure(error.response.data));
-        // toastUtil.error(error.response.data.message);
     } finally {
         dispatch(stopLoading());
     }
@@ -59,28 +58,23 @@ export const googleLogin = (token) => async (dispatch) => {
     dispatch(startLoading());
     try {
         const { data } = await authenticateWithGoogle(token);
-        dispatch(googleLoginSuccess(data.user)); // Assuming the API response includes the user object
-        localStorage.setItem("accessToken", data.accessToken); // Save the token if needed
+        dispatch(googleLoginSuccess(data.user));
+        localStorage.setItem("accessToken", data.accessToken);
     } catch (error) {
         console.error('Error during Google login:', error);
-        // Handle error (e.g., showing an error toast)
     } finally {
         dispatch(stopLoading());
     }
 };
 
-export const register = (userData) => async (dispatch) => {
+export const register = (userData: SignUpFormData):any => async (dispatch) => {
     dispatch(startLoading());
     dispatch(registerRequest());
     try {
         const { data } = await api.post(`/user`, userData);
         dispatch(registerSuccess(data));
-        // toastUtil.success(data.message);
-        // Optionally reset login errors here as well if it makes sense in your context
-        // dispatch(resetLoginErrors());
     } catch (error: any) {
         dispatch(registerFailure(error.response.data));
-        // toastUtil.error(error.response.data.message);
     } finally {
         dispatch(stopLoading());
     }

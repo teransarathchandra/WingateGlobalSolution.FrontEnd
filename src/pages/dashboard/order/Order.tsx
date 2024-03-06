@@ -1,4 +1,4 @@
-import OrderInfo from "../components/dashboard/order/orderInfo/OrderInfo"
+import OrderInfo from "../../../components/dashboard/order/orderInfo/OrderInfo"
 
 const Order = () => {
   return (
