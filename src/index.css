@@ -4,10 +4,15 @@
   font-family: "Sarabun", sans-serif;
 }
 
+* {
+  font-family: "Sarabun", sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
-  min-height: 200vh;
+  min-height: 100vh;
+  font-family: "Sarabun", sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, p {

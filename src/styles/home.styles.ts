@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { theme } from './theme';
+import { theme } from "./theme";
 
 const HomeSection = styled.div`
   display: flex;
@@ -19,7 +19,6 @@ const WelcomeImage = styled.img`
 const WhoWeAreCardImage = styled.img`
   max-width: 130px;
   /* width: 100%; */
-
 `;
 
 const FlightImage = styled.img`
@@ -27,9 +26,7 @@ const FlightImage = styled.img`
   rotate: 330deg;
   /* width: 100%; */
   margin-left: 2em;
-
 `;
-
 
 const BlobImageBackground = styled.div`
   position: absolute;
@@ -44,10 +41,16 @@ const BlobImageBackground = styled.div`
 
 const HomePageBackground = styled.div`
   min-width: 100%;
-  padding-top:5rem;
   width: 100%;
-  height: 150vh;
   background-color: #e1bd05;
+  padding: 2rem 0;
 `;
 
-export { HomeSection, WelcomeImage, BlobImageBackground, HomePageBackground, WhoWeAreCardImage, FlightImage };
+export {
+  HomeSection,
+  WelcomeImage,
+  BlobImageBackground,
+  HomePageBackground,
+  WhoWeAreCardImage,
+  FlightImage,
+};
