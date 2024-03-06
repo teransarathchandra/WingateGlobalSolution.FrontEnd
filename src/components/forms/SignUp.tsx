@@ -3,20 +3,16 @@ import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import signUpSchema from "../../schemas/signUpSchema";
-// import logo from "../../assets/images/logo.png";
 import { StyledForm } from "../../styles/shared/form.styles";
 import { HeadingSection } from "../../styles/shared/heading.styles";
 import {
   SignSection,
-  // CompanyLogo,
-  // CompanyLogoImage,
   FlexRow,
   FieldGroup,
   SignButton,
   AccountOption,
   HaveAccountButton,
 } from "../../styles/signForm.styles";
-// import toastUtil from '../../utils/toastUtil';
 import useAuth from "../../hooks/useAuth";
 import SignUpFormData from "../../interfaces/ISignUp";
 
@@ -36,9 +32,7 @@ const SignUp = ({ onSignUpClick }) => {
   };
 
   useEffect(() => {
-    // console.log('authError', authError);
     if (authError) {
-      // toastUtil.error(authError.message);
       Object.keys(authError).forEach((field) => {
         setError(field as keyof SignUpFormData, {
           type: "server",
@@ -51,9 +45,6 @@ const SignUp = ({ onSignUpClick }) => {
   return (
     <>
       <SignSection>
-        {/* <CompanyLogo>
-          <CompanyLogoImage src={logo} />
-        </CompanyLogo> */}
         <StyledForm onSubmit={handleSubmit(onSubmit)}>
           <HeadingSection>
             <h1>Welcome!</h1>

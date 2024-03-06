@@ -7,8 +7,10 @@ import CommonLoading from "./components/loader/CommonLoading";
 import { Toaster } from "react-hot-toast";
 import SideNav from "./components/dashboard/sideNav/SideNav";
 import { Suspense } from "react";
+import React from "react";
 
-function App() {
+const App = () => {
+
   return (
     <Provider store={store}>
       <ThemeProvider>
@@ -16,25 +18,19 @@ function App() {
           <CommonLoading loading={false} />
           <Toaster position="top-right" />
           <SideNav />
-          <Suspense fallback={<CommonLoading loading={true} />}>
-            <Routes>
-              {privateRoutes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={`/app/${route.path}`}
-                  element={route.element}
-                />
-              ))}
-
-              {publicRoutes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={route.element}
-                />
-              ))}
-            </Routes>
-          </Suspense>
+          <Routes>
+            {privateRoutes.concat(publicRoutes).map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={
+                  <Suspense fallback={<CommonLoading loading={true} />}>
+                    {React.createElement(route.component)}
+                  </Suspense>
+                }
+              />
+            ))}
+          </Routes>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
