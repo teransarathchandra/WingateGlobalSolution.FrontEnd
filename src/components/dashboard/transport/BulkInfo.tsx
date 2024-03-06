@@ -8,44 +8,47 @@ import { getAllBulks } from "../../../services/bulkService";
 import { IBulk } from "../../../interfaces/IBulk";
 
 const columns: IColumn[] = [
-    { id: "bulkId", label: "Bulk ID", numeric: false, disablePadding: true },
-    { id: "currentLocation", label: "Current Location", numeric: false, disablePadding: false },
-    { id: "arrivedTime", label: "Arrived Time", numeric: false, disablePadding: false },
-    { id: "status", label: "Status", numeric: false, disablePadding: false },
-  ];
-  
-  const BulkInfo: React.FC = () => {
-    const [bulks, setBulks] = useState<IRow[]>([]);
-  
-    useEffect(() => {
-      const fetchAndPrepareBulks = async () => {
-        try {
-          const response = await getAllBulks();
-          const preparedBulks: IRow[] = response.data.data.map((bulk: IBulk) => ({
-            ...bulk,
-            edit: <FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#048b04" }} />,
-            delete: <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#c80909" }} />,
-          }));
-          setBulks(preparedBulks);
-        } catch (error) {
-          console.error('Failed to fetch bulks', error);
-        }
-      };
-  
-      fetchAndPrepareBulks();
-  
-    }, []);
+  { id: "bulkId", label: "Bulk ID", numeric: false, disablePadding: true },
+  { id: "currentLocation", label: "Current Location", numeric: false, disablePadding: false },
+  { id: "arrivedTime", label: "Arrived Time", numeric: false, disablePadding: false },
+  { id: "status", label: "Status", numeric: false, disablePadding: false },
+  { id: "edit", label: "Edit", numeric: false, disablePadding: false },
+  { id: "delete", label: "Delete", numeric: false, disablePadding: false },
+];
 
-    return (
-        <>
-          <ReusableTable
-            columns={columns}
-            rows={bulks}
-            title="Transport Management"
-            rowKey="bulkId"
-          />
-        </>
-      );
+const BulkInfo: React.FC = () => {
+  const [bulks, setBulks] = useState<IRow[]>([]);
+
+  useEffect(() => {
+    const fetchAndPrepareBulks = async () => {
+      try {
+        const response = await getAllBulks();
+        console.log('bulk response', response);
+        const preparedBulks: IRow[] = response.data.data.map((bulk: IBulk) => ({
+          ...bulk,
+          edit: <FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#048b04" }} />,
+          delete: <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#c80909" }} />,
+        }));
+        setBulks(preparedBulks);
+      } catch (error) {
+        console.error('Failed to fetch bulks', error);
+      }
     };
-    
-    export default BulkInfo;
+
+    fetchAndPrepareBulks();
+
+  }, []);
+
+  return (
+    <>
+      <ReusableTable
+        columns={columns}
+        rows={bulks}
+        title="Transport Management"
+        rowKey="bulkId"
+      />
+    </>
+  );
+};
+
+export default BulkInfo;
