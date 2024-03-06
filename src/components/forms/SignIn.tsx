@@ -40,9 +40,9 @@ const SignIn = ({ onSignUpClick }) => {
 
   const navigate = useNavigate();
 
-  const onSubmit = async (data: SignInFormData) => {
+  const onSubmit = (data: SignInFormData) => {
     // You might want to await the loginUser function if it returns a Promise
-    await loginUser(data);
+    loginUser(data);
 
     // Navigate after successful login
     if (!authError) {
@@ -64,8 +64,8 @@ const SignIn = ({ onSignUpClick }) => {
 
   const dispatch = useDispatch();
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    await dispatch(googleLogin(credentialResponse.credential));
+  const handleGoogleSuccess = (credentialResponse) => {
+    dispatch(googleLogin(credentialResponse.credential));
 
     navigate('/order');
   };

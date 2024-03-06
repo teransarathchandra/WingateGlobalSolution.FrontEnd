@@ -1,7 +1,7 @@
 import { Drawer, HeaderImage, Step, StepIndicator } from "../../styles/shared/sideDrawer.styles";
 import logo from "../../assets/images/logo.png"
 
-interface SideDrawerProps {
+type SideDrawerProps = {
     steps: string[];
     currentStep: number;
     onStepClick: (stepIndex: number) => void;
