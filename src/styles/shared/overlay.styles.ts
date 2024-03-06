@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 type OverlayProps = {
-  show: boolean
-}
+  show: boolean;
+};
 
 export const Overlay = styled.div<OverlayProps>`
   position: fixed;
