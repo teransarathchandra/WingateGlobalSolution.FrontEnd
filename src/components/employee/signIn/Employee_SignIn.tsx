@@ -18,9 +18,9 @@ import {
   SignButton,
   AccountOption,
   HaveAccountButton,
-} from "../../../styles/signForm.styles";
-import useAuth from "../../../hooks/useAuth";
-import SignInFormData from "../../../interfaces/ISignIn";
+} from "@app_styles/signForm.styles";
+import useAuth from "@app_hooks/useAuth";
+import SignInFormData from "@app_interfaces/ISignIn";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -57,14 +57,6 @@ const SignIn = ({ onSignUpClick }) => {
       });
     }
   }, [authError, setError]);
-
-  const dispatch = useDispatch();
-
-  const handleGoogleSuccess = (credentialResponse) => {
-    dispatch(googleLogin(credentialResponse.credential));
-
-    navigate('/order');
-  };
 
   return (
     <>
@@ -119,7 +111,7 @@ const SignIn = ({ onSignUpClick }) => {
             <SignButton type="submit">Sign in</SignButton>
           </FieldGroup>
           <AccountOption>
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <HaveAccountButton onClick={onSignUpClick}>
               Sign Up
             </HaveAccountButton>
