@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { refreshTokenAction } from "../redux/actions/refreshTokenAction";
+import { refreshTokenAction } from "@app_redux/actions/refreshTokenAction";
 
 export const tokenMiddleware = (store) => (next) => async (action) => {
     if (action.meta && action.meta.requiresAuth) {

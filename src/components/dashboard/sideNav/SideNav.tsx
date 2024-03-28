@@ -6,11 +6,11 @@ import MagicIcon from "@rsuite/icons/legacy/Magic";
 // import GearCircleIcon from "@rsuite/icons/legacy/GearCircle";
 import "rsuite/Sidenav/styles/index.css";
 import "rsuite/Nav/styles/index.css";
-import { Overlay } from "../../../styles/shared/overlay.styles";
+import { Overlay } from "@app_styles/shared/overlay.styles";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import logo from "../../../assets/images/logo.png";
+import logo from "@app_assets/images/logo.png";
 
 const SideNav = () => {
   const [expanded, setExpanded] = useState(false);

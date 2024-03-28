@@ -1,4 +1,4 @@
-import api from "../utils/apiUtils";
+import api from "@app_utils/apiUtils";
 
 export const getAllOrders = () => {
     return api.get("/order");
