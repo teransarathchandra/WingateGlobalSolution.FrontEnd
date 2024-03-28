@@ -1,5 +1,8 @@
 import { lazy } from "react";
 
+//Common
+const NotFound = lazy(() => import("@app_pages/NotFound"));
+
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
 const VerifyEmail = lazy(() => import("@app_pages/VerifyEmail"));
@@ -7,9 +10,6 @@ const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 
 //Order
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
-
-//Common
-const NotFound = lazy(() => import("@app_pages/NotFound"));
 
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/Home"));
