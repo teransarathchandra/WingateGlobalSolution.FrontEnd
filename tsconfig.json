@@ -39,7 +39,7 @@
       "@app_pages/*":["src/pages/*"],
       "@app_schemas/*":["src/schemas/*"],
       "@app_utils/*":["src/utils/*"]
-    }
+    },
 
   },
   "include": ["src"],
