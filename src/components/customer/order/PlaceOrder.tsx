@@ -1,5 +1,5 @@
-import { Container, FlexRow, ImageContainer, PrimaryButton } from '../../../styles/shared/commonStyles.style'
-import CargoBoxImg from '../../../assets/images/customer/CargoBox.png'
+import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/shared/commonStyles.style'
+import CargoBoxImg from '@app_assets/images/customer/CargoBox.png'
 import SenderForm from '../../forms/order/SenderForm';
 import ReceiverForm from '../../forms/order/ReceiverForm';
 

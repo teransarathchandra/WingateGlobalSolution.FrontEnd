@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
 import Checkbox from "@mui/material/Checkbox";
-import { GoogleLogin } from "@react-oauth/google";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import signInSchema from "@app_schemas/signInSchema";
@@ -22,11 +21,10 @@ import {
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignInFormData from "@app_interfaces/ISignIn";
-import { googleLogin } from "@app_redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const SignIn = ({ onSignUpClick }) => {
+const Employee_SignIn_Box = ({ onSignUpClick }) => {
   const {
     register,
     handleSubmit,
@@ -35,8 +33,6 @@ const SignIn = ({ onSignUpClick }) => {
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
   const { loginUser, authError } = useAuth();
-
-  // const onSubmit = (data: SignInFormData) => loginUser(data);
 
   const navigate = useNavigate();
 
@@ -61,14 +57,6 @@ const SignIn = ({ onSignUpClick }) => {
       });
     }
   }, [authError, setError]);
-
-  const dispatch = useDispatch();
-
-  const handleGoogleSuccess = (credentialResponse) => {
-    dispatch(googleLogin(credentialResponse.credential));
-
-    navigate('/order');
-  };
 
   return (
     <>
@@ -122,17 +110,8 @@ const SignIn = ({ onSignUpClick }) => {
           <FieldGroup>
             <SignButton type="submit">Sign in</SignButton>
           </FieldGroup>
-          <FieldGroup>
-            <GoogleLogin
-              width="360px"
-              onSuccess={handleGoogleSuccess}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-          </FieldGroup>
           <AccountOption>
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <HaveAccountButton onClick={onSignUpClick}>
               Sign Up
             </HaveAccountButton>
@@ -143,4 +122,4 @@ const SignIn = ({ onSignUpClick }) => {
   );
 };
 
-export default SignIn;
+export default Employee_SignIn_Box;
