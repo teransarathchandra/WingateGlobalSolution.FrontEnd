@@ -12,7 +12,7 @@ const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 
 //Employee
-const EmployeeCheckpoint = lazy(() => import("@app_pages/Home"));
+const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
 export const privateRoutes = [
     {
