@@ -6,10 +6,10 @@ import Checkbox from "@mui/material/Checkbox";
 import { GoogleLogin } from "@react-oauth/google";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import signInSchema from "../../schemas/signInSchema";
-import logo from "../../assets/images/logo.png";
-import { StyledForm } from "../../styles/shared/form.styles";
-import { HeadingSection } from "../../styles/shared/heading.styles";
+import signInSchema from "@app_schemas/signInSchema";
+import logo from "@app_assets/images/logo.png";
+import { StyledForm } from "@app_styles/shared/form.styles";
+import { HeadingSection } from "@app_styles/shared/heading.styles";
 import {
   SignSection,
   CompanyLogo,
@@ -19,10 +19,10 @@ import {
   SignButton,
   AccountOption,
   HaveAccountButton,
-} from "../../styles/signForm.styles";
-import useAuth from "../../hooks/useAuth";
-import SignInFormData from "../../interfaces/ISignIn";
-import { googleLogin } from "../../redux/actions/authActions";
+} from "@app_styles/signForm.styles";
+import useAuth from "@app_hooks/useAuth";
+import SignInFormData from "@app_interfaces/ISignIn";
+import { googleLogin } from "@app_redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 

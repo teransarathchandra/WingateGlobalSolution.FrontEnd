@@ -1,7 +1,7 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS } from '../constants/authConstants';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS } from '@app_redux/constants/authConstants';
 import { startLoading, stopLoading } from './loadingActions';
-import api, { authenticateWithGoogle } from '../../utils/apiUtils';
-import SignUpFormData from '../../interfaces/ISignUp';
+import api, { authenticateWithGoogle } from '@app_utils/apiUtils';
+import SignUpFormData from '@app_interfaces/ISignUp';
 
 export const loginRequest = () => ({
     type: LOGIN_REQUEST,
