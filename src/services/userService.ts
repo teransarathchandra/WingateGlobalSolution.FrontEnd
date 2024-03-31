@@ -13,7 +13,7 @@ export const createUser = (userData) => {
 };
 
 export const updateUser = (id, userData) => {
-    return api.patch(`/user/${id}`, userData);
+    return api.put(`/user/${id}`, userData);
 };
 
 export const deleteUser = (id) => {

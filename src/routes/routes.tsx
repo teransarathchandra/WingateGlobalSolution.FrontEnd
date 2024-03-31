@@ -4,7 +4,7 @@ const Home = lazy(() => import("../pages/Home"));
 const Order = lazy(() => import("../pages/dashboard/order/Order"));
 const VerifyEmail = lazy(() => import("../pages/VerifyEmail"));
 const PlaceOrder = lazy(() => import("../pages/customer/order/Order"));
-const User = lazy(() => import("../pages/User"));
+const User = lazy(() => import("../pages/dashboard/user/User"));
 
 
 const NotFound = lazy(() => import("../pages/NotFound"));
