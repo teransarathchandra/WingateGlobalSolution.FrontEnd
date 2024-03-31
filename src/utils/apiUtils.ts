@@ -43,8 +43,4 @@ api.interceptors.response.use(
   }
 );
 
-export const authenticateWithGoogle = async (token: string) => {
-  return await api.post('/user/auth/google', { token });
-};
-
 export default api;

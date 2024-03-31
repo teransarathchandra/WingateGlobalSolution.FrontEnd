@@ -8,6 +8,7 @@ import PlaceOrder from '@app_components/customer/order/PlaceOrder';
 import PaymentConfirmation from '@app_components/customer/order/PaymentConfirmation';
 import SideDrawer from '@app_components/shared/SideDrawer';
 import componentTransitionAnimation from '@app_common/animations/componentTransitionAnimation';
+import pageTransitionAnimation from '@app_common/animations/pageTransitionAnimation';
 
 const Order = () => {
 
@@ -28,19 +29,6 @@ const Order = () => {
         console.log('Step clicked:', stepIndex);
     };
 
-    const pageTransition = {
-        in: {
-            opacity: 1,
-            x: 0,
-            scale: 1
-        },
-        out: {
-            opacity: 0,
-            x: "-100%",
-            scale: 0.8
-        }
-    };
-
     const stepsComponents = [
         <ChooseDestination key={0} goNext={() => setCurrentStep(1)} />,
         <ShipmentDetails key={1} goNext={() => setCurrentStep(2)} goBack={() => setCurrentStep(0)} />,
@@ -57,7 +45,7 @@ const Order = () => {
                 <motion.div
                     key={currentStep}
                     {...componentTransitionAnimation}
-                    variants={pageTransition}
+                    variants={pageTransitionAnimation}
                 >
                     {stepsComponents[currentStep]}
                 </motion.div>

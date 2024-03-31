@@ -1,18 +1,22 @@
 import { lazy } from "react";
 
-//Common
-const NotFound = lazy(() => import("@app_pages/NotFound"));
-
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
-const VerifyEmail = lazy(() => import("@app_pages/VerifyEmail"));
+
+// Verify User
+const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"));
+
+// Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 
-//Order
+//Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
+
+//Common
+const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
 export const privateRoutes = [
     {
@@ -42,14 +46,10 @@ export const publicRoutes = [
         path: "/order",
         component: PlaceOrder,
     },
-
-    //Employee
     {
         path: "/emp_checkpoint",
         component: EmployeeCheckpoint,
     },
-
-    //Not Found
     {
         path: "*",
         component: NotFound,
