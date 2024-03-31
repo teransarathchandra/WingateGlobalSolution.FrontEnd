@@ -23,20 +23,20 @@ const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
 export const privateRoutes = [
     {
+        path: "/order",
+        component: PlaceOrder,
+        isPrivate: true,
+    },
+    //Dashboard
+    {
         path: "/app/",
         component: Home,
-    },
+        isPrivate: true,
+    },    
     {
-        path: "order",
-        element: <Order />,
-    },
-    {
-        path: "user",
-        element: <User />,
-    },
-    {
-        path: "*",
-        element: <NotFound />,
+        path: "/app/order",
+        component: Order,
+        isPrivate: true,
     },
 ];
 
@@ -44,25 +44,26 @@ export const publicRoutes = [
     {
         path: "/",
         component: Home,
+        isPrivate: false,
     },
     {
         path: "/home",
         component: Home,
+        isPrivate: false,
     },
     {
         path: "/verify-email/:token",
         component: VerifyEmail,
-    },
-    {
-        path: "/order",
-        component: PlaceOrder,
+        isPrivate: false,
     },
     {
         path: "/emp_checkpoint",
         component: EmployeeCheckpoint,
+        isPrivate: false,
     },
     {
         path: "*",
         component: NotFound,
+        isPrivate: false,
     },
 ];

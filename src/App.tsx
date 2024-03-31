@@ -7,7 +7,7 @@ import CommonLoading from "./components/loader/CommonLoading";
 import { Toaster } from "react-hot-toast";
 import SideNav from "./components/dashboard/sideNav/SideNav";
 import { Suspense } from "react";
-import React from "react";
+import ProtectedRoute from "@app_routes/ProtectedRoute";
 
 const App = () => {
 
@@ -19,17 +19,21 @@ const App = () => {
           <Toaster position="top-right" />
           <SideNav />
           <Routes>
-            {privateRoutes.concat(publicRoutes).map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
-                  <Suspense fallback={<CommonLoading loading={true} />}>
-                    {React.createElement(route.component)}
-                  </Suspense>
-                }
-              />
-            ))}
+            {publicRoutes.concat(privateRoutes).map((route, index) => {
+              const Component = route.component; // Name component with capital C as per React convention
+              const routeElement = (
+                <Suspense fallback={<CommonLoading loading={true} />}>
+                  <Component />
+                </Suspense>
+              );
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={route.isPrivate ? <ProtectedRoute>{routeElement}</ProtectedRoute> : routeElement}
+                />
+              );
+            })}
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
