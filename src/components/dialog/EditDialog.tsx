@@ -28,15 +28,35 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
 
     // State to manage local form data, initialized with entity or empty object
     const [formData, setFormData] = useState(entity || {});
-
+    console.log(formData.name?.firstName)
     useEffect(() => {
         setFormData(entity || {});
     }, [entity]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        const keys = name.split('.'); // Split the name by dots to get the path
+
+        setFormData(prev => {
+            let updated = { ...prev }; // Create a shallow copy of the current state
+            let temp = updated; // Temporary reference to navigate the structure
+
+            keys.forEach((key, index) => {
+                if (index === keys.length - 1) {
+                    temp[key] = value; // Set the value at the final key
+                } else {
+                    if (!temp[key]) temp[key] = {}; // If the key does not exist, create an object
+                    temp = temp[key]; // Update the reference to point to the next level
+                }
+            });
+
+            return updated;
+        });
     };
+
+    const getNestedValue = (obj, path) => {
+        return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+    }
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
@@ -55,7 +75,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                         fullWidth
                         variant="outlined"
                         name={field.name}
-                        value={formData[field.name] || ''}
+                        value={getNestedValue(formData, field.name) || ''}
                         disabled={field.disabled}
                         onChange={handleChange}
                     />
