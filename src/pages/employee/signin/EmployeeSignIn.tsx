@@ -1,7 +1,7 @@
 import EmpSignInBox from "@app_components/employee/signIn/EmployeeSignInBox"
 import { FlexRow } from "@app_styles/signForm.styles";
 
-const Employee_SignIn = () => {
+const EmployeeSignIn = () => {
   return (
     <>
     <FlexRow style={{ justifyContent: "center" }} >
@@ -11,4 +11,4 @@ const Employee_SignIn = () => {
   )
 }
 
-export default Employee_SignIn
+export default EmployeeSignIn

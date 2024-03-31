@@ -24,7 +24,7 @@ import SignInFormData from "@app_interfaces/ISignIn";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Employee_SignIn_Box = ({ onSignUpClick }) => {
+const EmployeeSignInBox = ({ onSignUpClick }) => {
   const {
     register,
     handleSubmit,
@@ -122,4 +122,4 @@ const Employee_SignIn_Box = ({ onSignUpClick }) => {
   );
 };
 
-export default Employee_SignIn_Box;
+export default EmployeeSignInBox;

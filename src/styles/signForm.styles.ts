@@ -21,6 +21,13 @@ const SignForm = styled.form`
   padding: 1em 0em;
 `;
 
+const FieldGroup = styled.div`
+  padding: 0.5rem;
+  align-items: center;
+  flex-direction: row;
+  margin-left: 0rem;
+`;
+
 const FlexRow = styled.div`
   display: flex;
   gap: 1em;
@@ -74,6 +81,7 @@ export {
   SignSection,
   CompanyLogo,
   CompanyLogoImage,
+  FieldGroup,
   FlexRow,
   SignForm,
   PasswordHandleSection,
