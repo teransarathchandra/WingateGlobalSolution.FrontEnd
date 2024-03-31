@@ -21,6 +21,26 @@
     "noFallthroughCasesInSwitch": true,
 
     "noImplicitAny": false,
+    "baseUrl": "./",
+    /* Paths*/
+    "paths": {
+      "@app_assets/*":["src/assets/*"],
+      "@app_constants/*":["src/constants/*"],
+      "@app_interfaces/*":["src/interfaces/*"],
+      "@app_redux/*":["src/redux/*"],
+      "@app_services/*":["src/services/*"],
+      "@app_common/*":["src/common/*"],
+      "@app_contexts/*":["src/contexts/*"],
+      "@app_middlewares/*":["src/middlewares/*"],
+      "@app_routes/*":["src/routes/*"],
+      "@app_styles/*":["src/styles/*"],
+      "@app_components/*":["src/components/*"],
+      "@app_hooks/*":["src/hooks/*"],
+      "@app_pages/*":["src/pages/*"],
+      "@app_schemas/*":["src/schemas/*"],
+      "@app_utils/*":["src/utils/*"]
+    },
+
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

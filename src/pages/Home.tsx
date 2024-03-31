@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import SignIn from "../components/forms/SignIn";
+import SignIn from "@app_components/forms/SignIn";
 import { motion } from "framer-motion";
 import {
   HomeSection,
@@ -8,31 +8,31 @@ import {
   HomePageBackground,
   WhoWeAreCardImage,
   FlightImage,
-} from "../styles/home.styles"; // Import from where you defined them
+} from "@app_styles/home.styles"; // Import from where you defined them
 import {
   ServiceCard,
   ServiceSubCard,
   ServiceImage,
-} from "../styles/services.styles";
-import ServiceImage1 from "../assets/images/serviceImage1.jpg";
-import ServiceImage2 from "../assets/images/serviceImage2.jpg";
-import ServiceImage3 from "../assets/images/serviceImage3.jpg";
-import welcomeImage from "../assets/images/man-carrying-a-package.png";
-import whoWeAreCardImage01 from "../assets/images/satellite-dish.png";
-import flightImage from "../assets/images/plane.png";
-import whoWeAreCardImage02 from "../assets/images/cogwheel.png";
-import logo from "../assets/images/logo-min.jpg";
-import floatAnimation from "../common/animations/floatAnimation";
-import SignUp from "../components/forms/SignUp";
-import fadeInOut from "../common/animations/fadeInOutAnimation";
-import Navbar from "../components/shared/Navbar";
-import { ContactCard, WhoCard } from "../styles/shared/card.styles";
-import { WhoWeAreCard } from "../styles/shared/card.styles";
-import { WeatherCard } from "../styles/shared/card.styles";
-import { FlightCard } from "../styles/shared/card.styles";
-import { FlexRow } from "../styles/signForm.styles";
-import { BrownCard } from "../styles/shared/card.styles";
-import { FlightContainer } from "../styles/shared/card.styles";
+} from "@app_styles/services.styles";
+import ServiceImage1 from "@app_assets/images/serviceImage1.jpg";
+import ServiceImage2 from "@app_assets/images/serviceImage2.jpg";
+import ServiceImage3 from "@app_assets/images/serviceImage3.jpg";
+import welcomeImage from "@app_assets/images/man-carrying-a-package.png";
+import whoWeAreCardImage01 from "@app_assets/images/satellite-dish.png";
+import flightImage from "@app_assets/images/plane.png";
+import whoWeAreCardImage02 from "@app_assets/images/cogwheel.png";
+import logo from "@app_assets/images/logo-min.jpg";
+import floatAnimation from "@app_common/animations/floatAnimation";
+import SignUp from "@app_components/forms/SignUp";
+import fadeInOutAnimation from "@app_common/animations/fadeInOutAnimation";
+import Navbar from "@app_components/shared/Navbar";
+import { ContactCard, WhoCard } from "@app_styles/shared/card.styles";
+import { WhoWeAreCard } from "@app_styles/shared/card.styles";
+import { WeatherCard } from "@app_styles/shared/card.styles";
+import { FlightCard } from "@app_styles/shared/card.styles";
+import { FlexRow } from "@app_styles/signForm.styles";
+import { BrownCard } from "@app_styles/shared/card.styles";
+import { FlightContainer } from "@app_styles/shared/card.styles";
 import {
   faBolt,
   faMotorcycle,
@@ -49,7 +49,7 @@ import {
   ContactsList,
   Contact,
   Element,
-} from "../styles/contactUs.styles";
+} from "@app_styles/contactUs.styles";
 import {
   GetInTouchSection,
   GetForm,
@@ -61,9 +61,9 @@ import {
   Container,
   List,
   Item,
-} from "../styles/getInTouchForm.styles";
+} from "@app_styles/getInTouchForm.styles";
 import { TextField } from "@mui/material";
-import ServiceTile from "../components/shared/ServiceTile";
+import ServiceTile from "@app_components/shared/ServiceTile";
 
 const Home = () => {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -90,7 +90,7 @@ const Home = () => {
         <motion.div className="welcome-image" {...floatAnimation}>
           <WelcomeImage src={welcomeImage} alt="Man carrying a package" />
         </motion.div>
-        <motion.div key={showSignUp ? "signup" : "signin"} {...fadeInOut}>
+        <motion.div key={showSignUp ? "signup" : "signin"} {...fadeInOutAnimation}>
           <FormComponent onSignUpClick={toggleSignUp} />
         </motion.div>
       </HomeSection>

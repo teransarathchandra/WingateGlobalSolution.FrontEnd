@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const SignSection = styled.div`
-  max-width: 500px;
+  max-width: 400px;
   min-width: 400px;
   width: 100%;
 `;
@@ -24,15 +24,10 @@ const SignForm = styled.form`
 const FlexRow = styled.div`
   display: flex;
   gap: 1em;
-  padding: 0.5em 0;
 
   @media (max-width: 768px) {
     flex-direction: column;
   }
-`;
-
-const FieldGroup = styled.div`
-  padding: 0.5em 0;
 `;
 
 const PasswordHandleSection = styled.div`
@@ -44,6 +39,7 @@ const PasswordHandleSection = styled.div`
 const SignButton = styled.button`
   width: 100%;
   padding: 0.8em 0;
+  margin: 1em 0;
   border-radius: 5px;
   border: 0;
   background: linear-gradient(
@@ -80,7 +76,6 @@ export {
   CompanyLogoImage,
   FlexRow,
   SignForm,
-  FieldGroup,
   PasswordHandleSection,
   SignButton,
   AccountOption,

@@ -2,19 +2,18 @@ import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import signUpSchema from "../../schemas/signUpSchema";
-import { StyledForm } from "../../styles/shared/form.styles";
-import { HeadingSection } from "../../styles/shared/heading.styles";
+import signUpSchema from "@app_schemas/signUpSchema";
+import { StyledForm } from "@app_styles/shared/form.styles";
+import { HeadingSection } from "@app_styles/shared/heading.styles";
 import {
   SignSection,
   FlexRow,
-  FieldGroup,
   SignButton,
   AccountOption,
   HaveAccountButton,
-} from "../../styles/signForm.styles";
-import useAuth from "../../hooks/useAuth";
-import SignUpFormData from "../../interfaces/ISignUp";
+} from "@app_styles/signForm.styles";
+import useAuth from "@app_hooks/useAuth";
+import SignUpFormData from "@app_interfaces/ISignUp";
 
 const SignUp = ({ onSignUpClick }) => {
   const {
@@ -60,6 +59,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("name.firstName")}
               error={!!errors.name?.firstName}
               helperText={errors.name?.firstName?.message}
+              margin="dense"
             />
             <TextField
               label="Last Name"
@@ -70,6 +70,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("name.lastName")}
               error={!!errors.name?.lastName}
               helperText={errors.name?.lastName?.message}
+              margin="dense"
             />
           </FlexRow>
           <FlexRow>
@@ -82,6 +83,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.street")}
               error={!!errors.address?.street}
               helperText={errors.address?.street?.message}
+              margin="dense"
             />
             <TextField
               label="City"
@@ -92,6 +94,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.city")}
               error={!!errors.address?.city}
               helperText={errors.address?.city?.message}
+              margin="dense"
             />
           </FlexRow>
           <FlexRow>
@@ -104,6 +107,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.state")}
               error={!!errors.address?.state}
               helperText={errors.address?.state?.message}
+              margin="dense"
             />
             <TextField
               label="Country"
@@ -114,9 +118,9 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.country")}
               error={!!errors.address?.country}
               helperText={errors.address?.country?.message}
+              margin="dense"
             />
           </FlexRow>
-          <FieldGroup>
             <TextField
               label="Email"
               defaultValue=""
@@ -126,9 +130,8 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("email")}
               error={!!errors.email}
               helperText={errors.email?.message}
+              margin="dense"
             />
-          </FieldGroup>
-          <FieldGroup>
             <TextField
               label="Password"
               type="password"
@@ -139,9 +142,8 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("password")}
               error={!!errors.password}
               helperText={errors.password?.message}
+              margin="dense"
             />
-          </FieldGroup>
-          <FieldGroup>
             <TextField
               label="Mobile Number"
               type="number"
@@ -151,11 +153,9 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("contactNumber")}
               error={!!errors.contactNumber}
               helperText={errors.contactNumber?.message}
+              margin="dense"
             />
-          </FieldGroup>
-          <FieldGroup>
             <SignButton type="submit">Sign Up</SignButton>
-          </FieldGroup>
           <AccountOption>
             Already have an account?{" "}
             <HaveAccountButton onClick={onSignUpClick}>

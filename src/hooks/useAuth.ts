@@ -1,16 +1,20 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "../redux/actions/authActions";
-import AuthActions from "../interfaces/IAuthActions";
-import SignUpFormData from "../interfaces/ISignUp";
+import { login, register } from "@app_redux/actions/authActions";
+import SignUpFormData from "@app_interfaces/ISignUp";
+import IRootState from "@app_interfaces/IRootState";
+
+interface ILoginCredentials {
+  email: string;
+  password: string;
+}
 
 const useAuth = () => {
   const dispatch = useDispatch();
-  const authError = useSelector((state: AuthActions) => state.auth.error);
-
+  const auth = useSelector((state: IRootState) => state.auth);
   const loginUser = useCallback(
-    ({ email, password }) => {
-      dispatch(login({ email, password }));
+    async (credentials: ILoginCredentials) => {
+      return dispatch(login(credentials));
     },
     [dispatch]
   );
@@ -22,7 +26,7 @@ const useAuth = () => {
     [dispatch]
   );
 
-  return { loginUser, registerUser, authError };
+  return { loginUser, registerUser, auth };
 };
 
 export default useAuth;

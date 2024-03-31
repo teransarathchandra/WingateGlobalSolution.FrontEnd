@@ -1,5 +1,5 @@
-import { Container, FlexRow, ImageContainer, PrimaryButton } from '../../../styles/shared/commonStyles.style'
-import SupplyChain from '../../../assets/images/customer/SupplyChain.png'
+import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/shared/commonStyles.style'
+import SupplyChain from '@app_assets/images/customer/SupplyChain.png'
 import ShipmentDetailsForm from '../../forms/order/ShipmentDetailsForm'
 
 const ShipmentDetails = ({ goNext, goBack }) => {
@@ -10,7 +10,7 @@ const ShipmentDetails = ({ goNext, goBack }) => {
     };
 
     const handleGoBack = () => {
-        // Validate and process form, then...
+        // Validate and process form, then... 
         goBack();
     };
 
