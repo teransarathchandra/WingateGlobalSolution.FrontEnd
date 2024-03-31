@@ -54,7 +54,6 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
 
   const handleGoogleSuccess = (credentialResponse) => {
     dispatch(googleLogin(credentialResponse.credential));
-    navigate("/order");
   };
 
   return (

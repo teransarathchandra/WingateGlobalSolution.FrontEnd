@@ -59,7 +59,7 @@ export const googleLogin = (token):any => async (dispatch) => {
     dispatch(startLoading());
     try {
         const { data } = await api.post('/user/auth/google', { token });
-        dispatch(googleLoginSuccess(data.user));
+        dispatch(googleLoginSuccess(data));
     } catch (error: any) {
         console.error('Error during Google login:', error);
     } finally {
