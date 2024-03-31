@@ -12,14 +12,13 @@ const VerifyEmail = () => {
 
   const verifyEmailToken = async (token) => {
     try {
-      // Replace the URL with your backend endpoint
       const response = await axios.get(
         `http://localhost:3000/api/user/verify-email/${token}`
       );
       setVerificationStatus(
         response.data.message || "Email verified successfully!"
       );
-    } catch(error) {
+    } catch(error: any) {
       setVerificationStatus(
         error?.response?.data.message || "Failed to verify email."
       );

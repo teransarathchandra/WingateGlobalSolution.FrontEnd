@@ -1,8 +1,9 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS } from '@app_redux/constants/authConstants';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_REQUEST, EMPLOYEE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_FAILURE } from '@app_redux/constants/authConstants';
 import { startLoading, stopLoading } from './loadingActions';
-import api, { authenticateWithGoogle } from '@app_utils/apiUtils';
+import api from '@app_utils/apiUtils';
 import SignUpFormData from '@app_interfaces/ISignUp';
 
+//User Login
 export const loginRequest = () => ({
     type: LOGIN_REQUEST,
 });
@@ -54,13 +55,12 @@ export const login = (credentials):any => async (dispatch) => {
     }
 };
 
-export const googleLogin = (token) => async (dispatch) => {
+export const googleLogin = (token):any => async (dispatch) => {
     dispatch(startLoading());
     try {
-        const { data } = await authenticateWithGoogle(token);
-        dispatch(googleLoginSuccess(data.user));
-        localStorage.setItem("accessToken", data.accessToken);
-    } catch (error) {
+        const { data } = await api.post('/user/auth/google', { token });
+        dispatch(googleLoginSuccess(data));
+    } catch (error: any) {
         console.error('Error during Google login:', error);
     } finally {
         dispatch(stopLoading());
@@ -75,6 +75,36 @@ export const register = (userData: SignUpFormData):any => async (dispatch) => {
         dispatch(registerSuccess(data));
     } catch (error: any) {
         dispatch(registerFailure(error.response.data));
+    } finally {
+        dispatch(stopLoading());
+    }
+};
+
+
+//Employee Login
+export const employeeLoginRequest = () => ({
+    type: EMPLOYEE_LOGIN_REQUEST,
+});
+
+export const employeeLoginSuccess = (employee) => ({
+    type: EMPLOYEE_LOGIN_SUCCESS,
+    payload: employee,
+});
+
+export const employeeLoginFailure = (error) => ({
+    type: EMPLOYEE_LOGIN_FAILURE,
+    payload: error,
+});
+
+export const employeeLogin = (credentials) => async (dispatch) => {
+    dispatch(startLoading());
+    dispatch(employeeLoginRequest());
+    try {
+        const { data } = await api.post(`/employee/login`, credentials);
+        dispatch(employeeLoginSuccess(data));
+        dispatch(resetLoginErrors());
+    } catch (error: any) {
+        dispatch(employeeLoginFailure(error.response.data));
     } finally {
         dispatch(stopLoading());
     }
