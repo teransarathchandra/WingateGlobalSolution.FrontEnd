@@ -1,4 +1,4 @@
-import EmpSignInBox from "@app_components/employee/signIn/Employee_SignIn_Box"
+import EmpSignInBox from "@app_components/employee/signIn/EmployeeSignInBox"
 import { FlexRow } from "@app_styles/signForm.styles";
 
 const Employee_SignIn = () => {
