@@ -1,8 +1,8 @@
 import CountrySelector from '../../shared/CountrySelector'
-import { Container, FlexRow, ImageContainer, PrimaryButton } from '../../../styles/shared/commonStyles.style'
-import { HeaderSection } from '../../../styles/shared/headers.styles'
-import TransportContainerImg from '../../../assets/images/customer/TransportContainer.png'
-import ChooseDestinationImg from '../../../assets/images/customer/ChooseDestination.png'
+import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/shared/commonStyles.style'
+import { HeaderSection } from '@app_styles/shared/headers.styles'
+import TransportContainerImg from '@app_assets/images/customer/TransportContainer.png'
+import ChooseDestinationImg from '@app_assets/images/customer/ChooseDestination.png'
 
 const ChooseDestination = ({ goNext }) => {
 

@@ -1,7 +1,7 @@
-import { Container, FlexRow, ImageContainer, PrimaryButton } from '../../../styles/shared/commonStyles.style'
-import FolderImg from '../../../assets/images/customer/Folder.png'
+import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/shared/commonStyles.style'
+import FolderImg from '@app_assets/images/customer/Folder.png'
 import RequiredDocumentsForm from '../../forms/order/RequiredDocumentsForm'
-import { HeaderSection } from '../../../styles/shared/headers.styles'
+import { HeaderSection } from '@app_styles/shared/headers.styles'
 
 const RequiredDocuments = ({ goNext, goBack }) => {
 

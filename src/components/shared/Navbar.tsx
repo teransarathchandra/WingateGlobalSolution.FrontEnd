@@ -5,7 +5,7 @@ import {
   NavItem,
   NavLink,
   LinkText,
-} from "../../styles/navbar.styles";
+} from "@app_styles/navbar.styles";
 import { useEffect, useState } from "react";
 
 interface NavbarProps {

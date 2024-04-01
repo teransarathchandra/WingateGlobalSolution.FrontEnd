@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { IColumn, IRow } from "../../../../interfaces/ITable";
+import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../../shared/ReusableTable";
-import { getAllOrders, updateOrder } from "../../../../services/orderService";
-import { IOrder } from "../../../../interfaces/IOrder";
+import { getAllOrders, updateOrder } from "@app_services/orderService";
+import { IOrder } from "@app_interfaces/IOrder";
 import EditDialog from "../../../dialog/EditDialog";
 
 const columns: IColumn[] = [

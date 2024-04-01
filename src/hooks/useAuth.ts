@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "../redux/actions/authActions";
-import AuthActions from "../interfaces/IAuthActions";
-import SignUpFormData from "../interfaces/ISignUp";
+import { login, register } from "@app_redux/actions/authActions";
+import AuthActions from "@app_interfaces/IAuthActions";
+import SignUpFormData from "@app_interfaces/ISignUp";
 
 const useAuth = () => {
   const dispatch = useDispatch();

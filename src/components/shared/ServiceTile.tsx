@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ServiceTileHeader, ServiceTiles } from "../../styles/services.styles";
+import { ServiceTileHeader, ServiceTiles } from "@app_styles/services.styles";
 
 const ServiceTile = ({ icon, title }) => (
     <ServiceTiles>

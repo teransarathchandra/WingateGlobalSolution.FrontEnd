@@ -10,8 +10,8 @@ import {
   TextField,
 } from "@mui/material";
 import SwitchBtn from "./SwitchBtn";
-import { FlexRow } from "../../styles/signForm.styles";
-import { IColumn, IRow } from "../../interfaces/ITable";
+import { FlexRow } from "@app_styles/signForm.styles";
+import { IColumn, IRow } from "@app_interfaces/ITable";
 
 const ReusableTable = ({ columns, rows, title, rowKey }) => {
   return (

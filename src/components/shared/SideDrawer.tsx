@@ -1,5 +1,5 @@
-import { Drawer, HeaderImage, Step, StepIndicator } from "../../styles/shared/sideDrawer.styles";
-import logo from "../../assets/images/logo.png"
+import { Drawer, HeaderImage, Step, StepIndicator } from "@app_styles/shared/sideDrawer.styles";
+import logo from "@app_assets/images/logo.png"
 
 type SideDrawerProps = {
     steps: string[];

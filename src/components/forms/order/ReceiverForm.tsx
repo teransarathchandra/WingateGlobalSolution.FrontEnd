@@ -1,14 +1,14 @@
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import shipmentDetailsSchema from "../../../schemas/shipmentDetailsSchema";
-import { StyledForm } from "../../../styles/shared/form.styles";
-import LorryImg from '../../../assets/images/customer/Lorry.png'
-import { HeadingSection } from "../../../styles/shared/heading.styles";
+import shipmentDetailsSchema from "@app_schemas/shipmentDetailsSchema";
+import { StyledForm } from "@app_styles/shared/form.styles";
+import LorryImg from '@app_assets/images/customer/Lorry.png'
+import { HeadingSection } from "@app_styles/shared/heading.styles";
 import {
     FieldGroup,
-} from "../../../styles/signForm.styles";
-import { FlexRow, ImageContainer } from "../../../styles/shared/commonStyles.style";
+} from "@app_styles/signForm.styles";
+import { FlexRow, ImageContainer } from "@app_styles/shared/commonStyles.style";
 
 const ReceiverForm = () => {
 
