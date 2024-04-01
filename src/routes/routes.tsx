@@ -15,6 +15,12 @@ const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
+//Bulk
+const Bulk = lazy(() => import("@app_pages/Bulk"));
+
+//Flight
+const Flight = lazy(() => import("@app_pages/Flight"));
+
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
@@ -32,26 +38,20 @@ export const privateRoutes = [
     },    
     {
         path: "/app/order",
-        component: Order ,
+        component: Order,
+        isPrivate: true,
     },
     {
         path: "/app/bulk",
         component: Bulk,
+        isPrivate: false,
     },
     {
         path: "/app/flight",
         component: Flight,
+        isPrivate: false,
     },
-    {
-        path: "*",
-        component: NotFound ,
-        isPrivate: true,
-    },
-
-    
-    
 ];
-
 
 export const publicRoutes = [
     {
