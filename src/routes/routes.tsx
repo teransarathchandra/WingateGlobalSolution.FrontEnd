@@ -5,6 +5,7 @@ const Order = lazy(() => import("../pages/dashboard/order/Order"));
 const VerifyEmail = lazy(() => import("../pages/VerifyEmail"));
 const PlaceOrder = lazy(() => import("../pages/customer/order/Order"));
 const Bulk = lazy(() => import("../pages/Bulk"));
+const Flight = lazy(() => import("../pages/Flight"));
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 
@@ -14,17 +15,23 @@ export const privateRoutes = [
         component: Home,
     },
     {
-        path: "order",
-        element: <Order />,
+        path: "/app/order",
+        component: Order ,
     },
     {
-        path: "bulk",
-        element: <Bulk />,
+        path: "/app/bulk",
+        component: Bulk,
+    },
+    {
+        path: "/app/flight",
+        component: Flight,
     },
     {
         path: "*",
-        element: <NotFound />,
+        component: NotFound ,
     },
+
+    
     
 ];
 
