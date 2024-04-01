@@ -1,14 +1,12 @@
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import shipmentDetailsSchema from "@app_schemas/shipmentDetailsSchema"; // Ensure to create this schema
+import shipmentDetailsSchema from "@app_schemas/shipmentDetailsSchema";
 import { StyledForm } from "@app_styles/shared/form.styles";
 import LorryImg from '@app_assets/images/customer/Lorry.png'
 import { HeadingSection } from "@app_styles/shared/heading.styles";
 import {
-  FieldGroup,
-  // ActionButton, // This should be styled similarly to SignButton
-} from "@app_styles/signForm.styles"; // Ensure to create and style this
+} from "@app_styles/signForm.styles";
 import { FlexRow, ImageContainer } from "@app_styles/shared/commonStyles.style";
 
 const ShipmentDetailsForm = () => {
@@ -22,7 +20,6 @@ const ShipmentDetailsForm = () => {
 
   const onSubmit = (data) => {
     console.log("Shipment Data", data);
-    // Handle the submission to your backend or state management
   };
 
   return (
@@ -33,7 +30,6 @@ const ShipmentDetailsForm = () => {
         </FlexRow>
         <p>Please enter the details of the item to be shipped.</p>
       </HeadingSection>
-      <FieldGroup>
         <TextField
           label="Name"
           variant="outlined"
@@ -42,9 +38,8 @@ const ShipmentDetailsForm = () => {
           {...register("itemName")}
           error={!!errors.itemName}
           helperText={errors.itemName?.message}
+          margin="dense"
         />
-      </FieldGroup>
-      <FieldGroup>
         <TextField
           label="Description"
           variant="outlined"
@@ -55,9 +50,8 @@ const ShipmentDetailsForm = () => {
           {...register("description")}
           error={!!errors.description}
           helperText={errors.description?.message}
+          margin="dense"
         />
-      </FieldGroup>
-      <FieldGroup>
         <TextField
           label="Category"
           select
@@ -67,11 +61,10 @@ const ShipmentDetailsForm = () => {
           {...register("category")}
           error={!!errors.category}
           helperText={errors.category?.message}
+          margin="dense"
         >
           <option value="">Select a category</option>
         </TextField>
-      </FieldGroup>
-      <FieldGroup>
         <TextField
           label="Weight (KG)"
           type="number"
@@ -81,9 +74,8 @@ const ShipmentDetailsForm = () => {
           {...register("weight")}
           error={!!errors.weight}
           helperText={errors.weight?.message}
+          margin="dense"
         />
-      </FieldGroup>
-      <FieldGroup>
         <TextField
           label="Value (LKR)"
           type="number"
@@ -93,11 +85,9 @@ const ShipmentDetailsForm = () => {
           {...register("value")}
           error={!!errors.value}
           helperText={errors.value?.message}
+          margin="dense"
         />
-      </FieldGroup>
-      <FieldGroup>
         {/* <ActionButton type="submit">Submit Details</ActionButton> */}
-      </FieldGroup>
     </StyledForm>
   );
 };

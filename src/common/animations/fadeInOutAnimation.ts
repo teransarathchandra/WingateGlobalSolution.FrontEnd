@@ -1,4 +1,4 @@
-const fadeInOut = {
+const fadeInOutAnimation = {
   initial: {
     opacity: 0,
     x: 50,
@@ -16,4 +16,4 @@ const fadeInOut = {
   },
 };
 
-export default fadeInOut;
+export default fadeInOutAnimation;

@@ -8,6 +8,7 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 // Add a request interceptor to add the bearer token to the headers
@@ -41,9 +42,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export const authenticateWithGoogle = async (token: string) => {
-  return await api.post('/user/auth/google', { token });
-};
 
 export default api;
