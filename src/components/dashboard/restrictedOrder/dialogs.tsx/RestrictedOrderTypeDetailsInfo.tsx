@@ -59,7 +59,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
     setIsEditDialogOpen(true);
     handleClose;
   };
-  const handleDeleteRestrictedOrder = async (ResOrderID) => {
+  const handleDeleteRestrictedOrderType = async (ResOrderID) => {
 
     const ResOrderId = currentResOrder?._id || ResOrderID;
     if (!ResOrderId) {
@@ -77,16 +77,21 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
   };
 
 
-  const handleUpdatedRestrictedOrder = async (updatedData: IRestrictedOrder) => {
+  const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
     if (!updatedData?._id) {
       console.error('No ID available for updating the order');
       return;
     }
     try {
-      // const id = currentResOrder?._id
-      // console.log(id);
-      const response = await updateRestrictedOrder(updatedData._id, updatedData);
+
+      const id = currentResOrder?._id
+      console.log('saving', updatedData?.restrictedOrderId, "   ", id);
+      
+      if(id){
+      const response = await updateRestrictedOrder(id, updatedData);
       console.log('Order updated successfully:', response);
+      
+      }
       setIsEditDialogOpen(false);
     } catch (error) {
       console.error('Failed to update order', error);
@@ -145,7 +150,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
         <button onClick={() => handleEditClick(ViewData)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}>
           <FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} />
         </button>
-        <button onClick={() => handleDeleteRestrictedOrder(ViewData?._id)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}>
+        <button onClick={() => handleDeleteRestrictedOrderType(ViewData?._id)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}>
           <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#0c1821" }} />
         </button>
       </div>
@@ -155,8 +160,8 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
         handleClose={() => setIsEditDialogOpen(false)}
         entity={entity}
         fields={fields}
-        onSave={handleUpdatedRestrictedOrder}
-        onDelete={handleDeleteRestrictedOrder} />
+        onSave={handleUpdatedRestrictedOrderType}
+        onDelete={handleDeleteRestrictedOrderType} />
 
     </Dialog>
   );

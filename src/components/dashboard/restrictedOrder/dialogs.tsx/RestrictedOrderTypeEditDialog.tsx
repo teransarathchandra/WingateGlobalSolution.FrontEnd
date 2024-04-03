@@ -70,7 +70,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                         />
                     ))}
                     
-                {fields && fields.map((field) =>
+                {/* {fields && fields.map((field) =>
                     field.type == Boolean &&  (
                         <FormControlLabel
                             key={field.name}
@@ -85,7 +85,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                     onChange={handleChange}
                                     value={formData[field.name]} />
                             } />
-                    ))}
+                    ))} */}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">Cancel</Button>

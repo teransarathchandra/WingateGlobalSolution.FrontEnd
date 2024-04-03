@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { IColumn, IRow } from "../../../../interfaces/ITable";
 import ReusableTable from "../../../shared/ReusableTable";
-import { getAllRestrictedOrders } from "../../../../services/restrictedOrderService";
+import { getAllRestrictedOrders, createRestrictedOrder } from "../../../../services/restrictedOrderService";
 import { IRestrictedOrder } from "../../../../interfaces/IRestrictedOrder";
 import FullScreenDialog from "../dialogs.tsx/RestrictedOrderTypeDetailsInfo";
+import AddRestrictedOrderForm from '../dialogs.tsx/RestrictedOrderTypeAddDialog';
 
 const columns: IColumn[] = [
   { id: "restrictedOrderId", label: "Restricted ID", numeric: false, disablePadding: true },
@@ -14,15 +15,21 @@ const columns: IColumn[] = [
 ];
 
 const restrictedOrderTypeInfo: React.FC = () => {
-  
+
   const [restrictedOrderTypes, setRestrictedOrderTypes] = useState<IRow[]>([]);
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
+  const [isAddOrderOpen, setIsAddOrderOpen] = useState(false);
+
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
 
   const handleViewClick = (restrictedOrder: IRestrictedOrder) => {
     setIsViewDetailsOpen(true);
     setCurrentResOrder(restrictedOrder);
   };
+  const handleAddClick = () => {
+    setIsAddOrderOpen(true);
+  };
+
 
   const fetchAndPrepareResOrders = async () => {
     try {
@@ -37,6 +44,20 @@ const restrictedOrderTypeInfo: React.FC = () => {
       console.error('Failed to fetch order types', error);
     }
   };
+  const handleAddRestrictedOrderType = async (restrictedOrder: IRestrictedOrder) => {
+    try {
+      const response = await createRestrictedOrder(restrictedOrder);
+      const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
+        ...restrictedOrder,
+        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
+      }));
+      setRestrictedOrderTypes(preparedResOrderTypes);
+    } catch (error) {
+      console.error('Failed to fetch order types', error);
+    }
+  };
+
+
 
   useEffect(() => {
     fetchAndPrepareResOrders();
@@ -45,7 +66,7 @@ const restrictedOrderTypeInfo: React.FC = () => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: "center" }}>
-        <button>Add</button>
+        <button onClick={handleAddClick}>Add</button>
       </div>
       <ReusableTable
         columns={columns}
@@ -53,6 +74,11 @@ const restrictedOrderTypeInfo: React.FC = () => {
         title="Restricted Order Types"
         rowKey="restrictedOrderId"
       />
+      <AddRestrictedOrderForm
+        onSubmit={handleAddRestrictedOrderType}
+        isOpen={isAddOrderOpen}
+        handleClose={() => setIsAddOrderOpen(false)} 
+        />
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}
