@@ -1,7 +1,12 @@
 import api from "../utils/apiUtils";
 
-export const getAllRestrictedOrders = () => {
-    return api.get("/restrictedOrder");
+export const getAllRestrictedOrders = (aggType) => {
+    if (aggType) {
+        return api.get(`/restrictedOrder?type=${aggType}`);
+    } else {
+        return api.get("/restrictedOrder");
+    }
+    
 };
 
 export const getRestrictedOrderById = (id) => {
