@@ -40,7 +40,7 @@ interface FullScreenDialogProps {
   handleClose: () => void;
   entity: any;
   fields: FieldConfig[];
-  // onEdit: (data: any) => void;
+  //onEdit: (data: any) => void;
   //onDelete: (data: any) => void;
 }
 const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fields, handleClose }) => {
@@ -59,8 +59,8 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
     setIsEditDialogOpen(true);
     handleClose;
   };
+  
   const handleDeleteRestrictedOrderType = async (ResOrderID) => {
-
     const ResOrderId = currentResOrder?._id || ResOrderID;
     if (!ResOrderId) {
       console.error('No ID available for deleting the restricted order type');
@@ -70,6 +70,8 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
       const response = await deleteRestrictedOrder(ResOrderId);
       console.log('Order deleted successfully:', response);
       setIsEditDialogOpen(false);
+      isOpen =  false;
+      
     } catch (error) {
       console.error('Failed to update order', error);
     }
@@ -85,10 +87,13 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
     try {
 
       const id = currentResOrder?._id
-      console.log('saving', updatedData?.restrictedOrderId, "   ", id);
       
+      const dataToUpdate = {...updatedData};
+      delete dataToUpdate._id;
+      delete dataToUpdate.restrictedOrderId;
+
       if(id){
-      const response = await updateRestrictedOrder(id, updatedData);
+      const response = await updateRestrictedOrder(id, dataToUpdate);
       console.log('Order updated successfully:', response);
       
       }
@@ -114,7 +119,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
       </AppBar>
       <List style={{ width: '500px' }}>
         {fields.map((field, index) => (
-          field.type !== Boolean && ViewData[field.name] && (
+          field.type !== Boolean && field.name !== "_id" && ViewData[field.name] && (
             <React.Fragment key={field.name}>
               <ListItem>
                 <Grid container spacing={2}>
@@ -159,7 +164,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
         isOpen={isEditDialogOpen}
         handleClose={() => setIsEditDialogOpen(false)}
         entity={entity}
-        fields={fields}
+        fields={fields} 
         onSave={handleUpdatedRestrictedOrderType}
         onDelete={handleDeleteRestrictedOrderType} />
 

@@ -1,0 +1,21 @@
+import api from "../utils/apiUtils";
+
+export const getAllCategory = () => {
+        return api.get("/category");  
+};
+
+export const getCategoryById = (id) => {
+    return api.get(`/category/${id}`);
+};
+
+export const createCategory = (categoryData) => {
+    return api.post("/category", categoryData);
+};
+
+export const updateCategory = (id, categoryData) => {
+    return api.put(`/category/${id}`, categoryData);
+};
+
+export const deleteCategory = (id) => {
+    return api.delete(`/category/${id}`);
+};

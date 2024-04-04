@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { DialogContent, TextField, Checkbox, IconButton, FormControlLabel, Button, Dialog, AppBar, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -12,8 +12,7 @@ const AddRestrictedOrderForm  = ({isOpen, handleClose, onSubmit }) => {
         importPermit: false,
         safetyDataSheets: false,
         phytosanitaryCertificate: false,
-        dangerousGoodsDeclaration: false
-        
+        dangerousGoodsDeclaration: false 
     });
 
     const handleChange = (e) => {
@@ -24,8 +23,7 @@ const AddRestrictedOrderForm  = ({isOpen, handleClose, onSubmit }) => {
         }));
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         onSubmit(formData);
     };
 
@@ -74,7 +72,7 @@ const AddRestrictedOrderForm  = ({isOpen, handleClose, onSubmit }) => {
                     )
                 ))}
             </DialogContent>
-            <Button type="submit" color="primary">Create Restricted Order</Button>
+            <Button type="submit" color="primary">Add</Button>
          {/* <button onClick={() => handleDeleteRestrictedOrderType(formData)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}> Create Restricted Order </button> */}
         </form>
         </Dialog>

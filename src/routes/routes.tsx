@@ -4,7 +4,7 @@ const Home = lazy(() => import("../pages/Home"));
 const Order = lazy(() => import("../pages/dashboard/order/Order"));
 const VerifyEmail = lazy(() => import("../pages/VerifyEmail"));
 const PlaceOrder = lazy(() => import("../pages/customer/order/Order"));
-const RestrictedOrder = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrder"));
+const Category = lazy(() => import("../pages/dashboard/category/Category"));
 const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
 
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -18,13 +18,17 @@ export const privateRoutes = [
         path: "/app/order",
         component: Order,
     },
-    {
-        path: "/app/restrictedOrder",
-        component: RestrictedOrder,
-    },
+    // {
+    //     path: "/app/restrictedOrder",
+    //     component: RestrictedOrder,
+    // },
     {
         path: "/app/restrictedOrderType",
         component: RestrictedOrderType,
+    },
+    {
+        path: "/app/category",
+        component: Category,
     },
     {
         path: "*",

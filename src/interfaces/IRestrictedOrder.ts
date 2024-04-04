@@ -1,18 +1,18 @@
 export interface IRestrictedOrder{
-  _id: string;
+  _id?: string;
+  restrictedOrderId?: string;
+  sendingCountryId: string;
+  receivingCountryId: string;
+  categoryId: string;
   maxQuantity: number;
   exportLicense: boolean;
   importPermit: boolean;
   safetyDataSheets: boolean;
   phytosanitaryCertificate: boolean;
   dangerousGoodsDeclaration: boolean;
-  categoryId: string;
-  sendingCountryId: string;
-  receivingCountryId: string;
   createdAt: string;
   updatedAt: string;
-  restrictedOrderId: string; 
-  __v: number;
+ 
 }
 
 export interface IApiResponse {
