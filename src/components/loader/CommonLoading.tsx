@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { SpinnerOverlay } from "../../styles/shared/spinnerOverlay.styles";
+import { SpinnerOverlay } from "@app_styles/shared/spinnerOverlay.styles";
 import { square } from "ldrs";
 square.register();
 const CommonLoading = ({ loading }) => {

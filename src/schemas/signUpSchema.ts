@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { password, name } from '../constants/regExp'
+import { password, name } from '@app_constants/regExp'
 
 const nameSchema = yup.object().shape({
     firstName: yup.string().required('First name is required.')

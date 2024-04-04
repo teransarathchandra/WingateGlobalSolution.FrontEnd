@@ -1,6 +1,6 @@
 import {
     LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE
-} from '../constants/authConstants';
+} from '@app_redux/constants/authConstants';
 
 const initialState = {
     user: null,

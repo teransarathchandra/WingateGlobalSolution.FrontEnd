@@ -1,4 +1,4 @@
-import { START_LOADING, STOP_LOADING } from '../constants/loadingConstants';
+import { START_LOADING, STOP_LOADING } from '@app_redux/constants/loadingConstants';
 
 const initialState = {
     isLoading: false,

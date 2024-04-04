@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import signUpSchema from "../../schemas/signUpSchema";
-import { StyledForm } from "../../styles/shared/form.styles";
-import { HeadingSection } from "../../styles/shared/heading.styles";
+import signUpSchema from "@app_schemas/signUpSchema";
+import { StyledForm } from "@app_styles/shared/form.styles";
+import { HeadingSection } from "@app_styles/shared/heading.styles";
 import {
   SignSection,
   FlexRow,
@@ -12,9 +12,9 @@ import {
   SignButton,
   AccountOption,
   HaveAccountButton,
-} from "../../styles/signForm.styles";
-import useAuth from "../../hooks/useAuth";
-import SignUpFormData from "../../interfaces/ISignUp";
+} from "@app_styles/signForm.styles";
+import useAuth from "@app_hooks/useAuth";
+import SignUpFormData from "@app_interfaces/ISignUp";
 
 const SignUp = ({ onSignUpClick }) => {
   const {
