@@ -1,6 +1,6 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_REQUEST, EMPLOYEE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_FAILURE } from '@app_redux/constants/authConstants';
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_REQUEST, EMPLOYEE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_FAILURE, GOOGLE_LOGIN_FAILURE } from '@app_redux/constants/authConstants';
 import { startLoading, stopLoading } from './loadingActions';
-import api from '@app_utils/apiUtils';
+// import api from '@app_utils/apiUtils';
 import SignUpFormData from '@app_interfaces/ISignUp';
 
 //User Login
@@ -27,6 +27,11 @@ export const googleLoginSuccess = (user) => ({
     payload: user,
 });
 
+export const googleLoginFailure = (error) => ({
+    type: GOOGLE_LOGIN_FAILURE,
+    payload: error,
+});
+
 export const registerRequest = () => ({
     type: REGISTER_REQUEST,
 });
@@ -41,7 +46,7 @@ export const registerFailure = (error) => ({
     payload: error,
 });
 
-export const login = (credentials):any => async (dispatch) => {
+export const login = (api, credentials):any => async (dispatch) => {
     dispatch(startLoading());
     dispatch(loginRequest());
     try {
@@ -55,7 +60,7 @@ export const login = (credentials):any => async (dispatch) => {
     }
 };
 
-export const googleLogin = (token):any => async (dispatch) => {
+export const googleLogin = (api, token):any => async (dispatch) => {
     dispatch(startLoading());
     try {
         const { data } = await api.post('/user/auth/google', { token });
@@ -67,7 +72,7 @@ export const googleLogin = (token):any => async (dispatch) => {
     }
 };
 
-export const register = (userData: SignUpFormData):any => async (dispatch) => {
+export const register = (api, userData: SignUpFormData):any => async (dispatch) => {
     dispatch(startLoading());
     dispatch(registerRequest());
     try {
@@ -96,7 +101,7 @@ export const employeeLoginFailure = (error) => ({
     payload: error,
 });
 
-export const employeeLogin = (credentials) => async (dispatch) => {
+export const employeeLogin = (api, credentials) => async (dispatch) => {
     dispatch(startLoading());
     dispatch(employeeLoginRequest());
     try {

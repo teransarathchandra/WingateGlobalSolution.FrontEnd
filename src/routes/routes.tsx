@@ -8,6 +8,10 @@ const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"))
 
 // Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
+const Category = lazy(() => import("../pages/dashboard/category/Category"));
+const Country = lazy(() => import("../pages/dashboard/country/Country"));
+const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
+
 
 //Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
@@ -66,7 +70,6 @@ export const privateRoutes = [
         component: Airline,
         isPrivate: false,
     },
-
     {
         path: "/app/bulkdetails",
         component: BulkDetails,
@@ -76,6 +79,22 @@ export const privateRoutes = [
         path: "/app/orderaggregation",
         component: OrderAggregation,
         isPrivate: false,
+    },
+    {
+        path: "/app/restrictedOrderType",
+        component: RestrictedOrderType,
+    },
+    {
+        path: "/app/category",
+        component: Category,
+    },
+    {
+        path: "/app/country",
+        component: Country,
+    },
+    {
+        path: "*",
+        component: NotFound,
     },
 ];
 

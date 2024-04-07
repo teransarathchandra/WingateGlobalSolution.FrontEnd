@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
@@ -21,9 +21,13 @@ import {
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignInFormData from "@app_interfaces/ISignIn";
-import { googleLogin } from "@app_redux/actions/authActions";
+import { googleLogin, googleLoginFailure } from "@app_redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import useLocalStorage from "@app_hooks/useLocalStorage";
+import { useAuthContext } from "@app_contexts/authContext";
+import useAxios from "@app_hooks/useAxios";
+// import { setAuthToken } from "@app_utils/apiUtils";
 
 interface SignInProps {
   onSignUpClick: () => void;
@@ -37,24 +41,39 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
+  const { setUser, setToken } = useAuthContext();
+  // const [storedUser, setStoredUser] = useLocalStorage('app-user');
+  const [signInAttempted, setSignInAttempted] = useState(false);
+
   const { loginUser, auth } = useAuth();
-  
+
+  const api = useAxios();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth.user) {
+    if (auth.user && signInAttempted) {
+      // setStoredUser(auth.user);
+      setUser(auth.user);
+      setToken(auth.user.accessToken);
+      // setAuthToken(auth.user.accessToken);
       navigate("/order");
     }
-  }, [auth.user, navigate]);
+  // }, [auth.user, navigate, setStoredUser, signInAttempted]);
+  }, [auth.user, navigate, setToken, setUser, signInAttempted]);
 
   const onSubmit = async (data: SignInFormData) => {
-    await loginUser(data);
+    setSignInAttempted(true);
+    await loginUser(api, data);
   };
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    dispatch(googleLogin(credentialResponse.credential));
-  };
+  const handleGoogleSuccess = useCallback((credentialResponse) => {
+    dispatch(googleLogin(api, credentialResponse.credential));
+  }, [dispatch]);
+
+  const handleGoogleFailure = useCallback(() => {
+    dispatch(googleLoginFailure("Login Failed"));
+  }, []);
 
   return (
     <SignSection>
@@ -102,9 +121,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
         <GoogleLogin
           width="360px"
           onSuccess={handleGoogleSuccess}
-          onError={() => {
-            console.log("Login Failed");
-          }}
+          onError={handleGoogleFailure}
         />
         <AccountOption>
           Don’t have an account?{" "}

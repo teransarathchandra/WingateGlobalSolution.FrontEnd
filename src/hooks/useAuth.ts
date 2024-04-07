@@ -11,22 +11,23 @@ interface ILoginCredentials {
 
 const useAuth = () => {
   const dispatch = useDispatch();
-  const auth = useSelector((state: IRootState) => state.auth);
+  const { user, employee, error, loading } = useSelector((state: IRootState) => state.auth);
+  
   const loginUser = useCallback(
-    async (credentials: ILoginCredentials) => {
-      return dispatch(login(credentials));
+    async (api, credentials: ILoginCredentials) => {
+      return dispatch(login(api, credentials));
     },
     [dispatch]
   );
 
   const registerUser = useCallback(
-    (userData: SignUpFormData) => {
-      dispatch(register(userData));
+    async (api, userData: SignUpFormData) => {
+      return dispatch(register(api, userData));
     },
     [dispatch]
   );
 
-  return { loginUser, registerUser, auth };
+  return { loginUser, registerUser, auth: { user, employee, error, loading } };
 };
 
 export default useAuth;
