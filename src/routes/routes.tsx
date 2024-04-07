@@ -36,6 +36,9 @@ const UserSettings = lazy(() => import("@app_pages/user/UserSettings"));
 //User Profile
 const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 
+//Customer
+const Customer = lazy(() => import("@app_pages/dashboard/crm/Customer"));
+
 export const privateRoutes = [
     {
         path: "/order",
@@ -74,6 +77,11 @@ export const privateRoutes = [
     {
         path: "/app/flight",
         component: Flight,
+        isPrivate: false,
+    },
+    {
+        path: "/app/crm",
+        component: Customer,
         isPrivate: false,
     },
 ];
