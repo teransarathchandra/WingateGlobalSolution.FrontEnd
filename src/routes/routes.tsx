@@ -8,6 +8,9 @@ const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"))
 
 //Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
+const Category = lazy(() => import("../pages/dashboard/category/Category"));
+const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
+
 
 //Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
@@ -48,7 +51,15 @@ export const privateRoutes = [
         path: "/app/user",
         component: User,
         isPrivate: false,
-    }
+    },
+    {
+        path: "/app/restrictedOrderType",
+        component: RestrictedOrderType,
+    },
+    {
+        path: "/app/category",
+        component: Category,
+    },
 ];
 
 export const publicRoutes = [
