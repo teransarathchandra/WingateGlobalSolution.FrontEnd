@@ -3,9 +3,12 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
-import { AppBar, Checkbox, FormControlLabel, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Checkbox, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { ICategory } from '@app_interfaces/ICategory';
 //import { IRestrictedOrder } from "../../../../interfaces/IRestrictedOrder";
+import { getAllCategory} from "../../../../../services/categoryService";
+
 
 interface FieldConfig {
     name: string;
@@ -23,9 +26,11 @@ interface EditDialogProps {
     onDelete: (data: any) => void;
 }
 
+
 const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, entity, fields, handleClose, onSave, onDelete }) => {
 
     const [formData, setFormData] = useState(entity);
+    const [categories, setCategory] = useState([]);
     // fields && fields.map((field) => (              
     // console.log(formData[field.name] )));
 
@@ -49,6 +54,19 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
         handleClose
     };
 
+
+    
+  const fetchCategories = async () => {
+    try {
+      const response = await getAllCategory();
+      const preparedCategory = response.data.data.map((categories: ICategory) => ({
+        ...categories,
+      }));
+      setCategory(preparedCategory);
+    } catch (error) {
+      console.error('Failed to fetch order types', error);
+    }
+  };
     
 
 
@@ -82,24 +100,55 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                     label={field.name}
                                 />
 
-                            ) : (
+                            ) : field.type === Number ? (
+
                                 <TextField
                                     key={field.name}
                                     autoFocus
                                     margin="dense"
                                     id={field.name}
                                     label={field.label}
-                                    type="text"
+                                    type="number"
                                     fullWidth
                                     variant="outlined"
                                     name={field.name}
                                     value={formData[field.name]}
                                     onChange={handleChange}
                                 />
+
+                            ) : (
+                                <>
+                                    <div>
+                                        <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                                        <Select
+                                            placeholder={field.label}
+                                            style={{
+                                                marginBottom: "10px",
+                                                height: "50px",
+                                            }}
+                                            key={field.name}
+                                            autoFocus
+                                            id={field.name}
+                                            fullWidth
+                                            type="number"
+                                            variant="outlined"
+                                            name={field.name}
+                                            value={formData[field.name]}
+                                            onChange={handleChange}
+                                            
+                                            // {categories.map((option) => (
+                                            //     <MenuItem key={categories.id} value={categories.id}>
+                                            //       {categories.name}
+                                            //     </MenuItem>
+                                            //   ))}
+                                        >
+                                        </Select>
+                                    </div>
+                                </>
                             )
 
                         ))}
-                </DialogContent>
+                </DialogContent >
                 <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
                     <Button type="submit" onClick={() => onSave(formData)} color="secondary">Save</Button>
