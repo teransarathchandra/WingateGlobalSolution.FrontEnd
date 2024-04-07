@@ -200,7 +200,7 @@ const Home = () => {
           <ContactsList>
             <Element>(+94)11 273 1967</Element>
             <Element>wingsolution@gmail.com</Element>
-            <Element>No 359, Galle Road, Mount Lavinia</Element>
+            <Element>No 34/2, Wijaya Road, Mount Lavinia</Element>
           </ContactsList>
         </ContactsSection>
         <GetInTouchSection>
@@ -291,10 +291,10 @@ const Home = () => {
             <Text>Wingate Global Solutions</Text>
           </Container>
           <List>
-            <Item>Categories</Item>
-            <Item>Shopping</Item>
-            <Item>Customer Care</Item>
-            <Item>Pages</Item>
+            <Item>Home</Item>
+            <Item>Services</Item>
+            <Item>About Us</Item>
+            <Item>Contact Us</Item>
           </List>
         </Footer>
       </ContactUsSection>
