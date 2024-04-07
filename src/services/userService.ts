@@ -1,4 +1,4 @@
-import api from "../utils/apiUtils";
+import api from "@app_utils/apiUtils";
 
 export const getAllUser = () => {
     return api.get("/user");
@@ -13,7 +13,7 @@ export const createUser = (userData) => {
 };
 
 export const updateUser = (id, userData) => {
-    return api.put(`/user/${id}`, userData);
+    return api.patch(`/user/${id}`, userData);
 };
 
 export const deleteUser = (id) => {

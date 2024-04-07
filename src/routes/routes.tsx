@@ -21,6 +21,12 @@ const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employe
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
+//User Profile
+const UserSettings = lazy(() => import("@app_pages/user/UserSettings"));
+
+//User Profile
+const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
+
 export const privateRoutes = [
     {
         path: "/order",
@@ -37,7 +43,12 @@ export const privateRoutes = [
         path: "/app/order",
         component: Order,
         isPrivate: true,
-    },
+    },    
+    {
+        path: "/app/user",
+        component: User,
+        isPrivate: false,
+    }
 ];
 
 export const publicRoutes = [
@@ -66,4 +77,16 @@ export const publicRoutes = [
         component: NotFound,
         isPrivate: false,
     },
+
+    {
+        path: "/user-info",
+        component: UserSettings,
+        isPrivate: false,
+    },
+
+    {
+        path: "/user-password",
+        component: UserPassword,
+        isPrivate: false,
+    }
 ];

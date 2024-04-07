@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { IColumn, IRow } from "../../../../interfaces/ITable";
-import ReusableTable from "../../../shared/ReusableTable";
-import { getAllUser, updateUser } from "../../../../services/userService";
-import { IUser } from "../../../../interfaces/IUser";
-import EditDialog from "../../../dialog/EditDialog";
+import { IColumn, IRow } from "@app_interfaces/ITable";
+import ReusableTable from "@app_components/shared/ReusableTable";
+import { getAllUser, updateUser, deleteUser } from "@app_services/userService";
+import { IUser } from "@app_interfaces/IUser";
+import EditDialog from "@app_components/dialog/EditDialog";
 
 const columns: IColumn[] = [
   { id: "userId", label: "User ID", numeric: false, disablePadding: true },
@@ -29,18 +29,17 @@ const UserInfo: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-
   const fetchAndPrepareUser = async () => {
     try {
       const response = await getAllUser();
       const preparedUser: IRow[] = response.data.data.map((user: IUser) => ({
         ...user,
-        // userId: user._id, // Make sure the userID is correctly mapped
+        userId: user._id, // Make sure the userID is correctly mapped
         firstName: user.name.firstName, // Correct mapping for firstName
         lastName: user.name.lastName, // Correct mapping for lastName
         phoneNumber: user.contactNumber, // Correct mapping for contactNumber to phoneNumber
         edit: <button onClick={() => handleEditClick(user)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
-        delete: <button onClick={() => deleteUser(user)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDeleteUser(user)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
       setUser(preparedUser);
     } catch (error) {
@@ -64,8 +63,8 @@ const UserInfo: React.FC = () => {
         // Prepare the user update object based on the expected backend structure
         const userUpdateData = {
           name: {
-            firstName: userData['name.firstName'],
-            lastName: userData['name.lastName'],
+            firstName: userData.name.firstName,
+            lastName: userData.name.lastName,
           },
           email: userData.email,
           contactNumber: userData.contactNumber,
@@ -84,11 +83,24 @@ const UserInfo: React.FC = () => {
     }
   };
 
-  const deleteUser = (user) => {
-    console.log('Deleting user:', user);
-    setIsDialogOpen(false);
-    // Implement actual delete logic here
+  const handleDeleteUser = async (userToDelete) => {
+    // Show a confirmation dialog
+    const isConfirmed = window.confirm("Do you want to delete this user permanently?");
+    if (!isConfirmed) {
+      return; // Stop if the user cancels
+    }
+  
+    try {
+      await deleteUser(userToDelete._id);
+      console.log(`User Deleted Successfully, user ID: ${userToDelete._id}`);
+      const updatedUsers = user.filter(u => u.userId !== userToDelete._id);
+      setUser(updatedUsers);
+    } catch (error) {
+      console.error('Failed to delete user', error);
+      // Optionally, show an error message to the user
+    }
   };
+  
 
   return (
     <>
@@ -111,6 +123,7 @@ const UserInfo: React.FC = () => {
           { name: "name.lastName", label: "Last Name", type: 'text', disabled: false },
           { name: "email", label: "Email", type: 'text', disabled: false },
           { name: "contactNumber", label: "Phone Number", type: 'text', disabled: false },
+
           // Add more fields as necessary
         ]}
         onSave={saveUser}
