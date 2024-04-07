@@ -16,17 +16,20 @@ const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
 //Bulk
-const Bulk = lazy(() => import("@app_pages/Bulk"));
+const Bulk = lazy(() => import("@app_pages/transport/Bulk"));
 
 //Flight
-const Flight = lazy(() => import("@app_pages/Flight"));
+const Flight = lazy(() => import("@app_pages/transport/Flight"));
 
 //Airline
-const Airline = lazy(() => import("@app_pages/Airline"));
+const Airline = lazy(() => import("@app_pages/transport/Airline"));
 
 
 //Bulk Details
-const BulkDetails = lazy(() => import("@app_pages/BulkDetails"));
+const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
+
+//Order Aggregation
+const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregation"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -67,6 +70,11 @@ export const privateRoutes = [
     {
         path: "/app/bulkdetails",
         component: BulkDetails,
+        isPrivate: false,
+    },
+    {
+        path: "/app/orderaggregation",
+        component: OrderAggregation,
         isPrivate: false,
     },
 ];

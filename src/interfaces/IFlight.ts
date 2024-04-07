@@ -1,5 +1,6 @@
 export interface IFlight {
     _id: string;
+    flightId: string;
     type: string;
     routeCostPerKilo: number;
     arrival: string;

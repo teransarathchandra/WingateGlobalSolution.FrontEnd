@@ -21,7 +21,7 @@ const Div = styled.div`
 const Form = styled.form`
   background-color: #ffffff;
   max-width: 50%;
-  height: 750px;
+  height: 850px;
   margin: 100px;
   align-items: left;
   text-align: left;
@@ -45,6 +45,7 @@ const UpdateBtn = styled.button`
   background-color: #e1bd05;
   color: #fff;
   border-radius: 10px;
+  margin-top: 40px;
   padding: 5px;
   width: 100px;
   height: 40px;

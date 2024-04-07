@@ -1,4 +1,4 @@
-import AirlineInfo from "../components/dashboard/transport/AirlineInfo"
+import AirlineInfo from "../../components/dashboard/transport/AirlineInfo"
 
 
 const Airline = () => {

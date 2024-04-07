@@ -10,7 +10,7 @@ import EditDropdown from "../../dialog/EditDropdown";
 
 
 const columns: IColumn[] = [
-  { id: "bulkId", label: "Bulk ID", numeric: false, disablePadding: true },
+  { id: "bulkId", label: "Bulk ID", numeric: false, disablePadding: false },
   { id: "masterAirwayBillId", label: "Master Airway Bill ID", numeric: false, disablePadding: false },
   { id: "flightId", label: "Flight No", numeric: false, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
