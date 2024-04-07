@@ -7,34 +7,43 @@ import CommonLoading from "./components/loader/CommonLoading";
 import { Toaster } from "react-hot-toast";
 import SideNav from "./components/dashboard/sideNav/SideNav";
 import { Suspense } from "react";
-import React from "react";
+import ProtectedRoute from "@app_routes/ProtectedRoute";
 
 const App = () => {
-
   return (
     <Provider store={store}>
-      <ThemeProvider>
-        <BrowserRouter>
-          <CommonLoading loading={false} />
-          <Toaster position="top-right" />
-          <SideNav />
-          <Routes>
-            {privateRoutes.concat(publicRoutes).map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
+        <ThemeProvider>
+          <BrowserRouter>
+            <CommonLoading loading={false} />
+            <Toaster position="top-right" />
+            <SideNav />
+            <Routes>
+              {publicRoutes.concat(privateRoutes).map((route) => {
+                const Component = route.component; // Name component with capital C as per React convention
+                const routeElement = (
                   <Suspense fallback={<CommonLoading loading={true} />}>
-                    {React.createElement(route.component)}
+                    <Component />
                   </Suspense>
-                }
-              />
-            ))}
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
+                );
+                return (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={
+                      route.isPrivate ? (
+                        <ProtectedRoute>{routeElement}</ProtectedRoute>
+                      ) : (
+                        routeElement
+                      )
+                    }
+                  />
+                );
+              })}
+            </Routes>
+          </BrowserRouter>
+        </ThemeProvider>
     </Provider>
   );
-}
+};
 
 export default App;

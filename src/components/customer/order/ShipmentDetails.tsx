@@ -10,7 +10,7 @@ const ShipmentDetails = ({ goNext, goBack }) => {
     };
 
     const handleGoBack = () => {
-        // Validate and process form, then...
+        // Validate and process form, then... 
         goBack();
     };
 

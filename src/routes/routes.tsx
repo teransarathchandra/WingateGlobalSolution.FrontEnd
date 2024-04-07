@@ -1,31 +1,43 @@
 import { lazy } from "react";
 
-//Common
-const NotFound = lazy(() => import("@app_pages/NotFound"));
-
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
-const VerifyEmail = lazy(() => import("@app_pages/VerifyEmail"));
+
+// Verify User
+const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"));
+
+// Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 const Category = lazy(() => import("../pages/dashboard/category/Category"));
 const Country = lazy(() => import("../pages/dashboard/country/Country"));
 const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
 
 
-//Order
+//Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
+//Common
+const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
+
 export const privateRoutes = [
+    {
+        path: "/order",
+        component: PlaceOrder,
+        isPrivate: true,
+    },
+    //Dashboard
     {
         path: "/app/",
         component: Home,
-    },
+        isPrivate: true,
+    },    
     {
         path: "/app/order",
         component: Order,
+        isPrivate: true,
     },
     {
         path: "/app/restrictedOrderType",
@@ -49,29 +61,26 @@ export const publicRoutes = [
     {
         path: "/",
         component: Home,
+        isPrivate: false,
     },
     {
         path: "/home",
         component: Home,
+        isPrivate: false,
     },
     {
         path: "/verify-email/:token",
         component: VerifyEmail,
+        isPrivate: false,
     },
-    {
-        path: "/order",
-        component: PlaceOrder,
-    },
-
-    //Employee
     {
         path: "/emp_checkpoint",
         component: EmployeeCheckpoint,
+        isPrivate: false,
     },
-
-    //Not Found
     {
         path: "*",
         component: NotFound,
+        isPrivate: false,
     },
 ];

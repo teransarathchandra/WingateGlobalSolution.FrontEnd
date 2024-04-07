@@ -1,4 +1,4 @@
-export const componentTransitionAnimation = {
+const componentTransitionAnimation = {
     initial: {
         opacity: 0,
     },
