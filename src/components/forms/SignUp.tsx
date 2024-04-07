@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,32 +13,46 @@ import {
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignUpFormData from "@app_interfaces/ISignUp";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "@app_hooks/useLocalStorage";
 
 const SignUp = ({ onSignUpClick }) => {
   const {
     register,
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors },
   } = useForm<SignUpFormData>({ resolver: yupResolver(signUpSchema) });
 
-  const { registerUser, authError } = useAuth();
-
-  const onSubmit = (data: SignUpFormData) => {
-    console.log("data", data);
-    registerUser(data);
-  };
+  const [storedUser, setStoredUser] = useLocalStorage('app-user');
+  const [signInAttempted, setSignInAttempted] = useState(false);
+  const { registerUser, auth } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (authError) {
-      Object.keys(authError).forEach((field) => {
-        setError(field as keyof SignUpFormData, {
-          type: "server",
-          message: authError[field],
-        });
-      });
+    setStoredUser(auth.user);
+    if (auth.user && signInAttempted) {
+      navigate("/order");
     }
-  }, [authError, setError]);
+  }, [auth.user, navigate, setStoredUser, signInAttempted]);
+
+  const onSubmit = async (data: SignUpFormData) => {
+    console.log("data", data);
+    setSignInAttempted(true);
+    await registerUser(data);
+  };
+
+  // useEffect(() => {
+  //   if (auth.error) {
+  //     Object.keys(auth.error).forEach((field) => {
+  //       setError(field as keyof SignUpFormData, {
+  //         type: "server",
+  //         message: auth.error[field],
+  //       });
+  //     });
+  //   }
+  // }, [auth.error, setError]);
 
   return (
     <>
