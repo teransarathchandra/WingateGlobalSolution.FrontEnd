@@ -8,12 +8,14 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // withCredentials: true,
 });
 
 // Add a request interceptor to add the bearer token to the headers
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken"); // Assuming you store your token in localStorage
+    const jwtToken = localStorage.getItem("app-token");
+    const token = JSON.parse(jwtToken || '');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -41,9 +43,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export const authenticateWithGoogle = async (token: string) => {
-  return await api.post('/user/auth/google', { token });
-};
 
 export default api;

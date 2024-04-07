@@ -1,26 +1,42 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-export function useLocalStorage<T>(key: string, initialValue: T) {
-    const [storedValue, setStoredValue] = useState<T>(() => {
+const useLocalStorage = (key, defaultValue = '') => {
+    // Create state variable to store 
+    // localStorage value in state
+    const [localStorageValue, setLocalStorageValue] = useState(() => {
         try {
-            const item = window.localStorage.getItem(key);
-            return item ? JSON.parse(item) : initialValue;
-        } catch (error) {
-            console.error(error);
-            return initialValue;
-        }
-    });
+            const value = localStorage.getItem(key)
+            // If value is already present in 
+            // localStorage then return it
 
-    const setValue = (value: T | ((val: T) => T)) => {
-        try {
-            const valueToStore =
-                value instanceof Function ? value(storedValue) : value;
-            setStoredValue(valueToStore);
-            window.localStorage.setItem(key, JSON.stringify(valueToStore));
+            // Else set default value in 
+            // localStorage and then return it
+            if (value) {
+                return JSON.parse(value)
+            } else {
+                localStorage.setItem(key, JSON.stringify(defaultValue));
+                return defaultValue
+            }
         } catch (error) {
-            console.error(error);
+            localStorage.setItem(key, JSON.stringify(defaultValue));
+            return defaultValue
         }
-    };
+    })
 
-    return [storedValue, setValue];
+    // this method update our localStorage and our state
+    const setLocalStorageStateValue = (valueOrFn) => {
+        let newValue;
+        if (typeof valueOrFn === 'function') {
+            const fn = valueOrFn;
+            newValue = fn(localStorageValue)
+        }
+        else {
+            newValue = valueOrFn;
+        }
+        localStorage.setItem(key, JSON.stringify(newValue));
+        setLocalStorageValue(newValue)
+    }
+    return [localStorageValue, setLocalStorageStateValue]
 }
+
+export default useLocalStorage;

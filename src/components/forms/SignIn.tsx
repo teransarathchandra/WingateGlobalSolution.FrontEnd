@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Link from "@mui/material/Link";
@@ -14,7 +14,6 @@ import {
   SignSection,
   CompanyLogo,
   CompanyLogoImage,
-  FieldGroup,
   PasswordHandleSection,
   SignButton,
   AccountOption,
@@ -22,124 +21,114 @@ import {
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignInFormData from "@app_interfaces/ISignIn";
-import { googleLogin } from "@app_redux/actions/authActions";
+import { googleLogin, googleLoginFailure } from "@app_redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import useLocalStorage from "@app_hooks/useLocalStorage";
+import { useAuthContext } from "@app_contexts/authContext";
+import useAxios from "@app_hooks/useAxios";
+// import { setAuthToken } from "@app_utils/apiUtils";
 
-const SignIn = ({ onSignUpClick }) => {
+interface SignInProps {
+  onSignUpClick: () => void;
+}
+
+const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   const {
     register,
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
-  const { loginUser, authError } = useAuth();
+  const { setUser, setToken } = useAuthContext();
+  // const [storedUser, setStoredUser] = useLocalStorage('app-user');
+  const [signInAttempted, setSignInAttempted] = useState(false);
 
-  // const onSubmit = (data: SignInFormData) => loginUser(data);
+  const { loginUser, auth } = useAuth();
 
+  const api = useAxios();
   const navigate = useNavigate();
-
-  const onSubmit = (data: SignInFormData) => {
-    // You might want to await the loginUser function if it returns a Promise
-    loginUser(data);
-
-    // Navigate after successful login
-    if (!authError) {
-      navigate('/order');
-    }
-  };
-
-  useEffect(() => {
-    console.log(authError);
-    if (authError) {
-      Object.keys(authError).forEach((field) => {
-        setError(field as keyof SignInFormData, {
-          type: "server",
-          message: authError[field],
-        });
-      });
-    }
-  }, [authError, setError]);
-
   const dispatch = useDispatch();
 
-  const handleGoogleSuccess = (credentialResponse) => {
-    dispatch(googleLogin(credentialResponse.credential));
+  useEffect(() => {
+    if (auth.user && signInAttempted) {
+      // setStoredUser(auth.user);
+      setUser(auth.user);
+      setToken(auth.user.accessToken);
+      // setAuthToken(auth.user.accessToken);
+      navigate("/order");
+    }
+  // }, [auth.user, navigate, setStoredUser, signInAttempted]);
+  }, [auth.user, navigate, setToken, setUser, signInAttempted]);
 
-    navigate('/order');
+  const onSubmit = async (data: SignInFormData) => {
+    setSignInAttempted(true);
+    await loginUser(api, data);
   };
 
+  const handleGoogleSuccess = useCallback((credentialResponse) => {
+    dispatch(googleLogin(api, credentialResponse.credential));
+  }, [dispatch]);
+
+  const handleGoogleFailure = useCallback(() => {
+    dispatch(googleLoginFailure("Login Failed"));
+  }, []);
+
   return (
-    <>
-      <SignSection>
-        <CompanyLogo>
-          <CompanyLogoImage src={logo} />
-        </CompanyLogo>
-        <StyledForm onSubmit={handleSubmit(onSubmit)}>
-          <HeadingSection>
-            <h1>Welcome!</h1>
-            <p>Welcome! Please enter your details.</p>
-          </HeadingSection>
-          <FieldGroup>
-            <TextField
-              label="Email"
-              defaultValue=""
-              size="small"
-              placeholder="someone@example.com"
-              fullWidth
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-            />
-          </FieldGroup>
-          <FieldGroup>
-            <TextField
-              label="Password"
-              defaultValue=""
-              size="small"
-              placeholder="***************"
-              type="password"
-              fullWidth
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            />
-          </FieldGroup>
-          <PasswordHandleSection>
-            <div>
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-            </div>
-            <div>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </div>
-          </PasswordHandleSection>
-          <FieldGroup>
-            <SignButton type="submit">Sign in</SignButton>
-          </FieldGroup>
-          <FieldGroup>
-            <GoogleLogin
-              width="360px"
-              onSuccess={handleGoogleSuccess}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-            />
-          </FieldGroup>
-          <AccountOption>
-            Don’t have an account?{" "}
-            <HaveAccountButton onClick={onSignUpClick}>
-              Sign Up
-            </HaveAccountButton>
-          </AccountOption>
-        </StyledForm>
-      </SignSection>
-    </>
+    <SignSection>
+      <CompanyLogo>
+        <CompanyLogoImage src={logo} />
+      </CompanyLogo>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        <HeadingSection>
+          <h1>Welcome!</h1>
+          <p>Welcome! Please enter your details.</p>
+        </HeadingSection>
+        <TextField
+          label="Email"
+          defaultValue=""
+          size="small"
+          placeholder="someone@example.com"
+          fullWidth
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          margin="dense"
+        />
+        <TextField
+          label="Password"
+          defaultValue=""
+          size="small"
+          placeholder="***************"
+          type="password"
+          fullWidth
+          {...register("password")}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          margin="dense"
+        />
+        <PasswordHandleSection>
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Remember me"
+          />
+          <Link href="#" variant="body2">
+            Forgot password?
+          </Link>
+        </PasswordHandleSection>
+        <SignButton type="submit">Sign in</SignButton>
+        <GoogleLogin
+          width="360px"
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleFailure}
+        />
+        <AccountOption>
+          Don’t have an account?{" "}
+          <HaveAccountButton onClick={onSignUpClick}>Sign Up</HaveAccountButton>
+        </AccountOption>
+      </StyledForm>
+    </SignSection>
   );
 };
 

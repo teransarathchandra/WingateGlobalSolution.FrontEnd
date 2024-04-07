@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,39 +7,52 @@ import { HeadingSection } from "@app_styles/shared/heading.styles";
 import {
   SignSection,
   FlexRow,
-  FieldGroup,
   SignButton,
   AccountOption,
   HaveAccountButton,
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignUpFormData from "@app_interfaces/ISignUp";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "@app_hooks/useLocalStorage";
 
 const SignUp = ({ onSignUpClick }) => {
   const {
     register,
     handleSubmit,
-    setError,
+    // setError,
     formState: { errors },
   } = useForm<SignUpFormData>({ resolver: yupResolver(signUpSchema) });
 
-  const { registerUser, authError } = useAuth();
-
-  const onSubmit = (data: SignUpFormData) => {
-    console.log("data", data);
-    registerUser(data);
-  };
+  const [storedUser, setStoredUser] = useLocalStorage('app-user');
+  const [signInAttempted, setSignInAttempted] = useState(false);
+  const { registerUser, auth } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (authError) {
-      Object.keys(authError).forEach((field) => {
-        setError(field as keyof SignUpFormData, {
-          type: "server",
-          message: authError[field],
-        });
-      });
+    setStoredUser(auth.user);
+    if (auth.user && signInAttempted) {
+      navigate("/order");
     }
-  }, [authError, setError]);
+  }, [auth.user, navigate, setStoredUser, signInAttempted]);
+
+  const onSubmit = async (data: SignUpFormData) => {
+    console.log("data", data);
+    setSignInAttempted(true);
+    await registerUser(data);
+  };
+
+  // useEffect(() => {
+  //   if (auth.error) {
+  //     Object.keys(auth.error).forEach((field) => {
+  //       setError(field as keyof SignUpFormData, {
+  //         type: "server",
+  //         message: auth.error[field],
+  //       });
+  //     });
+  //   }
+  // }, [auth.error, setError]);
 
   return (
     <>
@@ -60,6 +72,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("name.firstName")}
               error={!!errors.name?.firstName}
               helperText={errors.name?.firstName?.message}
+              margin="dense"
             />
             <TextField
               label="Last Name"
@@ -70,6 +83,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("name.lastName")}
               error={!!errors.name?.lastName}
               helperText={errors.name?.lastName?.message}
+              margin="dense"
             />
           </FlexRow>
           <FlexRow>
@@ -82,6 +96,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.street")}
               error={!!errors.address?.street}
               helperText={errors.address?.street?.message}
+              margin="dense"
             />
             <TextField
               label="City"
@@ -92,6 +107,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.city")}
               error={!!errors.address?.city}
               helperText={errors.address?.city?.message}
+              margin="dense"
             />
           </FlexRow>
           <FlexRow>
@@ -104,6 +120,7 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.state")}
               error={!!errors.address?.state}
               helperText={errors.address?.state?.message}
+              margin="dense"
             />
             <TextField
               label="Country"
@@ -114,9 +131,9 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("address.country")}
               error={!!errors.address?.country}
               helperText={errors.address?.country?.message}
+              margin="dense"
             />
           </FlexRow>
-          <FieldGroup>
             <TextField
               label="Email"
               defaultValue=""
@@ -126,9 +143,8 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("email")}
               error={!!errors.email}
               helperText={errors.email?.message}
+              margin="dense"
             />
-          </FieldGroup>
-          <FieldGroup>
             <TextField
               label="Password"
               type="password"
@@ -139,9 +155,8 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("password")}
               error={!!errors.password}
               helperText={errors.password?.message}
+              margin="dense"
             />
-          </FieldGroup>
-          <FieldGroup>
             <TextField
               label="Mobile Number"
               type="number"
@@ -151,11 +166,9 @@ const SignUp = ({ onSignUpClick }) => {
               {...register("contactNumber")}
               error={!!errors.contactNumber}
               helperText={errors.contactNumber?.message}
+              margin="dense"
             />
-          </FieldGroup>
-          <FieldGroup>
             <SignButton type="submit">Sign Up</SignButton>
-          </FieldGroup>
           <AccountOption>
             Already have an account?{" "}
             <HaveAccountButton onClick={onSignUpClick}>
