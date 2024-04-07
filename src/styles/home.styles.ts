@@ -46,6 +46,8 @@ const HomePageBackground = styled.div`
   padding: 2rem 0;
 `;
 
+
+
 export {
   HomeSection,
   WelcomeImage,

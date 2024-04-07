@@ -3,14 +3,20 @@ import { lazy } from "react";
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
 
-// Verify User
+//Verify User
 const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"));
 
-// Place Order User
+//Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
+const Category = lazy(() => import("../pages/dashboard/category/Category"));
+const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
+
 
 //Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
+
+//User
+const User = lazy(() => import("@app_pages/dashboard/user/User"));
 
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
@@ -23,6 +29,12 @@ const Flight = lazy(() => import("@app_pages/Flight"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
+
+//User Profile
+const UserSettings = lazy(() => import("@app_pages/user/UserSettings"));
+
+//User Profile
+const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 
 export const privateRoutes = [
     {
@@ -40,6 +52,19 @@ export const privateRoutes = [
         path: "/app/order",
         component: Order,
         isPrivate: true,
+    },    
+    {
+        path: "/app/user",
+        component: User,
+        isPrivate: false,
+    },
+    {
+        path: "/app/restrictedOrderType",
+        component: RestrictedOrderType,
+    },
+    {
+        path: "/app/category",
+        component: Category,
     },
     {
         path: "/app/bulk",
@@ -79,4 +104,16 @@ export const publicRoutes = [
         component: NotFound,
         isPrivate: false,
     },
+
+    {
+        path: "/user-info",
+        component: UserSettings,
+        isPrivate: false,
+    },
+
+    {
+        path: "/user-password",
+        component: UserPassword,
+        isPrivate: false,
+    }
 ];
