@@ -84,7 +84,8 @@ const BulkInfo: React.FC = () => {
 
   const dropdownOptions = [
     { label: "UL101", value: "6608e3cd3f01685b847abe04" },
-    { label: "UL107", value: "66094259a85978a562cc526b" },
+    { label: "UE107", value: "66094259a85978a562cc526b" },
+    
   ];
 
   return (

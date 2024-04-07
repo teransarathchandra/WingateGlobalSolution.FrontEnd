@@ -24,6 +24,10 @@ const Flight = lazy(() => import("@app_pages/Flight"));
 //Airline
 const Airline = lazy(() => import("@app_pages/Airline"));
 
+
+//Bulk Details
+const BulkDetails = lazy(() => import("@app_pages/BulkDetails"));
+
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
@@ -57,6 +61,12 @@ export const privateRoutes = [
     {
         path: "/app/airline",
         component: Airline,
+        isPrivate: false,
+    },
+
+    {
+        path: "/app/bulkdetails",
+        component: BulkDetails,
         isPrivate: false,
     },
 ];
