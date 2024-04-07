@@ -9,4 +9,5 @@ export default interface IAuthState {
     message: string;
   } | null;
   loading: boolean;
+  accessToken: string;
 }
