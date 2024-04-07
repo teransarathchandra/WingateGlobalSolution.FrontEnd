@@ -18,7 +18,7 @@ export const createRestrictedOrder = (restrictedOrderData) => {
 };
 
 export const updateRestrictedOrder = (id, restrictedOrderData) => {
-    return api.put(`/restrictedOrder/${id}`, restrictedOrderData);
+    return api.patch(`/restrictedOrder/${id}`, restrictedOrderData);
 };
 
 export const deleteRestrictedOrder = (id) => {

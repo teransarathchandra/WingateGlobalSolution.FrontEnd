@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { IColumn, IRow } from "../../../../interfaces/ITable";
-import ReusableTable from "../../../shared/ReusableTable";
-import { getAllRestrictedOrders, createRestrictedOrder } from "../../../../services/restrictedOrderService";
-import { IRestrictedOrder } from "../../../../interfaces/IRestrictedOrder";
+import { IColumn, IRow } from "../../../../../interfaces/ITable";
+import ReusableTable from "../../../../shared/ReusableTable";
+import { getAllRestrictedOrders, createRestrictedOrder } from "../../../../../services/restrictedOrderService";
+import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import FullScreenDialog from "../dialogs.tsx/RestrictedOrderTypeDetailsInfo";
 import AddRestrictedOrderForm from '../dialogs.tsx/RestrictedOrderTypeAddDialog';
 
@@ -19,7 +19,6 @@ const restrictedOrderTypeInfo: React.FC = () => {
   const [restrictedOrderTypes, setRestrictedOrderTypes] = useState<IRow[]>([]);
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
   const [isAddOrderOpen, setIsAddOrderOpen] = useState(false);
-
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
 
   const handleViewClick = (restrictedOrder: IRestrictedOrder) => {
@@ -29,7 +28,7 @@ const restrictedOrderTypeInfo: React.FC = () => {
   const handleAddClick = () => {
     setIsAddOrderOpen(true);
   };
-
+  
 
   const fetchAndPrepareResOrders = async () => {
     try {
@@ -82,7 +81,7 @@ const restrictedOrderTypeInfo: React.FC = () => {
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}
-        handleClose={() => setIsViewDetailsOpen(false)}
+        //handleClose={() => setIsViewDetailsOpen(false)}
         entity={currentResOrder}
         fields={[
           { name: "_id", label: "MongoDBId", type: String, disabled: true },

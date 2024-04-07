@@ -15,9 +15,9 @@ import { TransitionProps } from '@mui/material/transitions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
-import { IRestrictedOrder } from "../../../../interfaces/IRestrictedOrder";
+import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import RestrictedOrderTypeEditDialog from './RestrictedOrderTypeEditDialog';
-import { deleteRestrictedOrder, updateRestrictedOrder } from "../../../../services/restrictedOrderService";
+import { deleteRestrictedOrder, updateRestrictedOrder } from "../../../../../services/restrictedOrderService";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -37,13 +37,10 @@ interface FieldConfig {
 
 interface FullScreenDialogProps {
   isOpen: boolean;
-  handleClose: () => void;
   entity: any;
   fields: FieldConfig[];
-  //onEdit: (data: any) => void;
-  //onDelete: (data: any) => void;
 }
-const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fields, handleClose }) => {
+const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fields }) => {
 
   const [ViewData, setViewData] = useState(entity || {});
 
@@ -53,6 +50,11 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
+
+  const handleClose = () => {
+    setIsEditDialogOpen(false);
+  };
+  
 
   const handleEditClick = (ViewData: IRestrictedOrder) => {
     setCurrentResOrder(ViewData);
@@ -71,11 +73,11 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
       console.log('Order deleted successfully:', response);
       setIsEditDialogOpen(false);
       isOpen =  false;
-      
+      handleClose
     } catch (error) {
       console.error('Failed to update order', error);
     }
-    handleClose;
+   window.location.reload();
   };
 
 

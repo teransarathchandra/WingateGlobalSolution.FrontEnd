@@ -1,4 +1,4 @@
-import CategoryInfo from "../../../components/dashboard/category/categoryInfo/CategoryInfo"
+import CategoryInfo from "../../../components/dashboard/Restricted Order Management System/Category/categoryInfo/CategoryInfo"
 
 const RestrictedOrderType = () => {
   return (

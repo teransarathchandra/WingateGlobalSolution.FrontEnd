@@ -13,7 +13,7 @@ export const createCategory = (categoryData) => {
 };
 
 export const updateCategory = (id, categoryData) => {
-    return api.put(`/category/${id}`, categoryData);
+    return api.patch(`/category/${id}`, categoryData);
 };
 
 export const deleteCategory = (id) => {

@@ -73,7 +73,6 @@ const AddRestrictedOrderForm  = ({isOpen, handleClose, onSubmit }) => {
                 ))}
             </DialogContent>
             <Button type="submit" color="primary">Add</Button>
-         {/* <button onClick={() => handleDeleteRestrictedOrderType(formData)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}> Create Restricted Order </button> */}
         </form>
         </Dialog>
     );

@@ -1,4 +1,4 @@
-import RestrictedOrderTypeInfo from "../../../components/dashboard/restrictedOrder/restrictedOrderInfo/RestrictedOrderTypeInfo"
+import RestrictedOrderTypeInfo from "../../../components/dashboard/Restricted Order Management System/Restricted Order/restrictedOrderInfo/RestrictedOrderTypeInfo"
 
 const RestrictedOrderType = () => {
   return (

@@ -46,7 +46,10 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
 
     const handleSave = async () => {
         onSave(formData);
+        handleClose
     };
+
+    
 
 
     return (
