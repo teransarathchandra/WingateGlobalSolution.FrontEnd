@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import SignIn from "@app_components/forms/SignIn";
+import SignIn from "@app_components/forms/user/SignIn";
 import { motion } from "framer-motion";
 import {
   HomeSection,
@@ -23,7 +23,7 @@ import flightImage from "@app_assets/images/plane.png";
 import whoWeAreCardImage02 from "@app_assets/images/cogwheel.png";
 import logo from "@app_assets/images/logo-min.jpg";
 import floatAnimation from "@app_common/animations/floatAnimation";
-import SignUp from "@app_components/forms/SignUp";
+import SignUp from "@app_components/forms/user/SignUp";
 import fadeInOutAnimation from "@app_common/animations/fadeInOutAnimation";
 import Navbar from "@app_components/shared/Navbar";
 import { ContactCard, WhoCard } from "@app_styles/shared/card.styles";

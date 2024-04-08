@@ -4,13 +4,13 @@ import { lazy } from "react";
 const Home = lazy(() => import("@app_pages/Home"));
 
 // Verify User
-const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"));
+const VerifyEmail = lazy(() => import("@app_pages/user/verify/VerifyEmail"));
 
 // Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
-const Category = lazy(() => import("../pages/dashboard/category/Category"));
-const Country = lazy(() => import("../pages/dashboard/country/Country"));
-const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
+const Category = lazy(() => import("@app_pages/dashboard/category/Category"));
+const Country = lazy(() => import("@app_pages/dashboard/country/Country"));
+const RestrictedOrderType = lazy(() => import("@app_pages/dashboard/restrictedOrder/RestrictedOrderType"));
 
 
 //Order Dashboard
@@ -44,7 +44,6 @@ export const privateRoutes = [
         component: PlaceOrder,
         isPrivate: true,
     },
-    //Dashboard
     {
         path: "/app/",
         component: Home,
@@ -83,19 +82,23 @@ export const privateRoutes = [
     {
         path: "/app/restrictedOrderType",
         component: RestrictedOrderType,
+        isPrivate: false,
     },
     {
         path: "/app/category",
         component: Category,
+        isPrivate: false,
     },
     {
         path: "/app/country",
         component: Country,
+        isPrivate: false,
     },
     {
         path: "*",
         component: NotFound,
-    },
+        isPrivate: false,
+    }
 ];
 
 export const publicRoutes = [
