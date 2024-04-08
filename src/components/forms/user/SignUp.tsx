@@ -13,11 +13,16 @@ import {
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignUpFormData from "@app_interfaces/ISignUp";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import useLocalStorage from "@app_hooks/useLocalStorage";
+// import { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import useLocalStorage from "@app_hooks/useLocalStorage";
+import useAxios from "@app_hooks/useAxios";
 
-const SignUp = ({ onSignUpClick }) => {
+interface SignUpProps {
+  onSignUpClick: () => void;
+}
+
+const SignUp: React.FC<SignUpProps> = ({ onSignUpClick }) => {
   const {
     register,
     handleSubmit,
@@ -25,22 +30,30 @@ const SignUp = ({ onSignUpClick }) => {
     formState: { errors },
   } = useForm<SignUpFormData>({ resolver: yupResolver(signUpSchema) });
 
-  const [storedUser, setStoredUser] = useLocalStorage('app-user');
-  const [signInAttempted, setSignInAttempted] = useState(false);
-  const { registerUser, auth } = useAuth();
-  const navigate = useNavigate();
+  // const [storedUser, setStoredUser] = useLocalStorage('app-user');
+  // const [signInAttempted, setSignInAttempted] = useState(false);
 
-  useEffect(() => {
-    setStoredUser(auth.user);
-    if (auth.user && signInAttempted) {
-      navigate("/order");
-    }
-  }, [auth.user, navigate, setStoredUser, signInAttempted]);
+  // const { registerUser, auth } = useAuth();
+  const { registerUser } = useAuth();
+  const api = useAxios();
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   setStoredUser(auth.user);
+  //   if (auth.user && signInAttempted) {
+  //     navigate("/order");
+  //   }
+  // }, [auth.user, navigate, setStoredUser, signInAttempted]);
 
   const onSubmit = async (data: SignUpFormData) => {
-    console.log("data", data);
-    setSignInAttempted(true);
-    await registerUser(data);
+    // console.log("data", data);
+    // setSignInAttempted(true);
+    const response = await registerUser(api, data);
+    if (response && response.status == 201) {
+      onSignUpClick();
+    } else {
+      console.error("User registration failed");
+    }
   };
 
   // useEffect(() => {
@@ -134,41 +147,41 @@ const SignUp = ({ onSignUpClick }) => {
               margin="dense"
             />
           </FlexRow>
-            <TextField
-              label="Email"
-              defaultValue=""
-              size="small"
-              placeholder="someone@example.com"
-              fullWidth
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              margin="dense"
-            />
-            <TextField
-              label="Password"
-              type="password"
-              defaultValue=""
-              size="small"
-              placeholder="***************"
-              fullWidth
-              {...register("password")}
-              error={!!errors.password}
-              helperText={errors.password?.message}
-              margin="dense"
-            />
-            <TextField
-              label="Mobile Number"
-              type="number"
-              size="small"
-              placeholder="+94 (71) 666-0179"
-              fullWidth
-              {...register("contactNumber")}
-              error={!!errors.contactNumber}
-              helperText={errors.contactNumber?.message}
-              margin="dense"
-            />
-            <SignButton type="submit">Sign Up</SignButton>
+          <TextField
+            label="Email"
+            defaultValue=""
+            size="small"
+            placeholder="someone@example.com"
+            fullWidth
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            margin="dense"
+          />
+          <TextField
+            label="Password"
+            type="password"
+            defaultValue=""
+            size="small"
+            placeholder="***************"
+            fullWidth
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            margin="dense"
+          />
+          <TextField
+            label="Mobile Number"
+            type="number"
+            size="small"
+            placeholder="+94 (71) 666-0179"
+            fullWidth
+            {...register("contactNumber")}
+            error={!!errors.contactNumber}
+            helperText={errors.contactNumber?.message}
+            margin="dense"
+          />
+          <SignButton type="submit">Sign Up</SignButton>
           <AccountOption>
             Already have an account?{" "}
             <HaveAccountButton onClick={onSignUpClick}>

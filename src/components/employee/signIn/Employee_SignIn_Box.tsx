@@ -13,7 +13,6 @@ import {
   SignSection,
   CompanyLogo,
   CompanyLogoImage,
-  FieldGroup,
   PasswordHandleSection,
   SignButton,
   AccountOption,

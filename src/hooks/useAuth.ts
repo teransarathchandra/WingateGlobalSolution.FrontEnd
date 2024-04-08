@@ -15,7 +15,7 @@ const useAuth = () => {
   
   const loginUser = useCallback(
     async (api, credentials: ILoginCredentials) => {
-      return dispatch(login(api, credentials));
+      dispatch(login(api, credentials));
     },
     [dispatch]
   );
