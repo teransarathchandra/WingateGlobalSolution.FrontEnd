@@ -41,7 +41,7 @@ const CategoryInfo: React.FC = () => {
       }));
       setCategory(preparedCategory);
     } catch (error) {
-      console.error('Failed to fetch orders', error);
+      console.error('Failed to fetch category', error);
     }
   };
 
