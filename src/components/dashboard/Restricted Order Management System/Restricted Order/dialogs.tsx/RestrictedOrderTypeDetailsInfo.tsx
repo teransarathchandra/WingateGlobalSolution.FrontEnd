@@ -59,7 +59,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
   const handleEditClick = (ViewData: IRestrictedOrder) => {
     setCurrentResOrder(ViewData);
     setIsEditDialogOpen(true);
-    handleClose;
+    //handleClose;
   };
   
   const handleDeleteRestrictedOrderType = async (ResOrderID) => {
@@ -82,20 +82,20 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
 
 
   const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
+  debugger;
     if (!updatedData?._id) {
       console.error('No ID available for updating the order');
       return;
     }
     try {
-
-      const id = currentResOrder?._id
-      
+       const id = currentResOrder?._id
       const dataToUpdate = {...updatedData};
       delete dataToUpdate._id;
       delete dataToUpdate.restrictedOrderId;
 
       if(id){
       const response = await updateRestrictedOrder(id, dataToUpdate);
+      console.log('dataToUpdate', dataToUpdate);
       console.log('Order updated successfully:', response);
       
       }

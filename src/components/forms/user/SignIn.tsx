@@ -52,7 +52,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (auth.user && signInAttempted) {
+    if (auth.user && auth.user.accessToken && signInAttempted) {
       // setStoredUser(auth.user);
       setUser(auth.user);
       setToken(auth.user.accessToken);

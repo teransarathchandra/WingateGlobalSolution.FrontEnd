@@ -76,8 +76,9 @@ export const register = (api, userData: SignUpFormData):any => async (dispatch) 
     dispatch(startLoading());
     dispatch(registerRequest());
     try {
-        const { data } = await api.post(`/user`, userData);
-        dispatch(registerSuccess(data));
+        const response = await api.post(`/user`, userData);
+        dispatch(registerSuccess(response.data));
+        return response;
     } catch (error: any) {
         dispatch(registerFailure(error.response.data));
     } finally {

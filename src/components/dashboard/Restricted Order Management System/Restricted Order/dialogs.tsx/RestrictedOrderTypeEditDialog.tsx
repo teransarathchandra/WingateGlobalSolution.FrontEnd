@@ -3,9 +3,16 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
-import { AppBar, Checkbox, FormControlLabel, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Checkbox, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-//import { IRestrictedOrder } from "../../../../interfaces/IRestrictedOrder";
+import { getAllCategory } from "../../../../../services/categoryService";
+import { getAllCountry } from "../../../../../services/countryService";
+import { ICategory } from '@app_interfaces/ICategory';
+import { ICountry } from '@app_interfaces/ICountry';
+import { yupResolver } from '@hookform/resolvers/yup';
+import restrictedOrderTypeSchema from '@app_schemas/restrictedOrderTypeSchema';
+import { useForm } from 'react-hook-form';
+
 
 interface FieldConfig {
     name: string;
@@ -23,17 +30,28 @@ interface EditDialogProps {
     onDelete: (data: any) => void;
 }
 
+
 const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, entity, fields, handleClose, onSave, onDelete }) => {
 
     const [formData, setFormData] = useState(entity);
+    const [categories, setCategories] = useState<ICategory[]>([]);
+    const [countries, setCountries] = useState<ICountry[]>([]);
     // fields && fields.map((field) => (              
     // console.log(formData[field.name] )));
 
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
+        resolver: yupResolver(restrictedOrderTypeSchema),
+    });
+
     useEffect(() => {
-        const entityWithoutId = Object.fromEntries(
-            Object.entries(entity).filter(([key]) => key !== '_id')
-        );
-        setFormData(entityWithoutId);
+        setFormData(formData);
+        fetchCategories();
+        fetchCountries();
     }, [entity]);
 
     const handleChange = (e) => {
@@ -49,7 +67,29 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
         handleClose
     };
 
-    
+    const fetchCategories = async () => {
+        try {
+            const response = await getAllCategory();
+            const preparedCategory = response.data.data.map((category: ICategory) => ({
+                ...category,
+            }));
+            setCategories(preparedCategory);
+        } catch (error) {
+            console.error('Failed to fetch category', error);
+        }
+    };
+
+    const fetchCountries = async () => {
+        try {
+            const response = await getAllCountry();
+            const preparedCountry = response.data.data.map((country: ICountry) => ({
+                ...country,
+            }));
+            setCountries(preparedCountry);
+        } catch (error) {
+            console.error('Failed to fetch country', error);
+        }
+    };
 
 
     return (
@@ -64,7 +104,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <form onSubmit={handleSave}>
+            <form onSubmit={handleSubmit(handleSave)}>
                 <DialogContent>
                     {fields
                         .filter(field => field.name !== "_id" && field.name !== "restrictedOrderId")
@@ -82,24 +122,83 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                     label={field.name}
                                 />
 
-                            ) : (
+                            ) : field.type === Number ? (
+
                                 <TextField
                                     key={field.name}
                                     autoFocus
                                     margin="dense"
                                     id={field.name}
                                     label={field.label}
-                                    type="text"
+                                    type="number"
                                     fullWidth
                                     variant="outlined"
                                     name={field.name}
                                     value={formData[field.name]}
                                     onChange={handleChange}
                                 />
-                            )
 
-                        ))}
-                </DialogContent>
+                            ) : field.name === "categoryId" ? (
+                                <>
+                                    <div>
+                                        <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                                        <Select
+                                            placeholder={field.label}
+                                            style={{
+                                                marginBottom: "10px",
+                                                height: "50px",
+                                            }}
+                                            key={field.name}
+                                            autoFocus
+                                            id={field.name}
+                                            fullWidth
+                                            type="number"
+                                            variant="outlined"
+                                            //name={field.name}
+                                            value={formData[field.name]}
+                                            {...register(field.name)}
+                                            onChange={handleChange}
+                                            >
+                                            {categories.map((category) => (
+                                                <MenuItem key={category._id} value={category._id}>
+                                                    {category.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div>
+                                        <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                                        <Select
+                                            defaultValue={formData[field.name]}
+                                            placeholder={field.label}
+                                            style={{
+                                                marginBottom: "10px",
+                                                height: "50px",
+                                            }}
+                                            key={field.name}
+                                            autoFocus
+                                            id={field.name}
+                                            fullWidth
+                                            type="number"
+                                            variant="outlined"
+                                            name={field.name}
+                                            value={formData[field.name]}
+                                            onChange={handleChange}
+                                        >
+                                            {countries.map((country) => (
+                                                <MenuItem key={country._id} value={country._id}>
+                                                    {country.name}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+                                    </div>
+                                </>
+
+                            )))}
+                </DialogContent >
                 <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
                     <Button type="submit" onClick={() => onSave(formData)} color="secondary">Save</Button>
@@ -111,45 +210,3 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
 };
 
 export default RestrictedOrderTypeEditDialog;
-
-
-{/* <Button type="submit" color="primary">Save</Button> */ }
-{/* <button onClick={() => handleDeleteRestrictedOrderType(formData)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}> Create Restricted Order </button> */ }
-
-{/* <DialogContent>
-                {fields && fields.map((field) =>
-                    field.type !== Boolean && (
-                        <TextField
-                            key={field.name}
-                            autoFocus
-                            margin="dense"
-                            id={field.name}
-                            label={field.label}
-                            type={field.type === Number ? 'number' : 'text'}
-                            fullWidth
-                            variant="outlined"
-                            name={field.name}
-                            value={formData[field.name] || ''}
-                            disabled={field.disabled}
-                            onChange={handleChange}
-                            
-                        />
-                    ))} */}
-
-{/* {fields && fields.map((field) =>
-                    field.type == Boolean &&  (
-                        <FormControlLabel
-                            key={field.name}
-                            label={field.label}
-                            control={
-                                <Checkbox
-                                    autoFocus
-                                    id={field.name}
-                                    name={field.name}
-                                    checked={Boolean(formData[field.name])}
-                                    disabled={field.disabled}
-                                    onChange={handleChange}
-                                    value={formData[field.name]} />
-                            } />
-                    ))} */}
-{/* </DialogContent> */ }
