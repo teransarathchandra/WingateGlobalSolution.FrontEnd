@@ -43,11 +43,6 @@ export const privateRoutes = [
         path: "/order",
         component: PlaceOrder,
         isPrivate: true,
-    },
-    {
-        path: "/app/",
-        component: Home,
-        isPrivate: true,
     },    
     {
         path: "/app/order",
@@ -57,47 +52,42 @@ export const privateRoutes = [
     {
         path: "/app/bulk",
         component: Bulk,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: "/app/flight",
         component: Flight,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: "/app/airline",
         component: Airline,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
-        path: "/app/bulkdetails",
+        path: "/app/bulk-details",
         component: BulkDetails,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
-        path: "/app/orderaggregation",
+        path: "/app/order-aggregation",
         component: OrderAggregation,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
-        path: "/app/restrictedOrderType",
+        path: "/app/restricted-order-type",
         component: RestrictedOrderType,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: "/app/category",
         component: Category,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: "/app/country",
         component: Country,
-        isPrivate: false,
-    },
-    {
-        path: "*",
-        component: NotFound,
-        isPrivate: false,
+        isPrivate: true,
     }
 ];
 
