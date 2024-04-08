@@ -50,7 +50,17 @@ export const privateRoutes = [
     {
         path: "/app/user",
         component: User,
-        isPrivate: false,
+        isPrivate: true,
+    },
+    {
+        path: "/user-info",
+        component: UserSettings,
+        isPrivate: true,
+    },
+    {
+        path: "/user-password",
+        component: UserPassword,
+        isPrivate: true,
     },
     {
         path: "/app/restrictedOrderType",
@@ -59,7 +69,7 @@ export const privateRoutes = [
     {
         path: "/app/category",
         component: Category,
-    },
+    }
 ];
 
 export const publicRoutes = [
@@ -88,16 +98,4 @@ export const publicRoutes = [
         component: NotFound,
         isPrivate: false,
     },
-
-    {
-        path: "/user-info",
-        component: UserSettings,
-        isPrivate: false,
-    },
-
-    {
-        path: "/user-password",
-        component: UserPassword,
-        isPrivate: false,
-    }
 ];

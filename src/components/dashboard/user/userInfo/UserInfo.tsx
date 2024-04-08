@@ -7,6 +7,7 @@ import ReusableTable from "@app_components/shared/ReusableTable";
 import { getAllUser, updateUser, deleteUser } from "@app_services/userService";
 import { IUser } from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
+import UserDetailsDialog from "../userDialog/UserDetailsDialog";
 
 const columns: IColumn[] = [
   { id: "userId", label: "User ID", numeric: false, disablePadding: true },
@@ -29,12 +30,31 @@ const UserInfo: React.FC = () => {
     setIsDialogOpen(true);
   };
 
+    // Add state for managing UserDetailsDialog visibility and the selected user
+    const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  
+    // Other component logic remains the same...
+  
+    const handleUserClick = (user: IUser) => {
+      setSelectedUser(user); // Set the selected user for display
+      setIsUserDetailsDialogOpen(true); // Open the UserDetailsDialog
+    };
+
   const fetchAndPrepareUser = async () => {
     try {
       const response = await getAllUser();
       const preparedUser: IRow[] = response.data.data.map((user: IUser) => ({
         ...user,
-        userId: user._id, // Make sure the userID is correctly mapped
+        userId: (
+          <span
+            style={{ cursor: "pointer", textDecoration: "none", color: "#007bff" }}
+            onClick={() => handleUserClick(user)}
+          >
+            {user.userId}
+          </span>
+        ),
+
         firstName: user.name.firstName, // Correct mapping for firstName
         lastName: user.name.lastName, // Correct mapping for lastName
         phoneNumber: user.contactNumber, // Correct mapping for contactNumber to phoneNumber
@@ -109,6 +129,12 @@ const UserInfo: React.FC = () => {
         rows={user}
         title="User Profile Management"
         rowKey="userID"
+      />
+
+<UserDetailsDialog
+        isOpen={isUserDetailsDialogOpen}
+        user={selectedUser}
+        handleClose={() => setIsUserDetailsDialogOpen(false)}
       />
 
       {console.log(currentUser)}
