@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import {
   Nav,
   NavbarNav,
@@ -7,6 +7,7 @@ import {
   LinkText,
 } from "@app_styles/navbar.styles";
 import { useEffect, useState } from "react";
+import useAuth from "@app_hooks/useAuth";
 
 interface NavbarProps {
   isVisible: boolean;
@@ -24,9 +25,11 @@ const Navbar: React.FC<NavbarProps> = ({
   contactUsRef,
 }) => {
   const [scrolled, setScrolled] = useState(false);
-  const username = useSelector(
-    (state: any) => state.auth?.user?.data?.name?.firstName
-  );
+  const { auth } = useAuth();
+  // const username = useSelector(
+  //   (state: any) => state.auth?.user?.data?.name?.firstName
+  // );
+  const username = auth.user?.firstName;
 
   useEffect(() => {
     const handleScroll = () => {
