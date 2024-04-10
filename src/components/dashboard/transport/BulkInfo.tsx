@@ -20,7 +20,7 @@ const columns: IColumn[] = [
 
 const BulkInfo: React.FC = () => {
   const [bulks, setBulks] = useState<IRow[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentBulk, setCurrentBulk] = useState<IBulk | null>(null);
 
@@ -81,6 +81,12 @@ const BulkInfo: React.FC = () => {
     setIsDialogOpen(false);
 
   };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredBulks = bulks.filter(bulk => bulk.bulkId.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const dropdownOptions = [
     { label: "UL101", value: "6608e3cd3f01685b847abe04" },
