@@ -64,6 +64,7 @@ const ReusableTableDropdown = ({
                 <CustomSelect
                   defaultValue=""
                   options={filterSelects[index].options}
+                  onChange={(event) => filterSelects[index].onChange(event.target.value)}
                   style={{
                     backgroundColor: "#fff",
                     borderRadius: "5px",

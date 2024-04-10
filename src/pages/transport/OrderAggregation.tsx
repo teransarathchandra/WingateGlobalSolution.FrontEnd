@@ -4,6 +4,8 @@ import { getAllOrders } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import { getAllCountry } from "@app_services/countryService";
+import { ICountry } from "@app_interfaces/ICountry";
 
 
 const columns: IColumn[] = [
@@ -17,6 +19,7 @@ const columns: IColumn[] = [
 const OrderAggregation: React.FC = () => {
   const [orders, setOrders] = useState<IRow[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<IRow[]>([]);
+  const [countries, setCountries] = useState<ICountry[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPriority, setSelectedPriority] = useState<string>("");
@@ -34,16 +37,25 @@ const OrderAggregation: React.FC = () => {
     }
   };
 
+  const fetchAllCountries = async () => {
+    const { data } = await getAllCountry();
+    if (data) {
+      setCountries(data);
+    }
+  }
+
   useEffect(() => {
     fetchAndPrepareOrders();
+    fetchAllCountries();
   }, []);
 
   const filterOrders = () => {
+    debugger;
     let filtered = orders.filter(order => {
       // Check if all filter conditions are true
       return (!selectedCountry || order.country === selectedCountry) &&
-             (!selectedCategory || order.category === selectedCategory) &&
-             (!selectedPriority || order.orderType === selectedPriority);
+        (!selectedCategory || order.category === selectedCategory) &&
+        (!selectedPriority || order.orderType === selectedPriority);
     });
     setFilteredOrders(filtered);
   };
@@ -52,22 +64,25 @@ const OrderAggregation: React.FC = () => {
     filterOrders();
   }, [selectedCountry, selectedCategory, selectedPriority]);
 
+  const countryOptions = countries
+  .filter(country => country.name !== "Sri Lanka")
+  .map(country => ({
+    value: country._id,
+    label: country.name
+  }));
+
   return (
     <>
       <ReusableTableDropdown
         columns={columns}
         rows={orders}
         title="Order Aggregation"
-        rowKey="orderId" 
+        rowKey="orderId"
         filterLabels={["Destination Country:", "Category:", "Priority:"]}
         filterSelects={[
           {
-            options: [
-              { value: "", label: "Select Country" },
-              { value: "6608e3cd3f01685b847abe04", label: "Maldives" },
-              { value: "66094259a85978a562cc526b", label: "Dubai" },
-            ],
-            onChange: (value: string) => setSelectedCountry(value)
+            options: countryOptions,
+            onChange: setSelectedCountry,
           },
           {
             options: [
@@ -85,7 +100,7 @@ const OrderAggregation: React.FC = () => {
             ],
             onChange: (value: string) => setSelectedPriority(value)
           },
-        ]} 
+        ]}
       />
       <UpdateBtn type="submit">Generate Bulk</UpdateBtn>
     </>
