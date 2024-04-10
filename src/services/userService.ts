@@ -7,15 +7,19 @@ export const verifyUser = (token) => {
 };
 
 export const getAllUser = () => {
-    return api.get("/user");
+    return api.get("/user")
+    .then((response) => response.data)
+    .catch((error) => error.message);
 };
 
 export const getUserById = (id) => {
-    return api.get(`/user/${id}`);
+    return api.get(`/user/${id}`)
+    .then((response) => response.data)
+    .catch((error) => error.message);
 };
 
 export const createUser = (userData) => {
-    return api.post("/user", userData);
+    return api.post("/user", userData)
 };
 
 export const updateUser = (id, userData) => {
@@ -24,4 +28,10 @@ export const updateUser = (id, userData) => {
 
 export const deleteUser = (id) => {
     return api.delete(`/user/${id}`);
+};
+
+export const getUserOrders = (userId) => {
+    return api.get(`/user/orders/${userId}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
 };

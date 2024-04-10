@@ -4,10 +4,12 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "@app_components/shared/ReusableTable";
-import { getAllUser, updateUser, deleteUser } from "@app_services/userService";
+import { getAllUser, updateUser, deleteUser, getUserOrders } from "@app_services/userService";
 import { IUser } from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
+import { IOrder } from "@app_interfaces/IOrder";
+
 
 const columns: IColumn[] = [
   { id: "userId", label: "User ID", numeric: false, disablePadding: true },
@@ -21,6 +23,8 @@ const columns: IColumn[] = [
 
 const UserInfo: React.FC = () => {
   const [user, setUser] = useState<IRow[]>([]);
+  const [selectedUserOrders, setSelectedUserOrders] = useState([]);
+
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
@@ -30,21 +34,34 @@ const UserInfo: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-    // Add state for managing UserDetailsDialog visibility and the selected user
-    const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
-  
-    // Other component logic remains the same...
-  
-    const handleUserClick = (user: IUser) => {
-      setSelectedUser(user); // Set the selected user for display
-      setIsUserDetailsDialogOpen(true); // Open the UserDetailsDialog
-    };
+  // Add state for managing UserDetailsDialog visibility and the selected user
+  const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+
+  // Other component logic remains the same...
+  const [fetchError, setFetchError] = useState('');
+
+
+  // Adjust handleUserClick to fetch orders for the selected user
+  const handleUserClick = async (user) => {
+    setSelectedUser(user); // Set the selected user for display
+    setIsUserDetailsDialogOpen(true); // Open the UserDetailsDialog
+    setFetchError('');
+
+    try {
+      const orders = await getUserOrders(user._id);
+      setSelectedUserOrders(orders); // Save fetched orders to state
+    } catch (error) {
+      console.error('Error fetching orders for user:', error);
+      // Optionally, handle the error (e.g., display an error message)
+      setFetchError('Failed to fetch orders. Please try again.'); // Set an error message to display
+    }
+  };
 
   const fetchAndPrepareUser = async () => {
     try {
       const response = await getAllUser();
-      const preparedUser: IRow[] = response.data.data.map((user: IUser) => ({
+      const preparedUser: IRow[] = response.data.map((user: IUser) => ({
         ...user,
         userId: (
           <span
@@ -109,7 +126,7 @@ const UserInfo: React.FC = () => {
     if (!isConfirmed) {
       return; // Stop if the user cancels
     }
-  
+
     try {
       await deleteUser(userToDelete._id);
       console.log(`User Deleted Successfully, user ID: ${userToDelete._id}`);
@@ -120,7 +137,7 @@ const UserInfo: React.FC = () => {
       // Optionally, show an error message to the user
     }
   };
-  
+
 
   return (
     <>
@@ -131,11 +148,13 @@ const UserInfo: React.FC = () => {
         rowKey="userID"
       />
 
-<UserDetailsDialog
+      <UserDetailsDialog
         isOpen={isUserDetailsDialogOpen}
         user={selectedUser}
+        orders={selectedUserOrders} // Pass the orders state
         handleClose={() => setIsUserDetailsDialogOpen(false)}
       />
+
 
       {console.log(currentUser)}
 

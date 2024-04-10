@@ -59,61 +59,61 @@ const UserSettings = () => {
                 <UserInfoContainer>
                     <h2>Basic Info</h2>
                     <HorizontalLine />
-                    <UserInfoSection >
-                        <InfoBlock className="i">
-                            <InfoLabel className="a">First Name</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">David</InfoValue>
-                            <StyledInput className="d" type="text" />
+                    <UserInfoSection>
+                        <InfoBlock>
+                            <InfoLabel>First Name</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="Firstname">David</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock>
 
-                        <InfoBlock01 className="j">
-                            <InfoLabel className="a">Last Name</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">Christopher</InfoValue>
-                            <StyledInput className="d" type="text" />
+                        <InfoBlock01>
+                            <InfoLabel>Last Name</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="Lastname">Christopher</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock01>
 
-                        <InfoBlock02 className="k">
-                            <InfoLabel className="a">Email</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">david@gmail.com</InfoValue>
-                            <StyledInput className="d" type="email" />
+                        <InfoBlock02>
+                            <InfoLabel>Email</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="email">david@gmail.com</InfoValue>
+                            <StyledInput type="email" />
                         </InfoBlock02>
 
-                        <InfoBlock04 className="l">
-                            <InfoLabel className="a">Phone Number</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">+94 1230123</InfoValue>
-                            <StyledInput className="d" type="text" />
+                        <InfoBlock04>
+                            <InfoLabel>Phone Number</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="phoneNumber">+94 1230123</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock04>
 
-                        <InfoBlock05 className="m">
-                            <InfoLabel className="a">Username</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">david</InfoValue>
-                            <StyledInput className="d" type="text" />
+                        <InfoBlock05>
+                            <InfoLabel>Username</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="username">david</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock05>
 
-                        <InfoBlock06 className="n">
-                            <InfoLabel className="a">Street Address</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">1st Street</InfoValue>
-                            <StyledInput className="d" type="text" />
+                        <InfoBlock06>
+                            <InfoLabel>Street Address</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="street">1st Street</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock06>
 
-                        <InfoBlock07 className="o">
-                            <InfoLabel className="a">City</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">Kalutara</InfoValue>
-                            <StyledInput className="d" type="text" />
+                        <InfoBlock07>
+                            <InfoLabel>City</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="city">Kalutara</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock07>
 
-                        <InfoBlock08 className="p">
-                            <InfoLabel className="a">State</InfoLabel>
-                            <EditLink className="b">Edit</EditLink>
-                            <InfoValue className="c">West</InfoValue>
-                            <StyledInput className="d" type="text" />
+                        <InfoBlock08>
+                            <InfoLabel>State</InfoLabel>
+                            <EditLink>Edit</EditLink>
+                            <InfoValue className="state">West</InfoValue>
+                            <StyledInput type="text" />
                         </InfoBlock08>
 
                     </UserInfoSection>
