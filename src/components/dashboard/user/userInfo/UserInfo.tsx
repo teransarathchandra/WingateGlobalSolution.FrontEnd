@@ -49,8 +49,8 @@ const UserInfo: React.FC = () => {
     setFetchError('');
 
     try {
-      const orders = await getUserOrders(user._id);
-      setSelectedUserOrders(orders); // Save fetched orders to state
+      const {data} = await getUserOrders(user._id);
+      setSelectedUserOrders(data); // Save fetched orders to state
     } catch (error) {
       console.error('Error fetching orders for user:', error);
       // Optionally, handle the error (e.g., display an error message)

@@ -60,9 +60,15 @@ export const DialogOrderDetails = styled.div`
     margin: 10px;
     width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: space-between;
     gap: 10px;
+
+    div{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    }
 `;
 
 export const DialogHeaderImage = styled.img`
