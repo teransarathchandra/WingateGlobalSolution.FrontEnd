@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { IColumn, IRow } from "@app_interfaces/ITable";
-import { getAllOrders } from "@app_services/orderService";
+import { getAllOrderTransport } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import { getAllCountry } from "@app_services/countryService";
 import { ICountry } from "@app_interfaces/ICountry";
+import { getAllCategory } from "@app_services/categoryService";
+import { ICategory } from "@app_interfaces/ICategory";
 
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: false },
   { id: "createdAt", label: "Date", numeric: false, disablePadding: false },
-  { id: "itemId", label: "Weight", numeric: false, disablePadding: false },
+  { id: "weight", label: "Weight", numeric: false, disablePadding: false },
   { id: "packageCount", label: "Package Count", numeric: false, disablePadding: false }
 ];
 
@@ -20,13 +22,15 @@ const OrderAggregation: React.FC = () => {
   const [orders, setOrders] = useState<IRow[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<IRow[]>([]);
   const [countries, setCountries] = useState<ICountry[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPriority, setSelectedPriority] = useState<string>("");
 
   const fetchAndPrepareOrders = async () => {
     try {
-      const response = await getAllOrders();
+      const aggType = 'orderIds';
+      const response = await getAllOrderTransport(aggType);
       const preparedOrders: IRow[] = response.data.map((order: IOrder) => ({
         ...order,
       }));
@@ -44,18 +48,25 @@ const OrderAggregation: React.FC = () => {
     }
   }
 
+  const fetchAllCategories = async () => {
+    const { data } = await getAllCategory();
+    if (data) {
+      setCategories(data);
+    }
+  }
+
   useEffect(() => {
     fetchAndPrepareOrders();
     fetchAllCountries();
+    fetchAllCategories();
   }, []);
 
   const filterOrders = () => {
-    debugger;
     let filtered = orders.filter(order => {
       // Check if all filter conditions are true
-      return (!selectedCountry || order.country === selectedCountry) &&
-        (!selectedCategory || order.category === selectedCategory) &&
-        (!selectedPriority || order.orderType === selectedPriority);
+      return (!selectedCountry || order.receiverCountryId === selectedCountry) &&
+        (!selectedCategory || order.itemCategoryId === selectedCategory) &&
+        (!selectedPriority || order.priority=== selectedPriority);
     });
     setFilteredOrders(filtered);
   };
@@ -71,11 +82,17 @@ const OrderAggregation: React.FC = () => {
     label: country.name
   }));
 
+  const categoryOptions = categories
+  .map(category => ({
+    value: category._id,
+    label: category.name
+  }));
+
   return (
     <>
       <ReusableTableDropdown
         columns={columns}
-        rows={orders}
+        rows={filteredOrders}
         title="Order Aggregation"
         rowKey="orderId"
         filterLabels={["Destination Country:", "Category:", "Priority:"]}
@@ -85,12 +102,9 @@ const OrderAggregation: React.FC = () => {
             onChange: setSelectedCountry,
           },
           {
-            options: [
-              { value: "", label: "Select Category" },
-              { value: "661239831ea0c44764c80b6b", label: "Flamable" },
-              { value: "6612398d1ea0c44764c80b6e", label: "Medicine" },
-            ],
-            onChange: (value: string) => setSelectedCategory(value)
+            
+            options: categoryOptions,
+            onChange: setSelectedCategory,
           },
           {
             options: [

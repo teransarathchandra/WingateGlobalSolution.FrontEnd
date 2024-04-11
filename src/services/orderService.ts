@@ -1,3 +1,4 @@
+import { IApiResponse } from "@app_interfaces/IOrder";
 import api from "@app_utils/apiUtils";
 
 export const getAllOrders = () => {
@@ -5,6 +6,25 @@ export const getAllOrders = () => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
+export const getAllOrderTransport = (aggType) => {
+    if (aggType) {
+        return api
+            .get<IApiResponse>(`/order/orderTransport?type=${aggType}`)
+            .then((result) => result.data)
+            .catch((error) => {
+                console.log(error);
+            });
+    } else {
+        return api
+            .get<IApiResponse>("/order/orderTransport")
+            .then((result) => result.data)
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+};
+
+
 
 export const getOrderById = (id) => {
     return api.get(`/order/${id}`)
