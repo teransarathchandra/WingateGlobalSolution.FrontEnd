@@ -35,6 +35,13 @@ const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 //Order Aggregation
 const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregation"));
 
+//Payment
+const Payment = lazy(() => import("@app_pages/finance/payment/Payment"));
+
+//Quotation
+const Quotation = lazy(() => import("@app_pages/finance/quotation/Quotation"));
+const QuotationView = lazy(() => import("@app_pages/finance/quotation/QuotationView"));
+
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
@@ -87,6 +94,21 @@ export const privateRoutes = [
     {
         path: "/app/country",
         component: Country,
+        isPrivate: true,
+    },
+    {
+        path: "/app/quotation",
+        component: Quotation,
+        isPrivate: true,
+    },
+    {
+        path: "/app/quotation-view",
+        component: QuotationView,
+        isPrivate: true,
+    },
+    {
+        path: "/app/payment",
+        component: Payment,
         isPrivate: true,
     }
 ];
