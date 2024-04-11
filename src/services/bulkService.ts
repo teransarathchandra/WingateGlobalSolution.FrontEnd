@@ -28,7 +28,6 @@ export const getLastAddedBulk = (aggType) => {
 };
 
 export const updateBulk = async (id, bulkData) => {
-    debugger;
     const { data } = await api
         .patch(`/bulk/${id}`, { flightId: bulkData.flightId, masterAirwayBillId: bulkData.masterAirwayBillId, })
         .then((result) => result.data)

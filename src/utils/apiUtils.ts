@@ -29,7 +29,7 @@ api.interceptors.request.use(
 // Add a response interceptor
 api.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
+    if (response && response.data.message) {
       toastUtil.success(response.data.message);
     }
     return response;
