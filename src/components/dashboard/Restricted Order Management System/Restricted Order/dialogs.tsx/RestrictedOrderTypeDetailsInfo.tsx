@@ -82,7 +82,6 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
 
 
   const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
-  debugger;
     if (!updatedData?._id) {
       console.error('No ID available for updating the order');
       return;

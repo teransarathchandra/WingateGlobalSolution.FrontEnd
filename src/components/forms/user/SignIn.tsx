@@ -53,13 +53,12 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken && signInAttempted) {
-      // setStoredUser(auth.user);
       setUser(auth.user);
       setToken(auth.user.accessToken);
       setRefreshToken(auth.user.refreshToken);
       navigate("/order");
     }
-  }, [auth.user, navigate, setToken, setUser, signInAttempted]);
+  }, [auth.user, navigate, setRefreshToken, setToken, setUser, signInAttempted]);
 
   const onSubmit = async (data: SignInFormData) => {
     setSignInAttempted(true);
@@ -67,6 +66,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   };
 
   const handleGoogleSuccess = useCallback((credentialResponse) => {
+    setSignInAttempted(true);
     dispatch(googleLogin(api, credentialResponse.credential));
   }, [dispatch]);
 
