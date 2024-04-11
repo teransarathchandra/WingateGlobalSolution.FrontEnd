@@ -7,6 +7,7 @@ import ReusableTable from "../../shared/ReusableTable";
 import { getAllAirlines, updateAirline } from "../../../services/airlineService";
 import { IAirline } from "../../../interfaces/IAirline";
 import EditDialog from "@app_components/dialog/EditDialog";
+import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 
 
 
@@ -21,7 +22,7 @@ const columns: IColumn[] = [
 
 const AirlineInfo: React.FC = () => {
   const [airlines, setAirlne] = useState<IRow[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentAirline, setCurrentAirline] = useState<IAirline | null>(null);
 
@@ -81,6 +82,9 @@ const AirlineInfo: React.FC = () => {
     setIsDialogOpen(false);
 
   };
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
   return (
     <>
       <ReusableTable
@@ -88,6 +92,8 @@ const AirlineInfo: React.FC = () => {
         rows={airlines}
         title="Airline Details"
         rowKey="airlineId"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <EditDialog
         isOpen={isDialogOpen}
@@ -101,6 +107,7 @@ const AirlineInfo: React.FC = () => {
         onSave={saveAirline}
         onDelete={deleteAirline}
       />
+      <UpdateBtn>Add New</UpdateBtn>
     </>
   );
 };

@@ -15,15 +15,21 @@ const columns: IColumn[] = [
   { id: "flightId", label: "Flight No", numeric: false, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
+  { id: "seeDetails", label: "See Details", numeric: false, disablePadding: false },
 ];
 
 
 const BulkInfo: React.FC = () => {
   const [bulks, setBulks] = useState<IRow[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isViewOpen, setIsViewOpen] = useState(false);
   const [currentBulk, setCurrentBulk] = useState<IBulk | null>(null);
 
+  const handleViewClick = (bulk: IBulk) => {
+    setIsViewOpen(true);
+    setCurrentBulk(bulk);
+  };
   const handleEditClick = (bulk: IBulk) => {
     console.log("Bulk" , bulk);
     setCurrentBulk(bulk);
@@ -38,6 +44,7 @@ const BulkInfo: React.FC = () => {
       const preparedBulks: IRow[] = response.data.data.map((bulk: IBulk) => ({
         ...bulk,
         _id: bulk._id,
+        seeDetails: <button onClick={() => handleViewClick(bulk)} style={{ cursor: "pointer",backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>See More</button>,
         edit: <button onClick={() => handleEditClick(bulk)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
         delete: <button onClick={() => deleteBulk(bulk)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
@@ -82,11 +89,11 @@ const BulkInfo: React.FC = () => {
 
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredBulks = bulks.filter(bulk => bulk.bulkId.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const dropdownOptions = [
     { label: "UL101", value: "6608e3cd3f01685b847abe04" },
@@ -101,6 +108,8 @@ const BulkInfo: React.FC = () => {
         rows={bulks}
         title="Bulk Details"
         rowKey="bulkId"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <EditDropdown
         isOpen={isDialogOpen}
@@ -110,6 +119,23 @@ const BulkInfo: React.FC = () => {
           { name: 'bulkId', label: 'Bulk ID', type: 'text', disabled: true },
           { name: "masterAirwayBillId", label: "Master Airway Bill ID", type: 'text', disabled: false },
           { name: "flightId", label: "Flight No", type: 'dropdown', options: dropdownOptions },
+        ]}
+        onSave={saveBulk}
+        onDelete={deleteBulk}
+      />
+
+<EditDropdown
+        isOpen={isViewOpen}
+        handleClose={() => setIsViewOpen(false)}
+        entity={currentBulk}
+        fields={[
+          { name: 'bulkId', label: 'Bulk ID', type: 'text', disabled: true },
+          { name: 'currentLocation', label: 'Current Location', type: 'text', disabled: true },
+          { name: 'arrivedTime', label: 'Arrived Time', type: 'text', disabled: true },
+          { name: 'status', label: 'Status', type: 'text', disabled: true },
+          { name: 'destinationCountry', label: 'Destination Country', type: 'text', disabled: true },
+          { name: "masterAirwayBillId", label: "Master Airway Bill ID", type: 'text', disabled: true },
+          { name: "flightId", label: "Flight No", type: 'text', disabled: true }, 
         ]}
         onSave={saveBulk}
         onDelete={deleteBulk}

@@ -25,7 +25,7 @@ const columns: IColumn[] = [
 
 const FlightInfo: React.FC = () => {
   const [flights, setFlights] = useState<IRow[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentFlight, setCurrentFlight] = useState<IFlight | null>(null);
 
@@ -79,6 +79,9 @@ const deleteFlight = (flight) => {
   setIsDialogOpen(false);
   
 };
+const handleSearch = (event) => {
+  setSearchTerm(event.target.value);
+};
   return (
     <>
       <ReusableTable
@@ -86,6 +89,8 @@ const deleteFlight = (flight) => {
         rows={flights}
         title="Flight Details"
         rowKey="flightId"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <EditDialog
         isOpen={isDialogOpen}
