@@ -10,7 +10,7 @@ import { FlexRow, ImageContainer } from "@app_styles/shared/commonStyles.style";
 import { getAllCategory } from "@app_services/categoryService";
 import { ICategory } from "@app_interfaces/ICategory";
 import { useEffect, useState } from "react";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import useSessionStorage from '@app_hooks/useSessionStorage'
 
 const ShipmentDetailsForm = () => {
@@ -81,6 +81,8 @@ const ShipmentDetailsForm = () => {
         helperText={errors.description?.message}
         margin="dense"
       />
+      <InputLabel >Category</InputLabel>
+
       <FormControl sx={{ marginTop: 1, marginBottom: 1, minWidth: "100%" }} size="small">
       <Select
         fullWidth
