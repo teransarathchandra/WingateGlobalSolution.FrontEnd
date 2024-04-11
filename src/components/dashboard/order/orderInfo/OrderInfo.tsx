@@ -32,7 +32,7 @@ const OrderInfo: React.FC = () => {
   const fetchAndPrepareOrders = async () => {
     try {
       const response = await getAllOrders();
-      const preparedOrders: IRow[] = response.data.data.map((order: IOrder) => ({
+      const preparedOrders: IRow[] = response.data.map((order: IOrder) => ({
         ...order,
         edit: <button onClick={() => handleEditClick(order)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
         delete: <button onClick={() => deleteOrder(order)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,

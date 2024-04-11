@@ -25,7 +25,11 @@ interface Address {
 interface Name {
     firstName: string;
     lastName: string;
-    _id: string;
+    email: string;
+    contactNumber: string;
+    address: string;
+    accessToken: string;
+    refreshToken: string;
 }
 
 export interface IApiResponse {

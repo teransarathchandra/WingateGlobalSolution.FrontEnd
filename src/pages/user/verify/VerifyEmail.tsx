@@ -3,12 +3,15 @@ import { useNavigate, useParams } from "react-router-dom";
 // import axios from "axios";
 import { verifyUser } from "@app_services/userService";
 import CommonLoading from "@app_components/loader/CommonLoading";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@app_redux/actions/authActions";
 
 const VerifyEmail = () => {
   // const [verificationStatus, setVerificationStatus] = useState("");
   // const [userVerified, setUserVerified] = useState(false);
   const [loading, setLoading] = useState(true);
   const { token } = useParams(); // Assuming you're using React Router v6
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +26,7 @@ const VerifyEmail = () => {
       setLoading(false); // API call is done, remove loading indicator
       
       if (response.isUserVerified) {
+        dispatch(loginSuccess(response));
         navigate('/order'); // Adjust route as necessary
       } else {
         navigate('/'); // Navigate to home if not verified

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "@app_redux/actions/authActions";
+import { login, logout, register } from "@app_redux/actions/authActions";
 import SignUpFormData from "@app_interfaces/ISignUp";
 import IRootState from "@app_interfaces/IRootState";
 
@@ -27,7 +27,12 @@ const useAuth = () => {
     [dispatch]
   );
 
-  return { loginUser, registerUser, auth: { user, employee, error, loading } };
+  const logoutUser = useCallback(() => {
+    dispatch(logout());
+    sessionStorage.clear();
+  }, [dispatch]);
+
+  return { loginUser, registerUser, logoutUser, auth: { user, employee, error, loading } };
 };
 
 export default useAuth;
