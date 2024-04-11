@@ -1,11 +1,13 @@
 import { useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
 
-const CountrySelector = ({selectedCountry, countries, disabled}) => {
+const CountrySelector = ({id, selectedCountry, countries, disabled, onCountrySelect}) => {
   const [select, setSelect] = useState(selectedCountry);
-  const onSelect = (code) => setSelect(code);
+  const onSelect = (code) => {
+    setSelect(code);
+    onCountrySelect(code, id);
+  };
   console.log("SELECT", select);
-
   return (
     <ReactFlagsSelect
       selected={select}
