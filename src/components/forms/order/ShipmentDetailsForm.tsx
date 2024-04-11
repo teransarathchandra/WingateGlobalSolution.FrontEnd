@@ -42,10 +42,10 @@ const ShipmentDetailsForm = () => {
   const handleCategorySelect = (id: any) => {
     console.log("Selected Category ID:", id);
     setSelectedCategory(id);
-   
 
-};
-  
+
+  };
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -87,7 +87,7 @@ const ShipmentDetailsForm = () => {
         variant="outlined"
         size="small"
         fullWidth
-       // {...register("category")}
+        // {...register("category")}
         error={!!errors.category}
         helperText={errors.category?.message}
         margin="dense"
@@ -98,10 +98,10 @@ const ShipmentDetailsForm = () => {
             height: "50px",
           }}
           fullWidth
-          defaultValue={"Select a Category"}
-          value=""
+          defaultValue=""
           {...register("category")}
-          onChange={handleCategorySelect}
+          value={selectedCategory || ''}
+          onChange={(e) => handleCategorySelect(e.target.value)}
         >
           {categories.map((category) => (
             <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
