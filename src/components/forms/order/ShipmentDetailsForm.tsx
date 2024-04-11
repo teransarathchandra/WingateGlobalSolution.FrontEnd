@@ -23,7 +23,7 @@ const ShipmentDetailsForm = () => {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)} width="400px">
       <HeadingSection>
         <FlexRow justifyContent='start' alignItems='center' columnGap='1rem' margin=".2rem 0">
           <h1>Shipment Details</h1> <ImageContainer src={LorryImg} alt="" width="40px" height="40px" />
