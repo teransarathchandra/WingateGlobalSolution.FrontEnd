@@ -41,7 +41,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
-  const { setUser, setToken } = useAuthContext();
+  const { setUser, setToken, setRefreshToken } = useAuthContext();
   // const [storedUser, setStoredUser] = useLocalStorage('app-user');
   const [signInAttempted, setSignInAttempted] = useState(false);
 
@@ -53,14 +53,12 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken && signInAttempted) {
-      // setStoredUser(auth.user);
       setUser(auth.user);
       setToken(auth.user.accessToken);
-      // setAuthToken(auth.user.accessToken);
+      setRefreshToken(auth.user.refreshToken);
       navigate("/order");
     }
-  // }, [auth.user, navigate, setStoredUser, signInAttempted]);
-  }, [auth.user, navigate, setToken, setUser, signInAttempted]);
+  }, [auth.user, navigate, setRefreshToken, setToken, setUser, signInAttempted]);
 
   const onSubmit = async (data: SignInFormData) => {
     setSignInAttempted(true);
@@ -68,6 +66,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   };
 
   const handleGoogleSuccess = useCallback((credentialResponse) => {
+    setSignInAttempted(true);
     dispatch(googleLogin(api, credentialResponse.credential));
   }, [dispatch]);
 
