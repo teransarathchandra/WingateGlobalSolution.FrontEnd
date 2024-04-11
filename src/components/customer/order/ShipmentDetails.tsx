@@ -19,7 +19,7 @@ const ShipmentDetails = ({ goNext, goBack }) => {
         // Validate and process form, then... 
         goBack();
     };
-
+    
     console.log('selectedCountryCode', selectedCountryCode)
 
     return (
