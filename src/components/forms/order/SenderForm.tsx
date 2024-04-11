@@ -47,6 +47,7 @@ const SenderForm = () => {
                 {...register("description")}
                 error={!!errors.description}
                 helperText={errors.description?.message}
+                margin="dense"
             />
             <TextField
                 label="Email (Optional)"

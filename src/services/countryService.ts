@@ -1,8 +1,8 @@
-import { IApiResponse } from "@app_interfaces/ICountry";
+import { ICountry } from "@app_interfaces/ICountry";
 import api from "../utils/apiUtils";
 
 export const getAllCountry = () => {
-    return api.get<IApiResponse>("/country")
+    return api.get<ICountry>("/country")
         .then((response) => response.data)
         .catch((error) => error.message);
 };

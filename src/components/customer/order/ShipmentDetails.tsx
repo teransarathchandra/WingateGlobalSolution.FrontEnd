@@ -1,11 +1,17 @@
 import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/shared/commonStyles.style'
 import SupplyChain from '@app_assets/images/customer/SupplyChain.png'
 import ShipmentDetailsForm from '../../forms/order/ShipmentDetailsForm'
+import useSessionStorage from '@app_hooks/useSessionStorage'
 
 const ShipmentDetails = ({ goNext, goBack }) => {
 
+    const [selectedCountryCode, setSelectedCountryCode] = useSessionStorage('order-country-code')
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        //api call response boolean value)
+        //if condition check
+        //if true show the dialog else goNext
         goNext();
     };
 
@@ -13,6 +19,8 @@ const ShipmentDetails = ({ goNext, goBack }) => {
         // Validate and process form, then... 
         goBack();
     };
+    
+    console.log('selectedCountryCode', selectedCountryCode)
 
     return (
         <Container>
