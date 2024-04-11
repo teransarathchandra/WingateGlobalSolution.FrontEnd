@@ -11,8 +11,8 @@ import useSessionStorage from '@app_hooks/useSessionStorage'
 const ChooseDestination = ({ goNext }) => {
 
     const [countries, setCountries] = useState([]);
-    const [selectedSendingCountryCode, setSelectedSendingCountryCode] = useSessionStorage('Sending-country-code')
-    const [selectedReceivingCountryCode, setSelectedReceivingCountryCode] = useSessionStorage('Receiving-country-code')
+    const [selectedSendingCountryCode, setSelectedSendingCountryCode] = useSessionStorage('order-sending-country-code')
+    const [selectedReceivingCountryCode, setSelectedReceivingCountryCode] = useSessionStorage('order-receiving-country-code')
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -21,15 +21,9 @@ const ChooseDestination = ({ goNext }) => {
 
     const fetchCountries = async () => {
         try {
-            const response = await getAllCountry();
-            const countryCodes = response.data.data.map(country => country.countryCode);
+            const { data } = await getAllCountry();
+            const countryCodes = data.map((country: ICountry) => country.countryCode);
             setCountries(countryCodes);
-            // const countries = response.data.data.map((country: ICountry) => ({
-            //     name: country.name,
-            //     countryCode: country.countryCode,
-            //     _id: country._id
-            // }));
-            // return countries;
         } catch (error) {
             console.error('Failed to fetch country', error);
         }

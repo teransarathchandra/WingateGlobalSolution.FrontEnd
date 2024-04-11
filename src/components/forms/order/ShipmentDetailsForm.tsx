@@ -10,7 +10,7 @@ import { FlexRow, ImageContainer } from "@app_styles/shared/commonStyles.style";
 import { getAllCategory } from "@app_services/categoryService";
 import { ICategory } from "@app_interfaces/ICategory";
 import { useEffect, useState } from "react";
-import { MenuItem, Select } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import useSessionStorage from '@app_hooks/useSessionStorage'
 
 const ShipmentDetailsForm = () => {
@@ -22,7 +22,7 @@ const ShipmentDetailsForm = () => {
     resolver: yupResolver(shipmentDetailsSchema), // Define your validation schema
   });
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useSessionStorage('Sending-country-code')
+  const [selectedCategory, setSelectedCategory] = useSessionStorage('order-sending-country-code')
 
   const onSubmit = (data) => {
     console.log("Shipment Data", data);
@@ -81,33 +81,19 @@ const ShipmentDetailsForm = () => {
         helperText={errors.description?.message}
         margin="dense"
       />
-      <TextField
-        label="Category"
-        select
-        variant="outlined"
-        size="small"
+      <FormControl sx={{ marginTop: 1, marginBottom: 1, minWidth: "100%" }} size="small">
+      <Select
         fullWidth
-        // {...register("category")}
-        error={!!errors.category}
-        helperText={errors.category?.message}
-        margin="dense"
+        defaultValue=""
+        {...register("category")}
+        value={selectedCategory || ''}
+        onChange={(e) => handleCategorySelect(e.target.value)}
       >
-        <Select
-          style={{
-            marginBottom: "10px",
-            height: "50px",
-          }}
-          fullWidth
-          defaultValue=""
-          {...register("category")}
-          value={selectedCategory || ''}
-          onChange={(e) => handleCategorySelect(e.target.value)}
-        >
-          {categories.map((category) => (
-            <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
-          ))}
-        </Select>
-      </TextField>
+        {categories.map((category) => (
+          <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
+        ))}
+      </Select>
+      </FormControl>
       <TextField
         label="Weight (KG)"
         type="number"
