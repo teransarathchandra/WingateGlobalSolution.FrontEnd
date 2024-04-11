@@ -39,7 +39,7 @@ const Order = () => {
     ];
 
     return (
-        <div>
+        <>
             <SideDrawer steps={steps} currentStep={currentStep} onStepClick={handleStepClick} />
             <AnimatePresence>
                 <motion.div
@@ -50,7 +50,7 @@ const Order = () => {
                     {stepsComponents[currentStep]}
                 </motion.div>
             </AnimatePresence>
-        </div>
+        </>
     );
 }
 
