@@ -81,7 +81,7 @@ const ShipmentDetailsForm = () => {
         helperText={errors.description?.message}
         margin="dense"
       />
-      <InputLabel >Category</InputLabel>
+      <InputLabel>Category</InputLabel>
 
       <FormControl sx={{ marginTop: 1, marginBottom: 1, minWidth: "100%" }} size="small">
       <Select
