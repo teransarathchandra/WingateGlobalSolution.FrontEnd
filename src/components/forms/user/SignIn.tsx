@@ -24,10 +24,8 @@ import SignInFormData from "@app_interfaces/ISignIn";
 import { googleLogin, googleLoginFailure } from "@app_redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import useLocalStorage from "@app_hooks/useLocalStorage";
 import { useAuthContext } from "@app_contexts/authContext";
 import useAxios from "@app_hooks/useAxios";
-// import { setAuthToken } from "@app_utils/apiUtils";
 
 interface SignInProps {
   onSignUpClick: () => void;
@@ -41,8 +39,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
-  const { setUser, setToken, setRefreshToken } = useAuthContext();
-  // const [storedUser, setStoredUser] = useLocalStorage('app-user');
+  const { setUser, setToken, setRefreshToken, logout } = useAuthContext();
   const [signInAttempted, setSignInAttempted] = useState(false);
 
   const { loginUser, auth } = useAuth();
@@ -61,6 +58,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   }, [auth.user, navigate, setRefreshToken, setToken, setUser, signInAttempted]);
 
   const onSubmit = async (data: SignInFormData) => {
+    logout();
     setSignInAttempted(true);
     await loginUser(api, data);
   };
@@ -68,11 +66,11 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   const handleGoogleSuccess = useCallback((credentialResponse) => {
     setSignInAttempted(true);
     dispatch(googleLogin(api, credentialResponse.credential));
-  }, [dispatch]);
+  }, [api, dispatch]);
 
   const handleGoogleFailure = useCallback(() => {
     dispatch(googleLoginFailure("Login Failed"));
-  }, []);
+  }, [dispatch]);
 
   return (
     <SignSection>
