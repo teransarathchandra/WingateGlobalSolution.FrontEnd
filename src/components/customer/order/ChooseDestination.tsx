@@ -42,6 +42,8 @@ const ChooseDestination = ({ goNext }) => {
         fetchCountries();
     }, []);
 
+    
+
     return (
         <Container>
             <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>

@@ -22,7 +22,7 @@ const ShipmentDetailsForm = () => {
     resolver: yupResolver(shipmentDetailsSchema), // Define your validation schema
   });
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useSessionStorage('order-sending-country-code')
+  const [selectedCategory, setSelectedCategory] = useSessionStorage('order-category')
 
   const onSubmit = (data) => {
     console.log("Shipment Data", data);
@@ -42,14 +42,11 @@ const ShipmentDetailsForm = () => {
   const handleCategorySelect = (id: any) => {
     console.log("Selected Category ID:", id);
     setSelectedCategory(id);
-
-
   };
 
   useEffect(() => {
     fetchCategories();
   }, []);
-
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} width="400px">
