@@ -41,6 +41,7 @@ type FlexRowProps = {
   rowGap?: string;
   padding?: string;
   margin?: string;
+  width?: string;
 };
 export const FlexRow = styled.div<FlexRowProps>`
   display: flex;
@@ -51,6 +52,7 @@ export const FlexRow = styled.div<FlexRowProps>`
   justify-content: ${(props) => props.justifyContent};
   align-items: ${(props) => props.alignItems};
   margin: ${(props) => props.margin};
+  width: ${(props) => props.width || 'auto'};
 `;
 
 export const Container = styled.div`

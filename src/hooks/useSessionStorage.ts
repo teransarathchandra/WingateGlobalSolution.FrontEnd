@@ -1,16 +1,9 @@
 import { useState } from "react";
 
-const useSessionStorage = (key, defaultValue = '') => {
-    // Create state variable to store 
-    // sessionStorage value in state
+const useSessionStorage = (key, defaultValue?) => {
     const [sessionStorageValue, setSessionStorageValue] = useState(() => {
         try {
             const value = sessionStorage.getItem(key)
-            // If value is already present in 
-            // sessionStorage then return it
-
-            // Else set default value in 
-            // sessionStorage and then return it
             if (value) {
                 return JSON.parse(value)
             } else {
@@ -23,7 +16,6 @@ const useSessionStorage = (key, defaultValue = '') => {
         }
     })
 
-    // this method update our sessionStorage and our state
     const setSessionStorageStateValue = (valueOrFn) => {
         let newValue;
         if (typeof valueOrFn === 'function') {
