@@ -7,15 +7,24 @@ import { getAllCountry } from "../../../services/countryService";
 import { ICountry } from '@app_interfaces/ICountry';
 import { useEffect, useState } from 'react'
 import useSessionStorage from '@app_hooks/useSessionStorage'
+import toastUtil from '@app_utils/toastUtil'
 
 const ChooseDestination = ({ goNext }) => {
 
     const [countries, setCountries] = useState([]);
-    const [selectedSendingCountryCode, setSelectedSendingCountryCode] = useSessionStorage('order-sending-country-code')
-    const [selectedReceivingCountryCode, setSelectedReceivingCountryCode] = useSessionStorage('order-receiving-country-code')
+    const [selectedSendingCountryCode, setSelectedSendingCountryCode] = useSessionStorage('order-sending-country-code', 'LK');
+    const [selectedReceivingCountryCode, setSelectedReceivingCountryCode] = useSessionStorage('order-receiving-country-code');
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (!selectedSendingCountryCode) {
+            toastUtil.error('Please select sending country.');
+            return;
+        }
+        if (!selectedReceivingCountryCode) {
+            toastUtil.error('Please select receiving country.');
+            return;
+        }
         goNext();
     };
 
@@ -42,7 +51,11 @@ const ChooseDestination = ({ goNext }) => {
         fetchCountries();
     }, []);
 
-    
+    useEffect(() => {
+        if (!selectedReceivingCountryCode) {
+            setSelectedReceivingCountryCode(selectedReceivingCountryCode);
+        }
+    }, [selectedReceivingCountryCode, setSelectedReceivingCountryCode]);
 
     return (
         <Container>
@@ -53,11 +66,11 @@ const ChooseDestination = ({ goNext }) => {
             <form onSubmit={handleSubmit}>
                 <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
                     <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' flexDirection='column'>
-                        <CountrySelector id={"sendingCountry"} selectedCountry={"LK"} countries={["LK"]} disabled={false} onCountrySelect={handleCountrySelect} />
+                        <CountrySelector id={"sendingCountry"} selectedCountry={selectedSendingCountryCode} countries={["LK"]} disabled={true} onCountrySelect={handleCountrySelect} />
                         <p>From</p>
                     </FlexRow>
                     <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' flexDirection='column' padding='0.5rem 0'>
-                        <CountrySelector id={"receivingCountry"} selectedCountry={""} countries={countries} disabled={false} onCountrySelect={handleCountrySelect} />
+                        <CountrySelector id={"receivingCountry"} selectedCountry={selectedReceivingCountryCode} countries={countries} disabled={false} onCountrySelect={handleCountrySelect} />
                         <p>To</p>
                     </FlexRow>
                 </FlexRow>

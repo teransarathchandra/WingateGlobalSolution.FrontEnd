@@ -1,13 +1,12 @@
 import { useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
 
-const CountrySelector = ({id, selectedCountry, countries, disabled, onCountrySelect}) => {
+const CountrySelector = ({ id, selectedCountry, countries, disabled, onCountrySelect }) => {
   const [select, setSelect] = useState(selectedCountry);
   const onSelect = (code) => {
     setSelect(code);
     onCountrySelect(code, id);
   };
-  console.log("SELECT", select);
   return (
     <ReactFlagsSelect
       selected={select}
@@ -16,16 +15,16 @@ const CountrySelector = ({id, selectedCountry, countries, disabled, onCountrySel
       searchable={true}
       fullWidth={true}
       disabled={disabled}
-      /*showSelectedLabel={showSelectedLabel}
-        selectedSize={selectedSize}
-        showOptionLabel={showOptionLabel}
-        optionsSize={optionsSize}
-        placeholder={placeholder}
-        searchable={searchable}
-        searchPlaceholder={searchPlaceholder}
-        alignOptionsToRight={alignOptionsToRight}
-        fullWidth={fullWidth}
-        disabled={disabled} */
+    /*showSelectedLabel={showSelectedLabel}
+      selectedSize={selectedSize}
+      showOptionLabel={showOptionLabel}
+      optionsSize={optionsSize}
+      placeholder={placeholder}
+      searchable={searchable}
+      searchPlaceholder={searchPlaceholder}
+      alignOptionsToRight={alignOptionsToRight}
+      fullWidth={fullWidth}
+      disabled={disabled} */
     />
   );
 };
