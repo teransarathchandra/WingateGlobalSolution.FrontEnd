@@ -1,9 +1,14 @@
 import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/shared/commonStyles.style'
 import SupplyChain from '@app_assets/images/customer/SupplyChain.png'
 import ShipmentDetailsForm from '../../forms/order/ShipmentDetailsForm'
+import {filterRestrictedOrders} from '@app_services/restrictedOrderService'
 
 const ShipmentDetails = ({ goNext, goBack }) => {
-
+    interface IFilterResOrder{
+        sendingCountryCode: string;
+        receivingCountryCode: string;
+        categoryId: string;
+      }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -25,15 +30,25 @@ const ShipmentDetails = ({ goNext, goBack }) => {
     }
 
     // Function to handle the button click
-    const retrieveSessionStorageValues = () => {
-        const receivingCode = getSessionStorageItem('order-receiving-country-code');
-        const sendingCode = getSessionStorageItem('order-sending-country-code');
-        const categoryValue = getSessionStorageItem('order-category');
-        debugger;
-        console.log("Retrieved Values:", { receivingCode, sendingCode, categoryValue });
+    const retrieveSessionStorageValues = async () => {
+        try {
+            const receivingCode = getSessionStorageItem('order-receiving-country-code');
+            const sendingCode = getSessionStorageItem('order-sending-country-code');
+            const categoryId = getSessionStorageItem('order-category');
+            debugger;
+            console.log("Retrieved Values:", { receivingCode, sendingCode, categoryId });
+
+            const filteringData =(receivingCode, sendingCode, categoryId: IFilterResOrder) => ({
+                receivingCountryCode: receivingCode,
+                sendingCountryCode: sendingCode,
+                categoryId: categoryId,
+              });
+            const response = await filterRestrictedOrders(filteringData);
+
+        } catch (error) {
+            console.error('Failed to filter and check restricted order', error);
+        }
     };
-
-
 
     return (
         <Container>

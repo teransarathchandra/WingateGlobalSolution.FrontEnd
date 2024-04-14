@@ -24,3 +24,14 @@ export const updateRestrictedOrder = (id, restrictedOrderData) => {
 export const deleteRestrictedOrder = (id) => {
     return api.delete(`/restrictedOrderType/${id}`);
 };
+
+export const filterRestrictedOrders = (filteringData) => {
+    debugger;
+    if (filteringData) {
+        return api.get(`/restrictedOrderType/filter`,filteringData);
+    } else {
+        return api.get("/restrictedOrderType");
+    }
+    //return api.get('/restrictedOrderType/filter', filteringData);
+};
+
