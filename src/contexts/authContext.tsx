@@ -8,6 +8,7 @@ interface AuthContextType {
   setUser: (user: IUser | null) => void;
   setToken: (token: string | null) => void;
   setRefreshToken: (token: string | null) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -17,6 +18,7 @@ const AuthContext = createContext<AuthContextType>({
   setUser: () => { },
   setToken: () => { },
   setRefreshToken: () => { },
+  logout: () => { },
 });
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -24,8 +26,18 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
   const [token, setToken] = useSessionStorage('app-token');
   const [refreshToken, setRefreshToken] = useSessionStorage('app-refresh-token');
 
+  const logout = () => {
+    sessionStorage.removeItem('app-user');
+    sessionStorage.removeItem('app-token');
+    sessionStorage.removeItem('app-refresh-token');
+
+    setUser(null);
+    setToken(null);
+    setRefreshToken(null);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, token, setToken, refreshToken, setRefreshToken }}>
+    <AuthContext.Provider value={{ user, setUser, token, setToken, refreshToken, setRefreshToken, logout }}>
       {children}
     </AuthContext.Provider>
   );

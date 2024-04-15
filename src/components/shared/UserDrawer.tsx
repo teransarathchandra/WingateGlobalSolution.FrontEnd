@@ -41,7 +41,7 @@ const UserDrawer = ({ isVisible }) => {
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                             >
-                                <Avatar sx={{ width: 40, height: 40 }}>{Array.from(user.firstName)[0]}</Avatar>
+                                <Avatar sx={{ width: 40, height: 40 }}>{Array.from(user.firstName)[0] + Array.from(user.lastName)[0]}</Avatar>
                             </IconButton>
                         </Tooltip>
                     </Box>

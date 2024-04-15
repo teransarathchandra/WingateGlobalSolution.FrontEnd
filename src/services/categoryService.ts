@@ -1,7 +1,9 @@
 import api from "../utils/apiUtils";
 
 export const getAllCategory = () => {
-        return api.get("/category");  
+    return api.get("/category")
+        .then((response) => response.data)
+        .catch((error) => error.message);
 };
 
 export const getCategoryById = (id) => {
