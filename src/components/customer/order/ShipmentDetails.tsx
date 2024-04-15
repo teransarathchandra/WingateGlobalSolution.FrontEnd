@@ -5,50 +5,46 @@ import {filterRestrictedOrders} from '@app_services/restrictedOrderService'
 import useSessionStorage from '@app_hooks/useSessionStorage'
 
 const ShipmentDetails = ({ goNext, goBack }) => {
-    interface IFilterResOrder{
-        sendingCountryCode: string;
-        receivingCountryCode: string;
-        categoryId: string;
-      }
+    
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        retrieveSessionStorageValues();
-        //api call response boolean value)
-        //if condition check
-        //if true show the dialog else goNext
-        goNext();
-    };
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     retrieveSessionStorageValues();
+    //     //api call response boolean value)
+    //     //if condition check
+    //     //if true show the dialog else goNext
+    //     goNext();
+    // };
 
     const handleGoBack = () => {
         goBack();
     };
 
 
-    function getSessionStorageItem(key: string): string | null {
-        return sessionStorage.getItem(key);
-    }
+    // function getSessionStorageItem(key: string): string | null {
+    //     return sessionStorage.getItem(key);
+    // }
 
     // Function to handle the button click
-    const retrieveSessionStorageValues = async () => {
-        try {
-            const receivingCode = getSessionStorageItem('order-receiving-country-code');
-            const sendingCode = getSessionStorageItem('order-sending-country-code');
-            const categoryId = getSessionStorageItem('order-category');
-            debugger;
-            console.log("Retrieved Values:", { receivingCode, sendingCode, categoryId });
+    // const retrieveSessionStorageValues = async () => {
+    //     try {
+    //         const [receivingCode, ] = useSessionStorage('order-receiving-country-code');
+    //         const [sendingCode, ] = useSessionStorage('order-sending-country-code');
+    //         const [shipmentDetails, ] = useSessionStorage('order-shipment-details');
+    //         debugger;
+    //         console.log("Retrieved Values:", { receivingCode, sendingCode, shipmentDetails });
 
-            const filteringData =(receivingCode, sendingCode, categoryId: IFilterResOrder) => ({
-                receivingCountryCode: receivingCode,
-                sendingCountryCode: sendingCode,
-                categoryId: categoryId,
-              });
-            const response = await filterRestrictedOrders(filteringData);
+    //         const filteringData =(receivingCode, sendingCode, categoryId: IFilterResOrder) => ({
+    //             receivingCountryCode: receivingCode,
+    //             sendingCountryCode: sendingCode,
+    //             categoryId: shipmentDetails?.categoryId,
+    //           });
+    //         const response = await filterRestrictedOrders(filteringData);
 
-        } catch (error) {
-            console.error('Failed to filter and check restricted order', error);
-        }
-    };
+    //     } catch (error) {
+    //         console.error('Failed to filter and check restricted order', error);
+    //     }
+    // };
 
     return (
         <Container>

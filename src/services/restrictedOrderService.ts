@@ -26,12 +26,6 @@ export const deleteRestrictedOrder = (id) => {
 };
 
 export const filterRestrictedOrders = (filteringData) => {
-    debugger;
-    if (filteringData) {
-        return api.get(`/restrictedOrderType/filter`,filteringData);
-    } else {
-        return api.get("/restrictedOrderType");
-    }
-    //return api.get('/restrictedOrderType/filter', filteringData);
+    return api.post(`/restrictedOrderType/filter`,filteringData);
 };
 
