@@ -67,7 +67,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
     if (!ResOrderId) {
       console.error('No ID available for deleting the restricted order type');
       return;
-    };
+    }
     try {
       const response = await deleteRestrictedOrder(ResOrderId);
       console.log('Order deleted successfully:', response);
@@ -82,7 +82,6 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
 
 
   const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
-  debugger;
     if (!updatedData?._id) {
       console.error('No ID available for updating the order');
       return;

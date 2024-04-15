@@ -1,7 +1,21 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, RESET_LOGIN_ERRORS, REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, GOOGLE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_REQUEST, EMPLOYEE_LOGIN_SUCCESS, EMPLOYEE_LOGIN_FAILURE, GOOGLE_LOGIN_FAILURE } from '@app_redux/constants/authConstants';
-import { startLoading, stopLoading } from './loadingActions';
+import {
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
+    RESET_LOGIN_ERRORS,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAILURE,
+    GOOGLE_LOGIN_SUCCESS,
+    EMPLOYEE_LOGIN_REQUEST,
+    EMPLOYEE_LOGIN_SUCCESS,
+    EMPLOYEE_LOGIN_FAILURE,
+    GOOGLE_LOGIN_FAILURE,
+    LOGOUT,
+} from "@app_redux/constants/authConstants";
+import { startLoading, stopLoading } from "./loadingActions";
 // import api from '@app_utils/apiUtils';
-import SignUpFormData from '@app_interfaces/ISignUp';
+import SignUpFormData from "@app_interfaces/ISignUp";
 
 //User Login
 export const loginRequest = () => ({
@@ -46,45 +60,56 @@ export const registerFailure = (error) => ({
     payload: error,
 });
 
-export const login = (api, credentials):any => async (dispatch) => {
-    dispatch(startLoading());
-    dispatch(loginRequest());
-    try {
-        const { data } = await api.post(`/user/login`, credentials);
-        dispatch(loginSuccess(data));
-        dispatch(resetLoginErrors());
-    } catch (error: any) {
-        dispatch(loginFailure(error.response.data));
-    } finally {
-        dispatch(stopLoading());
-    }
-};
+export const logout = () => ({
+    type: LOGOUT,
+});
 
-export const googleLogin = (api, token):any => async (dispatch) => {
-    dispatch(startLoading());
-    try {
-        const { data } = await api.post('/user/auth/google', { token });
-        dispatch(googleLoginSuccess(data));
-    } catch (error: any) {
-        console.error('Error during Google login:', error);
-    } finally {
-        dispatch(stopLoading());
-    }
-};
+export const login =
+    (api, credentials): any =>
+        async (dispatch) => {
+            dispatch(startLoading());
+            dispatch(loginRequest());
+            try {
+                const { data } = await api.post(`/user/login`, credentials);
+                dispatch(loginSuccess(data.user));
+                dispatch(resetLoginErrors());
+            } catch (error: any) {
+                dispatch(loginFailure(error.response.data));
+            } finally {
+                dispatch(stopLoading());
+            }
+        };
 
-export const register = (api, userData: SignUpFormData):any => async (dispatch) => {
-    dispatch(startLoading());
-    dispatch(registerRequest());
-    try {
-        const { data } = await api.post(`/user`, userData);
-        dispatch(registerSuccess(data));
-    } catch (error: any) {
-        dispatch(registerFailure(error.response.data));
-    } finally {
-        dispatch(stopLoading());
-    }
-};
+export const googleLogin =
+    (api, token): any =>
+        async (dispatch) => {
+            dispatch(startLoading());
+            try {
+                const { data } = await api.post("/user/auth/google", { token });
+                dispatch(googleLoginSuccess(data.user));
+                dispatch(resetLoginErrors());
+            } catch (error: any) {
+                dispatch(loginFailure(error.response.data));
+            } finally {
+                dispatch(stopLoading());
+            }
+        };
 
+export const register =
+    (api, userData: SignUpFormData): any =>
+        async (dispatch) => {
+            dispatch(startLoading());
+            dispatch(registerRequest());
+            try {
+                const response = await api.post(`/user`, userData);
+                dispatch(registerSuccess(response.data));
+                return response;
+            } catch (error: any) {
+                dispatch(registerFailure(error.response.data));
+            } finally {
+                dispatch(stopLoading());
+            }
+        };
 
 //Employee Login
 export const employeeLoginRequest = () => ({

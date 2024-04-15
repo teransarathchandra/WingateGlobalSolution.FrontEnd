@@ -1,8 +1,9 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "@app_redux/actions/authActions";
+import { login, logout, register } from "@app_redux/actions/authActions";
 import SignUpFormData from "@app_interfaces/ISignUp";
 import IRootState from "@app_interfaces/IRootState";
+import { useNavigate } from "react-router-dom";
 
 interface ILoginCredentials {
   email: string;
@@ -11,11 +12,12 @@ interface ILoginCredentials {
 
 const useAuth = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, employee, error, loading } = useSelector((state: IRootState) => state.auth);
   
   const loginUser = useCallback(
     async (api, credentials: ILoginCredentials) => {
-      return dispatch(login(api, credentials));
+      dispatch(login(api, credentials));
     },
     [dispatch]
   );
@@ -27,7 +29,13 @@ const useAuth = () => {
     [dispatch]
   );
 
-  return { loginUser, registerUser, auth: { user, employee, error, loading } };
+  const logoutUser = useCallback(() => {
+    sessionStorage.clear();
+    dispatch(logout());
+    navigate("/");
+  }, [dispatch, navigate]);
+
+  return { loginUser, registerUser, logoutUser, auth: { user, employee, error, loading } };
 };
 
 export default useAuth;

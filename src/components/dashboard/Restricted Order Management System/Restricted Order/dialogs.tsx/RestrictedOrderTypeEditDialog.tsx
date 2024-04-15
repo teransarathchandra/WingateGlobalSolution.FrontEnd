@@ -43,7 +43,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        // formState: { errors },
     } = useForm({
         resolver: yupResolver(restrictedOrderTypeSchema),
     });

@@ -15,7 +15,7 @@ export const separateDateTime = async (datetime, dateFormat) => {
   const formatNumber = (num) => num.toString().padStart(2, '0');
 
   // Handling various date formats
-  let formattedDate, formattedTime;
+  let formattedDate;
   switch (dateFormat) {
     case 'YYYY-MM-DD':
       formattedDate = `${year}-${formatNumber(month)}-${formatNumber(day)}`;
@@ -29,7 +29,7 @@ export const separateDateTime = async (datetime, dateFormat) => {
   }
 
   // Formatting time
-  formattedTime = `${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`;
+  const formattedTime = `${formatNumber(hours)}:${formatNumber(minutes)}:${formatNumber(seconds)}`;
 
   return {
     date: formattedDate,

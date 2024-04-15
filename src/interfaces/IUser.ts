@@ -6,4 +6,5 @@ export default interface IUser {
     contactNumber: string;
     address: string;
     accessToken: string;
+    refreshToken: string;
 }
