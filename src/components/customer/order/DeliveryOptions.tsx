@@ -112,7 +112,7 @@ const DeliveryOptions = ({ goNext, goBack }) => {
             </FlexRow>
           </FlexRow>
           <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
-            <PrimaryButton width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" onClick={handleGoBack}>Back</PrimaryButton>
+            <PrimaryButton type="button" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" onClick={handleGoBack}>Back</PrimaryButton>
             {/* <PrimaryButton type="submit" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="1rem 0">Next</PrimaryButton> */}
           </FlexRow>
         </form>

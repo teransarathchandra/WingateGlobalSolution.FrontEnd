@@ -14,7 +14,7 @@ const columns: IColumn[] = [
   { id: "viewMore", label: "View", numeric: false, disablePadding: false },
 ];
 
-const restrictedOrderTypeInfo: React.FC = () => {
+const RestrictedOrderTypeInfo: React.FC = () => {
 
   const [restrictedOrderTypes, setRestrictedOrderTypes] = useState<IRow[]>([]);
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
@@ -101,4 +101,4 @@ const restrictedOrderTypeInfo: React.FC = () => {
   );
 };
 
-export default restrictedOrderTypeInfo;
+export default RestrictedOrderTypeInfo;
