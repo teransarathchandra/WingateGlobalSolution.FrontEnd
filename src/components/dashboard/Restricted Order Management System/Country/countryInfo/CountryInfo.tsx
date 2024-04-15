@@ -28,7 +28,7 @@ const CountryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
-    setEditDialogOpen(false);;
+    setEditDialogOpen(false);
   };
 
   const fetchAndPrepareCountry = async () => {
@@ -82,7 +82,7 @@ const CountryInfo: React.FC = () => {
     if (!countryID) {
       console.error('No ID available for deleting the country');
       return;
-    };
+    }
     try {
       const response = await deleteCountry(countryID);
       console.log('country deleted successfully:', response);
