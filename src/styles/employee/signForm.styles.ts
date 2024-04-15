@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full height of the viewport */
-`;
-
 const SignSection = styled.div`
   max-width: 400px;
   min-width: 400px;
@@ -16,18 +9,11 @@ const SignSection = styled.div`
 const CompanyLogo = styled.div`
   display: flex;
   justify-content: center;
-  corner-radius: 80px;
 `;
 
 const CompanyLogoImage = styled.img`
   max-width: 160px;
   max-height: 160px;
-  background-color: #ffffff;
-
-  box-shadow: 0px 10px 30px -8px rgba(0, 0, 0, 0.25);
-
-  border-radius: 50%;
-  padding: 1rem;
 `;
 
 const SignForm = styled.form`
@@ -91,7 +77,6 @@ const HaveAccountButton = styled.span`
 `;
 
 export {
-  Container,
   SignSection,
   CompanyLogo,
   CompanyLogoImage,
