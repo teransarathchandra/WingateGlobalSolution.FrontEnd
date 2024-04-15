@@ -11,7 +11,7 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ steps, currentStep, onStepClick
     return (
         <Drawer>
             <HeaderImage src={logo}></HeaderImage>
-            <div style={{ padding: '2rem 0', backgroundColor: '#FFFFFF77', margin: '1rem .5rem', borderRadius: '15px' }}>
+            <div style={{ padding: '2rem 0', backgroundColor: '#FFFFFF55', margin: '1rem .5rem', borderRadius: '15px' }}>
                 {steps.map((step, index) => (
                     <Step key={step} isActive={index === currentStep} onClick={() => onStepClick(index)}>
                         <StepIndicator isActive={index === currentStep} />

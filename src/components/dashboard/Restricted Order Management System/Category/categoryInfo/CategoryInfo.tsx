@@ -28,7 +28,7 @@ const CategoryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
-    setEditDialogOpen(false);;
+    setEditDialogOpen(false);
   };
 
   const fetchAndPrepareCategory = async () => {
@@ -82,7 +82,7 @@ const CategoryInfo: React.FC = () => {
     if (!categoryID) {
       console.error('No ID available for deleting the category');
       return;
-    };
+    }
     try {
       const response = await deleteCategory(categoryID);
       console.log('category deleted successfully:', response);
