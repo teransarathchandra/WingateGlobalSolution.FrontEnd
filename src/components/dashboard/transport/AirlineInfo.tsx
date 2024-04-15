@@ -4,10 +4,11 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "../../../interfaces/ITable";
 import ReusableTable from "../../shared/ReusableTable";
-import { getAllAirlines, updateAirline } from "../../../services/airlineService";
+import { createAirline, deleteAirline, getAllAirlines, updateAirline } from "../../../services/airlineService";
 import { IAirline } from "../../../interfaces/IAirline";
 import EditDialog from "@app_components/dialog/EditDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import AddDialog from "@app_components/dialog/AddDialog";
 
 
 
@@ -24,23 +25,28 @@ const AirlineInfo: React.FC = () => {
   const [airlines, setAirlne] = useState<IRow[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddAirlineOpen, setIsAddAirlineOpen] = useState(false);
   const [currentAirline, setCurrentAirline] = useState<IAirline | null>(null);
 
   const handleEditClick = (airline: IAirline) => {
     console.log("Airline" , airline);
-    setCurrentAirline(airline);
+    setCurrentAirline(null);
     setIsDialogOpen(true);
   };
+  const handleAddClick = () => {
+    setIsAddAirlineOpen(true);
+  };
+
 
   const fetchAndPrepareAirlines = async () => {
     try {
       const response = await getAllAirlines();
       console.log("response", response);
-      const preparedAirlines: IRow[] = response.data.data.map((airline: IAirline) => ({
+      const preparedAirlines: IRow[] = response.data.map((airline: IAirline) => ({
         ...airline,
         _id: airline._id,
         edit: <button onClick={() => handleEditClick(airline)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
-        delete: <button onClick={() => deleteAirline(airline)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDeleteAirline(airline)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
        console.log('Current Airline:', currentAirline);
       setAirlne(preparedAirlines);
@@ -77,10 +83,27 @@ const AirlineInfo: React.FC = () => {
 
     }
   };
-  const deleteAirline = (airline) => {
-    console.log('Deleting airline:', airline);
-    setIsDialogOpen(false);
 
+  const addAirline = async (airlineData) => {
+    try {
+      await createAirline(airlineData);
+      fetchAndPrepareAirlines();
+      setIsAddAirlineOpen(false);
+      console.log('Airline added successfully');
+    } catch (error) {
+      console.error('Failed to add airline', error);
+    }
+  };
+
+  const handleDeleteAirline = async (airline) => {
+    console.log('Deleting airline:', airline);
+    try {
+      await deleteAirline(airline._id);
+      console.log('Flight deleted successfully');
+      setAirlne(currentAirline => currentAirline.filter(f => f._id !== airline._id));
+    } catch (error) {
+      console.error('Failed to delete airline', error);
+    }
   };
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -107,7 +130,19 @@ const AirlineInfo: React.FC = () => {
         onSave={saveAirline}
         onDelete={deleteAirline}
       />
-      <UpdateBtn>Add New</UpdateBtn>
+     <UpdateBtn onClick={handleAddClick}>Add Airline</UpdateBtn>
+      <AddDialog
+        isOpen={isAddAirlineOpen}
+        handleClose={() => setIsAddAirlineOpen(false)}
+        entity={currentAirline}
+        fields={[
+          //{ name: 'flightId', label: 'Flight No', type: 'text', disabled: false },
+          { name: 'code', label: 'Code', type: 'text', disabled: false },
+          { name: "name", label: "Name", type: 'text', disabled: false },
+          
+        ]}
+        onSave={addAirline}
+      />
     </>
   );
 };

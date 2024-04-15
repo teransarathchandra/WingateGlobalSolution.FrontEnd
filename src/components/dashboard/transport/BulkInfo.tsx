@@ -4,9 +4,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "../../../interfaces/ITable";
 import ReusableTable from "../../shared/ReusableTable";
-import { getAllBulks, updateBulk } from "../../../services/bulkService";
+import { deleteBulk, getAllBulks, updateBulk } from "../../../services/bulkService";
 import { IBulk } from "../../../interfaces/IBulk";
 import EditDropdown from "../../dialog/EditDropdown";
+import { getAllFlights } from "@app_services/flightService";
 
 
 const columns: IColumn[] = [
@@ -25,6 +26,7 @@ const BulkInfo: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [currentBulk, setCurrentBulk] = useState<IBulk | null>(null);
+  const [flightOptions, setFlightOptions] = useState([]);
 
   const handleViewClick = (bulk: IBulk) => {
     setIsViewOpen(true);
@@ -46,7 +48,7 @@ const BulkInfo: React.FC = () => {
         _id: bulk._id,
         seeDetails: <button onClick={() => handleViewClick(bulk)} style={{ cursor: "pointer",backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>See More</button>,
         edit: <button onClick={() => handleEditClick(bulk)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
-        delete: <button onClick={() => deleteBulk(bulk)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDeleteBulk(bulk)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
        console.log('Current Bulk:', currentBulk);
       setBulks(preparedBulks);
@@ -57,6 +59,7 @@ const BulkInfo: React.FC = () => {
 
   useEffect(() => {
     fetchAndPrepareBulks();
+    loadFlights();
   }, []);
 
   const saveBulk = async (bulkData) => {
@@ -83,10 +86,15 @@ const BulkInfo: React.FC = () => {
 
     }
   };
-  const deleteBulk = (bulk) => {
+  const handleDeleteBulk = async (bulk) => {
     console.log('Deleting bulk:', bulk);
-    setIsDialogOpen(false);
-
+    try {
+      await deleteBulk(bulk._id);
+      console.log('Flight deleted successfully');
+      setBulks(currentBulks => currentBulks.filter(f => f._id !== bulk._id));
+    } catch (error) {
+      console.error('Failed to delete bulk', error);
+    }
   };
 
   
@@ -95,11 +103,19 @@ const BulkInfo: React.FC = () => {
   };
 
 
-  const dropdownOptions = [
-    { label: "UL101", value: "6608e3cd3f01685b847abe04" },
-    { label: "UE107", value: "66094259a85978a562cc526b" },
-    
-  ];
+  const loadFlights = async () => {
+    try {
+      const aggType = 'flightIds';
+      const { data } = await getAllFlights(aggType);
+      const options = data.map((flight) => ({
+        value: flight._id,
+        label: flight.flightId,
+      }));
+      setFlightOptions(options);
+    } catch (error) {
+      console.error('Failed to load flights', error);
+    }
+  };
 
   return (
     <>
@@ -118,7 +134,7 @@ const BulkInfo: React.FC = () => {
         fields={[
           { name: 'bulkId', label: 'Bulk ID', type: 'text', disabled: true },
           { name: "masterAirwayBillId", label: "Master Airway Bill ID", type: 'text', disabled: false },
-          { name: "flightId", label: "Flight No", type: 'dropdown', options: dropdownOptions },
+          { name: "flightId", label: "Flight No", type: 'dropdown', options: flightOptions },
         ]}
         onSave={saveBulk}
         onDelete={deleteBulk}
