@@ -3,7 +3,9 @@ import {
     EMPLOYEE_LOGIN_REQUEST,
     EMPLOYEE_LOGIN_SUCCESS,
     EMPLOYEE_LOGIN_FAILURE,
-    GOOGLE_LOGIN_SUCCESS
+    GOOGLE_LOGIN_SUCCESS,
+    GOOGLE_LOGIN_FAILURE,
+    LOGOUT
 } from '@app_redux/constants/authConstants';
 
 const initialState = {
@@ -62,6 +64,13 @@ const authReducer = (state = initialState, action) => {
                 employee: null,
                 loading: false,
             };
+        case GOOGLE_LOGIN_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+                user: null,
+                loading: false,
+            };
         case RESET_LOGIN_ERRORS:
             return { ...state, error: null };
         case REGISTER_REQUEST:
@@ -82,6 +91,14 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload,
+            };
+        case LOGOUT:
+            return {
+                ...state,
+                user: null,
+                employee: null,
+                error: null,
+                loading: false,
             };
         default:
             return state;

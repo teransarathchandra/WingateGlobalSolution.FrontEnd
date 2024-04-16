@@ -10,7 +10,6 @@ export interface IOrder {
     createdAt: string;
     updatedAt: string;
     orderId: string;
-    __v: number;
 }
 
 export interface IApiResponse {

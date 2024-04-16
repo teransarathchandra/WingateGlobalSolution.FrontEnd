@@ -1,6 +1,5 @@
-import React from 'react'
-
-const PaymentConfirmation = ({ finishOrder, goBack }) => {
+// const PaymentConfirmation = ({ finishOrder, goBack }) => {
+const PaymentConfirmation = () => {
   return (
     <div>
       

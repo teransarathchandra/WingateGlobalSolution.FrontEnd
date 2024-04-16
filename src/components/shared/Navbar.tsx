@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import {
   Nav,
   NavbarNav,
@@ -24,9 +23,6 @@ const Navbar: React.FC<NavbarProps> = ({
   contactUsRef,
 }) => {
   const [scrolled, setScrolled] = useState(false);
-  const username = useSelector(
-    (state: any) => state.auth?.user?.data?.name?.firstName
-  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,13 +72,6 @@ const Navbar: React.FC<NavbarProps> = ({
             <LinkText>Contact Us</LinkText>
           </NavLink>
         </NavItem>
-        {username && (
-          <NavItem>
-            <NavLink to="/profile">
-              <LinkText>{username}</LinkText>
-            </NavLink>
-          </NavItem>
-        )}
       </NavbarNav>
     </Nav>
   );
