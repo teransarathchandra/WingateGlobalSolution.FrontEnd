@@ -29,6 +29,7 @@ import SignInFormData from "@app_interfaces/ISignIn";
 import { StyledForm } from "@app_styles/employee/form.styles";
 import { HeadingSection } from "@app_styles/employee/heading.styles";
 import {
+  BackSection,
   Container,
   SignSection,
   CompanyLogo,
@@ -36,7 +37,7 @@ import {
   FieldGroup,
   PasswordHandleSection,
   SignButton,
-} from "@app_styles/signForm.styles";
+} from "@app_styles/employee/signForm.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
@@ -57,7 +58,7 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
     loginUser(data);
     // Navigate after successful login
     if (!authError) {
-      navigate("/employee");
+      navigate("/app/employee");
     }
   };
 
@@ -75,21 +76,22 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
 
   return (
     <>
-      <div
+      <BackSection
         style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
           position: "absolute",
+          gap: "10px",
           top: "10px",
           left: "10px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
         }}
         onClick={() => navigate("/home")}
       >
         <FontAwesomeIcon icon={faArrowLeft} />
         <p>Back</p>
-      </div>
-
+      </BackSection>
       <Container>
         <SignSection>
           <CompanyLogo>
