@@ -30,15 +30,27 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   };
   const handleClose = () => {
     setIsAddOrderOpen(false);
-    window.location.reload();
+    fetchAndPrepareResOrders();
+    //window.location.reload();
   };
   const handleSearch = () => {
-    
+    SearchRestrictedOrder();
   };
 
-
-
-  
+  const SearchRestrictedOrder = async () => {
+    try {
+      const aggType = 'restrictedOrderTypes';
+      const response = await getAllRestrictedOrders(aggType);
+      console.log(response)
+      const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
+        ...restrictedOrder,
+        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
+      }));
+      setRestrictedOrderTypes(preparedResOrderTypes);
+    } catch (error) {
+      console.error('Failed to fetch order types', error);
+    }
+  };
 
   const fetchAndPrepareResOrders = async () => {
     try {

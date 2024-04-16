@@ -49,7 +49,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
     register,
     handleSubmit,
     control,
-    // watch,
+    watch,
     setValue: setFormValue,
     formState: { errors },
     reset,
@@ -69,8 +69,6 @@ const ShipmentDetailsForm = ({ goNext }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [selectedCategory, setSelectedCategory] = useSessionStorage('order-category-id');
-
   const [packageTypes, setPackageTypes] = useState<IPackageType[]>([]);
   // const [selectedPackageType, setSelectedPackageType] = useSessionStorage('order-package-type-id');
 
@@ -78,6 +76,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
   const [itemId, setItemId] = useSessionStorage('order-itemId');
   const [isPickupOrder, setIsPickupOrder] = useSessionStorage('order-is-pickup-order');
   const [pickupOrderDate, setPickupOrderDate] = useSessionStorage('order-pickup-order-date');
+  const [ , setRestrictedOrderType] = useSessionStorage('restricted-order-order-type');
 
   // Set the initial value for the date picker once the component has mounted
   // useEffect(() => {
@@ -145,8 +144,8 @@ const ShipmentDetailsForm = ({ goNext }) => {
         }
 
         // const isRestricted = await checkIfRestricted(responseData._id);
-        const isRestrictedOrder = false;
-        retrieveSessionStorageValues();
+        const isRestrictedOrder = await retrieveSessionStorageValues();
+        debugger;
         console.log("Shipment Data Submitted:", responseData);
         setShipmentDetails(data);
         goNext(isRestrictedOrder);
@@ -162,17 +161,21 @@ const ShipmentDetailsForm = ({ goNext }) => {
     try {
       console.log("Retrieved Values:", { receivingCode, sendingCode, shipmentDetails });
 
+      const catId = watch("categoryId" , false)
+
       const filteringData = {
         receivingCountryCode: receivingCode,
         sendingCountryCode: sendingCode,
-        categoryId: shipmentDetails?.categoryId,
+        categoryId: catId,
       };
       const response = await filterRestrictedOrders(filteringData);
       console.log("Is restricted :  ", response);
 
       if(response.data.isRestrictedOrderFound == true){
         const restrictedOrderType = response.data.data; 
+        setRestrictedOrderType(restrictedOrderType)
       }
+      return response.data.isRestrictedOrderFound;
 
     } catch (error) {
       console.error('Failed to filter and check restricted order', error);
