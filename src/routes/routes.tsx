@@ -11,6 +11,9 @@ const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 //Order
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 
+//Warehouse
+const Warehouse = lazy(() => import("@app_pages/dashboard/warehouse/warehouse"));
+
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
@@ -22,6 +25,10 @@ export const privateRoutes = [
     {
         path: "/app/order",
         component: Order,
+    },
+    {
+        path: "/app/warehouse",
+        component: Warehouse,
     },
 ];
 
