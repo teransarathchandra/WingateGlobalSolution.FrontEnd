@@ -4,13 +4,9 @@ import { Fab } from '@mui/material';
 
 interface AddButtonProps {
     onClick: () => void;
-    showButton?: boolean; 
   }
   
-const AddButton: React.FC<AddButtonProps> = ({ onClick , showButton = true }) => {
-    if (!showButton) {
-        return null;
-      }
+const AddButton: React.FC<AddButtonProps> = ({ onClick  }) => {
     return (
     <Fab size="small" color="primary" aria-label="add" onClick={onClick} style={{ backgroundColor: '#FFCC00', color: 'white' }}>
       <AddIcon />

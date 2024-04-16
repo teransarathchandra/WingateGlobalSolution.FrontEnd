@@ -68,9 +68,6 @@ const RestrictedOrderTypeInfo: React.FC = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: "center" }}>
-        <button onClick={handleAddClick}>Add</button>
-      </div>
       <ReusableTable
         columns={columns}
         rows={restrictedOrderTypes}
