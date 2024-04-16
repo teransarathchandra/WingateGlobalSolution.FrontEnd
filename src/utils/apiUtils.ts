@@ -1,5 +1,6 @@
 import axios from "axios";
 import toastUtil from "./toastUtil";
+import { authService } from "@app_services/authService";
 
 const BASE_URL = process.env.API_URL;
 
@@ -8,12 +9,13 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // withCredentials: true,
 });
 
 // Add a request interceptor to add the bearer token to the headers
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken"); // Assuming you store your token in localStorage
+    const token = authService.getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,12 +29,25 @@ api.interceptors.request.use(
 // Add a response interceptor
 api.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
+    if (response && response.data.message) {
       toastUtil.success(response.data.message);
     }
     return response;
   },
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true; // mark the request as retried
+      try {
+        const newAccessToken = await authService.refreshToken();
+        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`; // update default token
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`; // update current request token
+        return api(originalRequest); // retry the request with the new token
+      } catch (error) {
+        toastUtil.error("Session expired. Please log in again.");
+        return Promise.reject(error); // if refreshToken() fails
+      }
+    }
     if (error.response && error.response.data) {
       toastUtil.error(error.response.data.message);
     } else {
@@ -41,9 +56,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export const authenticateWithGoogle = async (token: string) => {
-  return await api.post('/user/auth/google', { token });
-};
 
 export default api;

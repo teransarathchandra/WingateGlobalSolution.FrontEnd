@@ -1,28 +1,41 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login, register } from "@app_redux/actions/authActions";
-import AuthActions from "@app_interfaces/IAuthActions";
+import { login, logout, register } from "@app_redux/actions/authActions";
 import SignUpFormData from "@app_interfaces/ISignUp";
+import IRootState from "@app_interfaces/IRootState";
+import { useNavigate } from "react-router-dom";
+
+interface ILoginCredentials {
+  email: string;
+  password: string;
+}
 
 const useAuth = () => {
   const dispatch = useDispatch();
-  const authError = useSelector((state: AuthActions) => state.auth.error);
-
+  const navigate = useNavigate();
+  const { user, employee, error, loading } = useSelector((state: IRootState) => state.auth);
+  
   const loginUser = useCallback(
-    ({ email, password }) => {
-      dispatch(login({ email, password }));
+    async (api, credentials: ILoginCredentials) => {
+      dispatch(login(api, credentials));
     },
     [dispatch]
   );
 
   const registerUser = useCallback(
-    (userData: SignUpFormData) => {
-      dispatch(register(userData));
+    async (api, userData: SignUpFormData) => {
+      return dispatch(register(api, userData));
     },
     [dispatch]
   );
 
-  return { loginUser, registerUser, authError };
+  const logoutUser = useCallback(() => {
+    sessionStorage.clear();
+    dispatch(logout());
+    navigate("/");
+  }, [dispatch, navigate]);
+
+  return { loginUser, registerUser, logoutUser, auth: { user, employee, error, loading } };
 };
 
 export default useAuth;

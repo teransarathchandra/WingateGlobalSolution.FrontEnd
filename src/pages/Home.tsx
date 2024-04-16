@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import SignIn from "@app_components/forms/SignIn";
+import SignIn from "@app_components/forms/user/SignIn";
 import { motion } from "framer-motion";
 import {
   HomeSection,
@@ -23,8 +23,8 @@ import flightImage from "@app_assets/images/plane.png";
 import whoWeAreCardImage02 from "@app_assets/images/cogwheel.png";
 import logo from "@app_assets/images/logo-min.jpg";
 import floatAnimation from "@app_common/animations/floatAnimation";
-import SignUp from "@app_components/forms/SignUp";
-import fadeInOut from "@app_common/animations/fadeInOutAnimation";
+import SignUp from "@app_components/forms/user/SignUp";
+import fadeInOutAnimation from "@app_common/animations/fadeInOutAnimation";
 import Navbar from "@app_components/shared/Navbar";
 import { ContactCard, WhoCard } from "@app_styles/shared/card.styles";
 import { WhoWeAreCard } from "@app_styles/shared/card.styles";
@@ -90,7 +90,7 @@ const Home = () => {
         <motion.div className="welcome-image" {...floatAnimation}>
           <WelcomeImage src={welcomeImage} alt="Man carrying a package" />
         </motion.div>
-        <motion.div key={showSignUp ? "signup" : "signin"} {...fadeInOut}>
+        <motion.div key={showSignUp ? "signup" : "signin"} {...fadeInOutAnimation}>
           <FormComponent onSignUpClick={toggleSignUp} />
         </motion.div>
       </HomeSection>
@@ -200,7 +200,7 @@ const Home = () => {
           <ContactsList>
             <Element>(+94)11 273 1967</Element>
             <Element>wingsolution@gmail.com</Element>
-            <Element>No 359, Galle Road, Mount Lavinia</Element>
+            <Element>No 34/2, Wijaya Road, Mount Lavinia</Element>
           </ContactsList>
         </ContactsSection>
         <GetInTouchSection>
@@ -291,10 +291,10 @@ const Home = () => {
             <Text>Wingate Global Solutions</Text>
           </Container>
           <List>
-            <Item>Categories</Item>
-            <Item>Shopping</Item>
-            <Item>Customer Care</Item>
-            <Item>Pages</Item>
+            <Item>Home</Item>
+            <Item>Services</Item>
+            <Item>About Us</Item>
+            <Item>Contact Us</Item>
           </List>
         </Footer>
       </ContactUsSection>

@@ -11,10 +11,19 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@app_assets/images/logo.png";
+import IRootState from "@app_interfaces/IRootState";
+import { useSelector } from "react-redux";
 
 const SideNav = () => {
+  const { employee } = useSelector((state: IRootState) => state.auth);
+
   const [expanded, setExpanded] = useState(false);
   const [activeKey, setActiveKey] = useState("1");
+
+  if (!employee?.isAdmin) {
+    return null;
+  }
+
   const toggleExpanded = () => setExpanded(!expanded);
 
   type Expand = {

@@ -5,9 +5,6 @@ import shipmentDetailsSchema from "@app_schemas/shipmentDetailsSchema";
 import { StyledForm } from "@app_styles/shared/form.styles";
 import LorryImg from '@app_assets/images/customer/Lorry.png'
 import { HeadingSection } from "@app_styles/shared/heading.styles";
-import {
-    FieldGroup,
-} from "@app_styles/signForm.styles";
 import { FlexRow, ImageContainer } from "@app_styles/shared/commonStyles.style";
 
 const ReceiverForm = () => {
@@ -32,80 +29,72 @@ const ReceiverForm = () => {
                     <h1>Receiver</h1> <ImageContainer src={LorryImg} alt="" width="40px" height="40px" />
                 </FlexRow>
             </HeadingSection>
-            <FieldGroup>
-                <TextField
-                    label="Name"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("itemName")}
-                    error={!!errors.itemName}
-                    helperText={errors.itemName?.message}
-                />
-            </FieldGroup>
-            <FieldGroup>
-                <TextField
-                    label="Contact Number"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("description")}
-                    error={!!errors.description}
-                    helperText={errors.description?.message}
-                />
-            </FieldGroup>
-            <FieldGroup>
-                <TextField
-                    label="Email (Optional)"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("description")}
-                    error={!!errors.description}
-                    helperText={errors.description?.message}
-                />
-            </FieldGroup>
-            <FieldGroup>
-                <TextField
-                    label="State"
-                    select
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("category")}
-                    error={!!errors.category}
-                    helperText={errors.category?.message}
-                >
-                    <option value="">Select a category</option>
-                </TextField>
-            </FieldGroup>
-            <FieldGroup>
-                <TextField
-                    label="City"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("weight")}
-                    error={!!errors.weight}
-                    helperText={errors.weight?.message}
-                />
-            </FieldGroup>
-            <FieldGroup>
-                <TextField
-                    label="Street"
-                    type="number"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
-                    {...register("value")}
-                    error={!!errors.value}
-                    helperText={errors.value?.message}
-                />
-            </FieldGroup>
-            <FieldGroup>
-                {/* <ActionButton type="submit">Submit Details</ActionButton> */}
-            </FieldGroup>
+            <TextField
+                label="Name"
+                variant="outlined"
+                size="small"
+                fullWidth
+                {...register("itemName")}
+                error={!!errors.itemName}
+                helperText={errors.itemName?.message}
+                margin="dense"
+            />
+            <TextField
+                label="Contact Number"
+                variant="outlined"
+                size="small"
+                fullWidth
+                {...register("description")}
+                error={!!errors.description}
+                helperText={errors.description?.message}
+                margin="dense"
+            />
+            <TextField
+                label="Email (Optional)"
+                variant="outlined"
+                size="small"
+                fullWidth
+                {...register("description")}
+                error={!!errors.description}
+                helperText={errors.description?.message}
+                margin="dense"
+            />
+            <TextField
+                label="State"
+                select
+                variant="outlined"
+                size="small"
+                fullWidth
+                {...register("category")}
+                error={!!errors.category}
+                helperText={errors.category?.message}
+                margin="dense"
+            >
+                <option value="">Select a category</option>
+            </TextField>
+            <TextField
+                label="City"
+                type="number"
+                variant="outlined"
+                size="small"
+                fullWidth
+                {...register("weight")}
+                error={!!errors.weight}
+                helperText={errors.weight?.message}
+                margin="dense"
+            />
+            <TextField
+                label="Street"
+                type="number"
+                variant="outlined"
+                size="small"
+                fullWidth
+                {...register("value")}
+                error={!!errors.value}
+                helperText={errors.value?.message}
+                margin="dense"
+            />
+            {/* <ActionButton type="submit">Submit Details</ActionButton> */}
         </StyledForm>
     )
 }

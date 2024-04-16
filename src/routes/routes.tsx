@@ -27,6 +27,46 @@ export const privateRoutes = [
         component: Order,
     },
     {
+        path: "/app/bulk",
+        component: Bulk,
+        isPrivate: true,
+    },
+    {
+        path: "/app/flight",
+        component: Flight,
+        isPrivate: true,
+    },
+    {
+        path: "/app/airline",
+        component: Airline,
+        isPrivate: true,
+    },
+    {
+        path: "/app/bulk-details",
+        component: BulkDetails,
+        isPrivate: true,
+    },
+    {
+        path: "/app/order-aggregation",
+        component: OrderAggregation,
+        isPrivate: true,
+    },
+    {
+        path: "/app/restricted-order-type",
+        component: RestrictedOrderType,
+        isPrivate: true,
+    },
+    {
+        path: "/app/category",
+        component: Category,
+        isPrivate: true,
+    },
+    {
+        path: "/app/country",
+        component: Country,
+        isPrivate: true,
+    }
+    {
         path: "/app/warehouse",
         component: Warehouse,
     },
