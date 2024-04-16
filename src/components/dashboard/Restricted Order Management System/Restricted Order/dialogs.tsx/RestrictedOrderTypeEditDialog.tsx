@@ -36,14 +36,10 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     const [formData, setFormData] = useState(entity);
     const [categories, setCategories] = useState<ICategory[]>([]);
     const [countries, setCountries] = useState<ICountry[]>([]);
-    // fields && fields.map((field) => (              
-    // console.log(formData[field.name] )));
-
-
+   
     const {
         register,
         handleSubmit,
-        // formState: { errors },
     } = useForm({
         resolver: yupResolver(restrictedOrderTypeSchema),
     });
@@ -70,7 +66,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     const fetchCategories = async () => {
         try {
             const response = await getAllCategory();
-            const preparedCategory = response.data.data.map((category: ICategory) => ({
+            const preparedCategory = response.data.map((category: ICategory) => ({
                 ...category,
             }));
             setCategories(preparedCategory);
@@ -82,7 +78,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     const fetchCountries = async () => {
         try {
             const response = await getAllCountry();
-            const preparedCountry = response.data.data.map((country: ICountry) => ({
+            const preparedCountry = response.data.map((country: ICountry) => ({
                 ...country,
             }));
             setCountries(preparedCountry);
