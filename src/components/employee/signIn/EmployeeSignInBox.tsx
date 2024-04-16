@@ -39,8 +39,8 @@ import {
 } from "@app_styles/signForm.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-//Components
 
+//Components
 const EmployeeSignInBox = ({ onSignUpClick }) => {
   const {
     register,
@@ -54,12 +54,10 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
   const navigate = useNavigate();
 
   const onSubmit = (data: SignInFormData) => {
-    // You might want to await the loginUser function if it returns a Promise
     loginUser(data);
-
     // Navigate after successful login
     if (!authError) {
-      navigate("/order");
+      navigate("/employee");
     }
   };
 
@@ -77,7 +75,21 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
 
   return (
     <>
-      <FontAwesomeIcon icon={faArrowLeft} />
+      <div
+        style={{
+          position: "absolute",
+          top: "10px",
+          left: "10px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+        onClick={() => navigate("/home")}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+        <p>Back</p>
+      </div>
+
       <Container>
         <SignSection>
           <CompanyLogo>
@@ -93,7 +105,7 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
                 label="Email"
                 defaultValue=""
                 size="small"
-                placeholder="someone@example.com"
+                placeholder="someone@wingate.com"
                 fullWidth
                 {...register("email")}
                 error={!!errors.email}
