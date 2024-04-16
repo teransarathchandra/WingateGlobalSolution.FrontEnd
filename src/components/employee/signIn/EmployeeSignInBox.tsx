@@ -4,7 +4,8 @@ import { useEffect } from "react";
 //Redux
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { useAuthContext } from "@app_contexts/authContext";
+import useAxios from "@app_hooks/useAxios";
 //Schemas
 import signInSchema from "@app_schemas/signInSchema";
 
@@ -20,7 +21,7 @@ import logo from "@app_assets/images/logo.png";
 //Hooks + Effects
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import useAuth from "@app_hooks/useAuth";
+import useEmpAuth from "@app_hooks/employee/useEmpAuth";
 
 //Interfaces
 import SignInFormData from "@app_interfaces/ISignIn";
@@ -50,14 +51,15 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
-  const { loginUser, authError } = useAuth();
-
+  const { loginEmployee, auth } = useEmpAuth();
+  const api = useAxios();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = (data: SignInFormData) => {
-    loginUser(data);
+    loginEmployee(api, data);
     // Navigate after successful login
-    if (!authError) {
+    if (!auth.user) {
       navigate("/app/employee");
     }
   };

@@ -22,7 +22,7 @@ const SignSection = styled.div`
 const CompanyLogo = styled.div`
   display: flex;
   justify-content: center;
-  corner-radius: 80px;
+  border-radius: 80px;
 `;
 
 const CompanyLogoImage = styled.img`
