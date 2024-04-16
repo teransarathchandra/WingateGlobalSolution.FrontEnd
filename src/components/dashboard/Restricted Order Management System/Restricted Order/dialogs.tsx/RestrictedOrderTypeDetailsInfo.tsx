@@ -17,7 +17,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import RestrictedOrderTypeEditDialog from './RestrictedOrderTypeEditDialog';
-import { deleteRestrictedOrder, updateRestrictedOrder } from "../../../../../services/restrictedOrderService";
+import { getRestrictedOrderById, deleteRestrictedOrder, updateRestrictedOrder } from "../../../../../services/restrictedOrderService";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -54,16 +54,18 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
 
   const handleClose = () => {
     setIsEditDialogOpen(false);
-    window.location.reload(); 
+    window.location.reload();
   };
-  
 
-  const handleEditClick = (ViewData: IRestrictedOrder) => {
-    setCurrentResOrder(ViewData);
+
+  const handleEditClick = async (id) => {
+    const { data } = await getRestrictedOrderById(id)
+    console.log(data);
+    setCurrentResOrder(data);
     setIsEditDialogOpen(true);
     handleClose;
   };
-  
+
   const handleDeleteRestrictedOrderType = async (ResOrderID) => {
     const ResOrderId = currentResOrder?._id || ResOrderID;
     if (!ResOrderId) {
@@ -74,12 +76,12 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
       const response = await deleteRestrictedOrder(ResOrderId);
       console.log('Order deleted successfully:', response);
       setIsEditDialogOpen(false);
-      isOpen =  false;
+      isOpen = false;
       handleClose
     } catch (error) {
       console.error('Failed to update order', error);
     }
-   window.location.reload();
+    window.location.reload();
   };
 
 
@@ -89,24 +91,29 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
       return;
     }
     try {
-       const id = currentResOrder?._id
-      const dataToUpdate = {...updatedData};
+      const id = currentResOrder?._id
+      const dataToUpdate = { ...updatedData };
       delete dataToUpdate._id;
       delete dataToUpdate.restrictedOrderId;
+      delete (dataToUpdate as any).createdAt;   
+      delete (dataToUpdate as any).updatedAt;
+      delete (dataToUpdate as any).__v;
+   
+      console.log(dataToUpdate)
 
-      if(id){
-      const response = await updateRestrictedOrder(id, dataToUpdate);
-      console.log('dataToUpdate', dataToUpdate);
-      console.log('Order updated successfully:', response);
       
+
+      if (id) {
+        const response = await updateRestrictedOrder(id, dataToUpdate);
+        console.log('dataToUpdate', dataToUpdate);
+        console.log('Order updated successfully:', response);
+
       }
       setIsEditDialogOpen(false);
     } catch (error) {
       console.error('Failed to update order', error);
     }
   };
-
-
 
   return (
     <Dialog open={isOpen} onClose={handleViewClose} TransitionComponent={Transition}>
@@ -155,22 +162,22 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
         </List>
       </List>
       <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
-        <button onClick={() => handleEditClick(ViewData)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}>
+        <button onClick={() => handleEditClick(ViewData._id)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}>
           <FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} />
         </button>
         <button onClick={() => handleDeleteRestrictedOrderType(ViewData?._id)} style={{ all: 'unset', display: 'inline-flex', alignItems: 'center' }}>
           <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#0c1821" }} />
         </button>
       </div>
-
-      <RestrictedOrderTypeEditDialog
-        isOpen={isEditDialogOpen}
-        handleClose={() => setIsEditDialogOpen(false)}
-        entity={entity}
-        fields={fields} 
-        onSave={handleUpdatedRestrictedOrderType}
-        onDelete={handleDeleteRestrictedOrderType} />
-
+      {isEditDialogOpen &&
+        <RestrictedOrderTypeEditDialog
+          isOpen={isEditDialogOpen}
+          handleClose={() => setIsEditDialogOpen(false)}
+          entity={currentResOrder}
+          fields={fields}
+          onSave={handleUpdatedRestrictedOrderType}
+          onDelete={handleDeleteRestrictedOrderType} />
+      }
     </Dialog>
   );
 };

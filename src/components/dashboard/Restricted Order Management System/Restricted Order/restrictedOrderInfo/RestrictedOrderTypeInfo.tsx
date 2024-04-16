@@ -30,13 +30,21 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   };
   const handleClose = () => {
     setIsAddOrderOpen(false);
-    window.location.reload(); 
-};
+    window.location.reload();
+  };
+  const handleSearch = () => {
+    
+  };
+
+
+
+  
 
   const fetchAndPrepareResOrders = async () => {
     try {
       const aggType = 'restrictedOrderTypes';
       const response = await getAllRestrictedOrders(aggType);
+      console.log(response)
       const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
         ...restrictedOrder,
         viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
@@ -67,20 +75,22 @@ const RestrictedOrderTypeInfo: React.FC = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: "center" }}>
-        <button onClick={handleAddClick}>Add</button>
-      </div>
       <ReusableTable
         columns={columns}
         rows={restrictedOrderTypes}
         title="Restricted Order Types"
         rowKey="restrictedOrderId"
+        onAdd={handleAddClick}
+        showAddButton={true}
+        showSearchBar={true}
+        label="Restricted Order ID"
+        onSearch={handleSearch}
       />
       <AddRestrictedOrderForm
         onAdd={handleAddRestrictedOrderType}
         isOpen={isAddOrderOpen}
-        handleClose={handleClose} 
-        />
+        handleClose={handleClose}
+      />
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}

@@ -12,8 +12,23 @@ import {
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
+import AddButton from "./AddButton";
+import SearchBar from "./SearchBar";
 
-const ReusableTable = ({ columns, rows, title, rowKey }) => {
+interface ReusableTableProps {
+  columns;
+  rows;
+  title;
+  rowKey;
+  onAdd?: () => void;
+  onSearch?: () => void;
+  showSearchBar?: boolean;
+  showAddButton?: boolean;
+  showActiveSwitch?: boolean;
+  label?: string;
+}
+
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showSearchBar, onSearch , label,  showAddButton, showActiveSwitch }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -43,13 +58,9 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
               margin: "0 2rem 0 0",
             }}
           >
-            <TextField
-              style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
-              label="Search"
-              id="outlined-size-small"
-              size="small"
-            />
-            <SwitchBtn />
+            {showSearchBar && <SearchBar label={label} onEnter={() => onSearch} />}
+            {showActiveSwitch && <SwitchBtn />}
+            {showAddButton && onAdd && <AddButton onClick={onAdd} />}
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
