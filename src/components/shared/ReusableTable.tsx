@@ -13,6 +13,7 @@ import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import AddButton from "./AddButton";
+import SearchBar from "./SearchBar";
 
 interface ReusableTableProps {
   columns;
@@ -20,11 +21,14 @@ interface ReusableTableProps {
   title;
   rowKey;
   onAdd?: () => void;
+  onSearch?: () => void;
+  showSearchBar?: boolean;
   showAddButton?: boolean;
   showActiveSwitch?: boolean;
+  label?: string;
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch }) => {
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showSearchBar, onSearch , label,  showAddButton, showActiveSwitch }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -54,12 +58,7 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
               margin: "0 2rem 0 0",
             }}
           >
-            <TextField
-              style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
-              label="Search"
-              id="outlined-size-small"
-              size="small"
-            />
+            {showSearchBar && <SearchBar label={label} onEnter={() => onSearch} />}
             {showActiveSwitch && <SwitchBtn />}
             {showAddButton && onAdd && <AddButton onClick={onAdd} />}
           </FlexRow>

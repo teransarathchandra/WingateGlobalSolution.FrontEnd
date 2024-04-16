@@ -30,8 +30,15 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   };
   const handleClose = () => {
     setIsAddOrderOpen(false);
-    window.location.reload(); 
-};
+    window.location.reload();
+  };
+  const handleSearch = () => {
+    
+  };
+
+
+
+  
 
   const fetchAndPrepareResOrders = async () => {
     try {
@@ -74,13 +81,16 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         title="Restricted Order Types"
         rowKey="restrictedOrderId"
         onAdd={handleAddClick}
-        showAddButton = {true}
+        showAddButton={true}
+        showSearchBar={true}
+        label="Restricted Order ID"
+        onSearch={handleSearch}
       />
       <AddRestrictedOrderForm
         onAdd={handleAddRestrictedOrderType}
         isOpen={isAddOrderOpen}
-        handleClose={handleClose} 
-        />
+        handleClose={handleClose}
+      />
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}
