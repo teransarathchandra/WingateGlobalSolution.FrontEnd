@@ -89,7 +89,7 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         fields={[
           { name: "_id", label: "MongoDBId", type: String, disabled: true },
           { name: "restrictedOrderId", label: "Restricted ID", type: String, disabled: true },
-          { name: "sendingCountryId", label: "Sender Country ID", type: String, disabled: false },
+          { name: "sendingCountryId", label: "Sender Country", type: String, disabled: false },
           { name: "receivingCountryId", label: "Receiver Country", type: String, disabled: false },
           { name: "categoryId", label: "Category", type: String, disabled: false },
           { name: "maxQuantity", label: "Maximum Weight", type: Number, disabled: false },

@@ -54,6 +54,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
 
   const handleClose = () => {
     setIsEditDialogOpen(false);
+    window.location.reload(); 
   };
   
 

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { AppBar, Checkbox, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { getAllCategory } from "../../../../../services/categoryService";
-import { getAllCountry } from "../../../../../services/countryService";
+import { getAllCountry , getCountryById } from "../../../../../services/countryService";
 import { ICategory } from '@app_interfaces/ICategory';
 import { ICountry } from '@app_interfaces/ICountry';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -36,6 +36,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     const [formData, setFormData] = useState(entity);
     const [categories, setCategories] = useState<ICategory[]>([]);
     const [countries, setCountries] = useState<ICountry[]>([]);
+  //  const [from, setSendingCountries] = useState("");
    
     const {
         register,
@@ -86,6 +87,17 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
             console.error('Failed to fetch country', error);
         }
     };
+    // const sendingCountry = async () => {
+    //     try {
+    //         const response = await getCountryById(entity.sendingCountryId);
+    //         const sendingCountry = response.data.map((country: ICountry) => ({
+    //             sendingCountry : sendingCountry.name,
+    //         }));
+    //         setSendingCountries(sendingCountry);
+    //     } catch (error) {
+    //         console.error('Failed to fetch country', error);
+    //     }
+    // };
 
 
     return (
@@ -150,13 +162,13 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                             fullWidth
                                             type="number"
                                             variant="outlined"
-                                            //name={field.name}
                                             value={formData[field.name]}
                                             {...register(field.name)}
                                             onChange={handleChange}
                                             >
                                             {categories.map((category) => (
                                                 <MenuItem key={category._id} value={category._id}>
+                                                    
                                                     {category.name}
                                                 </MenuItem>
                                             ))}
