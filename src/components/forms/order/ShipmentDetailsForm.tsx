@@ -19,6 +19,13 @@ import { getAllPackageTypes } from "@app_services/packageTypeService";
 import { IPackageType } from "@app_interfaces/IPackageType";
 import { separateDateTime } from "@app_utils/separateDateTime";
 import { createItem, updateItem } from "@app_services/itemService";
+import { filterRestrictedOrders } from "@app_services/restrictedOrderService";
+
+interface IFilterResOrder {
+  sendingCountryCode: string;
+  receivingCountryCode: string;
+  categoryId: string;
+}
 
 const ShipmentDetailsForm = ({ goNext }) => {
 
@@ -34,6 +41,10 @@ const ShipmentDetailsForm = ({ goNext }) => {
     pickupOrderDate: null,
   });
 
+  const [receivingCode,] = useSessionStorage('order-receiving-country-code');
+  const [sendingCode,] = useSessionStorage('order-sending-country-code');
+  //const [shipmentDetails, ] = useSessionStorage('order-shipment-details');
+
   const {
     register,
     handleSubmit,
@@ -48,6 +59,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
     defaultValues: shipmentDetails
   });
 
+
   useEffect(() => {
     reset(shipmentDetails);
   }, [reset, shipmentDetails]);
@@ -57,7 +69,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-  // const [selectedCategory, setSelectedCategory] = useSessionStorage('order-category-id');
+  const [selectedCategory, setSelectedCategory] = useSessionStorage('order-category-id');
 
   const [packageTypes, setPackageTypes] = useState<IPackageType[]>([]);
   // const [selectedPackageType, setSelectedPackageType] = useSessionStorage('order-package-type-id');
@@ -134,6 +146,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
 
         // const isRestricted = await checkIfRestricted(responseData._id);
         const isRestrictedOrder = false;
+        retrieveSessionStorageValues();
         console.log("Shipment Data Submitted:", responseData);
         setShipmentDetails(data);
         goNext(isRestrictedOrder);
@@ -143,8 +156,29 @@ const ShipmentDetailsForm = ({ goNext }) => {
     } catch (error) {
       console.error('Error submitting shipment data:', error);
     }
-
   };
+ 
+  const retrieveSessionStorageValues = async () => {
+    try {
+      console.log("Retrieved Values:", { receivingCode, sendingCode, shipmentDetails });
+
+      const filteringData = {
+        receivingCountryCode: receivingCode,
+        sendingCountryCode: sendingCode,
+        categoryId: shipmentDetails?.categoryId,
+      };
+      const response = await filterRestrictedOrders(filteringData);
+      console.log("Is restricted :  ", response);
+
+      if(response.data.isRestrictedOrderFound == true){
+        const restrictedOrderType = response.data.data; 
+      }
+
+    } catch (error) {
+      console.error('Failed to filter and check restricted order', error);
+    }
+  };
+
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} width="400px">
@@ -176,22 +210,10 @@ const ShipmentDetailsForm = ({ goNext }) => {
         helperText={errors.description?.message as string}
         margin="dense"
       />
+      <InputLabel>Category</InputLabel>
+
       <FormControl sx={{ marginTop: 1, marginBottom: 1, minWidth: "100%" }} size="small">
         <InputLabel id="category-label">Category</InputLabel>
-        {/* <Select
-          labelId="category-label"
-          fullWidth
-          {...register("categoryId")}
-          value={selectedCategory}
-          onChange={(e) => handleCategorySelect(e.target.value)}
-        >
-          <MenuItem value="">
-            <em>Select</em>
-          </MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
-          ))}
-        </Select> */}
         <Controller
           name="categoryId"
           control={control}

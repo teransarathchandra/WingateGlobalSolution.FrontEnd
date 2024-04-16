@@ -24,3 +24,8 @@ export const updateRestrictedOrder = (id, restrictedOrderData) => {
 export const deleteRestrictedOrder = (id) => {
     return api.delete(`/restrictedOrderType/${id}`);
 };
+
+export const filterRestrictedOrders = (filteringData) => {
+    return api.post(`/restrictedOrderType/filter`,filteringData);
+};
+

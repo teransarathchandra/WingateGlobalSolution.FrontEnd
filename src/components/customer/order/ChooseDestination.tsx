@@ -41,9 +41,12 @@ const ChooseDestination = ({ goNext }) => {
     const handleCountrySelect = (code, id) => {
         console.log("Selected Country Code:", code, id);
         if (id == "sendingCountry")
-            setSelectedSendingCountryCode(code);
-        if (id == "receivingCountry")
+            setSelectedSendingCountryCode("code");
+        if (id == "receivingCountry"){
             setSelectedReceivingCountryCode(code);
+            setSelectedSendingCountryCode("LK");
+            console.log("Sending", "LK");
+        }
 
     };
 

@@ -38,9 +38,10 @@ interface FieldConfig {
 interface FullScreenDialogProps {
   isOpen: boolean;
   entity: any;
+  handleViewClose: () => void;
   fields: FieldConfig[];
 }
-const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fields }) => {
+const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, handleViewClose, fields }) => {
 
   const [ViewData, setViewData] = useState(entity || {});
 
@@ -53,13 +54,14 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
 
   const handleClose = () => {
     setIsEditDialogOpen(false);
+    window.location.reload(); 
   };
   
 
   const handleEditClick = (ViewData: IRestrictedOrder) => {
     setCurrentResOrder(ViewData);
     setIsEditDialogOpen(true);
-    //handleClose;
+    handleClose;
   };
   
   const handleDeleteRestrictedOrderType = async (ResOrderID) => {
@@ -107,10 +109,10 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, fie
 
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} TransitionComponent={Transition}>
+    <Dialog open={isOpen} onClose={handleViewClose} TransitionComponent={Transition}>
       <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+          <IconButton edge="start" color="inherit" onClick={handleViewClose} aria-label="close">
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">

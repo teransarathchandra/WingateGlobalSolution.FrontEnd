@@ -28,7 +28,10 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   const handleAddClick = () => {
     setIsAddOrderOpen(true);
   };
-  
+  const handleClose = () => {
+    setIsAddOrderOpen(false);
+    window.location.reload(); 
+};
 
   const fetchAndPrepareResOrders = async () => {
     try {
@@ -74,14 +77,14 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         rowKey="restrictedOrderId"
       />
       <AddRestrictedOrderForm
-        onSubmit={handleAddRestrictedOrderType}
+        onAdd={handleAddRestrictedOrderType}
         isOpen={isAddOrderOpen}
-        handleClose={() => setIsAddOrderOpen(false)} 
+        handleClose={handleClose} 
         />
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}
-        //handleClose={() => setIsViewDetailsOpen(false)}
+        handleViewClose={() => setIsViewDetailsOpen(false)}
         entity={currentResOrder}
         fields={[
           { name: "_id", label: "MongoDBId", type: String, disabled: true },
