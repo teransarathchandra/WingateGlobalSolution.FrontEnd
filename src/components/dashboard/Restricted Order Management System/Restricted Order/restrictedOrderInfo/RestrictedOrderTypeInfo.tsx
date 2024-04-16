@@ -37,6 +37,7 @@ const RestrictedOrderTypeInfo: React.FC = () => {
     try {
       const aggType = 'restrictedOrderTypes';
       const response = await getAllRestrictedOrders(aggType);
+      console.log(response)
       const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
         ...restrictedOrder,
         viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
@@ -75,6 +76,8 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         rows={restrictedOrderTypes}
         title="Restricted Order Types"
         rowKey="restrictedOrderId"
+        onAdd={handleAddClick}
+        showAddButton = {true}
       />
       <AddRestrictedOrderForm
         onAdd={handleAddRestrictedOrderType}

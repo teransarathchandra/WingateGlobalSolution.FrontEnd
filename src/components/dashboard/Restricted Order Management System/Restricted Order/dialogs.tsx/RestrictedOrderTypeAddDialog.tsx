@@ -15,7 +15,7 @@ interface AddDialogProps {
     onAdd: (data: any) => void;
 }
 
-const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose, onAdd }) => {
+const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose, onAdd }) => {
     const [formData, setFormData] = useState({
         sendingCountryId: '',
         receivingCountryId: '',
@@ -36,7 +36,7 @@ const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose,
 
     useEffect(() => {
         setFormData(formData);
-      //  console.log(formData);
+        //  console.log(formData);
         fetchCategories();
         fetchCountries();
     }, []);
@@ -78,8 +78,6 @@ const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose,
         }
     };
 
-
-
     return (
         <Dialog open={isOpen} onClose={handleClose}>
             <AppBar sx={{ position: 'relative' }}>
@@ -92,12 +90,13 @@ const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose,
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <form onSubmit={handleSubmit(handleAdd , handleClose)}>
+            <form onSubmit={handleSubmit(handleAdd, handleClose)}>
                 <DialogContent>
                     {Object.keys(formData).map((key) => (
                         typeof formData[key] === 'boolean' ? (
                             <FormControlLabel
                                 key={key}
+                                style={{ display: 'block' }}
                                 control={
                                     <Checkbox
                                         checked={formData[key]}
@@ -107,7 +106,7 @@ const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose,
                                 }
                                 label={key}
                             />
-                        ) : key === "maxQuantity" ?(
+                        ) : key === "maxQuantity" ? (
 
                             <TextField
                                 key={key}
@@ -155,8 +154,8 @@ const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose,
                             <>
                                 <div>
                                     <InputLabel id={key}>
-                                        {key === 'sendingCountryId' ? 'Sending From:' : 
-                                        key === 'receivingCountryId' ? 'Receiving To:':''}
+                                        {key === 'sendingCountryId' ? 'Sending From:' :
+                                            key === 'receivingCountryId' ? 'Receiving To:' : ''}
                                     </InputLabel>
                                     <Select
                                         defaultValue={formData[key]}
@@ -186,7 +185,9 @@ const AddRestrictedOrderForm : React.FC<AddDialogProps>= ({ isOpen, handleClose,
                         )
                     ))}
                 </DialogContent>
-                <Button type="submit" onClick={() => handleAdd(formData)} color="primary">Add</Button>
+                <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
+                    <Button type="submit" onClick={() => handleAdd(formData)} color="secondary">Add</Button>
+                </div>
             </form>
         </Dialog>
     );

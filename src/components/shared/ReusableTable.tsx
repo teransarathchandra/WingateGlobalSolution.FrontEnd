@@ -12,8 +12,19 @@ import {
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
+import AddButton from "./AddButton";
 
-const ReusableTable = ({ columns, rows, title, rowKey }) => {
+interface ReusableTableProps {
+  columns;
+  rows;
+  title;
+  rowKey;
+  onAdd?: () => void;
+  showAddButton?: boolean;
+  showActiveSwitch?: boolean;
+}
+
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch }) => {
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -49,7 +60,8 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
               id="outlined-size-small"
               size="small"
             />
-            <SwitchBtn />
+            {showActiveSwitch && <SwitchBtn />}
+            {showAddButton && onAdd && <AddButton onClick={onAdd} />}
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">

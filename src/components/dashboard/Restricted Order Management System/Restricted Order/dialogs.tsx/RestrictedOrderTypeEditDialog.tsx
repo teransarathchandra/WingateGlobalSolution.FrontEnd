@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { AppBar, Checkbox, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { getAllCategory } from "../../../../../services/categoryService";
-import { getAllCountry , getCountryById } from "../../../../../services/countryService";
+import { getAllCountry } from "../../../../../services/countryService";
 import { ICategory } from '@app_interfaces/ICategory';
 import { ICountry } from '@app_interfaces/ICountry';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -98,7 +98,8 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     //         console.error('Failed to fetch country', error);
     //     }
     // };
-
+    console.log('formData', formData)
+    console.log('fields', fields)
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
@@ -120,6 +121,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                             field.type === Boolean ? (
                                 <FormControlLabel
                                     key={field.name}
+                                    style={{ display: 'block' }} 
                                     control={
                                         <Checkbox
                                             checked={formData[field.name]}
