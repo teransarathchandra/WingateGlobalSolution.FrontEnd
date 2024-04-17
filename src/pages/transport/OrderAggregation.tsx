@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { IColumn, IRow } from "@app_interfaces/ITable";
-import { getAllOrderTransport } from "@app_services/orderService";
+import { getAllOrderTransport, updateOrder } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
@@ -8,28 +8,33 @@ import { getAllCountry } from "@app_services/countryService";
 import { ICountry } from "@app_interfaces/ICountry";
 import { getAllCategory } from "@app_services/categoryService";
 import { ICategory } from "@app_interfaces/ICategory";
-
+import { createBulk, getLastAddedBulk } from "@app_services/bulkService";
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: false },
   { id: "createdAt", label: "Date", numeric: false, disablePadding: false },
   { id: "weight", label: "Weight", numeric: false, disablePadding: false },
-  { id: "packageCount", label: "Package Count", numeric: false, disablePadding: false }
+  {
+    id: "packageCount",
+    label: "Package Count",
+    numeric: false,
+    disablePadding: false,
+  },
 ];
-
 
 const OrderAggregation: React.FC = () => {
   const [orders, setOrders] = useState<IRow[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<IRow[]>([]);
   const [countries, setCountries] = useState<ICountry[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPriority, setSelectedPriority] = useState<string>("");
+  const [lastBulkId, setLastBulkId] = useState<string>("");
+  const [filteredOrders, setFilteredOrders] = useState<IRow[]>([]);
 
   const fetchAndPrepareOrders = async () => {
     try {
-      const aggType = 'orderIds';
+      const aggType = "orderIds";
       const response = await getAllOrderTransport(aggType);
       const preparedOrders: IRow[] = response.data.map((order: IOrder) => ({
         ...order,
@@ -37,7 +42,7 @@ const OrderAggregation: React.FC = () => {
       setOrders(preparedOrders);
       setFilteredOrders(preparedOrders);
     } catch (error) {
-      console.error('Failed to fetch orders', error);
+      console.error("Failed to fetch orders", error);
     }
   };
 
@@ -46,27 +51,40 @@ const OrderAggregation: React.FC = () => {
     if (data) {
       setCountries(data);
     }
-  }
+  };
 
   const fetchAllCategories = async () => {
     const { data } = await getAllCategory();
     if (data) {
       setCategories(data);
     }
-  }
+  };
+  const fetchLastBulk = async () => {
+    try {
+      const aggType = "lastBulkIds"
+      const response = await getLastAddedBulk(aggType);
+      if (response.data) {
+        setLastBulkId(response.data._id); 
+      }
+    } catch (error) {
+      console.error("Failed to fetch last bulk", error);
+    }
+  };
 
   useEffect(() => {
     fetchAndPrepareOrders();
     fetchAllCountries();
     fetchAllCategories();
+    fetchLastBulk();
   }, []);
 
   const filterOrders = () => {
-    let filtered = orders.filter(order => {
-      // Check if all filter conditions are true
-      return (!selectedCountry || order.receiverCountryId === selectedCountry) &&
+    let filtered = orders.filter((order) => {
+      return (
+        (!selectedCountry || order.receiverCountryId === selectedCountry) &&
         (!selectedCategory || order.itemCategoryId === selectedCategory) &&
-        (!selectedPriority || order.priority=== selectedPriority);
+        (!selectedPriority || order.priority === selectedPriority)
+      );
     });
     setFilteredOrders(filtered);
   };
@@ -76,18 +94,43 @@ const OrderAggregation: React.FC = () => {
   }, [selectedCountry, selectedCategory, selectedPriority]);
 
   const countryOptions = countries
-  .filter(country => country.name !== "Sri Lanka")
-  .map(country => ({
-    value: country._id,
-    label: country.name
-  }));
+    .filter((country) => country.name !== "Sri Lanka")
+    .map((country) => ({
+      value: country._id,
+      label: country.name,
+    }));
 
-  const categoryOptions = categories
-  .map(category => ({
+  const categoryOptions = categories.map((category) => ({
     value: category._id,
-    label: category.name
+    label: category.name,
   }));
 
+  const handleCreateBulk = async () => {
+    try {
+      const payload = {
+        destinationCountry: selectedCountry,
+        category: selectedCategory,
+        priority: selectedPriority,
+      };
+      const response = await createBulk(payload);
+      console.log("Bulk created successfully:", response);
+      fetchLastBulk();
+      const newBulkId = response.data._id;
+      const updatePromises = filteredOrders.map(order => {
+        return updateOrder(order.orderId, { bulkId: newBulkId });
+        
+      });
+  
+
+      await Promise.all(updatePromises);
+      console.log("All filtered orders updated with new bulk ID");
+      fetchAndPrepareOrders();
+  
+    } catch (error) {
+      console.error("Error creating bulk:", error);
+    }
+  };
+  
   return (
     <>
       <ReusableTableDropdown
@@ -102,7 +145,6 @@ const OrderAggregation: React.FC = () => {
             onChange: setSelectedCountry,
           },
           {
-            
             options: categoryOptions,
             onChange: setSelectedCategory,
           },
@@ -112,11 +154,13 @@ const OrderAggregation: React.FC = () => {
               { value: "Express", label: "Express" },
               { value: "Standard", label: "Standard" },
             ],
-            onChange: (value: string) => setSelectedPriority(value)
+            onChange: (value: string) => setSelectedPriority(value),
           },
         ]}
       />
-      <UpdateBtn type="submit">Generate Bulk</UpdateBtn>
+      <UpdateBtn type="submit" onClick={handleCreateBulk}>
+        Generate Bulk
+      </UpdateBtn>
     </>
   );
 };
