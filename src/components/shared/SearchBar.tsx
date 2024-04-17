@@ -3,33 +3,36 @@ import TextField from '@mui/material/TextField';
 
 interface SearchBarProps {
     onEnter: (searchTerm: string) => void;
-    label?:string;
+    label?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onEnter , label}) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onEnter, label }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
+        setSearchTerm(event.target.value);      
     };
-
-    const handleKeyPress = (event: React.KeyboardEvent) => {
+   
+    const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter') {
+            console.log("enter Enter :"  , searchTerm );
             onEnter(searchTerm);
-        }
+        };
+        
     };
 
     return (
         <TextField
-            placeholder= {label || ""}
+            placeholder={label || ""}
             style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
             label="Search"
             id="outlined-size-small"
             size="small"
             value={searchTerm}
             onChange={handleSearchChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
         />
+
     );
 };
 

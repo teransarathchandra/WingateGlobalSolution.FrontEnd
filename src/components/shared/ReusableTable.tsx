@@ -21,7 +21,7 @@ interface ReusableTableProps {
   title;
   rowKey;
   onAdd?: () => void;
-  onSearch?: () => void;
+  onSearch?: (searchTerm) => void;
   showSearchBar?: boolean;
   showAddButton?: boolean;
   showActiveSwitch?: boolean;
@@ -58,7 +58,7 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
               margin: "0 2rem 0 0",
             }}
           >
-            {showSearchBar && <SearchBar label={label} onEnter={() => onSearch} />}
+            {showSearchBar && onSearch && <SearchBar label={label} onEnter={onSearch}/>}
             {showActiveSwitch && <SwitchBtn />}
             {showAddButton && onAdd && <AddButton onClick={onAdd} />}
           </FlexRow>

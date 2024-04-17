@@ -101,15 +101,15 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
    
       console.log(dataToUpdate)
 
-      
-
       if (id) {
         const response = await updateRestrictedOrder(id, dataToUpdate);
         console.log('dataToUpdate', dataToUpdate);
-        console.log('Order updated successfully:', response);
+        console.log('Res Order updated successfully:', response);
 
-      }
+      setViewData(response.data);
+      console.log("edited " , response.data);
       setIsEditDialogOpen(false);
+    }
     } catch (error) {
       console.error('Failed to update order', error);
     }

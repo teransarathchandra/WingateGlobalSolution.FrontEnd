@@ -33,24 +33,33 @@ const RestrictedOrderTypeInfo: React.FC = () => {
     fetchAndPrepareResOrders();
     //window.location.reload();
   };
-  const handleSearch = () => {
-    SearchRestrictedOrder();
+  const handleSearch = (searchTerm) => {
+    SearchRestrictedOrder(searchTerm);
   };
 
-  const SearchRestrictedOrder = async () => {
+  const SearchRestrictedOrder = async (searchTerm: string) => {
     try {
       const aggType = 'restrictedOrderTypes';
       const response = await getAllRestrictedOrders(aggType);
-      console.log(response)
-      const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
+      console.log(response);
+  
+      const searchLower = searchTerm.toLowerCase();
+      const filteredResOrderTypes: IRow[] = response.data.data.filter((restrictedOrder: IRestrictedOrder) => {
+        return Object.values(restrictedOrder).some(value => 
+          String(value).toLowerCase().includes(searchLower)
+        );
+      }).map((restrictedOrder: IRestrictedOrder) => ({
         ...restrictedOrder,
-        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
+        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>
       }));
-      setRestrictedOrderTypes(preparedResOrderTypes);
+      
+      setRestrictedOrderTypes(filteredResOrderTypes);
+      
     } catch (error) {
       console.error('Failed to fetch order types', error);
     }
   };
+  
 
   const fetchAndPrepareResOrders = async () => {
     try {
@@ -95,7 +104,7 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         onAdd={handleAddClick}
         showAddButton={true}
         showSearchBar={true}
-        label="Restricted Order ID"
+        label="Search"
         onSearch={handleSearch}
       />
       <AddRestrictedOrderForm
