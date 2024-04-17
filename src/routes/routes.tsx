@@ -1,30 +1,56 @@
 import { lazy } from "react";
 
-//Common
-const NotFound = lazy(() => import("@app_pages/NotFound"));
-
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
-const VerifyEmail = lazy(() => import("@app_pages/VerifyEmail"));
+
+// Verify User
+const VerifyEmail = lazy(() => import("@app_pages/user/verify/VerifyEmail"));
+
+// Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
+const Category = lazy(() => import("@app_pages/dashboard/category/Category"));
+const Country = lazy(() => import("@app_pages/dashboard/country/Country"));
+const RestrictedOrderType = lazy(() => import("@app_pages/dashboard/restrictedOrder/RestrictedOrderType"));
 
-//Order
+
+//Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
-
-//Warehouse
-const Warehouse = lazy(() => import("@app_pages/dashboard/warehouse/warehouse"));
 
 //Employee
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
+//Bulk
+const Bulk = lazy(() => import("@app_pages/transport/Bulk"));
+
+//Flight
+const Flight = lazy(() => import("@app_pages/transport/Flight"));
+
+//Airline
+const Airline = lazy(() => import("@app_pages/transport/Airline"));
+
+
+//Bulk Details
+const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
+
+//Assign Details
+const AssignDetails = lazy(() => import("@app_pages/dashboard/warehouse/AssignDetails"));
+
+//Order Aggregation
+const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregation"));
+
+//Common
+const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
+
 export const privateRoutes = [
     {
-        path: "/app/",
-        component: Home,
-    },
+        path: "/order",
+        component: PlaceOrder,
+        isPrivate: true,
+    },    
     {
         path: "/app/order",
         component: Order,
+        isPrivate: true,
     },
     {
         path: "/app/bulk",
@@ -47,6 +73,11 @@ export const privateRoutes = [
         isPrivate: true,
     },
     {
+        path: "/app/assign-details",
+        component: AssignDetails,
+        isPrivate: true,
+    },
+    {
         path: "/app/order-aggregation",
         component: OrderAggregation,
         isPrivate: true,
@@ -66,39 +97,32 @@ export const privateRoutes = [
         component: Country,
         isPrivate: true,
     }
-    {
-        path: "/app/warehouse",
-        component: Warehouse,
-    },
 ];
 
 export const publicRoutes = [
     {
         path: "/",
         component: Home,
+        isPrivate: false,
     },
     {
         path: "/home",
         component: Home,
+        isPrivate: false,
     },
     {
         path: "/verify-email/:token",
         component: VerifyEmail,
+        isPrivate: false,
     },
-    {
-        path: "/order",
-        component: PlaceOrder,
-    },
-
-    //Employee
     {
         path: "/emp_checkpoint",
         component: EmployeeCheckpoint,
+        isPrivate: false,
     },
-
-    //Not Found
     {
         path: "*",
         component: NotFound,
+        isPrivate: false,
     },
 ];
