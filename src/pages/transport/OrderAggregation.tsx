@@ -8,7 +8,7 @@ import { getAllCountry } from "@app_services/countryService";
 import { ICountry } from "@app_interfaces/ICountry";
 import { getAllCategory } from "@app_services/categoryService";
 import { ICategory } from "@app_interfaces/ICategory";
-import { createBulk, getLastAddedBulk } from "@app_services/bulkService";
+import { createBulk } from "@app_services/bulkService";
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: false },
@@ -29,7 +29,6 @@ const OrderAggregation: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPriority, setSelectedPriority] = useState<string>("");
-  const [lastBulkId, setLastBulkId] = useState<string>("");
   const [filteredOrders, setFilteredOrders] = useState<IRow[]>([]);
 
   const fetchAndPrepareOrders = async () => {
@@ -59,27 +58,15 @@ const OrderAggregation: React.FC = () => {
       setCategories(data);
     }
   };
-  const fetchLastBulk = async () => {
-    try {
-      const aggType = "lastBulkIds"
-      const response = await getLastAddedBulk(aggType);
-      if (response.data) {
-        setLastBulkId(response.data._id); 
-      }
-    } catch (error) {
-      console.error("Failed to fetch last bulk", error);
-    }
-  };
 
   useEffect(() => {
     fetchAndPrepareOrders();
     fetchAllCountries();
     fetchAllCategories();
-    fetchLastBulk();
   }, []);
 
   const filterOrders = () => {
-    let filtered = orders.filter((order) => {
+    const filtered = orders.filter((order) => {
       return (
         (!selectedCountry || order.receiverCountryId === selectedCountry) &&
         (!selectedCategory || order.itemCategoryId === selectedCategory) &&
@@ -114,17 +101,17 @@ const OrderAggregation: React.FC = () => {
       };
       const response = await createBulk(payload);
       console.log("Bulk created successfully:", response);
-      fetchLastBulk();
       const newBulkId = response.data._id;
-      const updatePromises = filteredOrders.map(order => {
-        return updateOrder(order.orderId, { bulkId: newBulkId });
-        
+      const updatePromises = filteredOrders.map((order) => {
+        updateOrder(order._id, { bulkId: newBulkId });
       });
-  
 
       await Promise.all(updatePromises);
-      console.log("All filtered orders updated with new bulk ID");
-      fetchAndPrepareOrders();
+      
+      setSelectedCountry('');
+      setSelectedCategory('');
+      setSelectedPriority('');
+      await fetchAndPrepareOrders();
   
     } catch (error) {
       console.error("Error creating bulk:", error);
