@@ -13,9 +13,7 @@ export const updateAirline = (id, airlineData) => {
         .put(`/airline/${id}`, {
             code: airlineData.code,
             name: airlineData.name,
-        })
-        .then((response) => response.data)
-        .catch((error) => error.message);
+        });
 };
 
 export const createAirline = (airlineData) => {

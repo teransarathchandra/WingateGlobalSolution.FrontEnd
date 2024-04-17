@@ -1,16 +1,14 @@
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import React, { useEffect, useState } from "react";
-import {
-    DialogHeaderContainer,
-    DialogHeaderImage,
-} from "../../styles/shared/editDialog.styles";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Select, { SelectChangeEvent } from '@mui/material/Select'; // Import SelectChangeEvent
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import React, { useEffect, useState } from 'react';
+import { DialogHeaderContainer, DialogHeaderImage } from '../../styles/shared/editDialog.styles';
 import logo from "../../assets/images/logo.png";
 
 interface FieldConfig {
@@ -18,7 +16,7 @@ interface FieldConfig {
     label: string;
     type?: string;
     disabled?: boolean;
-    options?: any[];
+    options?: { value: string | number, label: string }[];
 }
 
 interface AddDialogProps {
@@ -29,95 +27,74 @@ interface AddDialogProps {
     onSave: (data: any) => void;
 }
 
-const FieldComponent = ({ field, formData, handleChange }) => {
-    if (field.type === "dropdown") {
-        return (
-            <>
-                <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
-                <Select
-                    key={field.name}
-                    margin="dense"
-                    id={field.name}
-                    label={field.label}
-                    fullWidth
-                    variant="outlined"
-                    name={field.name}
-                    value={formData[field.name] || ""}
-                    disabled={field.disabled}
-                    onChange={handleChange}
-                >
-                    {field.options &&
-                        field.options.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                                {option.label}
-                            </MenuItem>
-                        ))}
-                </Select>
-            </>
-        );
-    } else {
-        return (
-            <TextField
-                key={field.name}
-                autoFocus
-                margin="dense"
-                id={field.name}
-                label={field.label}
-                type={field.type}
-                fullWidth
-                variant="outlined"
-                name={field.name}
-                value={formData[field.name] || ""}
-                disabled={field.disabled}
-                onChange={handleChange}
-            />
-        );
-    }
-};
-
-const AddDialog: React.FC<AddDialogProps> = ({
-    isOpen,
-    handleClose,
-    entity,
-    fields,
-    onSave,
-}) => {
+const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave }) => {
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
         setFormData(entity || {});
     }, [entity]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+    const handleChange = (event: SelectChangeEvent) => {
+        const name = event.target.name;
+        const value = event.target.value;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
+            <DialogTitle>Add/Edit Item</DialogTitle>
             <DialogHeaderContainer>
                 <DialogHeaderImage src={logo}></DialogHeaderImage>
             </DialogHeaderContainer>
             <DialogContent>
                 {fields.map((field) => (
-                    <FieldComponent
-                        key={field.name}
-                        field={field}
-                        formData={formData}
-                        handleChange={handleChange}
-                    />
+                    field.type === 'dropdown' ? (
+                        <div key={field.name}>
+                            <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                            <Select
+                                labelId={`${field.name}-label`}
+                                margin="dense"
+                                id={field.name}
+                                fullWidth
+                                variant="outlined"
+                                name={field.name}
+                                value={formData[field.name] || ''}
+                                disabled={field.disabled}
+                                onChange={handleChange}
+                            >
+                                {field.options && field.options.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                    ) : (
+                        <TextField
+                            key={field.name}
+                            autoFocus
+                            margin="dense"
+                            id={field.name}
+                            label={field.label}
+                            type={field.type}
+                            fullWidth
+                            variant="outlined"
+                            name={field.name}
+                            value={formData[field.name] || ''}
+                            disabled={field.disabled}
+                            onChange={(e) => handleChange(e as SelectChangeEvent)}
+                        />
+                    )
                 ))}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={() => onSave(formData)} color="secondary">
-                    Add
-                </Button>
+                <Button onClick={handleClose} color="primary">Cancel</Button>
+                <Button onClick={() => onSave(formData)} color="secondary">Add</Button>
             </DialogActions>
         </Dialog>
     );
 };
 
 export default AddDialog;
+
+
