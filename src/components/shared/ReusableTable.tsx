@@ -12,23 +12,22 @@ import {
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
-import AddButton from "./AddButton";
-import SearchBar from "./SearchBar";
 
 interface ReusableTableProps {
-  columns;
-  rows;
-  title;
-  rowKey;
-  onAdd?: () => void;
-  onSearch?: () => void;
-  showSearchBar?: boolean;
-  showAddButton?: boolean;
-  showActiveSwitch?: boolean;
-  label?: string;
+  columns: IColumn[];
+  rows: IRow[];
+  title: string;
+  rowKey: string;
+  searchTerm?: string;
+  handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showSearchBar, onSearch , label,  showAddButton, showActiveSwitch }) => {
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, searchTerm, handleSearch }) => {
+  const filteredRows = rows.filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
+    )
+  );
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -58,9 +57,15 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
               margin: "0 2rem 0 0",
             }}
           >
-            {showSearchBar && <SearchBar label={label} onEnter={() => onSearch} />}
-            {showActiveSwitch && <SwitchBtn />}
-            {showAddButton && onAdd && <AddButton onClick={onAdd} />}
+            <TextField
+              style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
+              label="Search"
+              id="outlined-size-small"
+              size="small"
+              value={searchTerm}
+              onChange={handleSearch || (() => {})}
+            />
+            <SwitchBtn />
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -80,11 +85,11 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row: IRow) => {
+                {filteredRows.map((row: IRow) => {
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (
-                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id == 'edit' || column.id == 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
+                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
                       ))}
                     </TableRow>
                   );

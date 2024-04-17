@@ -14,7 +14,7 @@ interface FieldConfig {
     label: string;
     type?: string;
     disabled?: boolean;
-    options?: any[]; // Add options field to support dropdown menu
+    options?: any[];
 }
 
 interface EditDialogProps {
@@ -35,6 +35,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(`Field: ${name}, Value: ${value}`);
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -45,7 +46,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
             </DialogHeaderContainer>
             <DialogContent>
                 {fields && fields.map((field) => (
-                    field.type === 'dropdown' ? ( // Check if field type is dropdown
+                    field.type === 'dropdown' ? ( 
                         <Select
                             key={field.name}
                             margin="dense"
