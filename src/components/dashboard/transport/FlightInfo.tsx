@@ -10,6 +10,7 @@ import EditDialog from "../../dialog/EditDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import { getAllAirlines } from "@app_services/airlineService";
+import DeleteDialog from "@app_components/dialog/DeleteDialog";
 
 
 const columns: IColumn[] = [
@@ -33,6 +34,7 @@ const FlightInfo: React.FC = () => {
   const [currentFlight, setCurrentFlight] = useState<IFlight | null>(null);
   const [isAddFlightOpen, setIsAddFlightOpen] = useState(false);
   const [airlineOptions, setAirlineOptions] = useState([]);
+  const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
 
   const handleEditClick = (flight: IFlight) => {
     setCurrentFlight(flight);
@@ -43,6 +45,12 @@ const FlightInfo: React.FC = () => {
     setIsAddFlightOpen(true);
   };
 
+  const handleDeleteClick = (flight: IFlight) => {
+    console.log("Flight" , flight);
+    setCurrentFlight(flight);
+    setisDeleteDialogOpen(true);
+  };
+
   const fetchAndPrepareFlights = async () => {
     try {
       const aggFlight = 'airlineIds';
@@ -51,7 +59,7 @@ const FlightInfo: React.FC = () => {
         ...flight,
         _id: flight._id,
         edit: <button onClick={() => handleEditClick(flight)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
-        delete: <button onClick={() => handleDeleteFlight(flight)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDeleteClick(flight)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
       setFlights(preparedFlights);
     } catch (error) {
@@ -114,16 +122,18 @@ const loadAirlines = async () => {
     
   }
 };
-const handleDeleteFlight = async (flight) => {
-  console.log('Deleting flight:', flight);
-  try {
-    await deleteFlight(flight._id);
-    console.log('Flight deleted successfully');
-    setFlights(currentFlights => currentFlights.filter(f => f._id !== flight._id));
-  } catch (error) {
-    console.error('Failed to delete flight', error);
+const handleDeleteFlight = async () => {
+  if (currentFlight) {
+    try {
+      await deleteFlight(currentFlight._id);
+      setFlights(flights => flights.filter(b => b._id !== currentFlight._id));
+      setisDeleteDialogOpen(false);
+    } catch (error) {
+      console.error('Failed to delete bulk', error);
+    }
   }
 };
+
 
 const handleSearch = (event) => {
   setSearchTerm(event.target.value);
@@ -167,6 +177,11 @@ const handleSearch = (event) => {
           
         ]}
         onSave={addFlight}
+      />
+      <DeleteDialog
+        isOpen= {isDeleteDialogOpen}
+        handleClose={() => setisDeleteDialogOpen(false)}        
+        handleDelete={handleDeleteFlight}
       />
     </>
   );

@@ -3,10 +3,21 @@ import api from "../utils/apiUtils";
 
 export const getAllBulks = (aggType) => {
     if (aggType) {
-        return api.get(`/bulk?type=${aggType}`);
+        return api.get(`/bulk?type=${aggType}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
     } else {
-        return api.get("/bulk");
+        return api.get("/bulk")
+        .then((response) => response.data)
+        .catch((error) => error.message);
     }
+};
+
+export const createBulk = (bulkData) => {
+    return api
+        .post("/bulk", bulkData)
+        .then((response) => response.data)
+        .catch((error) => error.message);
 };
 
 export const getLastAddedBulk = (aggType) => {
@@ -39,5 +50,7 @@ export const updateBulk = async (id, bulkData) => {
 };
 
 export const deleteBulk = (id) => {
-    return api.delete(`/bulk/${id}`);
+    return api.delete(`/bulk/${id}`)
+    .then((response) => response.data)
+    .catch((error) => error.message);
 };

@@ -9,6 +9,7 @@ import { IAirline } from "../../../interfaces/IAirline";
 import EditDialog from "@app_components/dialog/EditDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
+import DeleteDialog from "@app_components/dialog/DeleteDialog";
 
 
 
@@ -25,18 +26,24 @@ const AirlineInfo: React.FC = () => {
   const [airlines, setAirlne] = useState<IRow[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [isAddAirlineOpen, setIsAddAirlineOpen] = useState(false);
   const [currentAirline, setCurrentAirline] = useState<IAirline | null>(null);
 
   const handleEditClick = (airline: IAirline) => {
     console.log("Airline" , airline);
-    setCurrentAirline(null);
+    setCurrentAirline(airline);
     setIsDialogOpen(true);
   };
   const handleAddClick = () => {
     setIsAddAirlineOpen(true);
   };
 
+  const handleDeleteClick = (airline: IAirline) => {
+    console.log("Airline" , airline);
+    setCurrentAirline(airline);
+    setisDeleteDialogOpen(true);
+  };
 
   const fetchAndPrepareAirlines = async () => {
     try {
@@ -46,7 +53,7 @@ const AirlineInfo: React.FC = () => {
         ...airline,
         _id: airline._id,
         edit: <button onClick={() => handleEditClick(airline)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
-        delete: <button onClick={() => handleDeleteAirline(airline)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDeleteClick(airline)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
        console.log('Current Airline:', currentAirline);
       setAirlne(preparedAirlines);
@@ -60,29 +67,23 @@ const AirlineInfo: React.FC = () => {
   }, []);
 
   const saveAirline = async (airlineData) => {
-    console.log('Saving airline:', airlineData);
-
+    console.log('Saving Airline:', airlineData);
     setIsDialogOpen(false);
+  try {
+    const airlineId = currentAirline?._id;
+    if (airlineId) {
+      await updateAirline(airlineId, airlineData); 
+      console.log('Airline details updated successfully');
 
-    try {
-      console.log('Saving');
-      const airlineId = currentAirline?._id;
-      console.log('Airline ID:', currentAirline);
-      if (airlineId) {
-        await updateAirline(airlineId, airlineData);
-        console.log(airlineData)
-        console.log('Airline updated successfully');
-        
-
-        fetchAndPrepareAirlines();
-      }
-      setIsDialogOpen(false);
-
-    } catch (error) {
-      console.error('Failed to update airline', error);
-
+      
+      fetchAndPrepareAirlines();
     }
-  };
+    setIsDialogOpen(false); 
+  } catch (error) {
+    console.error('Failed to update airline details', error);
+    
+  }
+};
 
   const addAirline = async (airlineData) => {
     try {
@@ -95,19 +96,22 @@ const AirlineInfo: React.FC = () => {
     }
   };
 
-  const handleDeleteAirline = async (airline) => {
-    console.log('Deleting airline:', airline);
-    try {
-      await deleteAirline(airline._id);
-      console.log('Flight deleted successfully');
-      setAirlne(currentAirline => currentAirline.filter(f => f._id !== airline._id));
-    } catch (error) {
-      console.error('Failed to delete airline', error);
+  const handleDeleteAirline = async () => {
+    if (currentAirline) {
+      try {
+        await deleteAirline(currentAirline._id);
+        setAirlne(bulks => bulks.filter(b => b._id !== currentAirline._id));
+        setisDeleteDialogOpen(false);
+      } catch (error) {
+        console.error('Failed to delete airline', error);
+      }
     }
   };
+
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+
   return (
     <>
       <ReusableTable
@@ -142,6 +146,11 @@ const AirlineInfo: React.FC = () => {
           
         ]}
         onSave={addAirline}
+      />
+      <DeleteDialog
+        isOpen= {isDeleteDialogOpen}
+        handleClose={() => setisDeleteDialogOpen(false)}        
+        handleDelete={handleDeleteAirline}
       />
     </>
   );
