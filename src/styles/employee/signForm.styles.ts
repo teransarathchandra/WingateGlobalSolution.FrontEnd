@@ -1,13 +1,18 @@
 import styled from "styled-components";
 
-const BackSection = styled.button`
-  gap: "10px";
-  background-color: transparent;
+const BackSection = styled.div`
+  position: absolute;
+  top: 35px;
+  left: 35px;
+  display: flex;
+  gap: 10px;
   border: 0cap;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const Container = styled.div`
-  display: "flex";
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh; /* Full height of the viewport */

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 //Redux
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@app_contexts/authContext";
+import { useAuthContext } from "@app_contexts/employee/empAuthContext";
 import useAxios from "@app_hooks/useAxios";
 //Schemas
 import signInSchema from "@app_schemas/signInSchema";
@@ -58,39 +58,16 @@ const EmployeeSignInBox = ({ onSignUpClick }) => {
 
   const onSubmit = (data: SignInFormData) => {
     loginEmployee(api, data);
+    console.log(auth, "Hello");
     // Navigate after successful login
-    if (!auth.user) {
+    if (auth.employee) {
       navigate("/app/employee");
     }
   };
 
-  useEffect(() => {
-    console.log(authError);
-    if (authError) {
-      Object.keys(authError).forEach((field) => {
-        setError(field as keyof SignInFormData, {
-          type: "server",
-          message: authError[field],
-        });
-      });
-    }
-  }, [authError, setError]);
-
   return (
     <>
-      <BackSection
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          position: "absolute",
-          gap: "10px",
-          top: "10px",
-          left: "10px",
-        }}
-        onClick={() => navigate("/home")}
-      >
+      <BackSection onClick={() => navigate("/home")}>
         <FontAwesomeIcon icon={faArrowLeft} />
         <p>Back</p>
       </BackSection>
