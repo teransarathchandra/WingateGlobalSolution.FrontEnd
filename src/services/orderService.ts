@@ -11,6 +11,7 @@ export const getAllOrders = (aggType) => {
         .catch((error) => error.message);
     }
 };
+
 export const getAllOrderTransport = (aggType) => {
     if (aggType) {
         return api
@@ -47,14 +48,11 @@ export const getAllOrderInfo = (aggType) => {
     }
 };
 
-
-
 export const getOrderById = (id) => {
     return api.get(`/order/${id}`)
         .then((response) => response.data)
         .catch((error) => error.message);
 };
-
 
 export const getOrderByOrderId = (orderId) => {
     return api.get(`/order/byOrderId/${orderId}`)
@@ -73,8 +71,6 @@ export const updateOrder = (id, orderData) => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
-
-
 
 export const deleteOrder = (id) => {
     return api.delete(`/order/${id}`)
