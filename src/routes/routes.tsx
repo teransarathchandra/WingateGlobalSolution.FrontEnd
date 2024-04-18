@@ -32,6 +32,9 @@ const Airline = lazy(() => import("@app_pages/transport/Airline"));
 //Bulk Details
 const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 
+//Warehouse
+const Warehouse = lazy(() => import("@app_pages/dashboard/warehouse/WarehouseAvailability"));
+
 //Assign Details
 const AssignDetails = lazy(() => import("@app_pages/dashboard/warehouse/AssignDetails"));
 
@@ -80,6 +83,11 @@ export const privateRoutes = [
     {
         path: "/app/order-aggregation",
         component: OrderAggregation,
+        isPrivate: true,
+    },
+    {
+        path: "/app/warehouse",
+        component: Warehouse,
         isPrivate: true,
     },
     {

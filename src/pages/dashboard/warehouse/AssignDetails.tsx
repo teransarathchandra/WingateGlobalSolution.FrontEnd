@@ -78,7 +78,7 @@ const BulkDetails = () => {
 
     return (
         <>
-            <HeaderDiv>Warehouse Assign Details</HeaderDiv>
+            <HeaderDiv>Driver Assign Details</HeaderDiv>
 
             <Form onSubmit={handleSubmit(handleUpdate)}>
                 Assign Details
