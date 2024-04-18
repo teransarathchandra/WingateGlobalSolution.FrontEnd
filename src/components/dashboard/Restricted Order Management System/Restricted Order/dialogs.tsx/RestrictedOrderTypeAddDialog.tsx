@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DialogContent, TextField, Checkbox, IconButton, FormControlLabel, Button, Dialog, AppBar, Toolbar, Typography, InputLabel, Select, MenuItem } from '@mui/material';
+import { DialogContent, TextField, Checkbox, IconButton, FormControlLabel, Button, Dialog, AppBar, Toolbar, Typography, InputLabel, Select, MenuItem, FormHelperText } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import restrictedOrderTypeSchema from '@app_schemas/restrictedOrderTypeSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,23 +14,37 @@ interface AddDialogProps {
     handleClose: () => void;
     onAdd: (data: any) => void;
 }
+interface FormDataConfig {
+    key;
+    label: string;
+    type: 'string' | 'number' | 'boolean';
+    defaultValue: '' | null | false | true;
+}
+
 
 const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose, onAdd }) => {
-    const [formData, setFormData] = useState({
-        sendingCountryId: '',
-        receivingCountryId: '',
-        categoryId: '',
-        maxQuantity: null,
-        exportLicense: false,
-        importPermit: false,
-        safetyDataSheets: false,
-        phytosanitaryCertificate: false,
-        dangerousGoodsDeclaration: false
-    });
+
+    const formFields: FormDataConfig[] = [
+        { key: 'sendingCountryId', label: 'Sending Country', type: 'string', defaultValue: '' },
+        { key: 'receivingCountryId', label: 'Receiving Country', type: 'string', defaultValue: '' },
+        { key: 'categoryId', label: 'Category', type: 'string', defaultValue: '' },
+        { key: 'maxQuantity', label: 'Maximum Quantity', type: 'number', defaultValue: null },
+        { key: 'exportLicense', label: 'Export License', type: 'boolean', defaultValue: false },
+        { key: 'importPermit', label: 'Import Permit', type: 'boolean', defaultValue: false },
+        { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', defaultValue: false },
+        { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', defaultValue: false },
+        { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', defaultValue: false }
+    ];
+    const defaultFormData = Object.fromEntries(formFields.map(field => [field.key, field.defaultValue]));
+    const [formData, setFormData] = useState(defaultFormData);
     const [categories, setCategories] = useState<ICategory[]>([]);
     const [countries, setCountries] = useState<ICountry[]>([]);
 
-    const { register, handleSubmit } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
         resolver: yupResolver(restrictedOrderTypeSchema),
     });
 
@@ -50,8 +64,10 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
     };
 
     const handleAdd = async (formData) => {
+        debugger;
+        console.log(formData)
         onAdd(formData);
-        handleClose;
+        handleClose();
     };
 
     const fetchCategories = async () => {
@@ -90,56 +106,58 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <form onSubmit={handleSubmit(handleAdd, handleClose)}>
+            <form onSubmit={handleSubmit(handleAdd, (errors) => {
+                debugger;
+                console.log('Form data:', formData);
+                console.log('Form errors:', errors);
+            })}>
                 <DialogContent>
-                    {Object.keys(formData).map((key) => (
-                        typeof formData[key] === 'boolean' ? (
+                    {formFields.map(field => (
+                        field.type === 'boolean' ? (
                             <FormControlLabel
-                                key={key}
+                                key={field.key}
                                 style={{ display: 'block' }}
                                 control={
                                     <Checkbox
-                                        checked={formData[key]}
+                                    {...register(field.key)}
+                                        checked={!!formData[field.key]}
                                         onChange={handleChange}
-                                        name={key}
+                                        name={field.key}
                                     />
                                 }
-                                label={key}
+                                label={field.label}
                             />
-                        ) : key === "maxQuantity" ? (
+                        ) : field.key === "maxQuantity" ? (
 
-                            <TextField
-                                key={key}
+                            <><TextField
+                                key={field.key}
                                 autoFocus
                                 margin="dense"
-                                id={key}
-                                label={key}
+                                id={field.key}
+                                label={field.label}
                                 type="number"
                                 fullWidth
                                 variant="outlined"
-                                name={key}
-                                value={formData[key]}
-                                onChange={handleChange}
-                            />
+                                {...register(field.key)}
+                                error={!!errors[field.key]}
+                                value={formData[field.key]}
+                                onChange={handleChange} /><FormHelperText error={!!errors[field.key]}>{errors[field.key]?.message as string}</FormHelperText></>
 
-                        ) : key === "categoryId" ? (
+
+                        ) : field.key === "categoryId" ? (
                             <>
                                 <div>
-                                    <InputLabel id={key}>Category</InputLabel>
+                                    <InputLabel id={field.key}>Category</InputLabel>
                                     <Select
-                                        // placeholder={key}
-                                        // style={{
-                                        //     marginBottom: "10px",
-                                        //     height: "50px",
-                                        // }}
-                                        key={key}
+                                        key={field.key}
                                         autoFocus
-                                        id={key}
+                                        id={field.key}
                                         fullWidth
                                         type="String"
                                         variant="outlined"
-                                        value={formData[key]}
-                                        {...register(key)}
+                                        value={formData[field.key]}
+                                        {...register(field.key)}
+                                        error={!!errors[field.key]}
                                         onChange={handleChange}
                                     >
                                         {categories.map((category) => (
@@ -148,30 +166,32 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
                                             </MenuItem>
                                         ))}
                                     </Select>
+                                    <FormHelperText error={!!errors[field.key]}>{errors[field.key]?.message as string}</FormHelperText>
                                 </div>
                             </>
-                        ) : (
+                        ) : (field.key === "sendingCountryId" || field.key === "receivingCountryId") && (
                             <>
                                 <div>
-                                    <InputLabel id={key}>
-                                        {key === 'sendingCountryId' ? 'Sending From:' :
-                                            key === 'receivingCountryId' ? 'Receiving To:' : ''}
+                                    <InputLabel id={field.key}>
+                                        {field.key === 'sendingCountryId' ? 'Sending From:' :
+                                            field.key === 'receivingCountryId' ? 'Receiving To:' : ''}
                                     </InputLabel>
                                     <Select
-                                        defaultValue={formData[key]}
+                                        defaultValue={formData[field.key]}
                                         // placeholder={key}
                                         // style={{
                                         //     marginBottom: "10px",
                                         //     height: "50px",
                                         // }}
-                                        key={key}
+                                        key={field.key}
                                         autoFocus
-                                        id={key}
+                                        id={field.key}
                                         fullWidth
                                         type="String"
                                         variant="outlined"
-                                        name={key}
-                                        value={formData[key]}
+                                        value={formData[field.key]}
+                                        {...register(field.key)}
+                                        error={!!errors[field.key]}
                                         onChange={handleChange}
                                     >
                                         {countries.map((country) => (
@@ -180,13 +200,15 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
                                             </MenuItem>
                                         ))}
                                     </Select>
+                                    <FormHelperText error={!!errors[field.key]}>{errors[field.key]?.message as string}</FormHelperText>
+
                                 </div>
                             </>
                         )
                     ))}
                 </DialogContent>
                 <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
-                    <Button type="submit" onClick={() => handleAdd(formData)} color="secondary">Add</Button>
+                    <Button type="submit" color="secondary">Add</Button>
                 </div>
             </form>
         </Dialog>

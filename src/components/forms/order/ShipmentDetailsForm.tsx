@@ -73,10 +73,11 @@ const ShipmentDetailsForm = ({ goNext }) => {
   // const [selectedPackageType, setSelectedPackageType] = useSessionStorage('order-package-type-id');
 
   const [itemSubmitted, setItemSubmitted] = useSessionStorage('order-item-submitted');
-  const [itemId, setItemId] = useSessionStorage('order-itemId');
+  const [itemObjectId, setItemObjectId] = useSessionStorage('order-item-object-id');
+  const [, setItemId] = useSessionStorage('order-item-id');
   const [isPickupOrder, setIsPickupOrder] = useSessionStorage('order-is-pickup-order');
   const [pickupOrderDate, setPickupOrderDate] = useSessionStorage('order-pickup-order-date');
-  const [ , setRestrictedOrderType] = useSessionStorage('restricted-order-order-type');
+  const [, setRestrictedOrderType] = useSessionStorage('restricted-order-order-type');
 
   // Set the initial value for the date picker once the component has mounted
   // useEffect(() => {
@@ -127,11 +128,13 @@ const ShipmentDetailsForm = ({ goNext }) => {
     }
 
     console.log("Shipment Data", data);
+    console.log("setItemId", data.itemId);
+    setItemId(data.itemId);
 
     try {
       let response;
-      if (itemSubmitted && itemId) {
-        response = await updateItem(itemId, data);
+      if (itemSubmitted && itemObjectId) {
+        response = await updateItem(itemObjectId, data);
       } else {
         response = await createItem(data);
       }
@@ -139,7 +142,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
       const responseData = await response.data;
       if (response.status === 200 || response.status === 201) {
         if (!itemSubmitted) {
-          setItemId(responseData._id); // Assuming the response contains the ID of the created item
+          setItemObjectId(responseData._id); // Assuming the response contains the ID of the created item
           setItemSubmitted(true);
         }
 
@@ -155,12 +158,12 @@ const ShipmentDetailsForm = ({ goNext }) => {
       console.error('Error submitting shipment data:', error);
     }
   };
- 
+
   const retrieveSessionStorageValues = async () => {
     try {
       console.log("Retrieved Values:", { receivingCode, sendingCode, shipmentDetails });
 
-      const catId = watch("categoryId" , false)
+      const catId = watch("categoryId", false)
 
       const filteringData = {
         receivingCountryCode: receivingCode,
@@ -170,8 +173,8 @@ const ShipmentDetailsForm = ({ goNext }) => {
       const response = await filterRestrictedOrders(filteringData);
       console.log("Is restricted :  ", response);
 
-      if(response.data.isRestrictedOrderFound == true){
-        const restrictedOrderType = response.data.data; 
+      if (response.data.isRestrictedOrderFound == true) {
+        const restrictedOrderType = response.data.data;
         setRestrictedOrderType(restrictedOrderType)
       }
       return response.data.isRestrictedOrderFound;

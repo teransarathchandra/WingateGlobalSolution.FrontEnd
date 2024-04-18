@@ -76,13 +76,13 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, onS
     try {
       const response = await deleteRestrictedOrder(ResOrderId);
       console.log('Order deleted successfully:', response);
-      setIsEditDialogOpen(false);
-      isOpen = false;
+      handleViewClose();
+      // setIsEditDialogOpen(false);
+      // isOpen = false;
     } catch (error) {
       console.error('Failed to update order', error);
     }
-    window.location.reload();
-  };
+   };
 
 
   const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
