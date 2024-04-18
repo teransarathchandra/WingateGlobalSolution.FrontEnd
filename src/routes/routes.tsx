@@ -4,12 +4,14 @@ import { lazy } from "react";
 const Home = lazy(() => import("@app_pages/Home"));
 
 //Verify User
-const VerifyEmail = lazy(() => import("@app_pages/customer/verify/VerifyEmail"));
+const VerifyEmail = lazy(() => import("@app_pages/user/verify/VerifyEmail"));
 
 //Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
-const Category = lazy(() => import("../pages/dashboard/category/Category"));
-const RestrictedOrderType = lazy(() => import("../pages/dashboard/restrictedOrder/RestrictedOrderType"));
+const Category = lazy(() => import("@app_pages/dashboard/category/Category"));
+const Country = lazy(() => import("@app_pages/dashboard/country/Country"));
+const RestrictedOrderType = lazy(() => import("@app_pages/dashboard/restrictedOrder/RestrictedOrderType"));
+const TrackOrder = lazy(() => import("@app_pages//customer/order/TrackOrder"));
 
 
 //Order Dashboard
@@ -22,10 +24,23 @@ const User = lazy(() => import("@app_pages/dashboard/user/User"));
 const EmployeeCheckpoint = lazy(() => import("@app_pages/employee/signin/Employee_SignIn"));
 
 //Bulk
-const Bulk = lazy(() => import("@app_pages/Bulk"));
+const Bulk = lazy(() => import("@app_pages/transport/Bulk"));
 
 //Flight
-const Flight = lazy(() => import("@app_pages/Flight"));
+const Flight = lazy(() => import("@app_pages/transport/Flight"));
+
+//Airline
+const Airline = lazy(() => import("@app_pages/transport/Airline"));
+
+
+//Bulk Details
+const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
+
+//Order Aggregation
+const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregation"));
+
+//Order Info
+const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -45,10 +60,9 @@ export const privateRoutes = [
         component: PlaceOrder,
         isPrivate: true,
     },
-    //Dashboard
     {
-        path: "/app/",
-        component: Home,
+        path: "/track-order",
+        component: TrackOrder,
         isPrivate: true,
     },    
     {
@@ -72,18 +86,48 @@ export const privateRoutes = [
     {
         path: "/app/bulk",
         component: Bulk,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
         path: "/app/flight",
         component: Flight,
-        isPrivate: false,
+        isPrivate: true,
     },
     {
-        path: "/app/crm",
-        component: Customer,
-        isPrivate: false,
+        path: "/app/airline",
+        component: Airline,
+        isPrivate: true,
     },
+    {
+        path: "/app/bulk-details",
+        component: BulkDetails,
+        isPrivate: true,
+    },
+    {
+        path: "/app/order-aggregation",
+        component: OrderAggregation,
+        isPrivate: true,
+    },
+    {
+        path: "/app/restricted-order-type",
+        component: RestrictedOrderType,
+        isPrivate: true,
+    },
+    {
+        path: "/app/category",
+        component: Category,
+    }, path: "/app/crm",
+    component: Customer,
+    isPrivate: false,
+    {
+        path: "*",
+        component: NotFound,
+    },
+    {
+        path: "/app/order-info",
+        component: OrderInfo,
+        isPrivate: true,
+    }
 ];
 
 export const publicRoutes = [

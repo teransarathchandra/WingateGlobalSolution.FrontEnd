@@ -1,4 +1,4 @@
-import FlightInfo from "../components/dashboard/transport/FlightInfo"
+import FlightInfo from "../../components/dashboard/transport/FlightInfo"
 
 
 const Flight = () => {

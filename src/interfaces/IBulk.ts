@@ -1,16 +1,18 @@
 export interface IBulk {
     _id: string;
+    bulkId: string;
     currentLocation: string;
     arrivedTime: string;
+    destinationCountry: string;
     status: string;
-    vehicleId: string;
+    flightId: string;
+    masterAirwayBillId: string;
     createdAt: string;
     updatedAt: string;
-    __v: number;
   }
 
   export interface IApiResponse {
     status: number;
-    data: IBulk[];
+    data: any//IBulk[];
     message: string;
 }

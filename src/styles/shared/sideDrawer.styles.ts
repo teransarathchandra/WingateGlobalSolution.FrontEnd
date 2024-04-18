@@ -6,9 +6,10 @@ export const Drawer = styled.div`
   left: 0;
   display: flex;
   flex-direction: column;
-  background-color: #fffbea; /* Adjust to match your exact color */
-  width: 300px; /* Adjust width as needed */
+  background-color: #e1bd05;
+  width: 300px;
   min-height: 100vh;
+  z-index: 2;
 `;
 
 export const HeaderImage = styled.img`
@@ -23,35 +24,45 @@ export const HeaderImage = styled.img`
 export const Step = styled.div<{ isActive: boolean }>`
   display: flex;
   align-items: center;
-  padding: 10px 20px; /* Adjust padding as needed */
+  padding: 10px 20px;
+  column-gap: 10px;
   cursor: pointer;
-  color: ${({ isActive }) =>
-    isActive ? "#FFFFFF" : "#C1C1C1"}; /* Adjust active/non-active colors */
-  background-color: ${({ isActive }) =>
-    isActive ? "#F0A500" : "transparent"}; /* Adjust active background color */
+  color: #204DAB;
+  font-weight: ${({ isActive }) =>
+    isActive
+      ? "bold"
+      : "400"};
+  /* color: ${({ isActive }) =>
+    isActive ? "#204DAB" : "#204DAB"}; */
+  /* background-color: ${({ isActive }) =>
+    isActive ? "#F0A500" : "transparent"};  */
 
   &:hover {
-    background-color: #f0a500; /* Hover color, adjust as needed */
-    color: #ffffff;
+    /* background-color: #f0a500; */
+    font-weight: bold;
   }
 `;
 
 export const StepIndicator = styled.div<{ isActive: boolean }>`
-  height: ${({ isActive }) => isActive ? "30px" : "15px"};
-  width: ${({ isActive }) => isActive ? "30px" : "15px"}; /* Adjust as needed */
-  margin: ${({ isActive }) => isActive ? "0px" : "0 7.5px"}; /* Adjust as needed */
+  height: ${({ isActive }) => isActive ? "25px" : "15px"};
+  width: ${({ isActive }) => isActive ? "25px" : "15px"};
+  margin: ${({ isActive }) => isActive ? "0 2px" : "0 7.5px"};
   border-radius: 50%;
   background-color: ${({ isActive }) =>
     isActive
       ? "#0F9D58"
-      : "#C1C1C1"}; /* Adjust active/non-active indicator colors */
-  margin-right: 10px; /* Adjust as needed */
+      : "#ffffff"};
+  margin-right: 10px;
   display: flex;
   justify-content: center;
+  position: relative;
   &::before {
-    content: ' ';
-    padding: 10px 0;
-    height: 10px;
-    background-color: #fff;
+    content: "";
+    position: absolute;
+    margin: -15px 0;
+    height: 50px;
+    width: 1px;
+    z-index: ${({ isActive }) => isActive ? -1 : 1 };
+    background-color: #ffffff;
   }
 `;

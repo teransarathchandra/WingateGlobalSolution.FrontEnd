@@ -4,9 +4,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../../shared/ReusableTable";
-import { getAllOrders, updateOrder } from "@app_services/orderService";
+import { deleteOrder, getAllOrders, updateOrder } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import EditDialog from "../../../dialog/EditDialog";
+import DeleteDialog from "@app_components/dialog/DeleteDialog";
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
@@ -19,23 +20,31 @@ const columns: IColumn[] = [
 ];
 
 const OrderInfo: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [orders, setOrders] = useState<IRow[]>([]);
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentOrder, setCurrentOrder] = useState<IOrder | null>(null);
+  const [currentOrder, setCurrentOrder] = useState<IOrder | null>(null); 
+  const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false); 
 
   const handleEditClick = (order: IOrder) => {
     setCurrentOrder(order);
     setIsDialogOpen(true);
   };
 
+  const handleDeleteClick = (order: IOrder) => {
+    console.log("Order" , order);
+    setCurrentOrder(order);
+    setisDeleteDialogOpen(true);
+  };
+
   const fetchAndPrepareOrders = async () => {
     try {
-      const response = await getAllOrders();
-      const preparedOrders: IRow[] = response.data.data.map((order: IOrder) => ({
+      const aggType = "orderIds";
+      const response = await getAllOrders(aggType);
+      const preparedOrders: IRow[] = response.data.map((order: IOrder) => ({
         ...order,
         edit: <button onClick={() => handleEditClick(order)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
-        delete: <button onClick={() => deleteOrder(order)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDeleteClick(order)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
       setOrders(preparedOrders);
     } catch (error) {
@@ -68,10 +77,20 @@ const OrderInfo: React.FC = () => {
     }
   };
 
-  const deleteOrder = (order) => {
-    console.log('Deleting order:', order);
-    setIsDialogOpen(false);
-    // Implement actual delete logic here
+  const handleDeleteOrder = async () => {
+    if (currentOrder) {
+      try {
+        await deleteOrder(currentOrder._id);
+        setOrders(orders => orders.filter(orders => orders._id !== currentOrder._id));
+        setisDeleteDialogOpen(false);
+      } catch (error) {
+        console.error('Failed to delete order', error);
+      }
+    }
+  };
+   
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -81,6 +100,8 @@ const OrderInfo: React.FC = () => {
         rows={orders}
         title="Order Management"
         rowKey="orderID"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <EditDialog
         isOpen={isDialogOpen}
@@ -96,6 +117,11 @@ const OrderInfo: React.FC = () => {
         ]}
         onSave={saveOrder}
         onDelete={deleteOrder}
+      />
+      <DeleteDialog
+        isOpen= {isDeleteDialogOpen}
+        handleClose={() => setisDeleteDialogOpen(false)}        
+        handleDelete={handleDeleteOrder}
       />
     </>
   );

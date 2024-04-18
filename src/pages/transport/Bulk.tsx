@@ -1,4 +1,4 @@
-import BulkInfo from "../components/dashboard/transport/BulkInfo"
+import BulkInfo from "../../components/dashboard/transport/BulkInfo"
 
 
 const Bulk = () => {

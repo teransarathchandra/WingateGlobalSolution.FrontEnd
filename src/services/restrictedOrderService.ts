@@ -2,25 +2,32 @@ import api from "../utils/apiUtils";
 
 export const getAllRestrictedOrders = (aggType) => {
     if (aggType) {
-        return api.get(`/restrictedOrder?type=${aggType}`);
+        return api.get(`/restrictedOrderType?type=${aggType}`);
     } else {
-        return api.get("/restrictedOrder");
+        return api.get("/restrictedOrderType");
     }
-    
+
 };
 
 export const getRestrictedOrderById = (id) => {
-    return api.get(`/restrictedOrder/${id}`);
+    return api.get(`/restrictedOrderType/${id}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
 };
 
 export const createRestrictedOrder = (restrictedOrderData) => {
-    return api.post("/restrictedOrder", restrictedOrderData);
+    return api.post("/restrictedOrderType", restrictedOrderData);
 };
 
 export const updateRestrictedOrder = (id, restrictedOrderData) => {
-    return api.patch(`/restrictedOrder/${id}`, restrictedOrderData);
+    return api.patch(`/restrictedOrderType/${id}`, restrictedOrderData);
 };
 
 export const deleteRestrictedOrder = (id) => {
-    return api.delete(`/restrictedOrder/${id}`);
+    return api.delete(`/restrictedOrderType/${id}`);
 };
+
+export const filterRestrictedOrders = (filteringData) => {
+    return api.post(`/restrictedOrderType/filter`, filteringData);
+};
+
