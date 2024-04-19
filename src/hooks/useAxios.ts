@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import axios from "axios"; // Adjust the import path as necessary
-import { useAuthContext } from "@app_contexts/authContext";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 //import { useEmpAuthContext } from "@app_contexts/employee/empAuthContext";
 import toastUtil from "@app_utils/toastUtil";
 
@@ -26,16 +26,14 @@ axiosInstance.interceptors.response.use(
 );
 
 const useAxios = () => {
-  const { token } = useAuthContext();
+  const { activeToken } = useActiveAuthContext();
   // Dynamically set the Authorization header for outgoing requests.
   useEffect(() => {
     const requestInterceptor = axiosInstance.interceptors.request.use(
       (config) => {
-        if (config.url) {
-        }
-
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
+        if (activeToken) {
+          console.log("Test");
+          config.headers.Authorization = `Bearer ${activeToken}`;
         }
         return config;
       }
@@ -45,7 +43,7 @@ const useAxios = () => {
       // Eject the interceptor when the component unmounts or the token changes.
       axiosInstance.interceptors.request.eject(requestInterceptor);
     };
-  }, [token]);
+  }, [activeToken]);
 
   return axiosInstance;
 };

@@ -1,24 +1,25 @@
 import api from "@app_utils/apiUtils";
+import { debug } from "util";
 
 const getAccessToken = () => {
-  return JSON.parse(sessionStorage.getItem("app-token") || "");
+  return JSON.parse(sessionStorage.getItem("app-active-token") || "");
 };
 
 const setAccessToken = (token) => {
-  sessionStorage.setItem("app-token", JSON.stringify(token));
+  sessionStorage.setItem("app-active-token", JSON.stringify(token));
 };
 
 const getRefreshToken = () => {
-  return JSON.parse(sessionStorage.getItem("app-refresh-token") || "");
+  return JSON.parse(sessionStorage.getItem("app-active-refresh-token") || "");
 };
 
 const setRefreshToken = (token) => {
-  sessionStorage.setItem("app-refresh-token", JSON.stringify(token));
+  sessionStorage.setItem("app-active-refresh-token", JSON.stringify(token));
 };
 
 const clearTokens = () => {
-  sessionStorage.removeItem("app-token");
-  sessionStorage.removeItem("app-refresh-token");
+  sessionStorage.removeItem("app-active-token");
+  sessionStorage.removeItem("app-active-refresh-token");
 };
 
 const refreshToken = async () => {

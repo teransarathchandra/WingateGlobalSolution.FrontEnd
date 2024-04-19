@@ -6,9 +6,9 @@ interface AuthContextType {
   employeeToken: string | null;
   employeeRefreshToken: string | null;
   setEmployee: (employee: IEmployee | null) => void;
-  setToken: (employeeToken: string | null) => void;
-  setRefreshToken: (employeeToken: string | null) => void;
-  logout: () => void;
+  setEmployeeToken: (employeeToken: string | null) => void;
+  setEmployeeRefreshToken: (employeeToken: string | null) => void;
+  logoutEmployee: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -16,30 +16,30 @@ const AuthContext = createContext<AuthContextType>({
   employeeToken: null,
   employeeRefreshToken: null,
   setEmployee: () => {},
-  setToken: () => {},
-  setRefreshToken: () => {},
-  logout: () => {},
+  setEmployeeToken: () => {},
+  setEmployeeRefreshToken: () => {},
+  logoutEmployee: () => {},
 });
 
-export const AuthEmpContextProvider = ({
+export const AuthEmployeeContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const [employee, setEmployee] = useSessionStorage("app-employee");
-  const [employeeToken, setToken] = useSessionStorage("app-emp-token");
-  const [employeeRefreshToken, setRefreshToken] = useSessionStorage(
+  const [employee, setEmployee] = useSessionStorage("app-emp");
+  const [employeeToken, setEmployeeToken] = useSessionStorage("app-emp-token");
+  const [employeeRefreshToken, setEmployeeRefreshToken] = useSessionStorage(
     "app-emp-refresh-token"
   );
 
-  const logout = () => {
-    sessionStorage.removeItem("app-employee");
+  const logoutEmployee = () => {
+    sessionStorage.removeItem("app-emp");
     sessionStorage.removeItem("app-emp-token");
     sessionStorage.removeItem("app-emp-refresh-token");
 
     setEmployee(null);
-    setToken(null);
-    setRefreshToken(null);
+    setEmployeeToken(null);
+    setEmployeeRefreshToken(null);
   };
 
   return (
@@ -48,10 +48,10 @@ export const AuthEmpContextProvider = ({
         employee,
         setEmployee,
         employeeToken,
-        setToken,
+        setEmployeeToken,
         employeeRefreshToken,
-        setRefreshToken,
-        logout,
+        setEmployeeRefreshToken,
+        logoutEmployee,
       }}
     >
       {children}
@@ -59,4 +59,4 @@ export const AuthEmpContextProvider = ({
   );
 };
 
-export const useEmpAuthContext = () => useContext(AuthContext);
+export const useEmployeeAuthContext = () => useContext(AuthContext);

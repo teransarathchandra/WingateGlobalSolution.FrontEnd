@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import logo from "@app_assets/images/logo.png";
 
 //Hooks + Effects
-import { useEmpAuthContext } from "@app_contexts/employee/empAuthContext";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useEmpAuth from "@app_hooks/employee/useEmpAuth";
@@ -49,8 +49,12 @@ const EmployeeSignInBox = () => {
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
   const [signInAttempted, setSignInAttempted] = useState(false);
-  const { setEmployee, setToken, setRefreshToken, logout } =
-    useEmpAuthContext();
+  const {
+    setEmployee,
+    setEmployeeToken,
+    setEmployeeRefreshToken,
+    logoutEmployee,
+  } = useEmployeeAuthContext();
   const { loginEmployee, auth } = useEmpAuth();
   const api = useAxios();
   const navigate = useNavigate();
@@ -58,14 +62,21 @@ const EmployeeSignInBox = () => {
   useEffect(() => {
     if (auth.employee && auth.employee.accessToken && signInAttempted) {
       setEmployee(auth.employee);
-      setToken(auth.employee.accessToken);
-      setRefreshToken(auth.employee.refreshToken);
+      setEmployeeToken(auth.employee.accessToken);
+      setEmployeeRefreshToken(auth.employee.refreshToken);
+      console.log("Init Data", auth.employee);
       navigate("/app/order");
     }
-  }, [auth.employee, navigate, setRefreshToken, setToken, setEmployee]);
+  }, [
+    auth.employee,
+    navigate,
+    setEmployeeRefreshToken,
+    setEmployeeToken,
+    setEmployee,
+  ]);
 
   const onSubmit = async (data: SignInFormData) => {
-    logout();
+    logoutEmployee();
     setSignInAttempted(true);
     await loginEmployee(api, data);
   };

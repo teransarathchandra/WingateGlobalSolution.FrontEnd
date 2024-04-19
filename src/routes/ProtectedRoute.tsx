@@ -5,29 +5,41 @@ import toastUtil from "@app_utils/toastUtil";
 // import { useAuth } from '@app_contexts/authContext';
 import { useEffect } from "react";
 // import CommonLoading from '@app_components/loader/CommonLoading';
-import { useAuthContext } from "@app_contexts/authContext";
-import { useEmpAuthContext } from "@app_contexts/employee/empAuthContext";
+import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 
 const ProtectedRoute = ({ isEmployeRoute, children }) => {
-  const { user, token } = useAuthContext();
-  const { employee, employeeToken } = useEmpAuthContext();
+  const { setActiveUser, setActiveToken, setActiveRefreshToken } =
+    useActiveAuthContext();
+
+  const { user, userToken, userRefreshToken } = useUserAuthContext();
+  const { employee, employeeToken, employeeRefreshToken } =
+    useEmployeeAuthContext();
 
   const location = useLocation();
 
   useEffect(() => {
-    console.log("Test", employee, user, isEmployeRoute);
     if (isEmployeRoute) {
-      console.log("Test employee route");
-      if (!employee) {
+      console.log("route access: employee");
+      if (!employee || !employeeToken) {
         toastUtil.error("Please login before accessing this page.");
+      } else {
+        setActiveUser(employee);
+        setActiveToken(employeeToken);
+        setActiveRefreshToken(employeeRefreshToken);
       }
     } else {
-      console.log("Test user route");
-      if (!user || !token) {
+      console.log("route access: user");
+      if (!user || !userToken) {
         toastUtil.error("You are not logged in. Please log in to continue.");
+      } else {
+        setActiveUser(user);
+        setActiveToken(userToken);
+        setActiveRefreshToken(userRefreshToken);
       }
     }
-  }, [user, token, employee, employeeToken, location]);
+  }, [user, userToken, employee, employeeToken, location]);
 
   if (isEmployeRoute) {
     return employee && employeeToken ? (
@@ -36,7 +48,7 @@ const ProtectedRoute = ({ isEmployeRoute, children }) => {
       <Navigate to="/emp-checkpoint" replace />
     );
   } else {
-    return user && token ? children : <Navigate to="/" replace />;
+    return user && userToken ? children : <Navigate to="/" replace />;
   }
 };
 

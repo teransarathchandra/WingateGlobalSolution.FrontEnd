@@ -11,15 +11,15 @@ import {
   loginSuccess,
   employeeLoginSuccess,
 } from "@app_redux/actions/authActions";
-import { useAuthContext } from "@app_contexts/authContext";
-import { useEmpAuthContext } from "@app_contexts/employee/empAuthContext";
+import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import UserDrawer from "@app_components/shared/UserDrawer";
 import { UserDrawerContainer } from "@app_styles/shared/userDrawer.styles";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { user } = useAuthContext();
-  const { employee } = useEmpAuthContext();
+  const { user } = useUserAuthContext();
+  const { employee } = useEmployeeAuthContext();
 
   useEffect(() => {
     if (user) {
