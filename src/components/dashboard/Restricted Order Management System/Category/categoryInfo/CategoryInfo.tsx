@@ -4,9 +4,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "../../../../../interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
-import { getAllCategory, updateCategory, deleteCategory } from "../../../../../services/categoryService";
+import { createCategory, getAllCategory, updateCategory, deleteCategory } from "../../../../../services/categoryService";
 import { ICategory } from "../../../../../interfaces/ICategory";
 import EditDialog from "../../../../dialog/EditDialog";
+import AddCategoryForm from "../dialogs/CategoryAddDialog";
 
 const columns: IColumn[] = [
   { id: "categoryId", label: "Category ID", numeric: false, disablePadding: true },
@@ -21,7 +22,13 @@ const CategoryInfo: React.FC = () => {
   const [category, setCategory] = useState<IRow[]>([]);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<ICategory | null>(null);
+  const [isAddCategoryOpen, setAddCategoryOpen] = useState(false);
 
+  useEffect(() => {
+    fetchAndPrepareCategory();
+  }, []);
+
+  
   const handleEditClick = (category: ICategory) => {
     setCurrentCategory(category);
     saveCategory(category);
@@ -29,7 +36,27 @@ const CategoryInfo: React.FC = () => {
   };
   const handleClose = () => {
     setEditDialogOpen(false);
+    setAddCategoryOpen(false);
+    fetchAndPrepareCategory();
   };
+  const handleAddClick = () => {
+    setAddCategoryOpen(true);
+  };
+  const handleDelete = (countryId) => {
+    handleDeleteCategory(countryId)
+    fetchAndPrepareCategory();
+  };
+  
+  const handleAddCategory = async (category: ICategory) => {
+    try {
+      createCategory(category);
+      fetchAndPrepareCategory();
+
+    } catch (error) {
+      console.error('Failed to fetch categories', error);
+    }
+  };
+
 
   const fetchAndPrepareCategory = async () => {
     try {
@@ -37,7 +64,7 @@ const CategoryInfo: React.FC = () => {
       const preparedCategory: IRow[] = response.data.map((category: ICategory) => ({
         ...category,
         edit: <button onClick={() => handleEditClick(category)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
-        delete: <button onClick={() => handleDeleteCategory(category?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDelete(category?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
       setCategory(preparedCategory);
     } catch (error) {
@@ -45,13 +72,9 @@ const CategoryInfo: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAndPrepareCategory();
-  }, []);
-
   const saveCategory = async (categoryData) => {
     console.log('Saving category:', categoryData);
-    setEditDialogOpen(false);
+    
     try {
       const categoryId = currentCategory?._id;
       if (categoryId) {
@@ -64,9 +87,9 @@ const CategoryInfo: React.FC = () => {
         await updateCategory(categoryId, data);
         console.log('category updated successfully');
 
-        fetchAndPrepareCategory();
+        handleClose();
       }
-      setEditDialogOpen(false);
+      
     } catch (error) {
       console.error('Failed to update category', error);
     }
@@ -96,8 +119,18 @@ const CategoryInfo: React.FC = () => {
         rows={category}
         title="Category"
         rowKey="categoryID"
+        onAdd={handleAddClick}
+        showSearchBar={true}
+        showAddButton={true}
+        label="Search"
+      //onSearch={handleSearch}
       />
-      {<EditDialog
+      <AddCategoryForm
+        onAdd={handleAddCategory}
+        isOpen={isAddCategoryOpen}
+        handleClose={handleClose}
+      />
+      <EditDialog
         isOpen={isEditDialogOpen}
         handleClose={() => setEditDialogOpen(false)}
         entity={currentCategory}
@@ -109,7 +142,7 @@ const CategoryInfo: React.FC = () => {
         ]}
         onSave={saveCategory}
         onDelete={deleteCategory}
-      />}
+      />
     </>
   );
 };
