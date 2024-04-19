@@ -17,7 +17,7 @@ interface ILoginCredentials {
 const useEmpAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, employee, error, loading } = useSelector(
+  const { employee, error, loading } = useSelector(
     (state: IRootState) => state.auth
   );
 
@@ -46,7 +46,7 @@ const useEmpAuth = () => {
     loginEmployee,
     registerEmployee,
     logoutEmployee,
-    auth: { user, employee, error, loading },
+    auth: { employee, error, loading },
   };
 };
 

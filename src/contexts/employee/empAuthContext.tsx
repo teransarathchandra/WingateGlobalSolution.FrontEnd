@@ -1,34 +1,34 @@
 import { createContext, useContext } from "react";
 import useSessionStorage from "@app_hooks/useSessionStorage";
-import IUser from "@app_interfaces/IUser";
+import IEmployee from "@app_interfaces/IEmployee";
 interface AuthContextType {
-  employee: IUser | null;
-  token: string | null;
-  refreshToken: string | null;
-  setEmployee: (employee: IUser | null) => void;
-  setToken: (token: string | null) => void;
-  setRefreshToken: (token: string | null) => void;
+  employee: IEmployee | null;
+  employeeToken: string | null;
+  employeeRefreshToken: string | null;
+  setEmployee: (employee: IEmployee | null) => void;
+  setToken: (employeeToken: string | null) => void;
+  setRefreshToken: (employeeToken: string | null) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   employee: null,
-  token: null,
-  refreshToken: null,
+  employeeToken: null,
+  employeeRefreshToken: null,
   setEmployee: () => {},
   setToken: () => {},
   setRefreshToken: () => {},
   logout: () => {},
 });
 
-export const AuthContextProvider = ({
+export const AuthEmpContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
   const [employee, setEmployee] = useSessionStorage("app-employee");
-  const [token, setToken] = useSessionStorage("app-emp-token");
-  const [refreshToken, setRefreshToken] = useSessionStorage(
+  const [employeeToken, setToken] = useSessionStorage("app-emp-token");
+  const [employeeRefreshToken, setRefreshToken] = useSessionStorage(
     "app-emp-refresh-token"
   );
 
@@ -47,9 +47,9 @@ export const AuthContextProvider = ({
       value={{
         employee,
         setEmployee,
-        token,
+        employeeToken,
         setToken,
-        refreshToken,
+        employeeRefreshToken,
         setRefreshToken,
         logout,
       }}
@@ -59,4 +59,4 @@ export const AuthContextProvider = ({
   );
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useEmpAuthContext = () => useContext(AuthContext);

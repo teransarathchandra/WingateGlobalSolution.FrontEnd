@@ -149,8 +149,9 @@ export const employeeLogin =
     dispatch(employeeLoginRequest());
     try {
       const { data } = await api.post(`/employee/login`, credentials);
-      dispatch(employeeLoginSuccess(data));
+      dispatch(employeeLoginSuccess(data.employee));
       dispatch(resetLoginErrors());
+      console.log("authAction: employeeLogin: ", data.employee);
     } catch (error: any) {
       dispatch(employeeLoginFailure(error.response.data));
     } finally {

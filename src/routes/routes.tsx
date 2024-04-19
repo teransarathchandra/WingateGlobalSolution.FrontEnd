@@ -47,51 +47,61 @@ export const privateRoutes = [
     path: "/order",
     component: PlaceOrder,
     isPrivate: true,
+    isEmployeeOnly: false,
   },
   {
     path: "/app/order",
     component: Order,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/bulk",
     component: Bulk,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/flight",
     component: Flight,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/airline",
     component: Airline,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/bulk-details",
     component: BulkDetails,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/order-aggregation",
     component: OrderAggregation,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/restricted-order-type",
     component: RestrictedOrderType,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/category",
     component: Category,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
   {
     path: "/app/country",
     component: Country,
     isPrivate: true,
+    isEmployeeOnly: true,
   },
 ];
 
@@ -100,25 +110,30 @@ export const publicRoutes = [
     path: "/",
     component: Home,
     isPrivate: false,
+    isEmployeeOnly: false,
   },
   {
     path: "/home",
     component: Home,
     isPrivate: false,
+    isEmployeeOnly: false,
   },
   {
     path: "/verify-email/:token",
     component: VerifyEmail,
     isPrivate: false,
+    isEmployeeOnly: false,
   },
   {
     path: "/emp-checkpoint",
     component: EmployeeCheckpoint,
     isPrivate: false,
+    isEmployeeOnly: false,
   },
   {
     path: "*",
     component: NotFound,
     isPrivate: false,
+    isEmployeeOnly: false,
   },
 ];

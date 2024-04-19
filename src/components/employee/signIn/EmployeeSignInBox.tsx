@@ -1,10 +1,8 @@
 //General
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 //Redux
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@app_contexts/employee/empAuthContext";
 import useAxios from "@app_hooks/useAxios";
 //Schemas
 import signInSchema from "@app_schemas/signInSchema";
@@ -12,13 +10,13 @@ import signInSchema from "@app_schemas/signInSchema";
 //MaterialUI
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Link from "@mui/material/Link";
 import Checkbox from "@mui/material/Checkbox";
 
 //Assets
 import logo from "@app_assets/images/logo.png";
 
 //Hooks + Effects
+import { useEmpAuthContext } from "@app_contexts/employee/empAuthContext";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useEmpAuth from "@app_hooks/employee/useEmpAuth";
@@ -43,26 +41,33 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 //Components
-const EmployeeSignInBox = ({ onSignUpClick }) => {
+const EmployeeSignInBox = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
+  const [signInAttempted, setSignInAttempted] = useState(false);
+  const { setEmployee, setToken, setRefreshToken, logout } =
+    useEmpAuthContext();
   const { loginEmployee, auth } = useEmpAuth();
   const api = useAxios();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const onSubmit = (data: SignInFormData) => {
-    loginEmployee(api, data);
-    console.log(auth, "Hello");
-    // Navigate after successful login
-    if (auth.employee) {
-      navigate("/app/employee");
+  useEffect(() => {
+    if (auth.employee && auth.employee.accessToken && signInAttempted) {
+      setEmployee(auth.employee);
+      setToken(auth.employee.accessToken);
+      setRefreshToken(auth.employee.refreshToken);
+      navigate("/app/order");
     }
+  }, [auth.employee, navigate, setRefreshToken, setToken, setEmployee]);
+
+  const onSubmit = async (data: SignInFormData) => {
+    logout();
+    setSignInAttempted(true);
+    await loginEmployee(api, data);
   };
 
   return (
