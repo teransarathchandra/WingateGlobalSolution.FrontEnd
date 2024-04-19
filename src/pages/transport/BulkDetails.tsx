@@ -15,6 +15,7 @@ import { updateBulkSchema } from "@app_schemas/bulk/updateBulk";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IFlight } from "@app_interfaces/IFlight";
 import { getAllFlights } from "@app_services/flightService";
+import { IApiResponse } from "@app_interfaces/ICountry";
 
 const BulkDetails = () => {
     const [bulkData, setBulkData] = useState<IBulk | null>(null);
@@ -34,7 +35,7 @@ const BulkDetails = () => {
         try {
           const aggFlight = 'airlineIds';
           const response = await getAllFlights(aggFlight);
-          const preparedFlights = response.data.data.map((flight: IFlight) => ({
+          const preparedFlights = response.data.map((flight: IApiResponse) => ({
             ...flight,
            
           }));

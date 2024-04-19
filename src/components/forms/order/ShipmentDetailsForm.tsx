@@ -19,6 +19,7 @@ import { getAllPackageTypes } from "@app_services/packageTypeService";
 import { IPackageType } from "@app_interfaces/IPackageType";
 import { separateDateTime } from "@app_utils/separateDateTime";
 import { createItem, updateItem } from "@app_services/itemService";
+import { filterRestrictedOrders } from "@app_services/restrictedOrderService";
 
 const ShipmentDetailsForm = ({ goNext }) => {
 
@@ -34,11 +35,15 @@ const ShipmentDetailsForm = ({ goNext }) => {
     pickupOrderDate: null,
   });
 
+  const [receivingCode,] = useSessionStorage('order-receiving-country-code');
+  const [sendingCode,] = useSessionStorage('order-sending-country-code');
+  //const [shipmentDetails, ] = useSessionStorage('order-shipment-details');
+
   const {
     register,
     handleSubmit,
     control,
-    // watch,
+    watch,
     setValue: setFormValue,
     formState: { errors },
     reset,
@@ -47,6 +52,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
     mode: 'onTouched',
     defaultValues: shipmentDetails
   });
+
 
   useEffect(() => {
     reset(shipmentDetails);
@@ -57,15 +63,14 @@ const ShipmentDetailsForm = ({ goNext }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-  // const [selectedCategory, setSelectedCategory] = useSessionStorage('order-category-id');
-
   const [packageTypes, setPackageTypes] = useState<IPackageType[]>([]);
   // const [selectedPackageType, setSelectedPackageType] = useSessionStorage('order-package-type-id');
 
   const [itemSubmitted, setItemSubmitted] = useSessionStorage('order-item-submitted');
   const [itemId, setItemId] = useSessionStorage('order-itemId');
-  const [isPickupOrder, setIsPickupOrder] = useSessionStorage('order-is-pickup-order');
+  const [isPickupOrder, setIsPickupOrder] = useSessionStorage('order-is-pickup-order', false);
   const [pickupOrderDate, setPickupOrderDate] = useSessionStorage('order-pickup-order-date');
+  const [ , setRestrictedOrderType] = useSessionStorage('restricted-order-order-type');
 
   // Set the initial value for the date picker once the component has mounted
   // useEffect(() => {
@@ -133,7 +138,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         }
 
         // const isRestricted = await checkIfRestricted(responseData._id);
-        const isRestrictedOrder = false;
+        const isRestrictedOrder = await retrieveSessionStorageValues();
         console.log("Shipment Data Submitted:", responseData);
         setShipmentDetails(data);
         goNext(isRestrictedOrder);
@@ -143,8 +148,33 @@ const ShipmentDetailsForm = ({ goNext }) => {
     } catch (error) {
       console.error('Error submitting shipment data:', error);
     }
-
   };
+ 
+  const retrieveSessionStorageValues = async () => {
+    try {
+      console.log("Retrieved Values:", { receivingCode, sendingCode, shipmentDetails });
+
+      const catId = watch("categoryId" , false)
+
+      const filteringData = {
+        receivingCountryCode: receivingCode,
+        sendingCountryCode: sendingCode,
+        categoryId: catId,
+      };
+      const response = await filterRestrictedOrders(filteringData);
+      console.log("Is restricted :  ", response);
+
+      if(response.data.isRestrictedOrderFound == true){
+        const restrictedOrderType = response.data.data; 
+        setRestrictedOrderType(restrictedOrderType)
+      }
+      return response.data.isRestrictedOrderFound;
+
+    } catch (error) {
+      console.error('Failed to filter and check restricted order', error);
+    }
+  };
+
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} width="400px">
@@ -176,22 +206,10 @@ const ShipmentDetailsForm = ({ goNext }) => {
         helperText={errors.description?.message as string}
         margin="dense"
       />
+      <InputLabel>Category</InputLabel>
+
       <FormControl sx={{ marginTop: 1, marginBottom: 1, minWidth: "100%" }} size="small">
         <InputLabel id="category-label">Category</InputLabel>
-        {/* <Select
-          labelId="category-label"
-          fullWidth
-          {...register("categoryId")}
-          value={selectedCategory}
-          onChange={(e) => handleCategorySelect(e.target.value)}
-        >
-          <MenuItem value="">
-            <em>Select</em>
-          </MenuItem>
-          {categories.map((category) => (
-            <MenuItem key={category._id} value={category._id}>{category.name}</MenuItem>
-          ))}
-        </Select> */}
         <Controller
           name="categoryId"
           control={control}
@@ -255,7 +273,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         size="small"
         fullWidth
         {...register("packageCount", {
-          setValueAs: v => v === "" ? undefined : Number(v)  // Ensures that empty strings do not turn into NaN
+          setValueAs: v => v === "" ? undefined : Number(v)
         })}
         error={!!errors.packageCount}
         helperText={errors.packageCount?.message as string}
@@ -268,7 +286,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         size="small"
         fullWidth
         {...register("weight", {
-          setValueAs: v => v === "" ? undefined : Number(v)  // Ensures that empty strings do not turn into NaN
+          setValueAs: v => v === "" ? undefined : Number(v)
         })}
         error={!!errors.weight}
         helperText={errors.weight?.message as string}
@@ -281,7 +299,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         size="small"
         fullWidth
         {...register("itemValue", {
-          setValueAs: v => v === "" ? undefined : Number(v)  // Ensures that empty strings do not turn into NaN
+          setValueAs: v => v === "" ? undefined : Number(v)
         })}
         error={!!errors.itemValue}
         helperText={errors.itemValue?.message as string}

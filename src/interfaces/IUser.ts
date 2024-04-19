@@ -1,39 +1,21 @@
-
-export interface IUser {
-    _id: string;
-    name: Name;
-    address: Address;
-    email: string;
-    password: string;
-    contactNumber: number;
-    emailVerified: boolean;
-    refreshToken: string;
-    createdAt: string;
-    updatedAt: string;
-    userId: string;
-    __v: number;
+interface IName {
+    firstName: string;
+    lastName: string;
 }
 
-interface Address {
+interface IAddress {
     street: string;
     city: string;
     state: string;
     country: string;
-    _id: string;
 }
 
-interface Name {
-    firstName: string;
-    lastName: string;
+export default interface IUser {
+    userId: string;
+    name: IName;
     email: string;
-    contactNumber: string;
-    address: string;
+    contactNumber: number;  // Note the type change to number based on the API response
+    address: IAddress;
     accessToken: string;
     refreshToken: string;
-}
-
-export interface IApiResponse {
-    status: number;
-    data: IUser[];
-    message: string;
 }

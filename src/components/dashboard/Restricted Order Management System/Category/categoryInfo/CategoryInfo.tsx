@@ -28,13 +28,13 @@ const CategoryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
-    setEditDialogOpen(false);;
+    setEditDialogOpen(false);
   };
 
   const fetchAndPrepareCategory = async () => {
     try {
       const response = await getAllCategory();
-      const preparedCategory: IRow[] = response.data.data.map((category: ICategory) => ({
+      const preparedCategory: IRow[] = response.data.map((category: ICategory) => ({
         ...category,
         edit: <button onClick={() => handleEditClick(category)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
         delete: <button onClick={() => handleDeleteCategory(category?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
@@ -56,12 +56,6 @@ const CategoryInfo: React.FC = () => {
       const categoryId = currentCategory?._id;
       if (categoryId) {
 
-        // const dataToUpdate = categoryData;
-        // console.log(dataToUpdate);
-        // delete dataToUpdate._id;
-        // delete dataToUpdate.categoryId;
-        // console.log(dataToUpdate);
-
         const data = {
           name: categoryData.name,
           description: categoryData.description,
@@ -82,7 +76,7 @@ const CategoryInfo: React.FC = () => {
     if (!categoryID) {
       console.error('No ID available for deleting the category');
       return;
-    };
+    }
     try {
       const response = await deleteCategory(categoryID);
       console.log('category deleted successfully:', response);

@@ -6,11 +6,13 @@ export const getAllRestrictedOrders = (aggType) => {
     } else {
         return api.get("/restrictedOrderType");
     }
-    
+
 };
 
 export const getRestrictedOrderById = (id) => {
-    return api.get(`/restrictedOrderType/${id}`);
+    return api.get(`/restrictedOrderType/${id}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
 };
 
 export const createRestrictedOrder = (restrictedOrderData) => {
@@ -24,3 +26,8 @@ export const updateRestrictedOrder = (id, restrictedOrderData) => {
 export const deleteRestrictedOrder = (id) => {
     return api.delete(`/restrictedOrderType/${id}`);
 };
+
+export const filterRestrictedOrders = (filteringData) => {
+    return api.post(`/restrictedOrderType/filter`, filteringData);
+};
+
