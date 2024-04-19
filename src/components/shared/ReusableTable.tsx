@@ -6,13 +6,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Paper,
+  TextField
 } from "@mui/material";
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import AddButton from "./AddButton";
-import SearchBar from "./SearchBar";
 
 interface ReusableTableProps {
   columns;
@@ -20,14 +20,20 @@ interface ReusableTableProps {
   title;
   rowKey;
   onAdd?: () => void;
-  onSearch?: (searchTerm) => void;
-  showSearchBar?: boolean;
   showAddButton?: boolean;
   showActiveSwitch?: boolean;
-  label?: string;
+  searchTerm?: string;
+  handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showSearchBar, onSearch , label,  showAddButton, showActiveSwitch }) => {
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch, searchTerm, handleSearch }) => {
+  
+    const filteredRows = rows.filter(row =>
+      Object.values(row).some(value =>
+        String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
+      )
+    );
+  
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -50,7 +56,7 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
       </div>
       <div style={{ padding: "0 10rem" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
-        <FlexRow
+          <FlexRow
             style={{
               display: 'flex',
               alignItems: "center",
@@ -59,14 +65,21 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
             }}
           >
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
-              {showSearchBar && onSearch && <SearchBar label={label} onEnter={onSearch} />}
+              <TextField
+                style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
+                label="Search"
+                id="outlined-size-small"
+                size="small"
+                value={searchTerm}
+                onChange={handleSearch || (() => { })}
+              />
             </div>
             <div>
               {showActiveSwitch && <SwitchBtn />}
             </div>
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end',  paddingRight: "6rem" }}>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: "6rem" }}>
               {showAddButton && onAdd && <AddButton onClick={onAdd} />}
-            </div> 
+            </div>
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -86,7 +99,7 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row: IRow) => {
+                {filteredRows.map((row: IRow) => {
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (

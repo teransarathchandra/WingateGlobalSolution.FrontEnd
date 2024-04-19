@@ -23,6 +23,7 @@ const CountryInfo: React.FC = () => {
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [currentCountry, setCurrentCountry] = useState<ICountry | null>(null);
   const [isAddCountryOpen, setIsAddCountryOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleEditClick = (country: ICountry) => {
     setCurrentCountry(country);
@@ -41,7 +42,12 @@ const CountryInfo: React.FC = () => {
     handleDeleteCountry(countryId)
     fetchAndPrepareCountry();
   };
-  
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+
   const handleAddCountry = async (country: ICountry) => {
     try {
       createCountry(country);
@@ -117,10 +123,12 @@ const CountryInfo: React.FC = () => {
         title="Country"
         rowKey="countryID"
         onAdd={handleAddClick}
-        showSearchBar={true}
         showAddButton={true}
-        label="Search"
-      //onSearch={handleSearch}
+       // showSearchBar={true}
+       // label="Search"
+        //onSearch={handleSearch}
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
 
       />
       <AddCountryForm

@@ -19,6 +19,7 @@ const columns: IColumn[] = [
 const RestrictedOrderTypeInfo: React.FC = () => {
 
   const [restrictedOrderTypes, setRestrictedOrderTypes] = useState<IRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
   const [isAddOrderOpen, setIsAddOrderOpen] = useState(false);
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
@@ -35,32 +36,37 @@ const RestrictedOrderTypeInfo: React.FC = () => {
     setIsViewDetailsOpen(false);
     fetchAndPrepareResOrders();
   };
-  const handleSearch = (searchTerm) => {
-    SearchRestrictedOrder(searchTerm);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
 
-  const SearchRestrictedOrder = async (searchTerm: string) => {
-    try {
-      const aggType = 'restrictedOrderTypes';
-      const response = await getAllRestrictedOrders(aggType);
-      console.log(response);
+
+  // const handleSearch = (searchTerm) => {
+  //   SearchRestrictedOrder(searchTerm);
+  // };
+  // const SearchRestrictedOrder = async (searchTerm: string) => {
+  //   try {
+  //     const aggType = 'restrictedOrderTypes';
+  //     const response = await getAllRestrictedOrders(aggType);
+  //     console.log(response);
   
-      const searchLower = searchTerm.toLowerCase();
-      const filteredResOrderTypes: IRow[] = response.data.data.filter((restrictedOrder: IRestrictedOrder) => {
-        return Object.values(restrictedOrder).some(value => 
-          String(value).toLowerCase().includes(searchLower)
-        );
-      }).map((restrictedOrder: IRestrictedOrder) => ({
-        ...restrictedOrder,
-        viewMore: <ViewButton onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</ViewButton>
-      }));
+  //     const searchLower = searchTerm.toLowerCase();
+  //     const filteredResOrderTypes: IRow[] = response.data.data.filter((restrictedOrder: IRestrictedOrder) => {
+  //       return Object.values(restrictedOrder).some(value => 
+  //         String(value).toLowerCase().includes(searchLower)
+  //       );
+  //     }).map((restrictedOrder: IRestrictedOrder) => ({
+  //       ...restrictedOrder,
+  //       viewMore: <ViewButton onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</ViewButton>
+  //     }));
       
-      setRestrictedOrderTypes(filteredResOrderTypes);
+  //     setRestrictedOrderTypes(filteredResOrderTypes);
       
-    } catch (error) {
-      console.error('Failed to fetch order types', error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Failed to fetch order types', error);
+  //   }
+  // };
   
 
   const fetchAndPrepareResOrders = async () => {
@@ -102,9 +108,11 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         rowKey="restrictedOrderId"
         onAdd={handleAddClick}
         showAddButton={true}
-        showSearchBar={true}
-        label="Search"
-        onSearch={handleSearch}
+        // showSearchBar={true}
+        // label="Search"
+        // onSearch={handleSearch}
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <AddRestrictedOrderForm
         onAdd={handleAddRestrictedOrderType}

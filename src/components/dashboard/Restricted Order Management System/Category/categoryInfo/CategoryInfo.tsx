@@ -20,6 +20,7 @@ const columns: IColumn[] = [
 
 const CategoryInfo: React.FC = () => {
   const [category, setCategory] = useState<IRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<ICategory | null>(null);
   const [isAddCategoryOpen, setAddCategoryOpen] = useState(false);
@@ -28,7 +29,7 @@ const CategoryInfo: React.FC = () => {
     fetchAndPrepareCategory();
   }, []);
 
-  
+
   const handleEditClick = (category: ICategory) => {
     setCurrentCategory(category);
     saveCategory(category);
@@ -46,7 +47,13 @@ const CategoryInfo: React.FC = () => {
     handleDeleteCategory(countryId)
     fetchAndPrepareCategory();
   };
-  
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+
+
   const handleAddCategory = async (category: ICategory) => {
     try {
       createCategory(category);
@@ -74,7 +81,7 @@ const CategoryInfo: React.FC = () => {
 
   const saveCategory = async (categoryData) => {
     console.log('Saving category:', categoryData);
-    
+
     try {
       const categoryId = currentCategory?._id;
       if (categoryId) {
@@ -89,7 +96,7 @@ const CategoryInfo: React.FC = () => {
 
         handleClose();
       }
-      
+
     } catch (error) {
       console.error('Failed to update category', error);
     }
@@ -120,10 +127,12 @@ const CategoryInfo: React.FC = () => {
         title="Category"
         rowKey="categoryID"
         onAdd={handleAddClick}
-        showSearchBar={true}
         showAddButton={true}
-        label="Search"
-      //onSearch={handleSearch}
+        // showSearchBar={true}
+        // label="Search"
+        //onSearch={handleSearch}
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <AddCategoryForm
         onAdd={handleAddCategory}
