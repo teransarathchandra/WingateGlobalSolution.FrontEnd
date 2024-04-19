@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "@app_utils/apiUtils";
 
 const Payment = ({
@@ -6,7 +6,9 @@ const Payment = ({
     amount,
     order_id,
     currency,
-    customerDetails
+    customerDetails,
+    goNext,
+    goBack
 }) => {
 
     const [paymentStatus, setPaymentStatus] = useState('');
@@ -65,13 +67,31 @@ const Payment = ({
         // setPaymentSuccess(true);
         // setSuccess(true); // to do changes in implement page
         // setOrderID(order_id); // to save in database
+        goNext();
     };
 
+    window.payhere.onDismissed = function onDismissed() {
+        // Note: Prompt user to pay again or show an error page
+        console.log("Payment dismissed");
+        goBack();
+    };
+
+    window.payhere.onError = function onError(error) {
+        // Note: show an error page
+        console.log("Error:"  + error);
+    };
+
+    useEffect(() => {
+        initiatePayment();
+    }, [])
+
     return (
-        <div>
-            <button onClick={initiatePayment}>Pay with PayHere</button>
-            {paymentStatus && <p>{paymentStatus}</p>}
-        </div>
+        // <div>
+        //     <button onClick={initiatePayment}>Pay with PayHere</button>
+        //     {paymentStatus && <p>{paymentStatus}</p>}
+        // </div>
+        <>
+        </>
     );
 };
 

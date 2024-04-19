@@ -9,7 +9,7 @@ export const Drawer = styled.div`
   background-color: #e1bd05;
   width: 300px;
   min-height: 100vh;
-  z-index: 1;
+  z-index: 2;
 `;
 
 export const HeaderImage = styled.img`
@@ -46,7 +46,7 @@ export const Step = styled.div<{ isActive: boolean }>`
 export const StepIndicator = styled.div<{ isActive: boolean }>`
   height: ${({ isActive }) => isActive ? "25px" : "15px"};
   width: ${({ isActive }) => isActive ? "25px" : "15px"};
-  margin: ${({ isActive }) => isActive ? "0 3px" : "0 7.5px"};
+  margin: ${({ isActive }) => isActive ? "0 2px" : "0 7.5px"};
   border-radius: 50%;
   background-color: ${({ isActive }) =>
     isActive

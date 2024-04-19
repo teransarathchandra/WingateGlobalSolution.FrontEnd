@@ -13,6 +13,6 @@ export interface IBulk {
 
   export interface IApiResponse {
     status: number;
-    data: IBulk[];
+    data: any//IBulk[];
     message: string;
 }

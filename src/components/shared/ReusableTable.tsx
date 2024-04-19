@@ -103,7 +103,7 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (
-                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id == 'edit' || column.id == 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
+                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
                       ))}
                     </TableRow>
                   );

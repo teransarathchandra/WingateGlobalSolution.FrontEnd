@@ -21,12 +21,6 @@ import { separateDateTime } from "@app_utils/separateDateTime";
 import { createItem, updateItem } from "@app_services/itemService";
 import { filterRestrictedOrders } from "@app_services/restrictedOrderService";
 
-// interface IFilterResOrder {
-//   sendingCountryCode: string;
-//   receivingCountryCode: string;
-//   categoryId: string;
-// }
-
 const ShipmentDetailsForm = ({ goNext }) => {
 
   const [shipmentDetails, setShipmentDetails] = useSessionStorage('order-shipment-details', {
@@ -75,7 +69,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
   const [itemSubmitted, setItemSubmitted] = useSessionStorage('order-item-submitted');
   const [itemObjectId, setItemObjectId] = useSessionStorage('order-item-object-id');
   const [, setItemId] = useSessionStorage('order-item-id');
-  const [isPickupOrder, setIsPickupOrder] = useSessionStorage('order-is-pickup-order');
+  const [isPickupOrder, setIsPickupOrder] = useSessionStorage('order-is-pickup-order', false);
   const [pickupOrderDate, setPickupOrderDate] = useSessionStorage('order-pickup-order-date');
   const [, setRestrictedOrderType] = useSessionStorage('restricted-order-order-type');
 
@@ -282,7 +276,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         size="small"
         fullWidth
         {...register("packageCount", {
-          setValueAs: v => v === "" ? undefined : Number(v)  // Ensures that empty strings do not turn into NaN
+          setValueAs: v => v === "" ? undefined : Number(v)
         })}
         error={!!errors.packageCount}
         helperText={errors.packageCount?.message as string}
@@ -295,7 +289,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         size="small"
         fullWidth
         {...register("weight", {
-          setValueAs: v => v === "" ? undefined : Number(v)  // Ensures that empty strings do not turn into NaN
+          setValueAs: v => v === "" ? undefined : Number(v)
         })}
         error={!!errors.weight}
         helperText={errors.weight?.message as string}
@@ -308,7 +302,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
         size="small"
         fullWidth
         {...register("itemValue", {
-          setValueAs: v => v === "" ? undefined : Number(v)  // Ensures that empty strings do not turn into NaN
+          setValueAs: v => v === "" ? undefined : Number(v)
         })}
         error={!!errors.itemValue}
         helperText={errors.itemValue?.message as string}
