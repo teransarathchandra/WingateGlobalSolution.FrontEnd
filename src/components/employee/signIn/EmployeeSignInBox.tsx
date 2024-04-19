@@ -65,7 +65,9 @@ const EmployeeSignInBox = () => {
       setEmployeeToken(auth.employee.accessToken);
       setEmployeeRefreshToken(auth.employee.refreshToken);
       console.log("Init Data", auth.employee);
-      navigate("/app/order");
+
+      const focus = auth.employee.focus || "order";
+      navigate("/app/" + focus);
     }
   }, [
     auth.employee,

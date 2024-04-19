@@ -39,7 +39,7 @@ const App = () => {
         <Toaster position="top-right" />
         <SideNav />
         <UserDrawerContainer>
-          <UserDrawer isVisible={user} />
+          <UserDrawer isVisible={user || employee} />
         </UserDrawerContainer>
         <Routes>
           {publicRoutes.concat(privateRoutes).map((route) => {
