@@ -50,16 +50,23 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
       </div>
       <div style={{ padding: "0 10rem" }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
-          <FlexRow
+        <FlexRow
             style={{
+              display: 'flex',
               alignItems: "center",
-              justifyContent: "space-between",
-              margin: "0 2rem 0 0",
+              padding: "1rem 0",
+              justifyContent: "space-between"
             }}
           >
-            {showSearchBar && onSearch && <SearchBar label={label} onEnter={onSearch}/>}
-            {showActiveSwitch && <SwitchBtn />}
-            {showAddButton && onAdd && <AddButton onClick={onAdd} />}
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+              {showSearchBar && onSearch && <SearchBar label={label} onEnter={onSearch} />}
+            </div>
+            <div>
+              {showActiveSwitch && <SwitchBtn />}
+            </div>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end',  paddingRight: "6rem" }}>
+              {showAddButton && onAdd && <AddButton onClick={onAdd} />}
+            </div> 
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">

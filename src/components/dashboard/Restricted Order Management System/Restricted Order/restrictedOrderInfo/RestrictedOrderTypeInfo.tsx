@@ -3,8 +3,8 @@ import { IColumn, IRow } from "../../../../../interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
 import { getAllRestrictedOrders, createRestrictedOrder } from "../../../../../services/restrictedOrderService";
 import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
-import FullScreenDialog from "../dialogs.tsx/RestrictedOrderTypeDetailsInfo";
-import AddRestrictedOrderForm from '../dialogs.tsx/RestrictedOrderTypeAddDialog';
+import FullScreenDialog from "../dialogs/RestrictedOrderTypeDetailsInfo";
+import AddRestrictedOrderForm from '../dialogs/RestrictedOrderTypeAddDialog';
 import {ViewButton} from "@app_styles/RestrictedOrderStyles.styles"
 
 

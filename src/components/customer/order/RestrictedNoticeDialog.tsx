@@ -8,53 +8,36 @@ interface RestrictedNoticeDialog {
     trueDocumentList: string[];
     maxQuantity: number;
 }
-// interface RestrictedOrderFormat {
-//     key;
-//     label: string;
-//     type: 'string' | 'number' | 'boolean';
-//     value: '' | null | false | true;
-// }
 
 const RestrictedNoticeDialog: React.FC<RestrictedNoticeDialog> = ({ isOpen, handleBack, handleProceed, trueDocumentList, maxQuantity }) => {
-    // const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
     const [itemId,] = useSessionStorage('order-item-id');
-
-    // const restrictedOrder: RestrictedOrderFormat[] = [
-    //     { key: 'sendingCountryId', label: 'Sending Country', type: 'string', value: restrictedOrderType.sendingCountryId },
-    //     { key: 'receivingCountryId', label: 'Receiving Country', type: 'string', value: restrictedOrderType.receivingCountryId },
-    //     { key: 'categoryId', label: 'Category', type: 'string', value: restrictedOrderType.categoryId },
-    //     { key: 'exportLicense', label: 'Export License', type: 'boolean', value: restrictedOrderType.exportLicense },
-    //     { key: 'importPermit', label: 'Import Permit', type: 'boolean', value: restrictedOrderType.importPermit },
-    //     { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', value: restrictedOrderType.safetyDataSheets },
-    //     { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', value: restrictedOrderType.phytosanitaryCertificate },
-    //     { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', value: restrictedOrderType.dangerousGoodsDeclaration },
-    //     { key: 'maxQuantity', label: 'Maximum Quantity', type: 'number', value: restrictedOrderType.maxQuantity }
-    // ];
 
     return (
         <Dialog open={isOpen} onClose={handleBack}>
-            <DialogTitle>Restricted Order!</DialogTitle>
-            <DialogContent>
-                <DialogContentText>
+            <DialogTitle sx={{ textAlign: 'center', color: '#0b0670', fontSize: '2rem', fontWeight: 'bold' }}>
+                Restricted Order!
+                <DialogContentText sx={{ textAlign: 'center', color: '#110d5e', fontSize: '1rem', fontWeight: 'bold' }}>
                     Item Id : {itemId}
                 </DialogContentText>
-                <DialogContentText style={{}}>
+            </DialogTitle>
+
+            <DialogContent sx={{ paddingLeft: '50px', color: '#021549', fontWeight: 'bold' }}>
+                <DialogContentText style={{color: '#000000'}}>
                     You are attempting to place a restricted order.
-                </DialogContentText>
-                <DialogContentText>
+                    <br />  
                     To proceed, you must submit the following documents:
                 </DialogContentText>
                 {trueDocumentList.map((name) => (
-                    <ul>
+                    <ul>    
                         <li>{name}</li>
                     </ul>
                 ))}
-                <DialogContentText>
+                <DialogContentText style={{color: '#000000'}}>
                     Please note that the maximum weight limit for this order is {maxQuantity} kg. Ensure your order complies with this requirement.
                 </DialogContentText>
 
             </DialogContent>
-            <DialogActions>
+            <DialogActions sx={{ justifyContent: 'space-between', padding: '16px 156px' }}>
                 <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
                     <Button onClick={() => handleBack()} color="secondary">Back</Button>
                     <Button onClick={() => handleProceed()} color="secondary">Proceed</Button>

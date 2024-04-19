@@ -4,9 +4,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "../../../../../interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
-import { getAllCountry, updateCountry, deleteCountry } from "../../../../../services/countryService";
+import { createCountry, getAllCountry, updateCountry, deleteCountry } from "../../../../../services/countryService";
 import { ICountry } from "../../../../../interfaces/ICountry";
 import EditDialog from "../../../../dialog/EditDialog";
+import AddCountryForm from "../dialogs/CountryAddDialog";
 
 const columns: IColumn[] = [
   { id: "countryId", label: "Country ID", numeric: false, disablePadding: true },
@@ -21,6 +22,7 @@ const CountryInfo: React.FC = () => {
   const [country, setCountry] = useState<IRow[]>([]);
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [currentCountry, setCurrentCountry] = useState<ICountry | null>(null);
+  const [isAddCountryOpen, setIsAddCountryOpen] = useState(false);
 
   const handleEditClick = (country: ICountry) => {
     setCurrentCountry(country);
@@ -29,6 +31,25 @@ const CountryInfo: React.FC = () => {
   };
   const handleClose = () => {
     setEditDialogOpen(false);
+    setIsAddCountryOpen(false);
+    fetchAndPrepareCountry();
+  };
+  const handleAddClick = () => {
+    setIsAddCountryOpen(true);
+  };
+  const handleDelete = (countryId) => {
+    handleDeleteCountry(countryId)
+    fetchAndPrepareCountry();
+  };
+  
+  const handleAddCountry = async (country: ICountry) => {
+    try {
+      createCountry(country);
+      fetchAndPrepareCountry();
+
+    } catch (error) {
+      console.error('Failed to fetch countries', error);
+    }
   };
 
   const fetchAndPrepareCountry = async () => {
@@ -37,11 +58,11 @@ const CountryInfo: React.FC = () => {
       const preparedCountry: IRow[] = response.data.map((country: ICountry) => ({
         ...country,
         edit: <button onClick={() => handleEditClick(country)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
-        delete: <button onClick={() => handleDeleteCountry(country?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDelete(country?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
       setCountry(preparedCountry);
     } catch (error) {
-      console.error('Failed to fetch orders', error);
+      console.error('Failed to fetch countries', error);
     }
   };
 
@@ -51,28 +72,21 @@ const CountryInfo: React.FC = () => {
 
   const saveCountry = async (countryData) => {
     console.log('Saving country:', countryData);
-    setEditDialogOpen(false);
+
     try {
       const countryId = currentCountry?._id;
+
       if (countryId) {
-
-        // const dataToUpdate = countryData;
-        // console.log(dataToUpdate);
-        // delete dataToUpdate._id;
-        // delete dataToUpdate.countryId;
-        // console.log(dataToUpdate);
-
         const data = {
+          countryCode: countryData.countryCode,
           name: countryData.name,
-          description: countryData.description,
-          costPerKilo: countryData.costPerKilo
+          currency: countryData.currency
         }
         await updateCountry(countryId, data);
         console.log('country updated successfully');
-
-        fetchAndPrepareCountry();
+        handleClose();
       }
-      setEditDialogOpen(false);
+
     } catch (error) {
       console.error('Failed to update country', error);
     }
@@ -102,10 +116,21 @@ const CountryInfo: React.FC = () => {
         rows={country}
         title="Country"
         rowKey="countryID"
+        onAdd={handleAddClick}
+        showSearchBar={true}
+        showAddButton={true}
+        label="Search"
+      //onSearch={handleSearch}
+
       />
-      {<EditDialog
+      <AddCountryForm
+        onAdd={handleAddCountry}
+        isOpen={isAddCountryOpen}
+        handleClose={handleClose}
+      />
+      <EditDialog
         isOpen={isEditDialogOpen}
-        handleClose={() => setEditDialogOpen(false)}
+        handleClose={handleClose}
         entity={currentCountry}
         fields={[
           { name: 'countryId', label: 'Country Id', type: 'text', disabled: false },
@@ -115,7 +140,7 @@ const CountryInfo: React.FC = () => {
         ]}
         onSave={saveCountry}
         onDelete={deleteCountry}
-      />}
+      />
     </>
   );
 };
