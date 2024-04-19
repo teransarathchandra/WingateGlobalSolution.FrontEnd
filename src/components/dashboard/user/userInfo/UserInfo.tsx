@@ -8,7 +8,8 @@ import { getAllUser, updateUser, deleteUser, getUserOrders } from "@app_services
 import { IUser } from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
-import { IOrder } from "@app_interfaces/IOrder";
+import UserReportDialog from "../userDialog/UserReportDialog";
+import { ReportButton } from "@app_styles/userDetailsDialog.styles";
 
 
 const columns: IColumn[] = [
@@ -29,6 +30,7 @@ const UserInfo: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
+  //Edit User
   const handleEditClick = (user: IUser) => {
     setCurrentUser(user);
     setIsDialogOpen(true);
@@ -38,25 +40,29 @@ const UserInfo: React.FC = () => {
   const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
-  // Other component logic remains the same...
-  const [fetchError, setFetchError] = useState('');
+  //Report
+  const [isUserReportDialogOpen, setIsUserReportDialogOpen] = useState(false);
 
 
-  // Adjust handleUserClick to fetch orders for the selected user
+  // handleUserClick to fetch orders for the selected user
   const handleUserClick = async (user) => {
     setSelectedUser(user); // Set the selected user for display
     setIsUserDetailsDialogOpen(true); // Open the UserDetailsDialog
-    setFetchError('');
-
     try {
-      const {data} = await getUserOrders(user._id);
+      const { data } = await getUserOrders(user._id);
       setSelectedUserOrders(data); // Save fetched orders to state
     } catch (error) {
       console.error('Error fetching orders for user:', error);
       // Optionally, handle the error (e.g., display an error message)
-      setFetchError('Failed to fetch orders. Please try again.'); // Set an error message to display
+      // setFetchError('Failed to fetch orders. Please try again.'); // Set an error message to display
     }
   };
+
+
+    const handleUserReportClick = () => {
+    setIsUserReportDialogOpen(true);
+    }
+
 
   const fetchAndPrepareUser = async () => {
     try {
@@ -155,8 +161,11 @@ const UserInfo: React.FC = () => {
         handleClose={() => setIsUserDetailsDialogOpen(false)}
       />
 
+      <UserReportDialog
+        isOpen={isUserReportDialogOpen}
+        handleClose={() => setIsUserReportDialogOpen(false)}
+      />
 
-      {console.log(currentUser)}
 
       <EditDialog
         isOpen={isDialogOpen}
@@ -174,6 +183,7 @@ const UserInfo: React.FC = () => {
         onSave={saveUser}
         onDelete={deleteUser}
       />
+      <ReportButton onClick={() => handleUserReportClick()}>Report</ReportButton>
 
     </>
   );

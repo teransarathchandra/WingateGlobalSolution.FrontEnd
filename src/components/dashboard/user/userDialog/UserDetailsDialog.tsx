@@ -31,7 +31,7 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ isOpen, user, ord
 
     return (
         <>
-            <Dialog open={isOpen} onClose={handleClose}>
+            <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
                 <DialogHeaderContainer>
                     <DialogHeaderLeft>
                         <p>User ID: {user?.userId}</p> {/* User ID on its own line */}
@@ -63,7 +63,7 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ isOpen, user, ord
                             <div key={index}>
                                 <p>Order ID: {order.orderId}</p>
                                 {/* <p>Amount: {order.amount}</p> */}
-                                <p>Date: {order.createdAt}</p> {/* Consider formatting this date */}
+                                <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p> {/* Consider formatting this date */}
                                 <p>Status: {order.status}</p>
                             </div>
                         ))}
