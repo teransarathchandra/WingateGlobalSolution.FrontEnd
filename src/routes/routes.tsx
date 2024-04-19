@@ -43,6 +43,9 @@ const OrderAggregation = lazy(
 const EmployeeAccess = lazy(
   () => import("@app_pages/employee/access/EmployeeAccess")
 );
+const EmployeeManage = lazy(
+  () => import("@app_pages/employee/manage/EmployeeManage")
+);
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -111,6 +114,12 @@ export const privateRoutes = [
   {
     path: "/app/access",
     component: EmployeeAccess,
+    isPrivate: true,
+    isEmployeeOnly: true,
+  },
+  {
+    path: "/app/emp-manage",
+    component: EmployeeManage,
     isPrivate: true,
     isEmployeeOnly: true,
   },
