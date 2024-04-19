@@ -11,7 +11,6 @@ import {
 } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
 import EditDialog from "@app_components/dialog/EditDialog";
-import toastUtil from "@app_utils/toastUtil";
 
 const columns: IColumn[] = [
   {

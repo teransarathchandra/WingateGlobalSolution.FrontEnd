@@ -17,5 +17,5 @@ export default interface RootObject {
   refreshToken: string;
   employeeId: string;
   isAdmin: boolean;
-  focus: String;
+  focus: string;
 }

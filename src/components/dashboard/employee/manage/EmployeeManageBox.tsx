@@ -11,7 +11,6 @@ import {
 } from "@app_services/employeeService";
 import { IEmployee } from "@app_interfaces/IEmployee";
 import EditDialog from "@app_components/dialog/EditDialog";
-import toastUtil from "@app_utils/toastUtil";
 
 const columns: IColumn[] = [
   {
