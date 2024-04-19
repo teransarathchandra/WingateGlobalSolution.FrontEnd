@@ -64,7 +64,6 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
     };
 
     const handleAdd = async (formData) => {
-        debugger;
         console.log(formData)
         onAdd(formData);
         handleClose();
@@ -107,7 +106,6 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
                 </Toolbar>
             </AppBar>
             <form onSubmit={handleSubmit(handleAdd, (errors) => {
-                debugger;
                 console.log('Form data:', formData);
                 console.log('Form errors:', errors);
             })}>

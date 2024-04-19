@@ -6,8 +6,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
-  TextField,
+  Paper
 } from "@mui/material";
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";

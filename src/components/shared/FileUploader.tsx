@@ -3,8 +3,9 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const FileUploader = ({ uploadUrl, folderPath, onUploadSuccess, onUploadError }) => {
-    const { file, handleFileChange, handleFileUpload, setFolderPath } = useFileUpload(uploadUrl, folderPath);
+const FileUploader = ({uploadUrl, folderPath, onUploadSuccess, onUploadError, itemID, documentType }) => {
+
+    const { file, handleFileChange, handleFileUpload, setFolderPath } = useFileUpload(uploadUrl, folderPath,  itemID, documentType);
     const [uploadedFileName, setUploadedFileName] = useState(null);
 
     useEffect(() => {
@@ -27,9 +28,9 @@ const FileUploader = ({ uploadUrl, folderPath, onUploadSuccess, onUploadError })
     };
 
     const onChange = async (event) => {
-        handleFileChange(event); // First, update the file state
-        if (file) {  // Check if the file is not null
-            await uploadFile(file);  // Trigger upload after state update
+        handleFileChange(event); 
+        if (file) {  
+            await uploadFile(file); 
         }
     };
 

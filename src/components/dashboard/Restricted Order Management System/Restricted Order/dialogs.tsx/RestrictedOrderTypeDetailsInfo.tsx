@@ -102,7 +102,6 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, onS
       console.log(dataToUpdate)
 
       if (id) {
-        debugger;
         const aggType = 'restrictedOrderTypes';
         const response = await updateRestrictedOrder(id, aggType, dataToUpdate);
         console.log("edited ", response.data.data[0]);

@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEnter, label }) => {
         if (event.key === 'Enter') {
             console.log("enter Enter :"  , searchTerm );
             onEnter(searchTerm);
-        };
+        }
         
     };
 

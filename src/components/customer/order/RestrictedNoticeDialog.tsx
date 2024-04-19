@@ -1,28 +1,36 @@
-import { useEffect, useState } from 'react';
 import { DialogContent, Button, Dialog, DialogTitle, DialogContentText, DialogActions } from '@mui/material';
 import useSessionStorage from '@app_hooks/useSessionStorage';
-//import { IRestrictedOrder } from "@app_interfaces/IRestrictedOrder";
 
 interface RestrictedNoticeDialog {
     isOpen: boolean;
     handleBack: () => void;
     handleProceed: () => void;
+    trueDocumentList: string[];
+    maxQuantity: number;
 }
+// interface RestrictedOrderFormat {
+//     key;
+//     label: string;
+//     type: 'string' | 'number' | 'boolean';
+//     value: '' | null | false | true;
+// }
 
-const RestrictedNoticeDialog: React.FC<RestrictedNoticeDialog> = ({ isOpen, handleBack, handleProceed }) => {
-    const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
-    const [itemId] = useSessionStorage('order-item-id');
+const RestrictedNoticeDialog: React.FC<RestrictedNoticeDialog> = ({ isOpen, handleBack, handleProceed, trueDocumentList, maxQuantity }) => {
+    // const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
+    const [itemId,] = useSessionStorage('order-item-id');
 
-    console.log(restrictedOrderType, itemId);
+    // const restrictedOrder: RestrictedOrderFormat[] = [
+    //     { key: 'sendingCountryId', label: 'Sending Country', type: 'string', value: restrictedOrderType.sendingCountryId },
+    //     { key: 'receivingCountryId', label: 'Receiving Country', type: 'string', value: restrictedOrderType.receivingCountryId },
+    //     { key: 'categoryId', label: 'Category', type: 'string', value: restrictedOrderType.categoryId },
+    //     { key: 'exportLicense', label: 'Export License', type: 'boolean', value: restrictedOrderType.exportLicense },
+    //     { key: 'importPermit', label: 'Import Permit', type: 'boolean', value: restrictedOrderType.importPermit },
+    //     { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', value: restrictedOrderType.safetyDataSheets },
+    //     { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', value: restrictedOrderType.phytosanitaryCertificate },
+    //     { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', value: restrictedOrderType.dangerousGoodsDeclaration },
+    //     { key: 'maxQuantity', label: 'Maximum Quantity', type: 'number', value: restrictedOrderType.maxQuantity }
+    // ];
 
-    useEffect(() => {
-        // setFormData(formData);
-        // fetchCategories();
-        // fetchCountries();
-    }, []);
-    function handleClose(): void {
-
-    }
     return (
         <Dialog open={isOpen} onClose={handleBack}>
             <DialogTitle>Restricted Order!</DialogTitle>
@@ -30,28 +38,37 @@ const RestrictedNoticeDialog: React.FC<RestrictedNoticeDialog> = ({ isOpen, hand
                 <DialogContentText>
                     Item Id : {itemId}
                 </DialogContentText>
-                <DialogContentText>
+                <DialogContentText style={{}}>
                     You are attempting to place a restricted order.
                 </DialogContentText>
                 <DialogContentText>
                     To proceed, you must submit the following documents:
                 </DialogContentText>
-
-                <ul>
-                    <li>Import Permit</li>
-                    <li>Export License</li>
-                    <li>Safety Data Sheets</li>
-                </ul>
+                {trueDocumentList.map((name) => (
+                    <ul>
+                        <li>{name}</li>
+                    </ul>
+                ))}
                 <DialogContentText>
-                    Please note that the maximum weight limit for this order is 200 kg. Ensure your order complies with this requirement.
+                    Please note that the maximum weight limit for this order is {maxQuantity} kg. Ensure your order complies with this requirement.
                 </DialogContentText>
+
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Close</Button>
+                <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
+                    <Button onClick={() => handleBack()} color="secondary">Back</Button>
+                    <Button onClick={() => handleProceed()} color="secondary">Proceed</Button>
+                </div>
             </DialogActions>
 
+        </Dialog>
 
-            {/* <AppBar sx={{ position: 'relative' }}>
+    );
+};
+
+export default RestrictedNoticeDialog;
+
+{/* <AppBar sx={{ position: 'relative' }}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                         <CloseIcon />
@@ -62,107 +79,3 @@ const RestrictedNoticeDialog: React.FC<RestrictedNoticeDialog> = ({ isOpen, hand
                 </Toolbar>
             </AppBar>
             <form onSubmit={handleSubmit(handleAdd, handleClose)}> */}
-            <DialogContent>
-                {/* {Object.keys(formData).map((key) => (
-                        typeof formData[key] === 'boolean' ? (
-                            <FormControlLabel
-                                key={key}
-                                style={{ display: 'block' }}
-                                control={
-                                    <Checkbox
-                                        checked={formData[key]}
-                                        onChange={handleChange}
-                                        name={key}
-                                    />
-                                }
-                                label={key}
-                            />
-                        ) : key === "maxQuantity" ? (
-
-                            <TextField
-                                key={key}
-                                autoFocus
-                                margin="dense"
-                                id={key}
-                                label={key}
-                                type="number"
-                                fullWidth
-                                variant="outlined"
-                                name={key}
-                                value={formData[key]}
-                                onChange={handleChange}
-                            />
-
-                        ) : key === "categoryId" ? (
-                            <>
-                                <div>
-                                    <InputLabel id={key}>Category</InputLabel>
-                                    <Select
-                                        // placeholder={key}
-                                        // style={{
-                                        //     marginBottom: "10px",
-                                        //     height: "50px",
-                                        // }}
-                                        key={key}
-                                        autoFocus
-                                        id={key}
-                                        fullWidth
-                                        type="String"
-                                        variant="outlined"
-                                        value={formData[key]}
-                                        {...register(key)}
-                                        onChange={handleChange}
-                                    >
-                                        {categories.map((category) => (
-                                            <MenuItem key={category._id} value={category._id}>
-                                                {category.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div>
-                                    <InputLabel id={key}>
-                                        {key === 'sendingCountryId' ? 'Sending From:' :
-                                            key === 'receivingCountryId' ? 'Receiving To:' : ''}
-                                    </InputLabel>
-                                    <Select
-                                        defaultValue={formData[key]}
-                                        // placeholder={key}
-                                        // style={{
-                                        //     marginBottom: "10px",
-                                        //     height: "50px",
-                                        // }}
-                                        key={key}
-                                        autoFocus
-                                        id={key}
-                                        fullWidth
-                                        type="String"
-                                        variant="outlined"
-                                        name={key}
-                                        value={formData[key]}
-                                        onChange={handleChange}
-                                    >
-                                        {countries.map((country) => (
-                                            <MenuItem key={country._id} value={country._id}>
-                                                {country.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </div>
-                            </>
-                        )
-                    ))} */}
-            </DialogContent>
-            <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
-                <Button onClick={() => handleBack()} color="secondary">Back</Button>
-                <Button onClick={() => handleProceed()} color="secondary">Proceed</Button>
-            </div>
-            {/* </form> */}
-        </Dialog>
-    );
-};
-
-export default RestrictedNoticeDialog;
