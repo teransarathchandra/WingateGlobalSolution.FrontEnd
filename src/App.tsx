@@ -56,7 +56,7 @@ const App = () => {
                 element={
                   route.isPrivate ? (
                     <ProtectedRoute
-                      isEmployeRoute={route.isEmployeeOnly}
+                      isEmployeRoute={route.forEmployeeOnly}
                       children={routeElement}
                     ></ProtectedRoute>
                   ) : (
