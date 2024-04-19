@@ -1,9 +1,15 @@
 import api from "../utils/apiUtils";
 
-export const getAllPayments = () => {
-    return api.get("/payment")
-        .then((response) => response.data)
-        .catch((error) => error.message);
+export const getAllPayments = (aggType) => {
+    if (aggType) {
+        return api.get(`/payment?type=${aggType}`)
+            .then((response) => response.data)
+            .catch((error) => error.message);
+    } else {
+        return api.get("/payment")
+            .then((response) => response.data)
+            .catch((error) => error.message);
+    }
 };
 
 export const getPaymentById = (id) => {

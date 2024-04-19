@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
 import { getAllQuotations, updateQuotation } from "@app_services/quotationService";
@@ -13,7 +10,7 @@ const columns: IColumn[] = [
   { id: "packagingCost", label: "Packaging Cost", numeric: true, disablePadding: false },
   { id: "routeCost", label: "Route Cost", numeric: true, disablePadding: false },
   { id: "unitWeightCost", label: "Unit Weight Cost", numeric: true, disablePadding: false },
-  { id: "pickUpCost", label: "PickUp Cost", numeric: true, disablePadding: false },
+  { id: "pickupCost", label: "Pickup Cost", numeric: true, disablePadding: false },
   { id: "surcharge", label: "Surcharge", numeric: true, disablePadding: false },
   { id: "view", label: "View", numeric: false, disablePadding: false },
 ];
@@ -34,7 +31,7 @@ const QuotationInfo: React.FC = () => {
       const response = await getAllQuotations();
       const preparedQuotations: IRow[] = response.data.map((quotation: IQuotation) => ({
         ...quotation,
-        view: <button onClick={() => handleViewClick(quotation)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
+        view: <button onClick={() => handleViewClick(quotation)} style={{ cursor: "pointer",backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>See More</button>,
       }));
       setQuotations(preparedQuotations);
     } catch (error) {
@@ -81,17 +78,19 @@ const QuotationInfo: React.FC = () => {
         title="Quotation Details"
         rowKey="quotationID"
       />
+
       <EditDialog
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
         entity={currentQuotation}
         fields={[
-          { name: 'quotationId', label: 'quotationId', type: 'text', disabled: false },
-          { name: 'packagingCost', label: 'packagingCost', type: 'text', disabled: false },
-          { name: 'routeCost', label: 'routeCost', type: 'date', disabled: false },
-          { name: 'unitWeightCost', label: 'unitWeightCost', type: 'text', disabled: false },
-          { name: 'pickUpCost', label: 'pickUpCost', type: 'number', disabled: false },
-          { name: 'surcharge', label: 'surcharge', type: 'text', disabled: false },
+          { name: 'quotationId', label: 'Quotation ID', type: 'string', disabled: true },
+          { name: 'packagingCost', label: 'Packaging Cost', type: 'number', disabled: true },
+          { name: 'routeCost', label: 'Route Cost', type: 'number', disabled: true },
+          { name: 'unitWeightCost', label: 'Unit Weight Cost', type: 'number', disabled: true },
+          { name: 'pickupCost', label: 'Pickup Cost', type: 'number', disabled: true },
+          { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: true },
+          { name: 'totalAmount', label: 'Total Amount is', type: 'text', disabled: true },
         ]}
         onSave={saveQuotation}
         onDelete={deleteQuotation}

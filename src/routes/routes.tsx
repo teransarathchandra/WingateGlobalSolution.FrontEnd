@@ -36,11 +36,10 @@ const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregation"));
 
 //Payment
-const Payment = lazy(() => import("@app_pages/finance/payment/Payment"));
+const Payment = lazy(() => import("@app_pages/finance/Payment"));
 
 //Quotation
-const Quotation = lazy(() => import("@app_pages/finance/quotation/Quotation"));
-const QuotationView = lazy(() => import("@app_pages/finance/quotation/QuotationView"));
+const Quotation = lazy(() => import("@app_pages/finance/Quotation"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -99,11 +98,6 @@ export const privateRoutes = [
     {
         path: "/app/quotation",
         component: Quotation,
-        isPrivate: true,
-    },
-    {
-        path: "/app/quotation-view",
-        component: QuotationView,
         isPrivate: true,
     },
     {
