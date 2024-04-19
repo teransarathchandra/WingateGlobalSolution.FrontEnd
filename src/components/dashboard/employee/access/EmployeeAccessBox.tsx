@@ -4,7 +4,11 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "@app_components/shared/ReusableTable";
-import { getAllAccess, updateAccess } from "@app_services/accessService";
+import {
+  getAllAccess,
+  updateAccess,
+  deleteAccess,
+} from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
 import EditDialog from "@app_components/dialog/EditDialog";
 import toastUtil from "@app_utils/toastUtil";
@@ -41,6 +45,7 @@ const EmployeeAccessBox: React.FC = () => {
   const fetchAndPrepareSystemAccess = async () => {
     try {
       const response = await getAllAccess();
+      console.log(response);
       const preparedAccess: IRow[] = response.data.map((access: IAccess) => ({
         ...access,
         edit: (
@@ -73,15 +78,14 @@ const EmployeeAccessBox: React.FC = () => {
     fetchAndPrepareSystemAccess();
   }, []);
 
-  const saveAccess = async (accessData) => {
+  const saveAccess = async (accessData: IAccess) => {
     console.log("Saving Access:", accessData);
-    setIsDialogOpen(false);
     try {
       // Assuming your currentAccess state has the order's ID
       // And that accessData contains the updated order fields
-      const orderId = currentAccess?._id;
-      if (orderId) {
-        await updateAccess(orderId, { status: accessData.status }); // Call to your orderService
+      const accessId = accessData._id;
+      if (accessId) {
+        await updateAccess(accessId, { description: accessData.description }); // Call to your orderService
         console.log("Order updated successfully");
 
         // Optionally, refresh the access list to show the updated data
@@ -93,10 +97,22 @@ const EmployeeAccessBox: React.FC = () => {
     }
   };
 
-  const deleteAccess = (access) => {
+  const onDeleteAccess = async (access: IAccess) => {
     console.log("Deleting access:", access);
     setIsDialogOpen(false);
-    // Implement actual delete logic here
+    try {
+      const accessId = access._id;
+      console.log(accessId);
+      if (accessId) {
+        await deleteAccess(accessId); // Call to your orderService
+        console.log("Deleted successfully");
+
+        //Reload
+        fetchAndPrepareSystemAccess();
+      }
+    } catch (error) {
+      console.error("Failed to delete access", error);
+    }
   };
 
   return (
@@ -126,7 +142,7 @@ const EmployeeAccessBox: React.FC = () => {
           },
         ]}
         onSave={saveAccess}
-        onDelete={deleteAccess}
+        onDelete={onDeleteAccess}
       />
     </>
   );

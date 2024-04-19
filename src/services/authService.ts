@@ -77,4 +77,5 @@ export const authService = {
   setRefreshToken,
   clearTokens,
   refreshToken,
+  isInEmployeeMode,
 };
