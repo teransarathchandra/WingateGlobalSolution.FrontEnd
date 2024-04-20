@@ -164,13 +164,13 @@ const CustomerInfo: React.FC = () => {
             disabled: true,
           },
           {
-            name: "firstname",
+            name: "name.firstName",
             label: "First Name",
             type: "text",
             disabled: false,
           },
           {
-            name: "lastName",
+            name: "name.lastName",
             label: "Last Name",
             type: "text",
             disabled: false,
