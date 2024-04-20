@@ -11,6 +11,7 @@ interface IAddress {
 }
 
 export default interface IUser {
+    _id: string;
     userId: string;
     name: IName;
     email: string;

@@ -6,7 +6,7 @@ const Home = lazy(() => import("@app_pages/Home"));
 // Verify User
 const VerifyEmail = lazy(() => import("@app_pages/user/verify/VerifyEmail"));
 
-// Place Order User
+//Place Order User
 const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 const Category = lazy(() => import("@app_pages/dashboard/category/Category"));
 const Country = lazy(() => import("@app_pages/dashboard/country/Country"));
@@ -17,6 +17,9 @@ const TrackOrder = lazy(() => import("@app_pages//customer/order/TrackOrder"));
 
 //Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
+
+//User
+const User = lazy(() => import("@app_pages/dashboard/user/User"));
 
 //Employee
 const EmployeeCheckpoint = lazy(
@@ -53,6 +56,12 @@ const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
+
+//User Profile
+const UserSettings = lazy(() => import("@app_pages/user/UserSettings"));
+
+//User Profile
+const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 
 export const privateRoutes = [
   {
@@ -139,6 +148,24 @@ export const privateRoutes = [
     isPrivate: true,
     forEmployeeOnly: true,
   },
+  {
+    path: "/app/user",
+    component: User,
+    isPrivate: true,
+    forEmployeeOnly: true,
+},
+{
+    path: "/user-info",
+    component: UserSettings,
+    isPrivate: false,
+    forEmployeeOnly: false,
+},
+{
+    path: "/user-password",
+    component: UserPassword,
+    isPrivate: false,
+    forEmployeeOnly: false,
+},
 ];
 
 export const publicRoutes = [
