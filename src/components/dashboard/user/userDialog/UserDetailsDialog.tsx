@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import { DialogHeaderContainer, DialogHeaderLeft, DialogHeaderRight, DialogOrderDetails, DialogOrdersContainer, DialogUserContainer, DialogUserDetails } from '@app_styles/userDetailsDialog.styles';
+import { DialogHeaderContainer, DialogHeaderLeft, DialogHeaderRight, DialogOrderDetails, DialogOrdersContainer, DialogUserContainer, DialogUserDetails, StyledDialogContainer } from '@app_styles/userDetailsDialog.styles';
 import { separateDateTime } from "@app_utils/separateDateTime";
 import { IOrder } from '@app_interfaces/IOrder';
 
@@ -31,6 +31,7 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ isOpen, user, ord
     return (
         <>
             <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
+                <StyledDialogContainer>
                 <DialogHeaderContainer>
                     <DialogHeaderLeft>
                         <p>User ID: {user?.userId}</p> {/* User ID on its own line */}
@@ -72,6 +73,7 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ isOpen, user, ord
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Close</Button>
                 </DialogActions>
+                </StyledDialogContainer>
             </Dialog>
         </>
     );

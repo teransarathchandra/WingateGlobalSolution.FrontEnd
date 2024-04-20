@@ -16,6 +16,11 @@ import IUser from '@app_interfaces/IUser';
 import { getAllOrders } from "@app_services/orderService";
 import { getAllUser } from "@app_services/userService";
 import PDFDownloadButton from '@app_components/shared/PDFDownloadButton';
+import PDFLayout from '@app_components/pdf/PDFLayout';
+import OrdersReport from '@app_components/pdf/pdfTemplates/UserReport';
+import ReactDOMServer from 'react-dom/server';
+import PDFExportDialog from '@app_components/pdf/PDFPreviewDialog';
+
 
 interface UserReportDialogProps {
     isOpen: boolean;
@@ -30,6 +35,8 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     const [selectedDateFrom, setSelectedDateFrom] = useState("");
     const [selectedDateTo, setSelectedDateTo] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("");
+    const [showPDFDialog, setShowPDFDialog] = useState(false);
+    const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
     useEffect(() => {
         const fetchUsersAndOrders = async () => {
@@ -49,6 +56,12 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
         fetchUsersAndOrders();
     }, [isOpen]);
 
+
+    // const getPdfContent = () => {
+    //     const content = <OrdersReport orders={filteredOrders} />;
+    //     return ReactDOMServer.renderToString(<PDFLayout content={content} />);
+    // };
+
     useEffect(() => {
         const filterOrders = () => {
             const filtered = orders.filter(order => {
@@ -57,8 +70,11 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                 const toDate = selectedDateTo ? new Date(selectedDateTo) : null;
                 const user = users.find(user => user._id === order.userId)
 
+                const selectedUserNameLower = selectedUserName.toLowerCase();
+                const userNameLower = user?.name.firstName.toLowerCase();
+
                 return (
-                    (selectedUserName ? user?.name.firstName.includes(selectedUserName) : true) &&
+                    (selectedUserName ? userNameLower.includes(selectedUserNameLower) : true) &&
                     (selectedStatus ? order.status === selectedStatus : true) &&
                     (!fromDate || orderDate >= fromDate) &&
                     (!toDate || orderDate <= toDate)
@@ -69,6 +85,15 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
 
         filterOrders();
     }, [selectedUserName, selectedDateFrom, selectedDateTo, selectedStatus, orders, users]);
+
+    useEffect(() => {
+        if (filteredOrders.length > 0) {
+            const htmlContent = ReactDOMServer.renderToString(
+                <PDFLayout content={<OrdersReport orders={filteredOrders} />} />
+            );
+            setPdfHtmlContent(htmlContent);
+        }
+    }, [filteredOrders]);
 
     return (
         <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
@@ -113,9 +138,21 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                 </TableContainer>
             </DialogContent>
             <DialogActions>
-            {/* <PDFDownloadButton></PDFDownloadButton> */}
-                <Button onClick={handleClose} color="primary">Close</Button>
+                {/* <PDFLayout content={<OrdersReport orders={orders} />} /> */}
+                {/* <PDFDownloadButton content={<OrdersReport orders={orders} />} typeName={'Order'} id="report" />
+                           <Button onClick={handleClose} color="primary">Close</Button> */}
+                <Button onClick={() => setShowPDFDialog(true)} color="secondary">
+                    Preview & Export PDF
+                </Button>
             </DialogActions>
+            {showPDFDialog && (
+                <PDFExportDialog
+                    open={showPDFDialog}
+                    onClose={() => setShowPDFDialog(false)}
+                    htmlContent={pdfHtmlContent}
+                    filename="OrdersReport.pdf"
+                />
+            )}
         </Dialog>
     );
 };
