@@ -55,7 +55,6 @@ export const getOrderById = (id) => {
 };
 
 export const getOrderByOrderId = (orderId) => {
-    debugger;
     return api.get(`/order/byOrderId`, { params: { orderId } })
         .then((response) => response.data)
         .catch((error) => error.message);
