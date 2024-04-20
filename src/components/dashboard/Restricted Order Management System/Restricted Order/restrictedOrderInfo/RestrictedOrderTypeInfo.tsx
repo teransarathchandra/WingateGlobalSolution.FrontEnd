@@ -28,12 +28,35 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   const handleAddClick = () => {
     setIsAddOrderOpen(true);
   };
-  
+  const handleClose = () => {
+    setIsAddOrderOpen(false);
+    fetchAndPrepareResOrders();
+    //window.location.reload();
+  };
+  const handleSearch = () => {
+    SearchRestrictedOrder();
+  };
+
+  const SearchRestrictedOrder = async () => {
+    try {
+      const aggType = 'restrictedOrderTypes';
+      const response = await getAllRestrictedOrders(aggType);
+      console.log(response)
+      const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
+        ...restrictedOrder,
+        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
+      }));
+      setRestrictedOrderTypes(preparedResOrderTypes);
+    } catch (error) {
+      console.error('Failed to fetch order types', error);
+    }
+  };
 
   const fetchAndPrepareResOrders = async () => {
     try {
       const aggType = 'restrictedOrderTypes';
       const response = await getAllRestrictedOrders(aggType);
+      console.log(response)
       const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
         ...restrictedOrder,
         viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
@@ -64,24 +87,26 @@ const RestrictedOrderTypeInfo: React.FC = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: "center" }}>
-        <button onClick={handleAddClick}>Add</button>
-      </div>
       <ReusableTable
         columns={columns}
         rows={restrictedOrderTypes}
         title="Restricted Order Types"
         rowKey="restrictedOrderId"
+        onAdd={handleAddClick}
+        showAddButton={true}
+        showSearchBar={true}
+        label="Restricted Order ID"
+        onSearch={handleSearch}
       />
       <AddRestrictedOrderForm
-        onSubmit={handleAddRestrictedOrderType}
+        onAdd={handleAddRestrictedOrderType}
         isOpen={isAddOrderOpen}
-        handleClose={() => setIsAddOrderOpen(false)} 
-        />
+        handleClose={handleClose}
+      />
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}
-        //handleClose={() => setIsViewDetailsOpen(false)}
+        handleViewClose={() => setIsViewDetailsOpen(false)}
         entity={currentResOrder}
         fields={[
           { name: "_id", label: "MongoDBId", type: String, disabled: true },

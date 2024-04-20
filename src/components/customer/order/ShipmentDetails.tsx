@@ -3,7 +3,7 @@ import SupplyChain from '@app_assets/images/customer/SupplyChain.png'
 import ShipmentDetailsForm from '../../forms/order/ShipmentDetailsForm'
 
 const ShipmentDetails = ({ goNext, goBack }) => {
-
+    
     const handleGoBack = () => {
         goBack();
     };
