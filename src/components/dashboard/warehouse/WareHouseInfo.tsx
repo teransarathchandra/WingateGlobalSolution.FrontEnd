@@ -4,10 +4,12 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../shared/ReusableTable";
-import { deleteWarehouse, getAllWarehouse, updateWarehouse } from "@app_services/warehouseService";
+import { createWarehouse, deleteWarehouse, getAllWarehouse, updateWarehouse } from "@app_services/warehouseService";
 import { IWarehouse } from "@app_interfaces/IWarehouse";
 import EditDropdown from "@app_components/dialog/EditDropdown";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import AddDialog from "@app_components/dialog/AddDialog";
 
 const columns: IColumn[] = [
   { id: "warehouseId", label: "Warehouse ID", numeric: false, disablePadding: true },
@@ -22,10 +24,17 @@ const WarehouseInfo: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentWarehouse, setCurrentWarehouse] = useState<IWarehouse | null>(null);
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
+  const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleEditClick = (warehouse: IWarehouse) => {
     setCurrentWarehouse(warehouse);
     setIsDialogOpen(true);
+  };
+
+  const handleAddClick = () => {
+    setIsAddWarehouseOpen(true);
+    setCurrentWarehouse(null);
   };
 
   const handleDeleteClick = (warehouse: IWarehouse) => {
@@ -78,6 +87,17 @@ const WarehouseInfo: React.FC = () => {
     }
   };
 
+  const addWarehouse = async (warehouseData) => {
+    try {
+      await createWarehouse(warehouseData);
+      fetchAndPrepareWarehouse();
+      setIsAddWarehouseOpen(false);
+      console.log('Warehouse added successfully');
+    } catch (error) {
+      console.error('Failed to add warehouse', error);
+    }
+  };
+
   const handleDeleteWarehouse = async () => {
     if (currentWarehouse) {
       try {
@@ -88,6 +108,10 @@ const WarehouseInfo: React.FC = () => {
         console.error('Failed to delete bulk', error);
       }
     }
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   const availabiltyOptions = [ 
@@ -102,6 +126,8 @@ const WarehouseInfo: React.FC = () => {
         rows={warehouse}
         title="Warehouse Information"
         rowKey="warehouseId"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <EditDropdown
         isOpen={isDialogOpen}
@@ -120,6 +146,19 @@ const WarehouseInfo: React.FC = () => {
         isOpen= {isDeleteDialogOpen}
         handleClose={() => setisDeleteDialogOpen(false)}        
         handleDelete={handleDeleteWarehouse}
+      />
+      <UpdateBtn onClick={handleAddClick}>Add</UpdateBtn>
+      <AddDialog
+        isOpen={isAddWarehouseOpen}
+        handleClose={() => setIsAddWarehouseOpen(false)}
+        entity={currentWarehouse}
+        fields={[
+          { name: 'storageCapacity', label: 'Capacity', type: 'text', disabled: false },
+          { name: "availability", label: "Availability", type: 'dropdown', options: availabiltyOptions },
+          { name: "location", label: "Location", type: 'text', disabled: false },
+          
+        ]}
+        onSave={addWarehouse}
       />
     </>
   );

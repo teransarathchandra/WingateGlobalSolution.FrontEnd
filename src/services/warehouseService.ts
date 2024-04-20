@@ -17,7 +17,10 @@ export const getWarehouseById = (id) => {
 };
 
 export const createWarehouse = (warehouseData) => {
-  return api.post("/warehouse", warehouseData);
+  return api.post("/warehouse", warehouseData)
+  .then((result) => result.data)
+  .catch((error) => {console.log(error); });
+
 };
 
 export const updateWarehouse = async (id, warehouseData) => {

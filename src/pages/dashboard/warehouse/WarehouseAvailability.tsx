@@ -21,7 +21,8 @@ const WarehouseAvailability: React.FC = () => {
 
   const fetchAndPrepareOrders = async () => {
     try {
-      const response = await getAllOrders();
+      const aggType = "orderIds";
+      const response = await getAllOrders(aggType);
       console.log("response", response);
       const preparedOrdrs: IRow[] = response.data.map((order: IOrder) => ({
         ...order,
@@ -45,12 +46,12 @@ const WarehouseAvailability: React.FC = () => {
         title="Warehouse Availability"
         rowKey="orderId"
       /> */}
-      <ReusableTableDropdown
-        columns = {columns}
-        rows = {orders}
+      {/* <ReusableTableDropdown
+        columns={columns}
+        rows={orders}
         title="Order Warehouse Availability"
-        rowKey="orderId"
-      />
+        rowKey="orderId" 
+        filterLabels={undefined} filterSelects={undefined}      /> */}
     </>
   );
 };
