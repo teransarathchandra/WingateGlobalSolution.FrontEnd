@@ -64,6 +64,7 @@ const Logo = styled.img`
   border-radius: 50%;
   margin: 10px;
 `;
+
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -97,6 +98,7 @@ export {
   Footer,
   Text,
   Logo,
+  WgsLogo,
   Container,
   List,
   Item,

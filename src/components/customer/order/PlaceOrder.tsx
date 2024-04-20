@@ -2,13 +2,25 @@ import { Container, FlexRow, ImageContainer, PrimaryButton } from '@app_styles/s
 import CargoBoxImg from '@app_assets/images/customer/CargoBox.png'
 import SenderForm from '../../forms/order/SenderForm';
 import ReceiverForm from '../../forms/order/ReceiverForm';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createSender, updateSender } from '@app_services/senderService';
+import { createReceiver, updateReceiver } from '@app_services/receiverService';
+import { createOrder, updateOrder } from '@app_services/orderService';
+import useSessionStorage from '@app_hooks/useSessionStorage';
 
 interface FormMethods {
   submitForm: () => void;
 }
 
 const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void }) => {
+
+  const [itemId, ] = useSessionStorage('order-itemId');
+  const [isPickupOrder, ] = useSessionStorage('order-is-pickup-order');
+  const [priority, ] = useSessionStorage('order-delivery-option');
+  const [senderId, setSenderId] = useSessionStorage('order-sender-id');
+  const [receiverId, setReceiverId] = useSessionStorage('order-receiver-id');
+  const [orderId, setOrderId] = useSessionStorage('order-id');
+  const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
 
   const [senderFormValid, setSenderFormValid] = useState(false);
   const [receiverFormValid, setReceiverFormValid] = useState(false);
@@ -30,22 +42,62 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Trigger the form submissions
     senderFormRef.current?.submitForm();
     receiverFormRef.current?.submitForm();
-
-    // Additional validation could be placed here if necessary
-    setTimeout(() => { // Using setTimeout to allow state updates to propagate
-      if (senderFormValid && receiverFormValid) {
-        goNext();
-        console.log("Both forms are valid, submitting data:", { senderData, receiverData });
-        // API call to submit senderData and receiverData
-      } else {
-        console.log("One or both forms are invalid.");
-        // Handle invalid forms, perhaps notify user to correct the errors
-      }
-    }, 0);
   };
+
+  useEffect(() => {
+    const submitData = async () => {
+      if (senderFormValid && receiverFormValid) {
+        try {
+
+          let senderPromise;
+          if (!senderId) {
+            senderPromise = createSender(senderData);
+          } else {
+            senderPromise = await updateSender(senderId, senderData);
+          }
+          
+          let receiverPromise;
+          if(!receiverId) {
+            receiverPromise = createReceiver(receiverData);
+          } else {
+            receiverPromise = await updateReceiver(receiverId, senderData);
+          }
+
+          const [senderResponse, receiverResponse] = await Promise.all([senderPromise, receiverPromise]);
+          const senderObjId = senderResponse.data._id;
+          setSenderId(senderObjId);
+          const receiverObjId = receiverResponse.data._id;
+          setReceiverId(receiverObjId);
+
+          const createOrderPayload = {
+            status: restrictedOrder == true ? 'Pending' : 'Processing',
+            itemId: itemId,
+            senderId: senderObjId,
+            receiverId: receiverObjId,
+            isPickupOrder: isPickupOrder,
+            priority: priority,
+          };
+
+          let orderResponse;
+          if (!orderId) {
+            orderResponse = await createOrder(createOrderPayload);
+          } else {
+            orderResponse = await updateOrder(orderId, createOrderPayload);
+          }
+          const orderObjId = orderResponse.data._id;
+          setOrderId(orderObjId)
+
+          goNext();
+        } catch (error) {
+          console.error("Error creating sender, receiver, or order:", error);
+        }
+      }
+    };
+
+    submitData();
+  }, [senderFormValid, receiverFormValid, goNext]);
 
   const handleGoBack = () => {
     goBack();

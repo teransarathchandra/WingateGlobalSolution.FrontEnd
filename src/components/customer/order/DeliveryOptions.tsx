@@ -70,7 +70,7 @@ const DeliveryOptions = ({ goNext, goBack }) => {
                   <SubHeaderSection>LKR 15,000.00*</SubHeaderSection>
                 </FlexRow>
                 <FlexRow>
-                  <Button variant="contained" color="error" onClick={() => handleSubmit('standard')}>Continue Booking</Button>
+                  <Button variant="contained" color="error" onClick={() => handleSubmit('Standard')}>Continue Booking</Button>
                 </FlexRow>
               </FlexRow>
               <FlexRow>
@@ -106,7 +106,7 @@ const DeliveryOptions = ({ goNext, goBack }) => {
                   <SubHeaderSection>LKR 25,000.00*</SubHeaderSection>
                 </FlexRow>
                 <FlexRow>
-                  <Button variant="contained" color="error" onClick={() => handleSubmit('express')}>Continue Booking</Button>
+                  <Button variant="contained" color="error" onClick={() => handleSubmit('Express')}>Continue Booking</Button>
                 </FlexRow>
               </FlexRow>
               <FlexRow>

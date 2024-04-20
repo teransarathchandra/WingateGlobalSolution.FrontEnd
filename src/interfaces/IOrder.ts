@@ -1,15 +1,21 @@
 export interface IOrder {
-    _id: string;
-    status: string;
-    packageCount: number;
-    orderType: string;
+    _id?: string;
+    orderId?: string;
+    status: 'InProgress' | 'Processing' | 'Completed' | 'Pending';
+    stockId?: string;
+    bulkId?: string;
+    paymentId?: string;
+    invoiceId?: string;
+    itemId: string;
+    senderId: string;
+    receiverId: string;
+    quotationId?: string;
+    isPickupOrder: boolean;
+    pickupDate?: Date;
+    priority: 'Express' | 'Standard';
     userId: string;
-    routeId: string;
-    stockId: string;
-    packageId: string;
-    createdAt: string;
-    updatedAt: string;
-    orderId: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface IApiResponse {
