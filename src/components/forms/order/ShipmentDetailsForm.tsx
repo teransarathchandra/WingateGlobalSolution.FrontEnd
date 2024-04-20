@@ -21,12 +21,6 @@ import { separateDateTime } from "@app_utils/separateDateTime";
 import { createItem, updateItem } from "@app_services/itemService";
 import { filterRestrictedOrders } from "@app_services/restrictedOrderService";
 
-interface IFilterResOrder {
-  sendingCountryCode: string;
-  receivingCountryCode: string;
-  categoryId: string;
-}
-
 const ShipmentDetailsForm = ({ goNext }) => {
 
   const [shipmentDetails, setShipmentDetails] = useSessionStorage('order-shipment-details', {

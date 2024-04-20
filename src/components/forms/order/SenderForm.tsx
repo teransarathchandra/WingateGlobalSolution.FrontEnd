@@ -24,21 +24,37 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
 
     const [userData,] = useSessionStorage('app-user');
     const [selectedSendingCountryCode,] = useSessionStorage('order-sending-country-code', 'LK');
+    const [, setStoredData] = useSessionStorage('sender-form-data', {});
     const [isEditable, setIsEditable] = useState(false);
 
-    const defaultValues = {
+    const [defaultValues, setDefaultValues] = useState({
         name: {
-            firstName: `${userData?.firstName}`,
-            lastName: `${userData?.lastName}`,
-        }, address: {
-            state: userData?.address?.state,
-            city: userData?.address?.city,
+            firstName: userData?.name?.firstName,
+            lastName: userData?.name?.lastName,
+        },
+        address: {
             street: userData?.address?.street,
-            countryId: selectedSendingCountryCode
+            city: userData?.address?.city,
+            state: userData?.address?.state,
+            countryId: selectedSendingCountryCode,
         },
         contactNumber: userData?.contactNumber,
         email: userData?.email,
-    };
+    });
+
+    // const defaultValues = {
+    //     name: {
+    //         firstName: `${userData?.firstName}`,
+    //         lastName: `${userData?.lastName}`,
+    //     }, address: {
+    //         state: userData?.address?.state,
+    //         city: userData?.address?.city,
+    //         street: userData?.address?.street,
+    //         countryId: selectedSendingCountryCode
+    //     },
+    //     contactNumber: userData?.contactNumber,
+    //     email: userData?.email,
+    // };
 
     const {
         register,
@@ -50,12 +66,12 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
     } = useForm({
         resolver: yupResolver(senderDetailsSchema),
         mode: 'onTouched',
-        defaultValues
+        defaultValues: defaultValues
     });
 
-    useEffect(() => {
-        reset(defaultValues);
-    }, [reset]);
+    // useEffect(() => {
+    //     reset(defaultValues);
+    // }, [reset]);
 
     const toggleEdit = () => {
         setIsEditable((prev) => !prev);
@@ -69,6 +85,10 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
         submitForm: () => handleSubmit(onSubmit)()
     }));
 
+    useEffect(() => {
+        reset(defaultValues);
+    }, [defaultValues, reset]);
+
     const handleCountrySelect = (code) => {
         setValue("address.countryId", code); // Manually set the value of countryId in the form
     };
@@ -76,6 +96,10 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
     const onSubmit = async (data) => {
         const isValid = Object.keys(errors).length === 0;
         onFormSubmit(data, isValid);
+        if (isValid) {
+            setStoredData(data);
+            setDefaultValues(data);
+        }
     };
 
     return (
