@@ -50,6 +50,10 @@ const UpdateBtn = styled.button`
   width: 100px;
   height: 40px;
   cursor: pointer;
+  border: 2px solid #e1bd05;
+  position: fixed;
+  bottom: 40px; 
+  right: 40px; 
 `;
 
 export { HeaderDiv, Form, FieldGroup, UpdateBtn, Div };

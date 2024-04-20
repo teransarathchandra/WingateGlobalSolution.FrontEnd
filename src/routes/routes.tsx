@@ -11,6 +11,7 @@ const PlaceOrder = lazy(() => import("@app_pages/customer/order/Order"));
 const Category = lazy(() => import("@app_pages/dashboard/category/Category"));
 const Country = lazy(() => import("@app_pages/dashboard/country/Country"));
 const RestrictedOrderType = lazy(() => import("@app_pages/dashboard/restrictedOrder/RestrictedOrderType"));
+const TrackOrder = lazy(() => import("@app_pages//customer/order/TrackOrder"));
 
 
 //Order Dashboard
@@ -34,6 +35,9 @@ const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 
 //Order Aggregation
 const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregation"));
+
+//Order Info
+const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
 
 //Payment
 const Payment = lazy(() => import("@app_pages/finance/Payment"));
@@ -96,6 +100,11 @@ export const privateRoutes = [
         isPrivate: true,
     },
     {
+        path: "/app/order-info",
+        component: OrderInfo,
+        isPrivate: true,
+    },
+    {
         path: "/app/quotation",
         component: Quotation,
         isPrivate: true,
@@ -121,6 +130,11 @@ export const publicRoutes = [
     {
         path: "/verify-email/:token",
         component: VerifyEmail,
+        isPrivate: false,
+    },
+    {
+        path: "/track-order",
+        component: TrackOrder,
         isPrivate: false,
     },
     {

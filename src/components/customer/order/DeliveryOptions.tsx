@@ -8,13 +8,15 @@ import RedDeliveryLorryImg from '@app_assets/images/customer/RedDeliveryLorry.pn
 import AeroplaneImg from '@app_assets/images/customer/Aeroplane.png'
 import { useState } from 'react';
 import { Button } from '@mui/material';
+import useSessionStorage from '@app_hooks/useSessionStorage';
 
 const DeliveryOptions = ({ goNext, goBack }) => {
 
   const [value, setValue] = useState<Dayjs | null>(dayjs());
+  const [, setDeliveryOption] = useSessionStorage('order-delivery-option');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (deliveryOpt) => {
+    setDeliveryOption(deliveryOpt);
     goNext();
   };
 
@@ -28,18 +30,18 @@ const DeliveryOptions = ({ goNext, goBack }) => {
         <HeaderSection>Delivery Options</HeaderSection>
         <ImageContainer src={RedDeliveryLorryImg} alt="" width="120px" height="80px" />
       </FlexRow>
-      <FlexRow justifyContent='right' alignItems='center' columnGap='1rem' style={{ width: '100%' }}>
-        <form onSubmit={handleSubmit}>
+      <FlexRow flexDirection='column' justifyContent='right' alignItems='flex-end' columnGap='1rem' style={{ width: '100%' }}>
           <FlexRow justifyContent='right' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Shipment Date"
                 value={value}
+                disablePast
                 onChange={(newValue) => setValue(newValue)}
               />
             </LocalizationProvider>
           </FlexRow>
-          <FlexRow flexDirection='column' style={{ margin: '.5rem 0', padding: '1rem', border: '1px solid #204DAB', borderRadius: '5px', cursor: 'pointer' }}>
+          <FlexRow flexDirection='column' style={{ margin: '.5rem 0', padding: '1rem', border: '1px solid #204DAB', borderRadius: '5px' }}>
             <SubHeaderSection>
               Standard
             </SubHeaderSection>
@@ -68,16 +70,16 @@ const DeliveryOptions = ({ goNext, goBack }) => {
                   <SubHeaderSection>LKR 15,000.00*</SubHeaderSection>
                 </FlexRow>
                 <FlexRow>
-                  <Button type="submit" variant="contained" color="error">Continue Booking</Button>
+                  <Button variant="contained" color="error" onClick={() => handleSubmit('Standard')}>Continue Booking</Button>
                 </FlexRow>
               </FlexRow>
               <FlexRow>
               </FlexRow>
             </FlexRow>
           </FlexRow>
-          <FlexRow flexDirection='column' style={{ margin: '.5rem 0', padding: '1rem', border: '1px solid #204DAB', borderRadius: '5px', cursor: 'pointer' }}>
+          <FlexRow flexDirection='column' style={{ margin: '.5rem 0', padding: '1rem', border: '1px solid #204DAB', borderRadius: '5px' }}>
             <SubHeaderSection>
-              Standard
+              Express
             </SubHeaderSection>
             <FlexRow>
               <ImageContainer src={AeroplaneImg} alt="" width="200px" height="80px" />
@@ -101,10 +103,10 @@ const DeliveryOptions = ({ goNext, goBack }) => {
               <FlexRow flexDirection='column' style={{ margin: '0 1rem' }}>
                 <FlexRow justifyContent='center' alignItems='center' columnGap='1rem'>
                   <p>No VAT charge</p>
-                  <SubHeaderSection>LKR 15,000.00*</SubHeaderSection>
+                  <SubHeaderSection>LKR 25,000.00*</SubHeaderSection>
                 </FlexRow>
                 <FlexRow>
-                  <Button type="submit" variant="contained" color="error">Continue Booking</Button>
+                  <Button variant="contained" color="error" onClick={() => handleSubmit('Express')}>Continue Booking</Button>
                 </FlexRow>
               </FlexRow>
               <FlexRow>
@@ -112,10 +114,11 @@ const DeliveryOptions = ({ goNext, goBack }) => {
             </FlexRow>
           </FlexRow>
           <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
-            <PrimaryButton type="button" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" onClick={handleGoBack}>Back</PrimaryButton>
             {/* <PrimaryButton type="submit" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="1rem 0">Next</PrimaryButton> */}
           </FlexRow>
-        </form>
+      </FlexRow>
+      <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
+        <PrimaryButton type="button" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" onClick={handleGoBack}>Back</PrimaryButton>
       </FlexRow>
     </Container>
   )

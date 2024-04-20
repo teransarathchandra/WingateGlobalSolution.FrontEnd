@@ -13,7 +13,21 @@ import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 
-const ReusableTable = ({ columns, rows, title, rowKey }) => {
+interface ReusableTableProps {
+  columns: IColumn[];
+  rows: IRow[];
+  title: string;
+  rowKey: string;
+  searchTerm?: string;
+  handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, searchTerm, handleSearch }) => {
+  const filteredRows = rows.filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
+    )
+  );
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -48,6 +62,8 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
               label="Search"
               id="outlined-size-small"
               size="small"
+              value={searchTerm}
+              onChange={handleSearch || (() => {})}
             />
             <SwitchBtn />
           </FlexRow>
@@ -69,11 +85,11 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row: IRow) => {
+                {filteredRows.map((row: IRow) => {
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (
-                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id == 'edit' || column.id == 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
+                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
                       ))}
                     </TableRow>
                   );
