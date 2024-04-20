@@ -5,3 +5,9 @@ export const createSender = (senderData) => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
+
+export const updateSender = (senderId, senderData) => {
+    return api.put(`/sender/${senderId}`, senderData)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};
