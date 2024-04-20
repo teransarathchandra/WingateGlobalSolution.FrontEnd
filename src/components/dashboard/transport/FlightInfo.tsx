@@ -11,6 +11,7 @@ import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import { getAllAirlines } from "@app_services/airlineService";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import { getAllCountry } from "@app_services/countryService";
 
 
 const columns: IColumn[] = [
@@ -34,6 +35,8 @@ const FlightInfo: React.FC = () => {
   const [currentFlight, setCurrentFlight] = useState<IFlight | null>(null);
   const [isAddFlightOpen, setIsAddFlightOpen] = useState(false);
   const [airlineOptions, setAirlineOptions] = useState([]);
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [country, setCountry] = useState([]);
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
 
   const handleEditClick = (flight: IFlight) => {
@@ -71,13 +74,15 @@ useEffect(() => {
   
 
   loadAirlines();
+  loadcountries();
+  loadcountry();
 }, []);
 
 const loadAirlines = async () => {
     try {
       const response = await getAllAirlines();
       const options = response.data.map(airline => ({
-        value: airline.id,
+        value: airline._id,
         label: airline.name
       }));
       setAirlineOptions(options);
@@ -86,6 +91,40 @@ const loadAirlines = async () => {
       setAirlineOptions([]);
     }
   };
+
+  const loadcountries = async () => {
+    try {
+      const response = await getAllCountry();
+      const options = response.data
+        .filter(country => country.name !== "Sri Lanka")
+        .map(country => ({
+          value: country._id,
+          label: country.name
+        }));
+      setCountryOptions(options);
+    } catch (error) {
+      console.error("Failed to load country", error);
+      setCountryOptions([]);
+    }
+  };
+
+  const loadcountry = async () => {
+    try {
+      const response = await getAllCountry();
+      const options = response.data
+        .filter(country => country.name === "Sri Lanka")
+        .map(country => ({
+          value: country._id,
+          label: country.name
+        }));
+      setCountry(options);
+    } catch (error) {
+      console.error("Failed to load country", error);
+      setCountry([]);
+    }
+  };
+  
+  
   
   const addFlight = async (flightData) => {
     try {
@@ -169,11 +208,11 @@ const handleSearch = (event) => {
           { name: 'flightId', label: 'Flight No', type: 'text', disabled: false },
           { name: 'type', label: 'Type', type: 'text', disabled: false },
           { name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
-          { name: "arrival", label: "Arrival", type: 'dropdown', disabled: false },
+          { name: "arrival", label: "Arrival", type: 'dropdown', options: countryOptions },
           { name: 'arrivalTime', label: 'Arrival time', type: 'text', disabled: false },
-          { name: "departure", label: "Departure", type: 'dropdown', disabled: false },
+          { name: "departure", label: "Departure", type: 'dropdown',  options: country },
           { name: 'departureTime', label: 'Departure time', type: 'text', disabled: false },
-          { name: "airline", label: "Airline", type: 'dropdown',options: airlineOptions },
+          { name: "AirlineId", label: "Airline", type: 'dropdown',options: airlineOptions },
           
         ]}
         onSave={addFlight}
