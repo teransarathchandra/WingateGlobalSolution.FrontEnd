@@ -38,6 +38,8 @@ const OrderAggregation = lazy(() => import("@app_pages/transport/OrderAggregatio
 
 //Order Info
 const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
+//Customer
+const Customer = lazy(() => import("@app_pages/crm/Customer"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -97,6 +99,11 @@ export const privateRoutes = [
         path: "/app/country",
         component: Country,
         isPrivate: true,
+    },
+    {
+        path: "/app/crm",
+        component: Customer,
+        isPrivate: false,
     },
     {
         path: "/app/order-info",
