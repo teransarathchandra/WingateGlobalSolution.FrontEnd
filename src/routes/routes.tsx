@@ -127,6 +127,12 @@ export const privateRoutes = [
     isPrivate: true,
     forEmployeeOnly: true,
   },
+    {
+        path: "/app/crm",
+        component: Customer,
+        isPrivate: false,
+        forEmployeeOnly: true,
+    },
   {
     path: "/app/order-info",
     component: OrderInfo,
@@ -163,12 +169,6 @@ export const privateRoutes = [
     isPrivate: false,
     forEmployeeOnly: false,
 },
-{
-  path: "/app/crm",
-  component: Customer,
-  isPrivate: true,
-  forEmployeeOnly: true,
-},
 ];
 
 export const publicRoutes = [
@@ -187,8 +187,7 @@ export const publicRoutes = [
   {
     path: "/track-order",
     component: TrackOrder,
-    isPrivate: true,
-    forEmployeeOnly: false,
+    isPrivate: false
   },
   {
     path: "/verify-email/:token",
