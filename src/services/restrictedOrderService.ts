@@ -19,8 +19,13 @@ export const createRestrictedOrder = (restrictedOrderData) => {
     return api.post("/restrictedOrderType", restrictedOrderData);
 };
 
-export const updateRestrictedOrder = (id, restrictedOrderData) => {
-    return api.patch(`/restrictedOrderType/${id}`, restrictedOrderData);
+export const updateRestrictedOrder = (id, type, restrictedOrderData) => {
+    // return api.patch(`/restrictedOrderType/${id}?type=${type}` , restrictedOrderData);
+   return api.patch(`/restrictedOrderType/${id}`, {...restrictedOrderData,  type }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 };
 
 export const deleteRestrictedOrder = (id) => {

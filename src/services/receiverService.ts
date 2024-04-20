@@ -5,3 +5,15 @@ export const createReceiver = (receiverData) => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
+
+export const updateReceiver = (receiverId, receiverData) => {
+    return api.put(`/receiver/${receiverId}`, receiverData)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};
+
+export const getReceiverById = (id) => {
+    return api.get(`/receiver/${id}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};
