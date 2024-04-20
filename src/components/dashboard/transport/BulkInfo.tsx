@@ -127,6 +127,18 @@ const BulkInfo: React.FC = () => {
     }
   };
 
+  const statusOptions = [
+    { value: "", label: "Select Status"  },
+    { value: "In Progress", label: "In Progress" },
+    { value: "Completed", label: "Completed" },
+    { value: "Manifested", label: "Manifested" },
+    { value: "Delivered", label: "Delivered" },
+    { value: "Departed", label: "Departed" },
+    { value: "In Transit", label: "In Transit" },
+
+  ]
+
+
   return (
     <>
       <ReusableTable
@@ -147,6 +159,7 @@ const BulkInfo: React.FC = () => {
           { name: "flightId", label: "Flight No", type: 'dropdown', options: flightOptions },
           { name: "currentLocation", label: "Current Location", type: 'text', disabled: false },
           { name: "arrivedTime", label: "Arrived Time", type: 'text', disabled: false },
+          { name: "status", label: "Status", type: 'dropdown', options: statusOptions },
         ]}
         onSave={saveBulk}
         onDelete={deleteBulk}

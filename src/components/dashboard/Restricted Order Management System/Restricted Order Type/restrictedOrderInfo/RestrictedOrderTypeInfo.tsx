@@ -3,8 +3,10 @@ import { IColumn, IRow } from "../../../../../interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
 import { getAllRestrictedOrders, createRestrictedOrder } from "../../../../../services/restrictedOrderService";
 import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
-import FullScreenDialog from "../dialogs.tsx/RestrictedOrderTypeDetailsInfo";
-import AddRestrictedOrderForm from '../dialogs.tsx/RestrictedOrderTypeAddDialog';
+import FullScreenDialog from "../dialogs/RestrictedOrderTypeDetailsInfo";
+import AddRestrictedOrderForm from '../dialogs/RestrictedOrderTypeAddDialog';
+import {ViewButton} from "@app_styles/RestrictedOrderStyles.styles"
+
 
 const columns: IColumn[] = [
   { id: "restrictedOrderId", label: "Restricted ID", numeric: false, disablePadding: true },
@@ -17,6 +19,7 @@ const columns: IColumn[] = [
 const RestrictedOrderTypeInfo: React.FC = () => {
 
   const [restrictedOrderTypes, setRestrictedOrderTypes] = useState<IRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
   const [isAddOrderOpen, setIsAddOrderOpen] = useState(false);
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
@@ -30,27 +33,41 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   };
   const handleClose = () => {
     setIsAddOrderOpen(false);
+    setIsViewDetailsOpen(false);
     fetchAndPrepareResOrders();
-    //window.location.reload();
-  };
-  const handleSearch = () => {
-    SearchRestrictedOrder();
   };
 
-  const SearchRestrictedOrder = async () => {
-    try {
-      const aggType = 'restrictedOrderTypes';
-      const response = await getAllRestrictedOrders(aggType);
-      console.log(response)
-      const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
-        ...restrictedOrder,
-        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
-      }));
-      setRestrictedOrderTypes(preparedResOrderTypes);
-    } catch (error) {
-      console.error('Failed to fetch order types', error);
-    }
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
   };
+
+
+  // const handleSearch = (searchTerm) => {
+  //   SearchRestrictedOrder(searchTerm);
+  // };
+  // const SearchRestrictedOrder = async (searchTerm: string) => {
+  //   try {
+  //     const aggType = 'restrictedOrderTypes';
+  //     const response = await getAllRestrictedOrders(aggType);
+  //     console.log(response);
+  
+  //     const searchLower = searchTerm.toLowerCase();
+  //     const filteredResOrderTypes: IRow[] = response.data.data.filter((restrictedOrder: IRestrictedOrder) => {
+  //       return Object.values(restrictedOrder).some(value => 
+  //         String(value).toLowerCase().includes(searchLower)
+  //       );
+  //     }).map((restrictedOrder: IRestrictedOrder) => ({
+  //       ...restrictedOrder,
+  //       viewMore: <ViewButton onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</ViewButton>
+  //     }));
+      
+  //     setRestrictedOrderTypes(filteredResOrderTypes);
+      
+  //   } catch (error) {
+  //     console.error('Failed to fetch order types', error);
+  //   }
+  // };
+  
 
   const fetchAndPrepareResOrders = async () => {
     try {
@@ -59,7 +76,7 @@ const RestrictedOrderTypeInfo: React.FC = () => {
       console.log(response)
       const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
         ...restrictedOrder,
-        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
+        viewMore: <ViewButton onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</ViewButton>,
       }));
       setRestrictedOrderTypes(preparedResOrderTypes);
     } catch (error) {
@@ -68,12 +85,9 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   };
   const handleAddRestrictedOrderType = async (restrictedOrder: IRestrictedOrder) => {
     try {
-      const response = await createRestrictedOrder(restrictedOrder);
-      const preparedResOrderTypes: IRow[] = response.data.data.map((restrictedOrder: IRestrictedOrder) => ({
-        ...restrictedOrder,
-        viewMore: <button onClick={() => handleViewClick(restrictedOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</button>,
-      }));
-      setRestrictedOrderTypes(preparedResOrderTypes);
+       createRestrictedOrder(restrictedOrder);
+       fetchAndPrepareResOrders();
+    
     } catch (error) {
       console.error('Failed to fetch order types', error);
     }
@@ -94,9 +108,11 @@ const RestrictedOrderTypeInfo: React.FC = () => {
         rowKey="restrictedOrderId"
         onAdd={handleAddClick}
         showAddButton={true}
-        showSearchBar={true}
-        label="Restricted Order ID"
-        onSearch={handleSearch}
+        // showSearchBar={true}
+        // label="Search"
+        // onSearch={handleSearch}
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
       <AddRestrictedOrderForm
         onAdd={handleAddRestrictedOrderType}
@@ -106,7 +122,8 @@ const RestrictedOrderTypeInfo: React.FC = () => {
 
       <FullScreenDialog
         isOpen={isViewDetailsOpen}
-        handleViewClose={() => setIsViewDetailsOpen(false)}
+        handleViewClose={handleClose}
+        onSave ={handleViewClick}
         entity={currentResOrder}
         fields={[
           { name: "_id", label: "MongoDBId", type: String, disabled: true },

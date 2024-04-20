@@ -50,7 +50,7 @@ const BulkDetails = () => {
                 const aggType = "lastBulkIds";
                 const response = await getLastAddedBulk(aggType);
                 if (response) {
-                    setBulkData(response.data[0]);
+                    setBulkData(response.data);
                     const formattedDate = await separateDateTime( response.data[0].createdAt, "YYYY-MM-DD" );
                     setBulkCreatedDate(formattedDate.date);
                     setBulkCreatedTime(formattedDate.time);
