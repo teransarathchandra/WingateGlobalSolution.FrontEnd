@@ -31,16 +31,22 @@ const useAuth = () => {
     [dispatch]
   );
 
-  const logoutUser = useCallback(() => {
-    sessionStorage.clear();
-    dispatch(logout());
-    navigate("/");
-  }, [dispatch, navigate]);
+  const logoutCurrentUser = useCallback(
+    (isEmployee: Boolean) => {
+      if (isEmployee) {
+        dispatch(logout());
+        navigate("/emp-checkpoint");
+      } else {
+        navigate("/");
+      }
+    },
+    [dispatch, navigate]
+  );
 
   return {
     loginUser,
     registerUser,
-    logoutUser,
+    logoutCurrentUser,
     auth: { user, employee, error, loading },
   };
 };

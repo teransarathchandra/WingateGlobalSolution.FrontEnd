@@ -16,6 +16,7 @@ interface AuthContextType {
   setActiveUser: (activeUser: IEmployee | IUser | null) => void;
   setActiveToken: (activeToken: string | null) => void;
   setActiveRefreshToken: (activeToken: string | null) => void;
+  isEmployee: () => Boolean | null;
   logout: () => void;
 }
 
@@ -26,6 +27,7 @@ const AuthContext = createContext<AuthContextType>({
   setActiveUser: () => {},
   setActiveToken: () => {},
   setActiveRefreshToken: () => {},
+  isEmployee: () => null,
   logout: () => {},
 });
 
@@ -41,6 +43,22 @@ export const AuthActiveContextProvider = ({
   );
   const { logoutUser } = useUserAuthContext();
   const { logoutEmployee } = useEmployeeAuthContext();
+
+  const isEmployee = () => {
+    const userToken = authUserService.getUserAccessToken();
+    const employeeToken = authEmployeeService.getEmployeeAccessToken();
+
+    if (activeToken) {
+      if (activeToken == userToken) {
+        return false;
+      }
+
+      if (activeToken == employeeToken) {
+        return true;
+      }
+    }
+    return null;
+  };
 
   const logout = () => {
     const userToken = authUserService.getUserAccessToken();
@@ -74,6 +92,7 @@ export const AuthActiveContextProvider = ({
         setActiveUser,
         setActiveToken,
         setActiveRefreshToken,
+        isEmployee,
         logout,
       }}
     >

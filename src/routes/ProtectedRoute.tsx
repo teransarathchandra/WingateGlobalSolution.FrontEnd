@@ -10,7 +10,7 @@ import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployee
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 
 const ProtectedRoute = ({ isEmployeRoute, children }) => {
-  const { setActiveUser, setActiveToken, setActiveRefreshToken } =
+  const { activeUser, setActiveUser, setActiveToken, setActiveRefreshToken } =
     useActiveAuthContext();
 
   const { user, userToken, userRefreshToken } = useUserAuthContext();

@@ -1,8 +1,11 @@
 export default interface RootObject {
-  name: {
-    firstName: string;
-    lastName: string;
-  };
+  accessToken: string;
+  refreshToken: string;
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  contactNumber: number;
   address: {
     street: string;
     city: string;
@@ -10,12 +13,5 @@ export default interface RootObject {
     country: string;
     countryId?: number;
   };
-  email: string;
-  password: string;
-  contactNumber: number;
-  accessToken: string;
-  refreshToken: string;
-  employeeId: string;
-  isAdmin: boolean;
   focus: string;
 }

@@ -66,6 +66,7 @@ const EmployeeSignInBox = () => {
       setEmployeeRefreshToken(auth.employee.refreshToken);
       console.log("Init Data", auth.employee);
 
+      setTimeout("", 500);
       const focus = auth.employee.focus || "order";
       navigate("/app/" + focus);
     }
