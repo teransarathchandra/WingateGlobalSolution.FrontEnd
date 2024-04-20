@@ -1,7 +1,10 @@
 import api from "@app_utils/apiUtils";
 
 export const getAllWarehouse = () => {
-  return api.get(`/warehouse`);
+  return api.get(`/warehouse`)
+  .then((result) => result.data)
+        .catch((error) => {
+            console.log(error); });
 };
 
 export const getWarehouseById = (id) => {
