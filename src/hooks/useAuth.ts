@@ -13,8 +13,10 @@ interface ILoginCredentials {
 const useAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, employee, error, loading } = useSelector((state: IRootState) => state.auth);
-  
+  const { user, employee, error, loading } = useSelector(
+    (state: IRootState) => state.auth
+  );
+
   const loginUser = useCallback(
     async (api, credentials: ILoginCredentials) => {
       dispatch(login(api, credentials));
@@ -29,13 +31,24 @@ const useAuth = () => {
     [dispatch]
   );
 
-  const logoutUser = useCallback(() => {
-    sessionStorage.clear();
-    dispatch(logout());
-    navigate("/");
-  }, [dispatch, navigate]);
+  const logoutCurrentUser = useCallback(
+    (isEmployee: boolean) => {
+      if (isEmployee) {
+        dispatch(logout());
+        navigate("/emp-checkpoint");
+      } else {
+        navigate("/");
+      }
+    },
+    [dispatch, navigate]
+  );
 
-  return { loginUser, registerUser, logoutUser, auth: { user, employee, error, loading } };
+  return {
+    loginUser,
+    registerUser,
+    logoutCurrentUser,
+    auth: { user, employee, error, loading },
+  };
 };
 
 export default useAuth;
