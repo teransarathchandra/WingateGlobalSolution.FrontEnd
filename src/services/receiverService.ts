@@ -11,3 +11,9 @@ export const updateReceiver = (receiverId, receiverData) => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
+
+export const getReceiverById = (id) => {
+    return api.get(`/receiver/${id}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};

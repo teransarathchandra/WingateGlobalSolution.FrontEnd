@@ -21,6 +21,9 @@ const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 //User
 const User = lazy(() => import("@app_pages/dashboard/user/User"));
 
+//Restricted Order Dashboard
+const RestrictedOrders = lazy(() => import("@app_pages/dashboard/restrictedOrder/RestrictedOrders"));
+
 //Employee
 const EmployeeCheckpoint = lazy(
   () => import("@app_pages/employee/signin/EmployeeSignIn")
@@ -168,6 +171,12 @@ export const privateRoutes = [
     component: UserPassword,
     isPrivate: false,
     forEmployeeOnly: false,
+},
+{
+  path: "/app/restricted-orders",
+  component: RestrictedOrders,
+  isPrivate: true,
+  forEmployeeOnly: true,
 },
 ];
 
