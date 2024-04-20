@@ -15,11 +15,21 @@ import { IOrder } from '@app_interfaces/IOrder';
 import IUser from '@app_interfaces/IUser';
 import { getAllOrders } from "@app_services/orderService";
 import { getAllUser } from "@app_services/userService";
-import PDFDownloadButton from '@app_components/shared/PDFDownloadButton';
 import PDFLayout from '@app_components/pdf/PDFLayout';
 import OrdersReport from '@app_components/pdf/pdfTemplates/UserReport';
 import ReactDOMServer from 'react-dom/server';
 import PDFExportDialog from '@app_components/pdf/PDFPreviewDialog';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import  { ReactElement } from 'react';
+
+
+
+const Transition = React.forwardRef<HTMLDivElement, TransitionProps & { children: ReactElement }>(({ children, ...props }, ref) => {
+    return <Slide direction="up" ref={ref} {...props}>
+      {children}
+    </Slide>;
+  });
 
 
 interface UserReportDialogProps {
@@ -92,7 +102,13 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     }, [filteredOrders]);
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
+        <Dialog
+        open={isOpen}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md"
+        TransitionComponent={Transition} // Apply the transition here
+      >
             <DialogContent>
                 <Typography variant="h6" component="h2" style={{ marginBottom: 20 }}>
                     All Orders Report
