@@ -1,12 +1,11 @@
-import AirlineInfo from "../../components/dashboard/transport/AirlineInfo"
-
+import AirlineInfo from "@app_components/dashboard/transport/AirlineInfo";
 
 const Airline = () => {
   return (
     <>
       <AirlineInfo />
     </>
-  )
-}
+  );
+};
 
-export default Airline
+export default Airline;

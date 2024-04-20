@@ -10,6 +10,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import useSessionStorage from "@app_hooks/useSessionStorage";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 import CountrySelector from "@app_components/shared/CountrySelector";
 
 interface SenderFormProps {
@@ -22,24 +23,24 @@ interface SenderFormMethods {
 
 const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmit }, ref) => {
 
-    const [userData,] = useSessionStorage('app-user');
+    const {activeUser} = useActiveAuthContext();
     const [selectedSendingCountryCode,] = useSessionStorage('order-sending-country-code', 'LK');
     const [, setStoredData] = useSessionStorage('sender-form-data', {});
     const [isEditable, setIsEditable] = useState(false);
 
     const [defaultValues, setDefaultValues] = useState({
         name: {
-            firstName: userData?.name?.firstName,
-            lastName: userData?.name?.lastName,
+            firstName: activeUser?.name?.firstName,
+            lastName: activeUser?.name?.lastName,
         },
         address: {
-            street: userData?.address?.street,
-            city: userData?.address?.city,
-            state: userData?.address?.state,
+            street: activeUser?.address?.street,
+            city: activeUser?.address?.city,
+            state: activeUser?.address?.state,
             countryId: selectedSendingCountryCode,
         },
-        contactNumber: userData?.contactNumber,
-        email: userData?.email,
+        contactNumber: activeUser?.contactNumber,
+        email: activeUser?.email,
     });
 
     // const defaultValues = {

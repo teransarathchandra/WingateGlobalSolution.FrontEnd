@@ -14,7 +14,7 @@
 export interface IOrder {
     _id?: string;
     orderId?: string;
-    status: 'InProgress' | 'Processing' | 'Completed' | 'Pending' | 'Approved' | 'Rejected';
+    status: 'InProgress' | 'Processing' | 'Completed' | 'Pending';
     stockId?: string;
     bulkId?: string;
     paymentId?: string;

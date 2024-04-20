@@ -3,9 +3,9 @@ import CargoBoxImg from '@app_assets/images/customer/CargoBox.png'
 import SenderForm from '../../forms/order/SenderForm';
 import ReceiverForm from '../../forms/order/ReceiverForm';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createSender } from '@app_services/senderService';
-import { createReceiver } from '@app_services/receiverService';
-import { createOrder } from '@app_services/orderService';
+import { createSender, updateSender } from '@app_services/senderService';
+import { createReceiver, updateReceiver } from '@app_services/receiverService';
+import { createOrder, updateOrder } from '@app_services/orderService';
 import useSessionStorage from '@app_hooks/useSessionStorage';
 
 interface FormMethods {
@@ -17,7 +17,10 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
   const [itemId, ] = useSessionStorage('order-itemId');
   const [isPickupOrder, ] = useSessionStorage('order-is-pickup-order');
   const [priority, ] = useSessionStorage('order-delivery-option');
-  const [, setOrderDetails] = useSessionStorage('order-details');
+  const [senderId, setSenderId] = useSessionStorage('order-sender-id');
+  const [receiverId, setReceiverId] = useSessionStorage('order-receiver-id');
+  const [orderId, setOrderId] = useSessionStorage('order-id');
+  const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
 
   const [senderFormValid, setSenderFormValid] = useState(false);
   const [receiverFormValid, setReceiverFormValid] = useState(false);
@@ -39,44 +42,52 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Trigger the form submissions
     senderFormRef.current?.submitForm();
     receiverFormRef.current?.submitForm();
-
-    // setTimeout(() => {
-    //   if (senderFormValid && receiverFormValid) {
-    //     createSender(senderData);
-    //     createReceiver(receiverData);
-    //     goNext();
-    //     console.log("Both forms are valid, submitting data:", { senderData, receiverData });
-    //   } else {
-    //     console.log("One or both forms are invalid.");
-    //   }
-    // }, 0);
   };
 
   useEffect(() => {
     const submitData = async () => {
       if (senderFormValid && receiverFormValid) {
         try {
-          const senderPromise = createSender(senderData);
-          const receiverPromise = createReceiver(receiverData);
+
+          let senderPromise;
+          if (!senderId) {
+            senderPromise = createSender(senderData);
+          } else {
+            senderPromise = await updateSender(senderId, senderData);
+          }
+          
+          let receiverPromise;
+          if(!receiverId) {
+            receiverPromise = createReceiver(receiverData);
+          } else {
+            receiverPromise = await updateReceiver(receiverId, senderData);
+          }
 
           const [senderResponse, receiverResponse] = await Promise.all([senderPromise, receiverPromise]);
-          const senderId = senderResponse.data._id;
-          const receiverId = receiverResponse.data._id;
+          const senderObjId = senderResponse.data._id;
+          setSenderId(senderObjId);
+          const receiverObjId = receiverResponse.data._id;
+          setReceiverId(receiverObjId);
 
           const createOrderPayload = {
-            status: 'Pending',
+            status: restrictedOrder == true ? 'Pending' : 'Processing',
             itemId: itemId,
-            senderId: senderId,
-            receiverId: receiverId,
+            senderId: senderObjId,
+            receiverId: receiverObjId,
             isPickupOrder: isPickupOrder,
             priority: priority,
           };
 
-          const orderResponse = await createOrder(createOrderPayload);
-          setOrderDetails(orderResponse.data);
+          let orderResponse;
+          if (!orderId) {
+            orderResponse = await createOrder(createOrderPayload);
+          } else {
+            orderResponse = await updateOrder(orderId, createOrderPayload);
+          }
+          const orderObjId = orderResponse.data._id;
+          setOrderId(orderObjId)
 
           goNext();
         } catch (error) {
@@ -86,7 +97,7 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
     };
 
     submitData();
-  }, [senderFormValid, receiverFormValid, goNext ]);
+  }, [senderFormValid, receiverFormValid, goNext]);
 
   const handleGoBack = () => {
     goBack();
