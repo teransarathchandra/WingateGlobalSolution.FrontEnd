@@ -1,8 +1,6 @@
 import QRCodeGenerator from "@app_components/shared/QRCodeGenerator";
 import { CSSProperties, ReactNode } from "react";
 
-
-
 const CommercialInvoice = ({ order, item, receiver, sender }) => {
 
     const formatMoney = (amount) => {
@@ -187,7 +185,7 @@ const CommercialInvoice = ({ order, item, receiver, sender }) => {
                 </Table>
             </div>
             <div style={{ marginTop: '50px' }}>
-                <QRCodeGenerator url={`${'http://localhost:5173/track-order'}${order.orderId}`} />
+                <QRCodeGenerator url={`${'http://localhost:5173/track-order?orderId='}${order.orderId}`} />
             </div>
         </div>
     )
