@@ -69,6 +69,10 @@ const EmployeeSignInBox = () => {
       setTimeout("", 500);
       const focus = auth.employee.focus || "order";
       navigate("/app/" + focus);
+    }else{
+      setEmployee(null);
+      setEmployeeToken(null);
+      setEmployeeRefreshToken(null);
     }
   }, [
     auth.employee,

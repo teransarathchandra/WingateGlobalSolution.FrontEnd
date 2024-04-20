@@ -9,7 +9,7 @@ import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext"
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 
-const ProtectedRoute = ({ isEmployeRoute, children }) => {
+const ProtectedRoute = ({ isEmployeeRoute, children }) => {
   const { activeUser, setActiveUser, setActiveToken, setActiveRefreshToken } =
     useActiveAuthContext();
 
@@ -20,7 +20,7 @@ const ProtectedRoute = ({ isEmployeRoute, children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    if (isEmployeRoute) {
+    if (isEmployeeRoute) {
       console.log("route access: employee");
       if (!employee || !employeeToken) {
         toastUtil.error("Please login before accessing this page.");
@@ -41,7 +41,7 @@ const ProtectedRoute = ({ isEmployeRoute, children }) => {
     }
   }, [user, userToken, employee, employeeToken, location]);
 
-  if (isEmployeRoute) {
+  if (isEmployeeRoute) {
     return employee && employeeToken ? (
       children
     ) : (

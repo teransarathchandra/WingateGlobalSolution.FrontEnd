@@ -1,5 +1,13 @@
 const getEmployeeAccessToken = () => {
-  return JSON.parse(sessionStorage.getItem("app-emp-token") || "");
+  const tempToken = sessionStorage.getItem("app-emp-token");
+  if (tempToken) {
+    try {
+      return JSON.parse(tempToken);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 };
 
 const setEmployeeAccessToken = (token) => {
@@ -7,7 +15,15 @@ const setEmployeeAccessToken = (token) => {
 };
 
 const getEmployeeRefreshToken = () => {
-  return JSON.parse(sessionStorage.getItem("app-emp-refresh-token") || "");
+  const tempToken = sessionStorage.getItem("app-emp-refresh-token");
+  if (tempToken) {
+    try {
+      return JSON.parse(tempToken);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 };
 
 const setEmployeeRefreshToken = (token) => {
@@ -19,10 +35,15 @@ const clearEmployeeTokens = () => {
   sessionStorage.removeItem("app-emp-refresh-token");
 };
 
+const clearEmployee = () => {
+  sessionStorage.removeItem("app-emp");
+};
+
 export const authEmployeeService = {
   getEmployeeAccessToken,
   setEmployeeAccessToken,
   getEmployeeRefreshToken,
   setEmployeeRefreshToken,
   clearEmployeeTokens,
+  clearEmployee
 };
