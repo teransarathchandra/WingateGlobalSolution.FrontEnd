@@ -15,8 +15,10 @@ import { getOrderByOrderId } from "@app_services/orderService";
 const TrackOrder = () => {
 
     const [orderId, setOrderId] = useState('');
-    const [orderDetails, setOrderDetails] = useState(null);
-    //const [loading, setLoading] = useState(false);
+    const [order, setOrder] = useState('');
+    const [currentLocation, setCurrentLocation] = useState('');
+    const [arrivedTime, setArrivedTime] = useState('');
+    const [priority, setPriority] = useState('');
     const [error, setError] = useState('');
 
     const handleInputChange = (event) => {
@@ -24,19 +26,25 @@ const TrackOrder = () => {
     };
 
     const fetchOrderbyOrderId = async () => {
-        if (!orderId) { // Check if orderId is empty
+        if (!orderId) {
             setError("Please enter an order ID to track.");
             return;
         }
         try {
             const response = await getOrderByOrderId(orderId);
-            setOrderDetails(response); // Store the order details from response
-            setError(''); // Clear any existing error
+            console.log(response);
+            setOrder(response.data[0].orderId);
+            setCurrentLocation(response.data[0].currentLocation);
+            setArrivedTime(response.data[0].arrivedTime);
+            setPriority(response.data[0].priority);
+            setError(''); 
         } catch (error) {
-            setError("Failed to fetch order details."); // Set error message
+            setError("Failed to fetch order details.");
             console.error("Failed to fetch orders", error);
         }
     };
+
+    
     
     return (
         <>
@@ -53,12 +61,20 @@ const TrackOrder = () => {
                     onChange={handleInputChange}
                 />
                 <Button onClick={fetchOrderbyOrderId}>Track</Button>
-
-                <DetailsDiv>
-                    <p style={{fontSize: "25px", marginLeft: "50px", marginBottom: "40px",}}>Order Id  :  </p>
-                    <p style={{fontSize: "20px", marginLeft: "50px", marginBottom :"25px"}}>Current Location : </p>
-                    <p style={{fontSize: "20px", marginLeft: "50px" ,marginBottom :"25px"}}>Arrived Time : </p>
-                </DetailsDiv>
+                        <DetailsDiv>
+                            <p style={{ fontSize: "25px", marginLeft: "50px", color: "#e1bd05" }}>
+                               Id: {order}
+                            </p>
+                            <p style={{ fontSize: "15px", marginLeft: "50px", marginBottom: "40px", color: "#e1bd05" }}>
+                                 {priority}
+                            </p>
+                            <p style={{ fontSize: "20px", marginLeft: "50px", marginBottom: "25px" }}>
+                                Current Location: {currentLocation}
+                            </p>
+                            <p style={{ fontSize: "20px", marginLeft: "50px", marginBottom: "25px" }}>
+                                Arrived Time: {arrivedTime}
+                            </p>
+                        </DetailsDiv>
                 </div>
                 
 

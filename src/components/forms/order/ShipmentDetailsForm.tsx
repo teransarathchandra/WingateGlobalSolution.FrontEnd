@@ -145,7 +145,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
 
         // const isRestricted = await checkIfRestricted(responseData._id);
         const isRestrictedOrder = await retrieveSessionStorageValues();
-        debugger;
+        
         console.log("Shipment Data Submitted:", responseData);
         setShipmentDetails(data);
         goNext(isRestrictedOrder);
