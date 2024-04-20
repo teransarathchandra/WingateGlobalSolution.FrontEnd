@@ -121,6 +121,24 @@ export const privateRoutes = [
     isPrivate: true,
     forEmployeeOnly: true,
   },
+  {
+    path: "/app/order-info",
+    component: OrderInfo,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/employee-access",
+    component: EmployeeAccess,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/employee-manage",
+    component: EmployeeManage,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
 ];
 
 export const publicRoutes = [

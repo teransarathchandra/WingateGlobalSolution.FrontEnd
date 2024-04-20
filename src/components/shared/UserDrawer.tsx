@@ -22,8 +22,8 @@ const UserDrawer = ({ isVisible }) => {
   const { logoutEmployee } = useEmployeeAuthContext();
   const { logoutUser } = useUserAuthContext();
 
-  const firstName = activeUser?.firstName || " ";
-  const lastName = activeUser?.lastName || " ";
+  const firstName = " ";
+  const lastName = " ";
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -36,11 +36,11 @@ const UserDrawer = ({ isVisible }) => {
   };
 
   const handleLogout = () => {
-    let isUserEmployee = isEmployee() || false;
+    const isUserEmployee = isEmployee() || false;
     if (isEmployee() != null) {
       logout();
-      //isUserEmployee ? logoutEmployee() : logoutUser();
-      //logoutCurrentUser(isUserEmployee);
+      isUserEmployee ? logoutEmployee() : logoutUser();
+      logoutCurrentUser(isUserEmployee);
     }
   };
 

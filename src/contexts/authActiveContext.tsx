@@ -16,7 +16,7 @@ interface AuthContextType {
   setActiveUser: (activeUser: IEmployee | IUser | null) => void;
   setActiveToken: (activeToken: string | null) => void;
   setActiveRefreshToken: (activeToken: string | null) => void;
-  isEmployee: () => Boolean | null;
+  isEmployee: () => boolean | null;
   logout: () => void;
 }
 

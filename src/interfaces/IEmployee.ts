@@ -1,8 +1,13 @@
+
+
 export default interface RootObject {
   accessToken: string;
   refreshToken: string;
   employeeId: string;
-  firstName: string;
+  name: {
+    firstName: string;
+    lastName: string;
+  };
   lastName: string;
   email: string;
   contactNumber: number;
