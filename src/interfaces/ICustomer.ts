@@ -2,11 +2,11 @@
 
 export interface ICustomer {
   _id: string;
+  customerId: string;
   name: Name;
   email: string;
   contactNumber: string;
   address: Address;
-  customerId: string;
   priorityLevel: string;
   birthday: string;
   password: string;

@@ -64,12 +64,12 @@ export const privateRoutes = [
         path: "/track-order",
         component: TrackOrder,
         isPrivate: true,
-    },    
+    },
     {
         path: "/app/order",
         component: Order,
         isPrivate: true,
-    },    
+    },
     {
         path: "/app/user",
         component: User,
@@ -116,9 +116,12 @@ export const privateRoutes = [
     {
         path: "/app/category",
         component: Category,
-    }, path: "/app/crm",
-    component: Customer,
-    isPrivate: false,
+    },
+    {
+        path: "/app/crm",
+        component: Customer,
+        isPrivate: false,
+    },
     {
         path: "*",
         component: NotFound,

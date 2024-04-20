@@ -7,11 +7,11 @@ import ReusableTable from "@app_components/shared/ReusableTable";
 import { getAllCustomer, updateCustomer, deleteCustomer } from "@app_services/crmService";
 import { ICustomer } from "@app_interfaces/ICustomer";
 import EditDialog from "@app_components/dialog/EditDialog";
-import addCustomerIcon from "@app_assets/images/crm/Add customer Male.png";
+
 
 
 const columns: IColumn[] = [
-  { id: "customerId", label: "Customer ID", numeric: false, disablePadding: true },
+  { id: "customerId", label: "Customer ID", numeric: false, disablePadding: false },
   { id: "firstName", label: "First Name", numeric: false, disablePadding: false },
   { id: "lastName", label: "Last Name", numeric: false, disablePadding: false },
   { id: "email", label: "E-mail", numeric: false, disablePadding: false },
@@ -32,21 +32,22 @@ const CustomerInfo: React.FC = () => {
     setIsDialogOpen(true);
   };
 
-  const fetchAndPrepareCustomer = async () => {
+
+const fetchAndPrepareCustomer = async () => {
     try {
       const response = await getAllCustomer();
-      const preparedCustomer: IRow[] = response.data.data.map((customer: ICustomer) => ({
+      console.log("response", response);
+      const preparedCustomers: IRow[] = response.data.map((customer: ICustomer) => ({
         ...customer,
-        customerId: customer._id, // Make sure the CustomerID is correctly mapped
-        firstName: customer.name.firstName, // Correct mapping for firstName
-        lastName: customer.name.lastName, // Correct mapping for lastName
-        phoneNumber: customer.contactNumber, // Correct mapping for contactNumber to phoneNumber
-        edit: <button onClick={() => handleEditClick(customer)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
+        _id: customer._id,
+        //: <button onClick={() => handleViewClick(customer)} style={{ cursor: "pointer",backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>See More</button>,
+        edit: <button onClick={() => handleEditClick(customer)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
         delete: <button onClick={() => handleDeleteCustomer(customer)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
-      setCustomer(preparedCustomer);
+       console.log('Current customer:', currentCustomer);
+      setCustomer(preparedCustomers);
     } catch (error) {
-      console.error('Failed to fetch customer', error);
+      console.error('Failed to fetch customers', error);
     }
   };
 
