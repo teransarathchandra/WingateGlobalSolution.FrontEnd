@@ -21,10 +21,13 @@ import {
 } from "@app_styles/signForm.styles";
 import useAuth from "@app_hooks/useAuth";
 import SignInFormData from "@app_interfaces/ISignIn";
-import { googleLogin, googleLoginFailure } from "@app_redux/actions/authActions";
+import {
+  googleLogin,
+  googleLoginFailure,
+} from "@app_redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@app_contexts/authContext";
+import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
 import useAxios from "@app_hooks/useAxios";
 
 interface SignInProps {
@@ -39,7 +42,8 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
     formState: { errors },
   } = useForm<SignInFormData>({ resolver: yupResolver(signInSchema) });
 
-  const { setUser, setToken, setRefreshToken, logout } = useAuthContext();
+  const { setUser, setUserToken, setUserRefreshToken, logoutUser } =
+    useUserAuthContext();
   const [signInAttempted, setSignInAttempted] = useState(false);
 
   const { loginUser, auth } = useAuth();
@@ -51,22 +55,32 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
   useEffect(() => {
     if (auth.user && auth.user.accessToken && signInAttempted) {
       setUser(auth.user);
-      setToken(auth.user.accessToken);
-      setRefreshToken(auth.user.refreshToken);
+      setUserToken(auth.user.accessToken);
+      setUserRefreshToken(auth.user.refreshToken);
       navigate("/order");
     }
-  }, [auth.user, navigate, setRefreshToken, setToken, setUser, signInAttempted]);
+  }, [
+    auth.user,
+    navigate,
+    setUserRefreshToken,
+    setUserToken,
+    setUser,
+    signInAttempted,
+  ]);
 
   const onSubmit = async (data: SignInFormData) => {
-    logout();
+    logoutUser();
     setSignInAttempted(true);
     await loginUser(api, data);
   };
 
-  const handleGoogleSuccess = useCallback((credentialResponse) => {
-    setSignInAttempted(true);
-    dispatch(googleLogin(api, credentialResponse.credential));
-  }, [api, dispatch]);
+  const handleGoogleSuccess = useCallback(
+    (credentialResponse) => {
+      setSignInAttempted(true);
+      dispatch(googleLogin(api, credentialResponse.credential));
+    },
+    [api, dispatch]
+  );
 
   const handleGoogleFailure = useCallback(() => {
     dispatch(googleLoginFailure("Login Failed"));

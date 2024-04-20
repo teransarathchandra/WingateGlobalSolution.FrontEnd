@@ -20,10 +20,6 @@ const SideNav = () => {
   const [expanded, setExpanded] = useState(false);
   const [activeKey, setActiveKey] = useState("1");
 
-  if (!employee?.isAdmin) {
-    return null;
-  }
-
   const toggleExpanded = () => setExpanded(!expanded);
 
   type Expand = {

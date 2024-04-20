@@ -7,21 +7,33 @@ import { Toaster } from "react-hot-toast";
 import SideNav from "./components/dashboard/sideNav/SideNav";
 import { Suspense, useEffect } from "react";
 import ProtectedRoute from "@app_routes/ProtectedRoute";
-import { loginSuccess } from "@app_redux/actions/authActions";
-import { useAuthContext } from "@app_contexts/authContext";
+import {
+  loginSuccess,
+  employeeLoginSuccess,
+} from "@app_redux/actions/authActions";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
+import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import UserDrawer from "@app_components/shared/UserDrawer";
 import { UserDrawerContainer } from "@app_styles/shared/userDrawer.styles";
 
 const App = () => {
-
   const dispatch = useDispatch();
-  const { user } = useAuthContext();
+  const { user } = useUserAuthContext();
+  const { employee } = useEmployeeAuthContext();
+  const { isEmployee, logout } = useActiveAuthContext();
 
   useEffect(() => {
+    const isAEmployee = isEmployee() || false;
     if (user) {
       dispatch(loginSuccess(user));
+      console.log("dispatch: userLoginSuccess");
     }
-  }, [dispatch, user]);
+    if (employee) {
+      dispatch(employeeLoginSuccess(employee));
+      console.log("dispatch: employeeLoginSuccess");
+    }
+  }, [dispatch, user, employee]);
 
   return (
     <ThemeProvider>
@@ -30,7 +42,7 @@ const App = () => {
         <Toaster position="top-right" />
         <SideNav />
         <UserDrawerContainer>
-          <UserDrawer isVisible={user} />
+          <UserDrawer isVisible={user || employee} />
         </UserDrawerContainer>
         <Routes>
           {publicRoutes.concat(privateRoutes).map((route) => {
@@ -46,7 +58,10 @@ const App = () => {
                 path={route.path}
                 element={
                   route.isPrivate ? (
-                    <ProtectedRoute>{routeElement}</ProtectedRoute>
+                    <ProtectedRoute
+                      isEmployeeRoute={route.forEmployeeOnly}
+                      children={routeElement}
+                    ></ProtectedRoute>
                   ) : (
                     routeElement
                   )

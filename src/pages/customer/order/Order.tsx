@@ -10,6 +10,7 @@ import SideDrawer from '@app_components/shared/SideDrawer';
 import componentTransitionAnimation from '@app_common/animations/componentTransitionAnimation';
 import pageTransitionAnimation from '@app_common/animations/pageTransitionAnimation';
 import useSessionStorage from '@app_hooks/useSessionStorage';
+import Status from '@app_components/customer/order/Status';
 
 const Order = () => {
 
@@ -52,7 +53,8 @@ const Order = () => {
             }
         />,
         <PlaceOrder key={4} goNext={() => setCurrentStep(5)} goBack={() => setCurrentStep(3)} />,
-        <PaymentConfirmation key={5} finishOrder={() => setCurrentStep(6)} goBack={() => setCurrentStep(4)} />,
+        <PaymentConfirmation key={5} goNext={() => setCurrentStep(6)} goBack={() => setCurrentStep(4)} />,
+        <Status key={6} goNext={() => setCurrentStep(7)} goBack={() => setCurrentStep(5)} />,
     ];
 
     return (
