@@ -1,5 +1,16 @@
 import styled from "styled-components";
 
+const BackSection = styled.div`
+  position: absolute;
+  top: 35px;
+  left: 35px;
+  display: flex;
+  gap: 10px;
+  border: 0cap;
+  flex-direction: row;
+  align-items: center;
+`;
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -16,7 +27,7 @@ const SignSection = styled.div`
 const CompanyLogo = styled.div`
   display: flex;
   justify-content: center;
-  corner-radius: 80px;
+  border-radius: 80px;
 `;
 
 const CompanyLogoImage = styled.img`
@@ -91,6 +102,7 @@ const HaveAccountButton = styled.span`
 `;
 
 export {
+  BackSection,
   Container,
   SignSection,
   CompanyLogo,

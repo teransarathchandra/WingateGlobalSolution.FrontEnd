@@ -40,8 +40,10 @@ api.interceptors.response.use(
       originalRequest._retry = true; // mark the request as retried
       try {
         const newAccessToken = await authService.refreshToken();
-        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`; // update default token
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`; // update current request token
+        axios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${newAccessToken}`; // update default token
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`; // update current request token
         return api(originalRequest); // retry the request with the new token
       } catch (error) {
         toastUtil.error("Session expired. Please log in again.");

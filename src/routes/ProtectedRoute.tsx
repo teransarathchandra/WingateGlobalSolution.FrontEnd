@@ -1,23 +1,55 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from "react-router-dom";
 // import { useSelector } from 'react-redux';
 // import IRootState from "@app_interfaces/IRootState";
-import toastUtil from '@app_utils/toastUtil';
+import toastUtil from "@app_utils/toastUtil";
 // import { useAuth } from '@app_contexts/authContext';
-import { useEffect } from 'react';
+import { useEffect } from "react";
 // import CommonLoading from '@app_components/loader/CommonLoading';
-import { useAuthContext } from '@app_contexts/authContext';
+import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 
-const ProtectedRoute = ({ children }) => {
-    const { user, token } = useAuthContext();
-    const location = useLocation();
+const ProtectedRoute = ({ isEmployeRoute, children }) => {
+  const { activeUser, setActiveUser, setActiveToken, setActiveRefreshToken } =
+    useActiveAuthContext();
 
-    useEffect(() => {
-        if (!user || !token) {
-            toastUtil.error('You are not logged in. Please log in to continue.');
-        }
-    }, [user, token, location]);
+  const { user, userToken, userRefreshToken } = useUserAuthContext();
+  const { employee, employeeToken, employeeRefreshToken } =
+    useEmployeeAuthContext();
 
-    return user && token ? children : <Navigate to="/" replace />;
+  const location = useLocation();
+
+  useEffect(() => {
+    if (isEmployeRoute) {
+      console.log("route access: employee");
+      if (!employee || !employeeToken) {
+        toastUtil.error("Please login before accessing this page.");
+      } else {
+        setActiveUser(employee);
+        setActiveToken(employeeToken);
+        setActiveRefreshToken(employeeRefreshToken);
+      }
+    } else {
+      console.log("route access: user");
+      if (!user || !userToken) {
+        toastUtil.error("You are not logged in. Please log in to continue.");
+      } else {
+        setActiveUser(user);
+        setActiveToken(userToken);
+        setActiveRefreshToken(userRefreshToken);
+      }
+    }
+  }, [user, userToken, employee, employeeToken, location]);
+
+  if (isEmployeRoute) {
+    return employee && employeeToken ? (
+      children
+    ) : (
+      <Navigate to="/emp-checkpoint" replace />
+    );
+  } else {
+    return user && userToken ? children : <Navigate to="/" replace />;
+  }
 };
 
 export default ProtectedRoute;

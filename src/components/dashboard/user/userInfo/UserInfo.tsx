@@ -4,9 +4,13 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "@app_components/shared/ReusableTable";
-import { getAllUser, updateUser, deleteUser } from "@app_services/userService";
-import { IUser } from "@app_interfaces/IUser";
+import { getAllUser, updateUser, deleteUser, getUserOrders } from "@app_services/userService";
+import IUser from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
+import UserDetailsDialog from "../userDialog/UserDetailsDialog";
+import UserReportDialog from "../userDialog/UserReportDialog";
+import { ReportButton } from "@app_styles/userDetailsDialog.styles";
+
 
 const columns: IColumn[] = [
   { id: "userId", label: "User ID", numeric: false, disablePadding: true },
@@ -20,21 +24,59 @@ const columns: IColumn[] = [
 
 const UserInfo: React.FC = () => {
   const [user, setUser] = useState<IRow[]>([]);
+  const [selectedUserOrders, setSelectedUserOrders] = useState([]);
+
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
+  //Edit User
   const handleEditClick = (user: IUser) => {
     setCurrentUser(user);
     setIsDialogOpen(true);
   };
 
+  // Add state for managing UserDetailsDialog visibility and the selected user
+  const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+
+  //Report
+  const [isUserReportDialogOpen, setIsUserReportDialogOpen] = useState(false);
+
+
+  // handleUserClick to fetch orders for the selected user
+  const handleUserClick = async (user) => {
+    setSelectedUser(user); // Set the selected user for display
+    setIsUserDetailsDialogOpen(true); // Open the UserDetailsDialog
+    try {
+      const { data } = await getUserOrders(user._id);
+      setSelectedUserOrders(data); // Save fetched orders to state
+    } catch (error) {
+      console.error('Error fetching orders for user:', error);
+      // Optionally, handle the error (e.g., display an error message)
+      // setFetchError('Failed to fetch orders. Please try again.'); // Set an error message to display
+    }
+  };
+
+
+    const handleUserReportClick = () => {
+    setIsUserReportDialogOpen(true);
+    }
+
+
   const fetchAndPrepareUser = async () => {
     try {
       const response = await getAllUser();
-      const preparedUser: IRow[] = response.data.data.map((user: IUser) => ({
+      const preparedUser: IRow[] = response.data.map((user: IUser) => ({
         ...user,
-        userId: user._id, // Make sure the userID is correctly mapped
+        userId: (
+          <span
+            style={{ cursor: "pointer", textDecoration: "none", color: "#007bff" }}
+            onClick={() => handleUserClick(user)}
+          >
+            {user.userId}
+          </span>
+        ),
         firstName: user.name.firstName, // Correct mapping for firstName
         lastName: user.name.lastName, // Correct mapping for lastName
         phoneNumber: user.contactNumber, // Correct mapping for contactNumber to phoneNumber
@@ -57,7 +99,7 @@ const UserInfo: React.FC = () => {
     try {
       // Assuming your currentuser state has the user's ID
       // And that userData contains the updated user fields
-      const userId = currentUser?._id;
+      const userId = currentUser?.userId;
       if (userId) {
 
         // Prepare the user update object based on the expected backend structure
@@ -89,7 +131,7 @@ const UserInfo: React.FC = () => {
     if (!isConfirmed) {
       return; // Stop if the user cancels
     }
-  
+
     try {
       await deleteUser(userToDelete._id);
       console.log(`User Deleted Successfully, user ID: ${userToDelete._id}`);
@@ -100,7 +142,7 @@ const UserInfo: React.FC = () => {
       // Optionally, show an error message to the user
     }
   };
-  
+
 
   return (
     <>
@@ -111,7 +153,18 @@ const UserInfo: React.FC = () => {
         rowKey="userID"
       />
 
-      {console.log(currentUser)}
+      <UserDetailsDialog
+        isOpen={isUserDetailsDialogOpen}
+        user={selectedUser}
+        orders={selectedUserOrders} // Pass the orders state
+        handleClose={() => setIsUserDetailsDialogOpen(false)}
+      />
+
+      <UserReportDialog
+        isOpen={isUserReportDialogOpen}
+        handleClose={() => setIsUserReportDialogOpen(false)}
+      />
+
 
       <EditDialog
         isOpen={isDialogOpen}
@@ -129,6 +182,7 @@ const UserInfo: React.FC = () => {
         onSave={saveUser}
         onDelete={deleteUser}
       />
+      <ReportButton onClick={() => handleUserReportClick()}>Report</ReportButton>
 
     </>
   );
