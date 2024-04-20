@@ -34,7 +34,7 @@ const CountryInfo: React.FC = () => {
   const fetchAndPrepareCountry = async () => {
     try {
       const response = await getAllCountry();
-      const preparedCountry: IRow[] = response.data.data.map((country: ICountry) => ({
+      const preparedCountry: IRow[] = response.data.map((country: ICountry) => ({
         ...country,
         edit: <button onClick={() => handleEditClick(country)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
         delete: <button onClick={() => handleDeleteCountry(country?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,

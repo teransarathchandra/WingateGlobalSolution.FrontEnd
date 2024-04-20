@@ -13,6 +13,7 @@ const Country = lazy(() => import("@app_pages/dashboard/country/Country"));
 const RestrictedOrderType = lazy(
   () => import("@app_pages/dashboard/restrictedOrder/RestrictedOrderType")
 );
+const TrackOrder = lazy(() => import("@app_pages//customer/order/TrackOrder"));
 
 //Order Dashboard
 const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
@@ -47,6 +48,9 @@ const EmployeeManage = lazy(
   () => import("@app_pages/employee/manage/EmployeeManage")
 );
 
+//Order Info
+const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
+
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
@@ -54,6 +58,12 @@ export const privateRoutes = [
   {
     path: "/order",
     component: PlaceOrder,
+    isPrivate: true,
+    forEmployeeOnly: false,
+  },
+  {
+    path: "/track-order",
+    component: TrackOrder,
     isPrivate: true,
     forEmployeeOnly: false,
   },
@@ -108,18 +118,6 @@ export const privateRoutes = [
   {
     path: "/app/country",
     component: Country,
-    isPrivate: true,
-    forEmployeeOnly: true,
-  },
-  {
-    path: "/app/access",
-    component: EmployeeAccess,
-    isPrivate: true,
-    forEmployeeOnly: true,
-  },
-  {
-    path: "/app/emp-manage",
-    component: EmployeeManage,
     isPrivate: true,
     forEmployeeOnly: true,
   },

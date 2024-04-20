@@ -1,7 +1,7 @@
 import api from "@app_utils/apiUtils";
 
 const usePDFDownloader = () => {
-    const downloadPDF = async (htmlContent) => {
+    const downloadPDF = async (htmlContent, filename) => {
         try {
             // Notice that we do not set the headers here because 
             // the api instance already sets the content type to 'application/json'
@@ -13,7 +13,7 @@ const usePDFDownloader = () => {
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = downloadUrl;
-            link.download = "custom-report.pdf";
+            link.download = filename;
             document.body.appendChild(link); // This line is required in some browsers
             link.click();
             link.remove(); // Remove the link when done
