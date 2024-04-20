@@ -57,10 +57,6 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     }, [isOpen]);
 
 
-    // const getPdfContent = () => {
-    //     const content = <OrdersReport orders={filteredOrders} />;
-    //     return ReactDOMServer.renderToString(<PDFLayout content={content} />);
-    // };
 
     useEffect(() => {
         const filterOrders = () => {
@@ -89,7 +85,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     useEffect(() => {
         if (filteredOrders.length > 0) {
             const htmlContent = ReactDOMServer.renderToString(
-                <PDFLayout content={<OrdersReport orders={filteredOrders} />} />
+                <PDFLayout content={<OrdersReport orders={filteredOrders} users={users}/>} />
             );
             setPdfHtmlContent(htmlContent);
         }

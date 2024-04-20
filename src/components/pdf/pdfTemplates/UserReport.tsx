@@ -1,5 +1,10 @@
+const OrdersReport = ({ orders, users }) => {
+    // Function to find user name by user ID
+    const getUserNameById = (userId) => {
+        const user = users.find(user => user._id === userId);
+        return user ? `${user.name.firstName} ${user.name.lastName}` : 'Unknown User';  // Adjust according to your user object structure
+    };
 
-const OrdersReport = ({ orders }) => {
     return (
         <div style={{ fontFamily: 'Arial, sans-serif', padding: '10px 20px' }}>
             <h1 style={{ textAlign: 'center' }}>Orders Report</h1>
@@ -15,7 +20,7 @@ const OrdersReport = ({ orders }) => {
                 <tbody>
                     {orders.map((order, index) => (
                         <tr key={index}>
-                            <td>{order.userName}</td>
+                            <td>{getUserNameById(order.userId)}</td>
                             <td>{order.orderId}</td>
                             <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                             <td>{order.status}</td>
