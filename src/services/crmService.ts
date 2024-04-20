@@ -9,7 +9,9 @@ export const getCustomerById = (id) => {
 };
 
 export const createCustomer = (CustomerData) => {
-    return api.post("/customer", CustomerData);
+    return api.post("/customer", CustomerData)
+    .then((response) => response.data)
+    .catch((error) => error.message);
 };
 
 export const updateCustomer = (id, CustomerData) => {

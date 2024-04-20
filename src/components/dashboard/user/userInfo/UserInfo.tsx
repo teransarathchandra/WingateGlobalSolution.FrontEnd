@@ -10,6 +10,7 @@ import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
 import UserReportDialog from "../userDialog/UserReportDialog";
 import { ReportButton } from "@app_styles/userDetailsDialog.styles";
+import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 
 
 const columns: IColumn[] = [
@@ -59,9 +60,9 @@ const UserInfo: React.FC = () => {
   };
 
 
-    const handleUserReportClick = () => {
+  const handleUserReportClick = () => {
     setIsUserReportDialogOpen(true);
-    }
+  }
 
 
   const fetchAndPrepareUser = async () => {
@@ -165,6 +166,7 @@ const UserInfo: React.FC = () => {
         handleClose={() => setIsUserReportDialogOpen(false)}
       />
 
+      <UpdateBtn onClick={() => handleUserReportClick()}>Report</UpdateBtn>
 
       <EditDialog
         isOpen={isDialogOpen}
@@ -182,7 +184,7 @@ const UserInfo: React.FC = () => {
         onSave={saveUser}
         onDelete={deleteUser}
       />
-      <ReportButton onClick={() => handleUserReportClick()}>Report</ReportButton>
+
 
     </>
   );

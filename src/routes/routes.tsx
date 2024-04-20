@@ -21,6 +21,9 @@ const Order = lazy(() => import("@app_pages/dashboard/order/Order"));
 //User
 const User = lazy(() => import("@app_pages/dashboard/user/User"));
 
+//Restricted Order Dashboard
+const RestrictedOrders = lazy(() => import("@app_pages/dashboard/restrictedOrder/RestrictedOrders"));
+
 //Employee
 const EmployeeCheckpoint = lazy(
   () => import("@app_pages/employee/signin/EmployeeSignIn")
@@ -68,8 +71,15 @@ const EmployeeManage = lazy(
 
 //Order Info
 const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
-//Customer
-const Customer = lazy(() => import("@app_pages/crm/Customer"));
+
+//Payment
+const Payment = lazy(() => import("@app_pages/finance/Payment"));
+
+//Quotation
+const Quotation = lazy(() => import("@app_pages/finance/Quotation"));
+
+//Profit
+const Profit = lazy(() => import("@app_pages/finance/Profit"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -79,6 +89,9 @@ const UserSettings = lazy(() => import("@app_pages/user/UserSettings"));
 
 //User Profile
 const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
+
+//Customer
+const Customer = lazy(() => import("@app_pages/dashboard/crm/Customer"));
 
 export const privateRoutes = [
   {
@@ -118,8 +131,26 @@ export const privateRoutes = [
     forEmployeeOnly: true,
   },
   {
+    path: "/app/assign-details",
+    component: AssignDetails,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
     path: "/app/order-aggregation",
     component: OrderAggregation,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/warehouse",
+    component: Warehouse,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/warehouseInfo",
+    component: WarehouseInfo,
     isPrivate: true,
     forEmployeeOnly: true,
   },
@@ -138,6 +169,12 @@ export const privateRoutes = [
   {
     path: "/app/country",
     component: Country,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/crm",
+    component: Customer,
     isPrivate: true,
     forEmployeeOnly: true,
   },
@@ -166,39 +203,27 @@ export const privateRoutes = [
     forEmployeeOnly: true,
   },
   {
-    path: "/user-info",
-    component: UserSettings,
-    isPrivate: false,
-    forEmployeeOnly: false,
-  },
-  {
-    path: "/user-password",
-    component: UserPassword,
-    isPrivate: false,
-    forEmployeeOnly: false,
-  },
-  {
-    path: "/app/assign-details",
-    component: AssignDetails,
+    path: "/app/quotation",
+    component: Quotation,
     isPrivate: true,
     forEmployeeOnly: true,
   },
   {
-    path: "/app/warehouse",
-    component: Warehouse,
+    path: "/app/payment",
+    component: Payment,
     isPrivate: true,
     forEmployeeOnly: true,
   },
   {
-    path: "/app/warehouseInfo",
-    component: WarehouseInfo,
+    path: "/app/profit",
+    component: Profit,
     isPrivate: true,
     forEmployeeOnly: true,
   },
   {
-    path: "/app/crm",
-    component: Customer,
-    isPrivate: false,
+    path: "/app/restricted-orders",
+    component: RestrictedOrders,
+    isPrivate: true,
     forEmployeeOnly: true,
   },
 ];
@@ -219,12 +244,24 @@ export const publicRoutes = [
   {
     path: "/track-order",
     component: TrackOrder,
-    isPrivate: true,
+    isPrivate: false,
     forEmployeeOnly: false,
   },
   {
     path: "/verify-email/:token",
     component: VerifyEmail,
+    isPrivate: false,
+    forEmployeeOnly: false,
+  },
+  {
+    path: "/user-info",
+    component: UserSettings,
+    isPrivate: false,
+    forEmployeeOnly: false,
+  },
+  {
+    path: "/user-password",
+    component: UserPassword,
     isPrivate: false,
     forEmployeeOnly: false,
   },

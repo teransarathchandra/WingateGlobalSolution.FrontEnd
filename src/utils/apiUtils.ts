@@ -49,6 +49,7 @@ api.interceptors.response.use(
       }
       authService.clearTokens();
       authService.clearUser();
+      authService.clearSessionStorage();
       window.location.reload();
 
     } else if (error.response?.status === 401 && !originalRequest._retry) {

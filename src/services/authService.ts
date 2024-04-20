@@ -44,6 +44,10 @@ const clearUser = () => {
   sessionStorage.removeItem("app-active-user");
 };
 
+const clearSessionStorage = () => {
+  sessionStorage.clear();
+};
+
 const isInEmployeeMode = () => {
   const activeToken = getAccessToken();
   const usrToken = authUserService.getUserAccessToken();
@@ -97,5 +101,6 @@ export const authService = {
   clearTokens,
   refreshToken,
   isInEmployeeMode,
-  clearUser
+  clearUser,
+  clearSessionStorage
 };
