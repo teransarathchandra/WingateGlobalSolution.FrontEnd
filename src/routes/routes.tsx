@@ -186,7 +186,8 @@ export const publicRoutes = [
   {
     path: "/track-order",
     component: TrackOrder,
-    isPrivate: false
+    isPrivate: false,
+    forEmployeeOnly: false,
   },
   {
     path: "/verify-email/:token",
