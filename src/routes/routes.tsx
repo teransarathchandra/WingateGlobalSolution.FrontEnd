@@ -53,8 +53,6 @@ const EmployeeManage = lazy(
 
 //Order Info
 const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
-//Customer
-const Customer = lazy(() => import("@app_pages/crm/Customer"));
 
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
@@ -174,8 +172,8 @@ export const privateRoutes = [
 {
   path: "/app/crm",
   component: Customer,
-  isPrivate: false,
-  forEmployeeOnly: false,
+  isPrivate: true,
+  forEmployeeOnly: true,
 },
 ];
 
