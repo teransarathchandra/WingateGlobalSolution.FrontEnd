@@ -124,27 +124,30 @@ export const privateRoutes = [
     isPrivate: true,
     forEmployeeOnly: true,
   },
-    {
-        path: "/app/assign-details",
-        component: AssignDetails,
-        isPrivate: true,
-    },
+  {
+    path: "/app/assign-details",
+    component: AssignDetails,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
   {
     path: "/app/order-aggregation",
     component: OrderAggregation,
     isPrivate: true,
     forEmployeeOnly: true,
   },
-    {
-        path: "/app/warehouse",
-        component: Warehouse,
-        isPrivate: true,
-    },
-    {
-        path: "/app/warehouseInfo",
-        component: WarehouseInfo,
-        isPrivate: true,
-    },
+  {
+    path: "/app/warehouse",
+    component: Warehouse,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/warehouseInfo",
+    component: WarehouseInfo,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
   {
     path: "/app/restricted-order-type",
     component: RestrictedOrderType,
@@ -163,12 +166,12 @@ export const privateRoutes = [
     isPrivate: true,
     forEmployeeOnly: true,
   },
-    {
-        path: "/app/crm",
-        component: Customer,
-        isPrivate: false,
-        forEmployeeOnly: true,
-    },
+  {
+    path: "/app/crm",
+    component: Customer,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
   {
     path: "/app/order-info",
     component: OrderInfo,
@@ -192,43 +195,31 @@ export const privateRoutes = [
     component: User,
     isPrivate: true,
     forEmployeeOnly: true,
-},
-{
-    path: "/user-info",
-    component: UserSettings,
-    isPrivate: false,
-    forEmployeeOnly: false,
-},
-{
-    path: "/user-password",
-    component: UserPassword,
-    isPrivate: false,
-    forEmployeeOnly: false,
-},
-{
-  path: "/app/quotation",
-  component: Quotation,
-  isPrivate: true,
-  forEmployeeOnly: false,
-},
-{
-  path: "/app/payment",
-  component: Payment,
-  isPrivate: true,
-  forEmployeeOnly: false,
-},
-{
-  path: "/app/profit",
-  component: Profit,
-  isPrivate: true,
-  forEmployeeOnly: false,
-}
-{
-  path: "/app/restricted-orders",
-  component: RestrictedOrders,
-  isPrivate: true,
-  forEmployeeOnly: true,
-},
+  },
+  {
+    path: "/app/quotation",
+    component: Quotation,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/payment",
+    component: Payment,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/profit",
+    component: Profit,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/restricted-orders",
+    component: RestrictedOrders,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
 ];
 
 export const publicRoutes = [
@@ -247,11 +238,24 @@ export const publicRoutes = [
   {
     path: "/track-order",
     component: TrackOrder,
-    isPrivate: false
+    isPrivate: false,
+    forEmployeeOnly: false,
   },
   {
     path: "/verify-email/:token",
     component: VerifyEmail,
+    isPrivate: false,
+    forEmployeeOnly: false,
+  },
+  {
+    path: "/user-info",
+    component: UserSettings,
+    isPrivate: false,
+    forEmployeeOnly: false,
+  },
+  {
+    path: "/user-password",
+    component: UserPassword,
     isPrivate: false,
     forEmployeeOnly: false,
   },
