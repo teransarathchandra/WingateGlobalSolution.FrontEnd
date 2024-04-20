@@ -11,6 +11,7 @@ import {
   loginSuccess,
   employeeLoginSuccess,
 } from "@app_redux/actions/authActions";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import UserDrawer from "@app_components/shared/UserDrawer";
@@ -20,8 +21,10 @@ const App = () => {
   const dispatch = useDispatch();
   const { user } = useUserAuthContext();
   const { employee } = useEmployeeAuthContext();
+  const { isEmployee, logout } = useActiveAuthContext();
 
   useEffect(() => {
+    const isAEmployee = isEmployee() || false;
     if (user) {
       dispatch(loginSuccess(user));
       console.log("dispatch: userLoginSuccess");
@@ -56,7 +59,7 @@ const App = () => {
                 element={
                   route.isPrivate ? (
                     <ProtectedRoute
-                      isEmployeRoute={route.forEmployeeOnly}
+                      isEmployeeRoute={route.forEmployeeOnly}
                       children={routeElement}
                     ></ProtectedRoute>
                   ) : (

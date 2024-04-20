@@ -40,6 +40,8 @@ export const AuthUserContextProvider = ({
     setUser(null);
     setUserToken(null);
     setUserRefreshToken(null);
+
+    
   };
 
   return (

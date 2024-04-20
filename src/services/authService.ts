@@ -4,7 +4,15 @@ import { authUserService } from "@app_services/authUserService";
 import { authEmployeeService } from "@app_services/authEmployeeService";
 
 const getAccessToken = () => {
-  return JSON.parse(sessionStorage.getItem("app-active-token") || "");
+  const tempToken = sessionStorage.getItem("app-active-token");
+  if (tempToken) {
+    try {
+      return JSON.parse(tempToken);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 };
 
 const setAccessToken = (token) => {
@@ -12,7 +20,15 @@ const setAccessToken = (token) => {
 };
 
 const getRefreshToken = () => {
-  return JSON.parse(sessionStorage.getItem("app-active-refresh-token") || "");
+  const tempToken = sessionStorage.getItem("app-active-refresh-token");
+  if (tempToken) {
+    try {
+      return JSON.parse(tempToken);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 };
 
 const setRefreshToken = (token) => {
@@ -22,6 +38,10 @@ const setRefreshToken = (token) => {
 const clearTokens = () => {
   sessionStorage.removeItem("app-active-token");
   sessionStorage.removeItem("app-active-refresh-token");
+};
+
+const clearUser = () => {
+  sessionStorage.removeItem("app-active-user");
 };
 
 const isInEmployeeMode = () => {
@@ -50,11 +70,11 @@ const refreshToken = async () => {
     throw new Error("No refresh token available");
   }
   try {
-    let refreshEndPoint = "/user/refresh-token";
+    let refreshEndPoint = "/user/refresh_token";
     if (isInEmployeeMode() != null) {
       refreshEndPoint = isInEmployeeMode()
-        ? "/employee/refresh-token"
-        : "/user/refresh-token";
+        ? "/employee/refresh_token"
+        : "/user/refresh_token";
     }
     console.log("refreshToken", refreshToken, " endpoint: ", refreshEndPoint);
     const response = await api.post(refreshEndPoint, { refreshToken });
@@ -77,4 +97,5 @@ export const authService = {
   clearTokens,
   refreshToken,
   isInEmployeeMode,
+  clearUser
 };

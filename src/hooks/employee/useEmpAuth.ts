@@ -37,7 +37,6 @@ const useEmpAuth = () => {
   );
 
   const logoutEmployee = useCallback(() => {
-    sessionStorage.clear();
     dispatch(logout());
     navigate("/");
   }, [dispatch, navigate]);
