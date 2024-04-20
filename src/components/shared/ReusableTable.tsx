@@ -7,27 +7,33 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
+  TextField
 } from "@mui/material";
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
+import AddButton from "./AddButton";
 
 interface ReusableTableProps {
-  columns: IColumn[];
-  rows: IRow[];
-  title: string;
-  rowKey: string;
+  columns;
+  rows;
+  title;
+  rowKey;
+  onAdd?: () => void;
+  showAddButton?: boolean;
+  showActiveSwitch?: boolean;
   searchTerm?: string;
   handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, searchTerm, handleSearch }) => {
-  const filteredRows = rows.filter(row =>
-    Object.values(row).some(value =>
-      String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
-    )
-  );
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch, searchTerm, handleSearch }) => {
+  
+    const filteredRows = rows.filter(row =>
+      Object.values(row).some(value =>
+        String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
+      )
+    );
+  
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -52,20 +58,28 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
         <Paper sx={{ width: "100%", mb: 2 }}>
           <FlexRow
             style={{
+              display: 'flex',
               alignItems: "center",
-              justifyContent: "space-between",
-              margin: "0 2rem 0 0",
+              padding: "1rem 0",
+              justifyContent: "space-between"
             }}
           >
-            <TextField
-              style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
-              label="Search"
-              id="outlined-size-small"
-              size="small"
-              value={searchTerm}
-              onChange={handleSearch || (() => {})}
-            />
-            <SwitchBtn />
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+              <TextField
+                style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
+                label="Search"
+                id="outlined-size-small"
+                size="small"
+                value={searchTerm}
+                onChange={handleSearch || (() => { })}
+              />
+            </div>
+            <div>
+              {showActiveSwitch && <SwitchBtn />}
+            </div>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: "6rem" }}>
+              {showAddButton && onAdd && <AddButton onClick={onAdd} />}
+            </div>
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
