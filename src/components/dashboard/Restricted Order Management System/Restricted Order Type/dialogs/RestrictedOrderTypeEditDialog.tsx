@@ -87,17 +87,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
             console.error('Failed to fetch country', error);
         }
     };
-    // const sendingCountry = async () => {
-    //     try {
-    //         const response = await getCountryById(entity.sendingCountryId);
-    //         const sendingCountry = response.data.map((country: ICountry) => ({
-    //             sendingCountry : sendingCountry.name,
-    //         }));
-    //         setSendingCountries(sendingCountry);
-    //     } catch (error) {
-    //         console.error('Failed to fetch country', error);
-    //     }
-    // };
+
     console.log('formData', formData)
     console.log('fields', fields)
 

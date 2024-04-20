@@ -37,26 +37,27 @@ interface FieldConfig {
 
 interface FullScreenDialogProps {
   isOpen: boolean;
+  onSave: (restrictedOrder: IRestrictedOrder) => void;
   entity: any;
   handleViewClose: () => void;
   fields: FieldConfig[];
 }
-const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, handleViewClose, fields }) => {
+const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, onSave, handleViewClose, fields }) => {
 
   const [ViewData, setViewData] = useState(entity || {});
-
-  useEffect(() => {
-    setViewData(entity || {});
-  }, [entity]);
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
 
   const handleClose = () => {
     setIsEditDialogOpen(false);
-   // window.location.reload();
+    onSave(ViewData);
+    console.log("view data " , ViewData)
   };
 
+  useEffect(() => {
+    setViewData(entity || {});
+  }, [entity]);
 
   const handleEditClick = async (id) => {
     const { data } = await getRestrictedOrderById(id)
@@ -75,14 +76,13 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
     try {
       const response = await deleteRestrictedOrder(ResOrderId);
       console.log('Order deleted successfully:', response);
-      setIsEditDialogOpen(false);
-      isOpen = false;
-      handleClose
+      handleViewClose();
+      // setIsEditDialogOpen(false);
+      // isOpen = false;
     } catch (error) {
       console.error('Failed to update order', error);
     }
-    window.location.reload();
-  };
+   };
 
 
   const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
@@ -95,21 +95,20 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
       const dataToUpdate = { ...updatedData };
       delete dataToUpdate._id;
       delete dataToUpdate.restrictedOrderId;
-      delete (dataToUpdate as any).createdAt;   
+      delete (dataToUpdate as any).createdAt;
       delete (dataToUpdate as any).updatedAt;
       delete (dataToUpdate as any).__v;
-   
+
       console.log(dataToUpdate)
 
-      
-
       if (id) {
-        const response = await updateRestrictedOrder(id, dataToUpdate);
-        console.log('dataToUpdate', dataToUpdate);
-        console.log('Order updated successfully:', response);
-
+        const aggType = 'restrictedOrderTypes';
+        const response = await updateRestrictedOrder(id, aggType, dataToUpdate);
+        console.log("edited ", response.data.data[0]);
+        setViewData(response.data.data[0]);
+        handleClose();
       }
-      setIsEditDialogOpen(false);
+
     } catch (error) {
       console.error('Failed to update order', error);
     }
@@ -169,10 +168,10 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, han
           <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#0c1821" }} />
         </button>
       </div>
-      {isEditDialogOpen &&
+      {isEditDialogOpen == true &&
         <RestrictedOrderTypeEditDialog
           isOpen={isEditDialogOpen}
-          handleClose={() => setIsEditDialogOpen(false)}
+          handleClose={handleClose}
           entity={currentResOrder}
           fields={fields}
           onSave={handleUpdatedRestrictedOrderType}
