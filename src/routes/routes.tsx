@@ -66,6 +66,15 @@ const EmployeeManage = lazy(
 //Order Info
 const OrderInfo = lazy(() => import("@app_pages/transport/Order"));
 
+//Payment
+const Payment = lazy(() => import("@app_pages/finance/Payment"));
+
+//Quotation
+const Quotation = lazy(() => import("@app_pages/finance/Quotation"));
+
+//Profit
+const Profit = lazy(() => import("@app_pages/finance/Profit"));
+
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
@@ -196,6 +205,24 @@ export const privateRoutes = [
     isPrivate: false,
     forEmployeeOnly: false,
 },
+{
+  path: "/app/quotation",
+  component: Quotation,
+  isPrivate: true,
+  forEmployeeOnly: false,
+},
+{
+  path: "/app/payment",
+  component: Payment,
+  isPrivate: true,
+  forEmployeeOnly: false,
+},
+{
+  path: "/app/profit",
+  component: Profit,
+  isPrivate: true,
+  forEmployeeOnly: false,
+}
 {
   path: "/app/restricted-orders",
   component: RestrictedOrders,
