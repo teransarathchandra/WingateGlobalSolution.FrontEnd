@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import api from "@app_utils/apiUtils";
 
 const Payment = ({
@@ -10,8 +10,6 @@ const Payment = ({
     goNext,
     goBack
 }) => {
-
-    const [paymentStatus, setPaymentStatus] = useState('');
 
     const fetchHash = async (paymentData) => {
         const response = await api.post('/payment/generate_hash', paymentData);
@@ -58,7 +56,6 @@ const Payment = ({
 
         } catch (error) {
             console.error('Error initiating payment:', error);
-            setPaymentStatus('Failed to initiate payment');
         }
     };
 

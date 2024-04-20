@@ -11,7 +11,6 @@ import {
   loginSuccess,
   employeeLoginSuccess,
 } from "@app_redux/actions/authActions";
-import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import UserDrawer from "@app_components/shared/UserDrawer";
