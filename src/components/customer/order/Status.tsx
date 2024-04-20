@@ -32,7 +32,8 @@ const PaymentConfirmation = ({ goNext, goBack }: { goNext: () => void, goBack: (
     }, [orderDetails, itemDetails, receiverDetails, senderDetails]);
 
     if (!orderData) {
-        return <div>Loading...</div>;
+        // return <CommonLoading loading={true}></CommonLoading>;
+        return <></>;
     }
 
     return (

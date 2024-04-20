@@ -3,12 +3,12 @@ import api from "@app_utils/apiUtils";
 export const getAllOrders = (aggType) => {
     if (aggType) {
         return api.get(`/order?type=${aggType}`)
-        .then((response) => response.data)
-        .catch((error) => error.message);
+            .then((response) => response.data)
+            .catch((error) => error.message);
     } else {
         return api.get("/order")
-        .then((response) => response.data)
-        .catch((error) => error.message);
+            .then((response) => response.data)
+            .catch((error) => error.message);
     }
 };
 
@@ -55,7 +55,8 @@ export const getOrderById = (id) => {
 };
 
 export const getOrderByOrderId = (orderId) => {
-    return api.get(`/order/byOrderId/${orderId}`)
+    debugger;
+    return api.get(`/order/byOrderId`, { params: { orderId } })
         .then((response) => response.data)
         .catch((error) => error.message);
 };

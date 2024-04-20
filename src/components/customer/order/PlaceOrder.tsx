@@ -67,7 +67,7 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           const receiverId = receiverResponse.data._id;
 
           const createOrderPayload = {
-            status: 'Pending',
+            status: 'Processing',
             itemId: itemId,
             senderId: senderId,
             receiverId: receiverId,

@@ -47,11 +47,6 @@ export const privateRoutes = [
         path: "/order",
         component: PlaceOrder,
         isPrivate: true,
-    },
-    {
-        path: "/track-order",
-        component: TrackOrder,
-        isPrivate: true,
     },    
     {
         path: "/app/order",
@@ -119,6 +114,11 @@ export const publicRoutes = [
     {
         path: "/verify-email/:token",
         component: VerifyEmail,
+        isPrivate: false,
+    },
+    {
+        path: "/track-order",
+        component: TrackOrder,
         isPrivate: false,
     },
     {
