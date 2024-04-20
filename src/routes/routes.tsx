@@ -73,12 +73,6 @@ export const privateRoutes = [
     forEmployeeOnly: false,
   },
   {
-    path: "/track-order",
-    component: TrackOrder,
-    isPrivate: true,
-    forEmployeeOnly: false,
-  },
-  {
     path: "/app/order",
     component: Order,
     isPrivate: true,
@@ -187,6 +181,12 @@ export const publicRoutes = [
     path: "/home",
     component: Home,
     isPrivate: false,
+    forEmployeeOnly: false,
+  },
+  {
+    path: "/track-order",
+    component: TrackOrder,
+    isPrivate: true,
     forEmployeeOnly: false,
   },
   {

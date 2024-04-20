@@ -58,10 +58,9 @@ export const getOrderById = (id) => {
 };
 
 export const getOrderByOrderId = (orderId) => {
-  return api
-    .get(`/order/byOrderId/${orderId}`)
-    .then((response) => response.data)
-    .catch((error) => error.message);
+    return api.get(`/order/byOrderId`, { params: { orderId } })
+        .then((response) => response.data)
+        .catch((error) => error.message);
 };
 
 export const createOrder = (orderData) => {
