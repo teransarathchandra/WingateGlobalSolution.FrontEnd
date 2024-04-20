@@ -32,7 +32,7 @@ const useAuth = () => {
   );
 
   const logoutCurrentUser = useCallback(
-    (isEmployee: Boolean) => {
+    (isEmployee: boolean) => {
       if (isEmployee) {
         dispatch(logout());
         navigate("/emp-checkpoint");

@@ -1,6 +1,6 @@
 import Payment from "@app_components/shared/Payment"
 import useSessionStorage from "@app_hooks/useSessionStorage"
-
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 // const PaymentConfirmation = ({ finishOrder, goBack }) => {
 const PaymentConfirmation = ({ goNext, goBack }: { goNext: () => void, goBack: () => void }) => {
 
@@ -9,15 +9,15 @@ const PaymentConfirmation = ({ goNext, goBack }: { goNext: () => void, goBack: (
   const currency = "LKR";
   
   const [orderDetails, ] = useSessionStorage('order-details');
-  const [user, ] = useSessionStorage('app-user');
+  const {activeUser} = useActiveAuthContext();
 
   const customerDetails = {
-    first_name: user.name?.firstName,
-    last_name: user?.name?.lastName,
-    email: user?.email,
-    phone: user?.phone,
-    address: user?.address?.street,
-    city: user?.address?.city,
+    first_name: activeUser?.name?.firstName,
+    last_name: activeUser?.name?.lastName,
+    email: activeUser?.email,
+    phone: activeUser?.contactNumber,
+    address: activeUser?.address?.street,
+    city: activeUser?.address?.city,
   };
 
   return (
