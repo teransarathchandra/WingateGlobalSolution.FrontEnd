@@ -111,7 +111,22 @@ export const privateRoutes = [
         path: "/app/order-info",
         component: OrderInfo,
         isPrivate: true,
-    }
+    },
+    {
+        path: "/app/user",
+        component: User,
+        isPrivate: true,
+    },
+    {
+        path: "/user-info",
+        component: UserSettings,
+        isPrivate: true,
+    },
+    {
+        path: "/user-password",
+        component: UserPassword,
+        isPrivate: true,
+    },
 ];
 
 export const publicRoutes = [

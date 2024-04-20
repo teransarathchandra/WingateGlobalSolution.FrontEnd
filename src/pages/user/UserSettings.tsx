@@ -1,4 +1,3 @@
-import { HomePageBackground } from "@app_styles/home.styles"; // Import from where you defined them
 import {
     HeaderContainer,
     SecHeadContainer,

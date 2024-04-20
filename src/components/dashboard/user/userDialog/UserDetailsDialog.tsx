@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import { DialogHeaderContainer, DialogHeaderLeft, DialogHeaderRight, DialogOrderDetails, DialogOrdersContainer, DialogUserContainer, DialogUserDetails } from '@app_styles/userDetailsDialog.styles';
 import { separateDateTime } from "@app_utils/separateDateTime";

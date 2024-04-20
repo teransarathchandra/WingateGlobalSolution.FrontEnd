@@ -5,7 +5,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "@app_components/shared/ReusableTable";
 import { getAllUser, updateUser, deleteUser, getUserOrders } from "@app_services/userService";
-import { IUser } from "@app_interfaces/IUser";
+import IUser from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
 import UserReportDialog from "../userDialog/UserReportDialog";
@@ -77,7 +77,6 @@ const UserInfo: React.FC = () => {
             {user.userId}
           </span>
         ),
-
         firstName: user.name.firstName, // Correct mapping for firstName
         lastName: user.name.lastName, // Correct mapping for lastName
         phoneNumber: user.contactNumber, // Correct mapping for contactNumber to phoneNumber
@@ -100,7 +99,7 @@ const UserInfo: React.FC = () => {
     try {
       // Assuming your currentuser state has the user's ID
       // And that userData contains the updated user fields
-      const userId = currentUser?._id;
+      const userId = currentUser?.userId;
       if (userId) {
 
         // Prepare the user update object based on the expected backend structure
