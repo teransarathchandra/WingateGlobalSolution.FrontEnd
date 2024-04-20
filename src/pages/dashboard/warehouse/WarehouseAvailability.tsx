@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import { getAllOrders } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
-import TableDropdown from "@app_components/dashboard/warehouse/TableDropdown";
-import { ReusableTable} from '@app_components/shared/ReusableTableDropdown'
+import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
@@ -46,7 +45,7 @@ const WarehouseAvailability: React.FC = () => {
         title="Warehouse Availability"
         rowKey="orderId"
       /> */}
-      <ReusableTable
+      <ReusableTableDropdown
         columns = {columns}
         rows = {orders}
         title="Order Warehouse Availability"
