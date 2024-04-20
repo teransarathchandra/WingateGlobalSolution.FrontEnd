@@ -108,3 +108,7 @@ left: 500px;
     transform: scale(0.98); // Slightly shrink the button when clicked
   }
 `;
+
+export const StyledDialogContainer = styled.div`
+    padding: 50px; /* Add padding to create inner space */
+`;
