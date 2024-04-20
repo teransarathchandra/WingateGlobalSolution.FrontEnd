@@ -21,10 +21,8 @@ const App = () => {
   const dispatch = useDispatch();
   const { user } = useUserAuthContext();
   const { employee } = useEmployeeAuthContext();
-  const { isEmployee, logout } = useActiveAuthContext();
 
   useEffect(() => {
-    const isAEmployee = isEmployee() || false;
     if (user) {
       dispatch(loginSuccess(user));
       console.log("dispatch: userLoginSuccess");
