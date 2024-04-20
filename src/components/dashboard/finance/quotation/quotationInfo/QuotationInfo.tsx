@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { IColumn, IRow } from "@app_interfaces/ITable";
-import ReusableTable from "../../../../shared/ReusableTable";
-import { getAllQuotations, updateQuotation } from "@app_services/quotationService";
 import { IQuotation } from "@app_interfaces/IQuotation";
+import { IColumn, IRow } from "@app_interfaces/ITable";
+import { getAllQuotations, updateQuotation } from "@app_services/quotationService";
+import { useEffect, useState } from "react";
 import EditDialog from "../../../../dialog/EditDialog";
+import ReusableTable from "../../../../shared/ReusableTable";
 
 const columns: IColumn[] = [
   { id: "quotationId", label: "Quotation ID", numeric: false, disablePadding: true },

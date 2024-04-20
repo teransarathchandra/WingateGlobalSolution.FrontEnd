@@ -45,6 +45,9 @@ const Payment = lazy(() => import("@app_pages/finance/Payment"));
 //Quotation
 const Quotation = lazy(() => import("@app_pages/finance/Quotation"));
 
+//Profit
+const Profit = lazy(() => import("@app_pages/finance/Profit"));
+
 //Common
 const NotFound = lazy(() => import("@app_pages/common/PageNotFound"));
 
@@ -113,7 +116,14 @@ export const privateRoutes = [
         path: "/app/payment",
         component: Payment,
         isPrivate: true,
+    },
+    {
+        path: "/app/profit",
+        component: Profit,
+        isPrivate: true,
     }
+    
+
 ];
 
 export const publicRoutes = [
