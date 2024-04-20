@@ -2,6 +2,7 @@ import api from '@app_utils/apiUtils';
 import { useState } from 'react';
 
 const useFileUpload = (url, initialFolderPath, itemID , documentType) => {
+    console.log('itemIDabc', itemID)
     const [file, setFile] = useState(null);
     const [folderPath, setFolderPath] = useState(initialFolderPath);
 
@@ -19,7 +20,7 @@ const useFileUpload = (url, initialFolderPath, itemID , documentType) => {
 
         const formData = new FormData();
         formData.append("folderPath", folderPath);
-        formData.append("itemID", itemID);
+        formData.append("itemId", itemID);
         formData.append("documentType", documentType);
         formData.append("file", uploadFile, filenameWithTimestamp);
 

@@ -17,20 +17,34 @@ const RequiredDocuments = ({ goNext, goBack }) => {
     const [itemObjectId,] = useSessionStorage('order-item-object-id');
     const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
     const [isRestrictedNoticeDialogOpen, setIsRestrictedNoticeDialogOpen] = useState(true);
+    const [isSubmitButtonEnable, setSubmitButtonEnable] = useState(false);
     const [requiredTrueDocuments, setRequiredTrueDocuments] = useState<string[]>([]);
-    const itemId = itemObjectId;
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        goNext();
+    const [itemId,] = useSessionStorage('order-item-id');
+
+
+   
+    const handleSubmitDisability = () => {
+        // debugger;
+        setSubmitButtonEnable(true);
     };
 
     const handleGoBack = () => {
         goBack();
     };
+    const handleSubmit = (event) => {
+        if (isSubmitButtonEnable == true) {
+            event.preventDefault();
+            goNext();
+        }
+    };
 
     const handleProceed = () => {
         setIsRestrictedNoticeDialogOpen(false)
     };
+    const handleAllDocumentsUploaded = () => {
+        setSubmitButtonEnable(true); // Enable the button when all documents are uploaded
+    };
+
 
     useEffect(() => {
         const restrictedOrder: RestrictedOrderFormat[] = [
@@ -49,7 +63,6 @@ const RequiredDocuments = ({ goNext, goBack }) => {
 
     }, [restrictedOrderType]);
 
-
     return (
         <>
             <Container>
@@ -61,21 +74,23 @@ const RequiredDocuments = ({ goNext, goBack }) => {
                 <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
                     <RequiredDocumentsForm
                         trueDocumentList={requiredTrueDocuments}
-                        itemID={itemId} />
+                        itemID={itemId}
+                        handleSubmitDisability={handleSubmitDisability}
+                        onAllDocumentsUploaded={handleAllDocumentsUploaded} />
                 </FlexRow>
                 <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
                     <PrimaryButton width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="1rem 0" onClick={handleGoBack}>Back</PrimaryButton>
-                    <PrimaryButton width="200px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="2rem 0" onClick={handleSubmit}>Send to Approval</PrimaryButton>
+                    <PrimaryButton width="200px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="2rem 0" onClick={handleSubmit} disabled={!isSubmitButtonEnable}>Send to Approval</PrimaryButton>
                 </FlexRow>
             </Container>
 
-            {isRestrictedNoticeDialogOpen == true &&
+            {isRestrictedNoticeDialogOpen &&
                 <RestrictedNoticeDialog
                     isOpen={true}
                     handleBack={handleGoBack}
                     handleProceed={handleProceed}
                     trueDocumentList={requiredTrueDocuments}
-                    maxQuantity={restrictedOrderType.maxQuantity}
+                    maxQuantity={restrictedOrderType?.maxQuantity}
                 />
             }
         </>

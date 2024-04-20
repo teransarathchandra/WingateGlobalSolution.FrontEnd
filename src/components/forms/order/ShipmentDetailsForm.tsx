@@ -120,11 +120,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
     } else {
       data.pickupOrderDate = null; // Ensure no date is passed if not a pickup order
     }
-
-    console.log("Shipment Data", data);
-    console.log("setItemId", data.itemId);
-    setItemId(data.itemId);
-
+    
     try {
       let response;
       if (itemSubmitted && itemObjectId) {
@@ -139,6 +135,8 @@ const ShipmentDetailsForm = ({ goNext }) => {
           setItemObjectId(responseData._id); // Assuming the response contains the ID of the created item
           setItemSubmitted(true);
         }
+
+        setItemId(responseData.itemId);
 
         // const isRestricted = await checkIfRestricted(responseData._id);
         const isRestrictedOrder = await retrieveSessionStorageValues();

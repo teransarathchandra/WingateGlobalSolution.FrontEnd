@@ -5,3 +5,10 @@ export const createSender = (senderData) => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
+
+
+export const getSenderById = (id) => {
+    return api.get(`/sender/${id}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};
