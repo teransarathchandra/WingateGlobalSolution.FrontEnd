@@ -93,8 +93,8 @@ const CustomerInfo: React.FC = () => {
       const preparedCustomer: IRow[] = response.data.data.map((customer: ICustomer) => ({
         ...customer,
         _id: customer._id,
-        firstName: customer.name.firstName,
-        lastName: customer.name.lastName,
+       firstName: customer.name?.firstName || '', // Use optional chaining and nullish coalescing
+      lastName: customer.name?.lastName || '',
         email: customer.email,
       priorityLevel: customer.priorityLevel,
       birthday: customer.birthday ? customer.birthday.split('T')[0] : '',
@@ -122,6 +122,7 @@ const CustomerInfo: React.FC = () => {
 
   const saveCustomer = async (customerData) => {
     setIsDialogOpen(false);
+    
     try {
       if (currentCustomer?._id) {
         await updateCustomer(currentCustomer._id, customerData);
