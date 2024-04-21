@@ -31,8 +31,8 @@ const RequiredDocuments = ({ goNext, goBack }) => {
         goBack();
     };
     const handleSubmit = (event) => {
+        event.preventDefault();
         if (isSubmitButtonEnable == true) {
-            event.preventDefault();
             goNext();
         }
     };

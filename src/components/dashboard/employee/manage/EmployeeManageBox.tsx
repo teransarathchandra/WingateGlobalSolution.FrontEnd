@@ -10,10 +10,15 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "@app_services/employeeService";
-import { IEmployee } from "@app_interfaces/IEmployee";
 import EditDialog from "@app_components/dialog/EditDialog";
 import AddDialog from "@app_components/dialog/AddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import Button from '@mui/material/Button';
+import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
+import ReactDOMServer from 'react-dom/server';
+import PDFLayout from '@app_components/pdf/PDFLayout';
+import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
+import IEmployee from "@app_interfaces/IEmployee";
 
 const columns: IColumn[] = [
   {
@@ -53,6 +58,8 @@ const EmployeeManageBox: React.FC = () => {
   const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
   const handleAddClick = () => {
     setIsAddEmployeeOpen(true);
@@ -89,7 +96,7 @@ const EmployeeManageBox: React.FC = () => {
       const preparedAccess: IRow[] = response.data.map((employee: IEmployee) => ({
         ...employee,
         _id: employee._id,
-        fullName: (employee.name.firstName || "") + " " + (employee.name.lastName || " "),
+        fullName: (employee?.name?.firstName || "") + " " + (employee?.name?.lastName || " "),
         createdAt: new Date(employee.createdAt as Date).toLocaleDateString(),
         edit: (
           <button
@@ -124,13 +131,31 @@ const EmployeeManageBox: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const addAccess = async (employee) => {
+  const addEmployee = async (employee) => {
     try {
-      delete employee._id;
-      await createEmployee(employee);
+      // delete employee._id;
+      const payload = {
+        name: {
+          firstName: employee.firstName,
+          lastName: employee.lastName
+        },
+        address: {
+          street: employee.street,
+          city: employee.city,
+          state: employee.state,
+          country: employee.country
+        },
+        email: employee.email,
+        password: employee.password,
+        contactNumber: employee.contactNumber,
+        designationId: "65d44e402cdc44e12fe28378",
+        focus: employee.focus
+      }
+      
+      const response = await createEmployee(payload);
+      console.log('Employee added successfully', response.data);
       fetchEmployees();
       setIsAddEmployeeOpen(false);
-      console.log('Flight added successfully');
     } catch (error) {
       console.error('Failed to add flight', error);
     }
@@ -178,6 +203,14 @@ const EmployeeManageBox: React.FC = () => {
       console.error("Failed to delete employee", error);
     }
   };
+  useEffect(() => {
+    if (employee.length > 0) {
+      const htmlContent = ReactDOMServer.renderToString(
+        <PDFLayout content={<EmployeesReport employees={employee} />} />
+      );
+      setPdfHtmlContent(htmlContent);
+    }
+  }, [employee]);
 
   return (
     <>
@@ -219,20 +252,44 @@ const EmployeeManageBox: React.FC = () => {
         onDelete={ondeleteEmployee}
       />
       <AddDialog
-        title="Add Access Level"
+        title="Add Employee"
         isOpen={isAddEmployeeOpen}
         handleClose={() => setIsAddEmployeeOpen(false)}
-        entity={currentEmployee}
+        // entity={currentEmployee}
         fields={[
           {
-            name: "name.firstName",
+            name: "firstName",
             label: "First Name",
             type: "text",
             disabled: false
           },
           {
-            name: "name.lastName",
+            name: "lastName",
             label: "Last Name",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "street",
+            label: "Street",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "city",
+            label: "City",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "state",
+            label: "State",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "country",
+            label: "Country",
             type: "text",
             disabled: false
           },
@@ -242,14 +299,60 @@ const EmployeeManageBox: React.FC = () => {
             type: "text",
             disabled: false
           },
+          {
+            name: "password",
+            label: "Password",
+            type: "password",
+            disabled: false
+          },
+          {
+            name: "contactNumber",
+            label: "Contact Number",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "focus",
+            label: "Focus",
+            type: "text",
+            disabled: false
+          }
         ]}
-        onSave={addAccess}
+        onSave={addEmployee}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
         handleClose={() => setIsDeleteDialogOpen(false)}
         handleDelete={handleDeleteEmployeeConfirm}
       />
+
+      <Button onClick={() => setShowPDFDialog(true)} style={
+        {
+          backgroundColor: "#e1bd05",
+          position: "absolute",
+          marginTop: "40px",
+          color: "#fff ",
+          padding: "5px",
+          borderRadius: "10px",
+          cursor: "pointer",
+          border: "2px solid #e1bd05",
+          top: "190px",
+          right: "40px",
+
+        }}>
+        Export PDF
+      </Button>
+
+      {showPDFDialog && (
+        <PDFExportDialog
+          open={showPDFDialog}
+          onClose={() => setShowPDFDialog(false)}
+          htmlContent={pdfHtmlContent}
+          filename="EmployeeReport.pdf"
+        />
+      )}
+
+
     </>
   );
 };

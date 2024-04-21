@@ -73,6 +73,8 @@ export const AuthActiveContextProvider = ({
         logoutEmployee();
       }
 
+      // sessionStorage.clear();
+
       sessionStorage.removeItem("app-active-user");
       sessionStorage.removeItem("app-active-token");
       sessionStorage.removeItem("app-active-refresh-token");

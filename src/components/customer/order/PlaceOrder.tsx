@@ -14,7 +14,7 @@ interface FormMethods {
 
 const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void }) => {
 
-  const [itemId, ] = useSessionStorage('order-itemId');
+  const [itemId, ] = useSessionStorage('order-item-object-id');
   const [isPickupOrder, ] = useSessionStorage('order-is-pickup-order');
   const [priority, ] = useSessionStorage('order-delivery-option');
   const [senderId, setSenderId] = useSessionStorage('order-sender-id');
