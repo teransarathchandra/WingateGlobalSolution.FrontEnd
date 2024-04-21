@@ -6,11 +6,14 @@ import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "@app_components/shared/ReusableTable";
 import {
   getAllAccess,
+  createAccess,
   updateAccess,
   deleteAccess,
 } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
 import EditDialog from "@app_components/dialog/EditDialog";
+import AddDialog from "@app_components/dialog/AddDialog";
+import DeleteDialog from "@app_components/dialog/DeleteDialog";
 
 const columns: IColumn[] = [
   {
@@ -26,6 +29,7 @@ const columns: IColumn[] = [
     disablePadding: false,
   },
   { id: "createdAt", label: "Created", numeric: false, disablePadding: false },
+  { id: "updatedAt", label: "Modified", numeric: false, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
@@ -33,12 +37,40 @@ const columns: IColumn[] = [
 const EmployeeAccessBox: React.FC = () => {
   const [access, setAccess] = useState<IRow[]>([]);
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentAccess, setCurrentAccess] = useState<IAccess | null>(null);
+  const [isAddAccessOpen, setIsAddAccessOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+  const handleAddClick = () => {
+    setIsAddAccessOpen(true);
+  };
 
   const handleEditClick = (access: IAccess) => {
     setCurrentAccess(access);
     setIsDialogOpen(true);
+  };
+
+  const handleDeleteClick = (access: IAccess) => {
+    setCurrentAccess(access);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleDeleteAccessConfirm = async () => {
+    if (currentAccess) {
+      try {
+        await deleteAccess(currentAccess._id);
+        setAccess(flights => flights.filter(b => b._id !== currentAccess._id));
+        setIsDeleteDialogOpen(false);
+      } catch (error) {
+        console.error('Failed to delete bulk', error);
+      }
+    }
   };
 
   const fetchAndPrepareSystemAccess = async () => {
@@ -47,6 +79,8 @@ const EmployeeAccessBox: React.FC = () => {
       console.log(response);
       const preparedAccess: IRow[] = response.data.map((access: IAccess) => ({
         ...access,
+        createdAt: new Date(access.createdAt).toLocaleDateString(),
+        updatedAt: new Date(access.updatedAt).toLocaleDateString(),
         edit: (
           <button
             onClick={() => handleEditClick(access)}
@@ -59,7 +93,7 @@ const EmployeeAccessBox: React.FC = () => {
           </button>
         ),
         delete: (
-          <button onClick={() => deleteAccess(access)} style={{ all: "unset" }}>
+          <button onClick={() => handleDeleteClick(access)} style={{ all: "unset" }}>
             <FontAwesomeIcon
               icon={faTrash}
               style={{ cursor: "pointer", color: "#dd0426" }}
@@ -76,6 +110,17 @@ const EmployeeAccessBox: React.FC = () => {
   useEffect(() => {
     fetchAndPrepareSystemAccess();
   }, []);
+
+  const addAccess = async (access) => {
+    try {
+      await createAccess(access);
+      fetchAndPrepareSystemAccess();
+      setIsAddAccessOpen(false);
+      console.log('Flight added successfully');
+    } catch (error) {
+      console.error('Failed to add flight', error);
+    }
+  };
 
   const saveAccess = async (accessData: IAccess) => {
     console.log("Saving Access:", accessData);
@@ -100,7 +145,7 @@ const EmployeeAccessBox: React.FC = () => {
     console.log("Deleting access:", access);
     setIsDialogOpen(false);
     try {
-      const accessId = access._id;
+      const accessId = access._id || "";
       console.log(accessId);
       if (accessId) {
         await deleteAccess(accessId); // Call to your orderService
@@ -121,6 +166,10 @@ const EmployeeAccessBox: React.FC = () => {
         rows={access}
         title="System Access Management"
         rowKey="accessLevelId"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
+        onAdd={handleAddClick}
+        showAddButton={true}
       />
       <EditDialog
         isOpen={isDialogOpen}
@@ -140,8 +189,35 @@ const EmployeeAccessBox: React.FC = () => {
             disabled: false,
           },
         ]}
+
         onSave={saveAccess}
         onDelete={onDeleteAccess}
+      />
+      <AddDialog
+        title="Add Access Level"
+        isOpen={isAddAccessOpen}
+        handleClose={() => setIsAddAccessOpen(false)}
+        entity={currentAccess}
+        fields={[
+          {
+            name: "accessLevelId",
+            label: "Access Level ID",
+            type: "text",
+            disabled: true,
+          },
+          {
+            name: "description",
+            label: "Description",
+            type: "text",
+            disabled: false,
+          },
+        ]}
+        onSave={addAccess}
+      />
+      <DeleteDialog
+        isOpen={isDeleteDialogOpen}
+        handleClose={() => setIsDeleteDialogOpen(false)}
+        handleDelete={handleDeleteAccessConfirm}
       />
     </>
   );

@@ -1,6 +1,6 @@
 import api from "@app_utils/apiUtils";
 
-export const getAllOrders = (aggType) => {
+export const getAllOrders = (aggType?) => {
   if (aggType) {
     return api
       .get(`/order?type=${aggType}`)

@@ -1,4 +1,4 @@
-import axios, { Axios, AxiosError } from "axios";
+import axios from "axios";
 import toastUtil from "./toastUtil";
 import { authService } from "@app_services/authService";
 import { authUserService } from "@app_services/authUserService";

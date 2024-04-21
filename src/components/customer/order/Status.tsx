@@ -5,13 +5,13 @@ import useSessionStorage from "@app_hooks/useSessionStorage";
 import { useEffect, useState } from "react";
 
 interface OrderData {
-    order: any; // Replace 'any' with the actual type expected
+    order: any;
     item: any;
     receiver: any;
     sender: any;
 }
 
-const PaymentConfirmation = ({ goNext, goBack }: { goNext: () => void, goBack: () => void }) => {
+const PaymentConfirmation = () => {
 
     const [orderData, setOrderData] = useState<OrderData | null>(null);
     const [orderDetails,] = useSessionStorage('order-details');
@@ -32,7 +32,6 @@ const PaymentConfirmation = ({ goNext, goBack }: { goNext: () => void, goBack: (
     }, [orderDetails, itemDetails, receiverDetails, senderDetails]);
 
     if (!orderData) {
-        // return <CommonLoading loading={true}></CommonLoading>;
         return <></>;
     }
 

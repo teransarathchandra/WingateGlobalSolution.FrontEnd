@@ -9,7 +9,6 @@ import IUser from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
 import UserReportDialog from "../userDialog/UserReportDialog";
-import { ReportButton } from "@app_styles/userDetailsDialog.styles";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 
 
