@@ -17,6 +17,10 @@ import { getAllOrders } from "@app_services/orderService";
 import { getAllUser } from "@app_services/userService";
 import PDFDownloadButton from '@app_components/shared/PDFDownloadButton';
 import { getAllCustomer } from '@app_services/crmService';
+import PDFLayout from '@app_components/pdf/PDFLayout';
+import CrmReport from '@app_components/pdf/pdfTemplates/CrmReport';
+import ReactDOMServer from 'react-dom/server';
+import PDFExportDialog from '@app_components/pdf/PDFPreviewDialog';
 
 interface UserReportDialogProps {
     isOpen: boolean;
@@ -31,7 +35,8 @@ const CrmReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose 
     const [selectedDateFrom, setSelectedDateFrom] = useState("");
     const [selectedDateTo, setSelectedDateTo] = useState("");
     const [selectedStatus, setSelectedStatus] = useState("");
-
+    const [showPDFDialog, setShowPDFDialog] = useState(false);
+    const [pdfHtmlContent, setPdfHtmlContent] = useState('');
     useEffect(() => {
         const fetchUsersAndOrders = async () => {
             if (isOpen) {
@@ -70,6 +75,15 @@ const CrmReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose 
 
         filterOrders();
     }, [selectedUserName, selectedDateFrom, selectedDateTo, selectedStatus, orders, users]);
+        
+    useEffect(() => {
+        if (filteredOrders.length > 0) {
+            const htmlContent = ReactDOMServer.renderToString(
+                <PDFLayout content={<CrmReport orders={filteredOrders} />} />
+            );
+            setPdfHtmlContent(htmlContent);
+        }
+    }, [filteredOrders]);
 
     return (
         <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
@@ -128,7 +142,19 @@ const CrmReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose 
         }}>
           Close
         </Button>
+
+            <Button onClick={() => setShowPDFDialog(true)} color="secondary">
+                    Get PDF Report
+                </Button>
       </DialogActions>
+      {showPDFDialog && (
+                <PDFExportDialog
+                    open={showPDFDialog}
+                    onClose={() => setShowPDFDialog(false)}
+                    htmlContent={pdfHtmlContent}
+                    filename="OrdersReport.pdf"
+                />
+            )}
     </Dialog>
   );
 };

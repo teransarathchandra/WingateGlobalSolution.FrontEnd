@@ -58,7 +58,6 @@ const CustomerInfo: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<ICustomer | null>(null);
-  const [isViewOpen, setIsViewOpen] = useState(false);
   const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
 
   const handleAddClick = () => {
@@ -66,10 +65,7 @@ const CustomerInfo: React.FC = () => {
     setCurrentCustomer(null);
   };
 
-  const handleViewClick = (customer: ICustomer) => {
-    setIsViewOpen(true);
-    setCurrentCustomer(customer);
-  };
+  
 
   const [isUserReportDialogOpen, setIsUserReportDialogOpen] = useState(false);
 
@@ -280,7 +276,7 @@ const CustomerInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteCustomer}
       />
-      <ReportButton onClick={handleUserReportClick}>Report</ReportButton>
+      <ReportButton onClick={handleUserReportClick}>Generate Report</ReportButton>
       <UpdateBtn onClick={handleAddClick}>Add Customer</UpdateBtn>
       <AddDialog
   isOpen={isAddCustomerOpen}

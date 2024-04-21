@@ -83,7 +83,7 @@ export const DialogHeaderImage = styled.img`
 export const ReportButton = styled.button`
 position: relative;
 left: 500px;
-  width: 90px;
+  width: 190px;
   height: 33px;
   display: flex;
   justify-content: center;
