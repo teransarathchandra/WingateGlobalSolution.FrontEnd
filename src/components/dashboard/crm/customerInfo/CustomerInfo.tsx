@@ -20,6 +20,7 @@ import { ReportButton } from "@app_styles/userDetailsDialog.styles";
 import UserReportDialog from "../crmDialog/CrmReportDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
+import EditDropdown from "@app_components/dialog/EditDropdown";
 
 // Define the table columns for the customer data table.
 const columns: IColumn[] = [
@@ -119,29 +120,101 @@ const CustomerInfo: React.FC = () => {
   useEffect(() => {
     fetchAndPrepareCustomers();
   }, []);
+  // const updateCustomerDetails = async (customerId, updatedData) => {
+  //   try {
+  //     // Prepare the data for the update request in the required structure
+  //     const updateData = {
+  //       name: {
+  //         firstName: updatedData.firstName, // these should be taken from form inputs
+  //         lastName: updatedData.lastName,   // these should be taken from form inputs
+  //       },
+  //       email: updatedData.email,           // these should be taken from form inputs
+  //       contactNumber: updatedData.contactNumber, // these should be taken from form inputs
+  //       priorityLevel: updatedData.priorityLevel, // these should be taken from form inputs
+  //       birthday: updatedData.birthday,     // these should be taken from form inputs
+  //     };
+  
+    
+  //     const response = await updateCustomerDetails(customerId, updateData);
+  
+  
+  //   } catch (error) {
+  //     console.error('Failed to update customer details:', error);
+     
+  //   }
+  // };
+
 
   const saveCustomer = async (customerData) => {
+    console.log('Saving customer:', customerData);
+
     setIsDialogOpen(false);
-    
+
     try {
-      if (currentCustomer?._id) {
-        await updateCustomer(currentCustomer._id, customerData);
+      console.log('Saving');
+      const customerId = currentCustomer?._id;
+      console.log('Customer ID:', currentCustomer);
+      if (customerId) {
+        console.log(customerData);
+        await updateCustomer(customerId, customerData);
+        console.log(customerData);
+        console.log('Customer updated successfully');
+        
+
         fetchAndPrepareCustomers();
       }
+      setIsDialogOpen(false);
+
     } catch (error) {
-      console.error("Failed to update customer", error);
+      console.error('Failed to update customer', error);
+
     }
   };
-
-  const addCustomer = async (customerData) => {
+  const addCustomer = async (formData) => {
+    // Construct the new customer object with nested 'name' object
+    const CustomerInfo = {
+      name: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      },
+      email: formData.email,
+      contactNumber: formData.contactNumber,
+      priorityLevel: formData.priorityLevel,
+      birthday: formData.birthday,
+    };
+  
     try {
-      await createCustomer(customerData);
-      fetchAndPrepareCustomers();
-      setIsAddCustomerOpen(false);
+      await createCustomer(CustomerInfo);
+      fetchAndPrepareCustomers(); // Refresh the list
+      setIsAddCustomerOpen(false); // Close the dialog
     } catch (error) {
       console.error('Failed to add customer', error);
     }
   };
+  
+
+  // const saveCustomer = async (customerData) => {
+  //   setIsDialogOpen(false);
+    
+  //   try {
+  //     if (currentCustomer?._id) {
+  //       await updateCustomer(currentCustomer._id, customerData);
+  //       fetchAndPrepareCustomers();
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to update customer", error);
+  //   }
+  // };
+
+  // const addCustomer = async (customerData) => {
+  //   try {
+  //     await createCustomer(customerData);
+  //     fetchAndPrepareCustomers();
+  //     setIsAddCustomerOpen(false);
+  //   } catch (error) {
+  //     console.error('Failed to add customer', error);
+  //   }
+  // };
 
   const handleDeleteCustomer = async () => {
     if (currentCustomer) {
@@ -159,6 +232,12 @@ const CustomerInfo: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
+  const priorityOptions= [
+    { value: "High Priority", label: "High Priority" },
+    { value: "Medium Priority", label: "Medium Priority" },
+    { value: "Low Priority", label: "Low Priority" }
+  ];
+
   // Render component UI.
   return (
     <>
@@ -170,15 +249,18 @@ const CustomerInfo: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
-      <EditDialog
+      <EditDropdown
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
         entity={currentCustomer}
         fields={[
           { name: "customerId", label: "Customer ID", type: "text", disabled: true },
-          { name: "name.firstName", label: "First Name", type: "text", disabled: false },
-          { name: "name.lastName", label: "Last Name", type: "text", disabled: false },
+          // { name: "name.firstName", label: "First Name", type: "text", disabled: false },
+          //{ name: "name.lastName", label: "Last Name", type: "text", disabled: false },
+          { name: "contactNumber", label: "Contact Number", type: "text", disabled: false },
           { name: "email", label: "Email", type: "text", disabled: false },
+          { name: "priorityLevel", label: "Priority Level", type: "dropdown", options: priorityOptions },
+          { name: "birthday", label: "Birth Date", type: "date", disabled: false },
         ]}
         onSave={saveCustomer}
         onDelete={deleteCustomer}
@@ -201,20 +283,22 @@ const CustomerInfo: React.FC = () => {
       <ReportButton onClick={handleUserReportClick}>Report</ReportButton>
       <UpdateBtn onClick={handleAddClick}>Add Customer</UpdateBtn>
       <AddDialog
-        isOpen={isAddCustomerOpen}
-        handleClose={() => setIsAddCustomerOpen(false)}
-        entity={currentCustomer}
-        fields={[
-          { name: 'customerId', label: 'Customer ID', type: 'text', disabled: false },
-          { name: 'firstName', label: 'First Name', type: 'text', disabled: false },
-          { name: 'lastName', label: 'Last Name', type: 'text', disabled: false },
-          { name: "email", label: "Email", type: 'text', disabled: false },
-          { name: "contactNumber", label: "Contact Number", type: 'text', disabled: false },
-          { name: "priorityLevel", label: "Priority Level", type: 'text', disabled: false },
-          { name: "birthday", label: "Birthday", type: 'text', disabled: false },
-        ]}
-        onSave={addCustomer}
-      />
+  isOpen={isAddCustomerOpen}
+  handleClose={() => setIsAddCustomerOpen(false)}
+  entity={currentCustomer}
+  fields={[
+    // Assuming 'customerId' is auto-generated by the backend and should not be in the add form.
+    { name: 'firstName', label: 'First Name', type: 'text', disabled: false },
+    { name: 'lastName', label: 'Last Name', type: 'text', disabled: false },
+    { name: "email", label: "Email", type: 'text', disabled: false },
+    { name: "contactNumber", label: "Contact Number", type: 'text', disabled: false },
+    { name: "priorityLevel", label: "Priority Level", type: 'dropdown', options: priorityOptions },
+    { name: "birthday", label: "Birthday", type: 'date', disabled: false },
+  ]}
+  onSave={addCustomer}
+  
+/>
+
     </>
   );
 };
