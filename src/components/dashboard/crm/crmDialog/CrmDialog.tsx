@@ -144,7 +144,7 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
                             }}
                             onClick={sendBirthdayEmail}
                         >
-                            Send Happy Birthday Email
+                            Send Birthday Email
                         </Button>
                         <Select
                             value={reminder}

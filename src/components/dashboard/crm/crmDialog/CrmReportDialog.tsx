@@ -101,7 +101,7 @@ const CrmReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose 
                     <option value="Pending">Pending Deals</option>
                     <option value="Processing">Processing Deals</option>
                     <option value="In Progress">Deals In Progress</option>
-                    <option value="Approved">Closed Deals</option>
+                    <option value="Completed">Closed Deals</option>
                 </select>
                 <TableContainer component={Paper}>
                     <Table aria-label="simple table">
