@@ -187,12 +187,12 @@ const EmployeeManageBox: React.FC = () => {
   };
   useEffect(() => {
     if (employee.length > 0) {
-        const htmlContent = ReactDOMServer.renderToString(
-            <PDFLayout content={<EmployeesReport employees={employee} />} />
-        );
-        setPdfHtmlContent(htmlContent);
+      const htmlContent = ReactDOMServer.renderToString(
+        <PDFLayout content={<EmployeesReport employees={employee} />} />
+      );
+      setPdfHtmlContent(htmlContent);
     }
-}, [employee]);
+  }, [employee]);
 
   return (
     <>
@@ -265,34 +265,34 @@ const EmployeeManageBox: React.FC = () => {
         handleClose={() => setIsDeleteDialogOpen(false)}
         handleDelete={handleDeleteEmployeeConfirm}
       />
-      
-      <Button onClick={() => setShowPDFDialog(true)} style={
-          {
-            backgroundColor: "#e1bd05",
-            position: "absolute",
-            //marginTop: "40px",
-            color:"#fff ",
-            padding: "5px",
-            borderRadius:"10px",
-            cursor: "pointer",
-            border: "2px solid #e1bd05",
-            //bottom: "20px",
-           // right: "40px",
 
-            }}>
-                    Export PDF
-                </Button>
-            
-            {showPDFDialog && (
-                <PDFExportDialog
-                    open={showPDFDialog}
-                    onClose={() => setShowPDFDialog(false)}
-                    htmlContent={pdfHtmlContent}
-                    filename="EmployeeReport.pdf"
-                />
-            )}
-      
-       
+      <Button onClick={() => setShowPDFDialog(true)} style={
+        {
+          backgroundColor: "#e1bd05",
+          position: "absolute",
+          marginTop: "40px",
+          color: "#fff ",
+          padding: "5px",
+          borderRadius: "10px",
+          cursor: "pointer",
+          border: "2px solid #e1bd05",
+          top: "190px",
+          right: "40px",
+
+        }}>
+        Export PDF
+      </Button>
+
+      {showPDFDialog && (
+        <PDFExportDialog
+          open={showPDFDialog}
+          onClose={() => setShowPDFDialog(false)}
+          htmlContent={pdfHtmlContent}
+          filename="EmployeeReport.pdf"
+        />
+      )}
+
+
     </>
   );
 };
