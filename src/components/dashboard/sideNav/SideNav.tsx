@@ -46,14 +46,13 @@ const SideNav = () => {
       '1-1': 'app/order',
       '2-1': 'app/restricted-orders',
       '2-2': 'app/restricted-order-types',
-      '2-3': 'app/country-info',
-      '2-4': 'app/category-info',
+      '2-3': 'app/country',
+      '2-4': 'app/category',
       '3-1': 'app/order-aggregation',
       '3-2': 'app/bulk-details',
-      '3-3': 'app/bulk-details',
-      '3-4': 'app/bulk-details',
-      '3-5': 'app/bulk-details',
-      '3-6': 'app/bulk-details',
+      '3-3': 'app/bulk',
+      '3-4': 'app/flight',
+      '3-5': 'app/airline',
       '4-1': 'app/crm',
       '5-1': 'app/user',
       '6-1': 'app/warehouse',
@@ -148,7 +147,6 @@ const SideNav = () => {
                     <Nav.Item eventKey="3-3" onSelect={handleSelect}>Bulk</Nav.Item>
                     <Nav.Item eventKey="3-4" onSelect={handleSelect}>Flight</Nav.Item>
                     <Nav.Item eventKey="3-5" onSelect={handleSelect}>Airline</Nav.Item>
-                    <Nav.Item eventKey="3-6" onSelect={handleSelect}>Order Tracking</Nav.Item>
                   </Nav.Menu>
                   <Nav.Menu
                     placement="rightStart"
