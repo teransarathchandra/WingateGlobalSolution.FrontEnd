@@ -1,10 +1,17 @@
 import api from "@app_utils/apiUtils";
 
-export const getAllEmployee = () => {
-  return api
-    .get("/employee")
-    .then((response) => response.data)
-    .catch((error) => error.message);
+export const getAllEmployee = (aggType?) => {
+  if (aggType) {
+    return api
+      .get(`/employee?type=${aggType}`)
+      .then((response) => response.data)
+      .catch((error) => error.message);
+  } else {
+    return api
+      .get("/employee")
+      .then((response) => response.data)
+      .catch((error) => error.message);
+  }
 };
 
 export const getEmployeeById = (id) => {

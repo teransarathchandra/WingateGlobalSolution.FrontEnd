@@ -34,6 +34,12 @@ const columns: IColumn[] = [
     numeric: false,
     disablePadding: false,
   },
+  {
+    id: "accessDescription",
+    label: "Access Type",
+    numeric: false,
+    disablePadding: false,
+  },
 
   { id: "createdAt", label: "Created", numeric: false, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
@@ -78,7 +84,7 @@ const EmployeeManageBox: React.FC = () => {
   };
   const fetchEmployees = async () => {
     try {
-      const response = await getAllEmployee();
+      const response = await getAllEmployee("withAccess");
       console.log(response);
       const preparedAccess: IRow[] = response.data.map((employee: IEmployee) => ({
         ...employee,
