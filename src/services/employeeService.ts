@@ -30,7 +30,7 @@ export const createEmployee = (accessData) => {
 
 export const updateEmployee = (id, accessData) => {
   return api
-    .put(`/employee/${id}`, accessData)
+    .patch(`/employee/${id}`, accessData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

@@ -102,7 +102,6 @@ const UserInfo: React.FC = () => {
       const userId = currentUser?.userId;
       if (userId) {
 
-        // Prepare the user update object based on the expected backend structure
         const userUpdateData = {
           name: {
             firstName: userData.name.firstName,

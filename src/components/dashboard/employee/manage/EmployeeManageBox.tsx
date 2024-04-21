@@ -126,6 +126,7 @@ const EmployeeManageBox: React.FC = () => {
 
   const addAccess = async (employee) => {
     try {
+      delete employee._id;
       await createEmployee(employee);
       fetchEmployees();
       setIsAddEmployeeOpen(false);
@@ -138,16 +139,20 @@ const EmployeeManageBox: React.FC = () => {
   const saveAccess = async (employeeData: IEmployee) => {
     console.log("Saving Access:", employeeData);
     try {
-      // Assuming your currentEmployee state has the employee's ID
-      // And that employeeData contains the updated employee fields
-      const employeeId = employeeData;
-      if (employeeId) {
-        await updateEmployee(employeeId, {
-          description: employeeData.description,
-        }); // Call to your orderService
-        console.log("Employee updated successfully");
 
-        // Optionally, refresh the employee list to show the updated data
+      const employeeId = employeeData._id;
+      const empUpdateData = {
+        name: {
+          firstName: employeeData.name.firstName,
+          lastName: employeeData.name.lastName,
+        },
+        email: employeeData.email,
+        contactNumber: employeeData.contactNumber,
+      };
+
+      if (employeeId) {
+        await updateEmployee(employeeId, empUpdateData);
+        console.log("Employee updated successfully");
         fetchEmployees();
       }
       setIsDialogOpen(false); // Close the dialog after saving
@@ -192,16 +197,22 @@ const EmployeeManageBox: React.FC = () => {
         entity={currentEmployee}
         fields={[
           {
-            name: "accessLevelId",
-            label: "Access Level ID",
+            name: "name.firstName",
+            label: "First Name",
             type: "text",
-            disabled: true,
+            disabled: false
           },
           {
-            name: "description",
-            label: "Description",
+            name: "name.lastName",
+            label: "Last Name",
             type: "text",
-            disabled: false,
+            disabled: false
+          },
+          {
+            name: "email",
+            label: "Email",
+            type: "text",
+            disabled: false
           },
         ]}
         onSave={saveAccess}
@@ -214,13 +225,13 @@ const EmployeeManageBox: React.FC = () => {
         entity={currentEmployee}
         fields={[
           {
-            name: "firstName",
+            name: "name.firstName",
             label: "First Name",
             type: "text",
             disabled: false
           },
           {
-            name: "lastName",
+            name: "name.lastName",
             label: "Last Name",
             type: "text",
             disabled: false
