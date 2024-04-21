@@ -19,4 +19,6 @@ export default interface RootObject {
     countryId?: number;
   };
   focus: string;
+  accessDescription: string;
+  accessID: string;
 }

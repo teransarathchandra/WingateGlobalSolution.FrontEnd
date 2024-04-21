@@ -25,9 +25,10 @@ interface AddDialogProps {
     handleClose: () => void;
     fields: FieldConfig[];
     onSave: (data: any) => void;
+    title?: string;
 }
 
-const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave }) => {
+const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title }) => {
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
@@ -42,7 +43,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <DialogTitle>Add/Edit Item</DialogTitle>
+            <DialogTitle>{title || "Add Item"}</DialogTitle>
             <DialogHeaderContainer>
                 <DialogHeaderImage src={logo}></DialogHeaderImage>
             </DialogHeaderContainer>
