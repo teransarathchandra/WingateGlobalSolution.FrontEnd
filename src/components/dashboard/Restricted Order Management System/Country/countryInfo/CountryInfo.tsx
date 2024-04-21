@@ -141,7 +141,7 @@ const CountryInfo: React.FC = () => {
         handleClose={handleClose}
         entity={currentCountry}
         fields={[
-          { name: 'countryId', label: 'Country Id', type: 'text', disabled: false },
+          { name: 'countryId', label: 'Country Id', type: 'text', disabled: true },
           { name: 'countryCode', label: 'Country Code', type: 'text', disabled: false },
           { name: 'name', label: 'Name', type: 'text', disabled: false },
           { name: 'currency', label: 'Currency', type: 'text', disabled: false },
