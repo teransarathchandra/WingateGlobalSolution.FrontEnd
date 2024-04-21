@@ -79,6 +79,8 @@ const EmployeeAccessBox: React.FC = () => {
       console.log(response);
       const preparedAccess: IRow[] = response.data.map((access: IAccess) => ({
         ...access,
+        createdAt: new Date(access.createdAt).toLocaleDateString(),
+        updatedAt: new Date(access.updatedAt).toLocaleDateString(),
         edit: (
           <button
             onClick={() => handleEditClick(access)}
