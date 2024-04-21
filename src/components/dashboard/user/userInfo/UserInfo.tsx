@@ -9,7 +9,6 @@ import IUser from "@app_interfaces/IUser";
 import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
 import UserReportDialog from "../userDialog/UserReportDialog";
-import { ReportButton } from "@app_styles/userDetailsDialog.styles";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 
 
@@ -36,6 +35,8 @@ const UserInfo: React.FC = () => {
     setCurrentUser(user);
     setIsDialogOpen(true);
   };
+
+  const [searchTerm, setSearchTerm] = useState("")
 
   // Add state for managing UserDetailsDialog visibility and the selected user
   const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
@@ -100,7 +101,7 @@ const UserInfo: React.FC = () => {
     try {
       // Assuming your currentuser state has the user's ID
       // And that userData contains the updated user fields
-      const userId = currentUser?.userId;
+      const userId = currentUser?._id;
       if (userId) {
 
         // Prepare the user update object based on the expected backend structure
@@ -145,6 +146,10 @@ const UserInfo: React.FC = () => {
   };
 
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  }
+
   return (
     <>
       <ReusableTable
@@ -152,6 +157,8 @@ const UserInfo: React.FC = () => {
         rows={user}
         title="User Profile Management"
         rowKey="userID"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
 
       <UserDetailsDialog
