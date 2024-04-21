@@ -5,17 +5,10 @@ import { getAllOrders, updateOrder } from "@app_services/orderService";
 import { IResOrder } from "@app_interfaces/IOrder";
 import { ViewButton } from "@app_styles/RestrictedOrderStyles.styles";
 import RestrictedOrderViewDialog from "../dialogs/RestrictedOrderViewDialog";
-import { IOrder } from "@app_interfaces/IOrder";
-
-
-interface FieldConfig {
-  name: string;
-  label: string;
-  type: any;
-  disabled?: boolean;
-}
+//import { IOrder } from "@app_interfaces/IOrder";
 
 const columns: IColumn[] = [
+ //{ id: "_id", label: "ID", numeric: false, disablePadding: true },
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
   { id: "sendingCountry", label: "From", numeric: false, disablePadding: false },
   { id: "receivingCountry", label: "To", numeric: false, disablePadding: false },
@@ -26,7 +19,6 @@ const columns: IColumn[] = [
 ];
 
 const OrderInfo: React.FC = () => {
-
 
   const [searchTerm, setSearchTerm] = useState("");
   const [orders, setOrders] = useState<IRow[]>([]);
@@ -43,6 +35,7 @@ const OrderInfo: React.FC = () => {
 
   const handleViewClick = (resOrder: IResOrder) => {
     setIsViewDetailsOpen(true);
+    console.log("resOrder when view click " , resOrder);
     setCurrentResOrder(resOrder);
   };
   const handleClose = () => {
@@ -54,7 +47,7 @@ const OrderInfo: React.FC = () => {
     try {
       const aggType = "restrictedOrders";
       const response = await getAllOrders(aggType);
-      // console.error('response', response);
+      console.error('response', response);
       const preparedOrders: IRow[] = response.data.map((resOrder: IResOrder) => ({
         ...resOrder,
         viewMore: <ViewButton onClick={() => handleViewClick(resOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</ViewButton>,
