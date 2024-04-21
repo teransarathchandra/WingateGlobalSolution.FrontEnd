@@ -54,7 +54,7 @@ const Order = () => {
         />,
         <PlaceOrder key={4} goNext={() => setCurrentStep(5)} goBack={() => setCurrentStep(3)} />,
         <PaymentConfirmation key={5} goNext={() => setCurrentStep(6)} goBack={() => setCurrentStep(4)} />,
-        <Status key={6} goNext={() => setCurrentStep(7)} goBack={() => setCurrentStep(5)} />,
+        <Status key={6} />,
     ];
 
     return (

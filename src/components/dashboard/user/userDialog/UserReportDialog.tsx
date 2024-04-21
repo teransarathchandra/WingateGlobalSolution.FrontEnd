@@ -15,7 +15,6 @@ import { IOrder } from '@app_interfaces/IOrder';
 import IUser from '@app_interfaces/IUser';
 import { getAllOrders } from "@app_services/orderService";
 import { getAllUser } from "@app_services/userService";
-import PDFDownloadButton from '@app_components/shared/PDFDownloadButton';
 import PDFLayout from '@app_components/pdf/PDFLayout';
 import OrdersReport from '@app_components/pdf/pdfTemplates/UserReport';
 import ReactDOMServer from 'react-dom/server';
@@ -65,7 +64,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     useEffect(() => {
         const filterOrders = () => {
             const filtered = orders.filter(order => {
-                const orderDate = new Date(order.createdAt);
+                const orderDate = new Date(order.createdAt as Date);
                 const fromDate = selectedDateFrom ? new Date(selectedDateFrom) : null;
                 const toDate = selectedDateTo ? new Date(selectedDateTo) : null;
                 const user = users.find(user => user._id === order.userId)
@@ -74,7 +73,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                 const userNameLower = user?.name.firstName.toLowerCase();
 
                 return (
-                    (selectedUserName ? userNameLower.includes(selectedUserNameLower) : true) &&
+                    (selectedUserName ? userNameLower?.includes(selectedUserNameLower) : true) &&
                     (selectedStatus ? order.status === selectedStatus : true) &&
                     (!fromDate || orderDate >= fromDate) &&
                     (!toDate || orderDate <= toDate)
@@ -129,7 +128,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                                     <TableCell>{users.find(user => user._id === order.userId)?.name.firstName}</TableCell>
                                     <TableCell>{order.orderId}</TableCell>
                                     <TableCell>{order.userId}</TableCell>
-                                    <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                                    <TableCell>{new Date(order.createdAt as Date).toLocaleDateString()}</TableCell>
                                     <TableCell>{order.status}</TableCell>
                                 </TableRow>
                             ))}
