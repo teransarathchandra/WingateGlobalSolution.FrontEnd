@@ -21,16 +21,16 @@ export const getEmployeeById = (id) => {
     .catch((error) => error.message);
 };
 
-export const createEmployee = (accessData) => {
+export const createEmployee = (employeeData) => {
   return api
-    .post("/employee", accessData)
+    .post("/employee", employeeData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };
 
-export const updateEmployee = (id, accessData) => {
+export const updateEmployee = (id, employeeData) => {
   return api
-    .patch(`/employee/${id}`, accessData)
+    .patch(`/employee/${id}`, employeeData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

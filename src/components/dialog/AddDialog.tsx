@@ -21,7 +21,7 @@ interface FieldConfig {
 
 interface AddDialogProps {
     isOpen: boolean;
-    entity: any;
+    entity?: any;
     handleClose: () => void;
     fields: FieldConfig[];
     onSave: (data: any) => void;
