@@ -25,6 +25,7 @@ const columns: IColumn[] = [
     disablePadding: false,
   },
   { id: "amount", label: "Amount", numeric: true, disablePadding: false },
+  { id: "status", label: "Status", numeric: true, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
@@ -128,7 +129,7 @@ const OrderInfo: React.FC = () => {
   const statusOptions = [
     { value: "In Progress", label: "In Progress" },
     { value: "Processing", label: "Processing" },
-    { value: "pending", label: "Pending" },
+    { value: "Pending", label: "Pending" },
     { value: "Completed", label: "Completed" },
   ];
 
@@ -148,12 +149,12 @@ const OrderInfo: React.FC = () => {
         entity={currentOrder}
         fields={[
           { name: "orderId", label: "Order ID", type: "text", disabled: true },
-          { name: "userId", label: "User ID", type: "text", disabled: false },
+          { name: "userId", label: "User ID", type: "text", disabled: true },
           {
             name: "createdAt",
             label: "Created At",
             type: "date",
-            disabled: false,
+            disabled: true,
           },
           {
             name: "description",
