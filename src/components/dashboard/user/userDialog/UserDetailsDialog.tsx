@@ -32,47 +32,47 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ isOpen, user, ord
         <>
             <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
                 <StyledDialogContainer>
-                <DialogHeaderContainer>
-                    <DialogHeaderLeft>
-                        <p>User ID: {user?.userId}</p> {/* User ID on its own line */}
-                        <p>Created On: {formattedDate}</p> {/* Date on the next line */}
-                    </DialogHeaderLeft>
-                    <DialogHeaderRight>
-                        <p>Status: Active</p> {/* Status in the top right corner */}
-                    </DialogHeaderRight>
-                </DialogHeaderContainer>
+                    <DialogHeaderContainer>
+                        <DialogHeaderLeft>
+                            <p>User ID: {user?.userId}</p> {/* User ID on its own line */}
+                            <p>Created On: {formattedDate}</p> {/* Date on the next line */}
+                        </DialogHeaderLeft>
+                        <DialogHeaderRight>
+                            <p>Status: Active</p> {/* Status in the top right corner */}
+                        </DialogHeaderRight>
+                    </DialogHeaderContainer>
 
 
 
-                <DialogUserContainer>
-                    <h3>User Details</h3>
-                    <DialogUserDetails>
-                        {/* Display user details here */}
-                        <p>User ID: {user?.userId}</p>
-                        <p>First Name: {user?.name?.firstName}</p>
-                        <p>Last Name: {user?.name?.lastName}</p>
-                        <p>Email: {user?.email}</p>
-                        <p>Phone Number: {user?.contactNumber}</p>
-                    </DialogUserDetails>
-                </DialogUserContainer>
+                    <DialogUserContainer>
+                        <h3>User Details</h3>
+                        <DialogUserDetails>
+                            {/* Display user details here */}
+                            <p>User ID: {user?.userId}</p>
+                            <p>First Name: {user?.name?.firstName}</p>
+                            <p>Last Name: {user?.name?.lastName}</p>
+                            <p>Email: {user?.email}</p>
+                            <p>Phone Number: {user?.contactNumber}</p>
+                        </DialogUserDetails>
+                    </DialogUserContainer>
 
-                <DialogOrdersContainer>
-                    <h3>Active Orders</h3>
-                    <DialogOrderDetails>
-                        {orders.map((order, index) => (
-                            <div key={index}>
-                                <p>Order ID: {order.orderId}</p>
-                                {/* <p>Amount: {order.amount}</p> */}
-                                <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p> {/* Consider formatting this date */}
-                                <p>Status: {order.status}</p>
-                            </div>
-                        ))}
-                    </DialogOrderDetails>
-                </DialogOrdersContainer>
+                    <DialogOrdersContainer>
+                        <h3>Active Orders</h3>
+                        <DialogOrderDetails>
+                            {orders.map((order, index) => (
+                                <div key={index}>
+                                    <p>Order ID: {order.orderId}</p>
+                                    {/* <p>Amount: {order.amount}</p> */}
+                                    <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p> {/* Consider formatting this date */}
+                                    <p>Status: {order.status}</p>
+                                </div>
+                            ))}
+                        </DialogOrderDetails>
+                    </DialogOrdersContainer>
 
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">Close</Button>
-                </DialogActions>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">Close</Button>
+                    </DialogActions>
                 </StyledDialogContainer>
             </Dialog>
         </>
