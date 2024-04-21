@@ -9,8 +9,6 @@ import { IBulk } from "../../../interfaces/IBulk";
 import EditDropdown from "../../dialog/EditDropdown";
 import { getAllFlights } from "@app_services/flightService";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-//import { UpdateBtn } from "@app_styles/bulkDetails.styles";
-
 import Button from '@mui/material/Button';
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import BulkReport from "@app_components/pdf/pdfTemplates/BulkReport";
@@ -36,7 +34,6 @@ const BulkInfo: React.FC = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [currentBulk, setCurrentBulk] = useState<IBulk | null>(null);
   const [flightOptions, setFlightOptions] = useState([]);
-
   const [showPDFDialog, setShowPDFDialog] = useState(false);
   const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
