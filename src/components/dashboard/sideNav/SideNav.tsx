@@ -45,7 +45,7 @@ const SideNav = () => {
     const mapping = {
       '1-1': 'app/order',
       '2-1': 'app/restricted-orders',
-      '2-2': 'app/restricted-order-types',
+      '2-2': 'app/restricted-order-type',
       '2-3': 'app/country',
       '2-4': 'app/category',
       '3-1': 'app/order-aggregation',
@@ -56,8 +56,8 @@ const SideNav = () => {
       '4-1': 'app/crm',
       '5-1': 'app/user',
       '6-1': 'app/warehouse',
-      '6-2': 'app/warehouseinfo',
-      '6-3': 'app/assign-drivers',
+      '6-2': 'app/warehouseInfo',
+      '6-3': 'app/assign-details',
       '7-1': 'app/employee-manage',
       '7-2': 'app/employee-access',
     };
