@@ -27,13 +27,13 @@ interface ReusableTableProps {
 }
 
 const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch, searchTerm, handleSearch }) => {
-  
-    const filteredRows = rows.filter(row =>
-      Object.values(row).some(value =>
-        String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
-      )
-    );
-  
+
+  const filteredRows = rows.filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
+    )
+  );
+
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -77,7 +77,7 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
             <div>
               {showActiveSwitch && <SwitchBtn />}
             </div>
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: "6rem" }}>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: "55px" }}>
               {showAddButton && onAdd && <AddButton onClick={onAdd} />}
             </div>
           </FlexRow>

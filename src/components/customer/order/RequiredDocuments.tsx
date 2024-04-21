@@ -14,7 +14,6 @@ interface RestrictedOrderFormat {
 }
 
 const RequiredDocuments = ({ goNext, goBack }) => {
-    const [itemObjectId,] = useSessionStorage('order-item-object-id');
     const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
     const [isRestrictedNoticeDialogOpen, setIsRestrictedNoticeDialogOpen] = useState(true);
     const [isSubmitButtonEnable, setSubmitButtonEnable] = useState(false);
@@ -22,7 +21,7 @@ const RequiredDocuments = ({ goNext, goBack }) => {
     const [itemId,] = useSessionStorage('order-item-id');
 
 
-   
+
     const handleSubmitDisability = () => {
         // debugger;
         setSubmitButtonEnable(true);
@@ -32,8 +31,8 @@ const RequiredDocuments = ({ goNext, goBack }) => {
         goBack();
     };
     const handleSubmit = (event) => {
+        event.preventDefault();
         if (isSubmitButtonEnable == true) {
-            event.preventDefault();
             goNext();
         }
     };

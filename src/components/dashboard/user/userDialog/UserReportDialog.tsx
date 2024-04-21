@@ -15,11 +15,21 @@ import { IOrder } from '@app_interfaces/IOrder';
 import IUser from '@app_interfaces/IUser';
 import { getAllOrders } from "@app_services/orderService";
 import { getAllUser } from "@app_services/userService";
-import PDFDownloadButton from '@app_components/shared/PDFDownloadButton';
 import PDFLayout from '@app_components/pdf/PDFLayout';
 import OrdersReport from '@app_components/pdf/pdfTemplates/UserReport';
 import ReactDOMServer from 'react-dom/server';
 import PDFExportDialog from '@app_components/pdf/PDFPreviewDialog';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import  { ReactElement } from 'react';
+
+
+
+const Transition = React.forwardRef<HTMLDivElement, TransitionProps & { children: ReactElement }>(({ children, ...props }, ref) => {
+    return <Slide direction="up" ref={ref} {...props}>
+      {children}
+    </Slide>;
+  });
 
 
 interface UserReportDialogProps {
@@ -57,15 +67,11 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     }, [isOpen]);
 
 
-    // const getPdfContent = () => {
-    //     const content = <OrdersReport orders={filteredOrders} />;
-    //     return ReactDOMServer.renderToString(<PDFLayout content={content} />);
-    // };
 
     useEffect(() => {
         const filterOrders = () => {
             const filtered = orders.filter(order => {
-                const orderDate = new Date(order.createdAt);
+                const orderDate = new Date(order.createdAt as Date);
                 const fromDate = selectedDateFrom ? new Date(selectedDateFrom) : null;
                 const toDate = selectedDateTo ? new Date(selectedDateTo) : null;
                 const user = users.find(user => user._id === order.userId)
@@ -74,7 +80,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                 const userNameLower = user?.name.firstName.toLowerCase();
 
                 return (
-                    (selectedUserName ? userNameLower.includes(selectedUserNameLower) : true) &&
+                    (selectedUserName ? userNameLower?.includes(selectedUserNameLower) : true) &&
                     (selectedStatus ? order.status === selectedStatus : true) &&
                     (!fromDate || orderDate >= fromDate) &&
                     (!toDate || orderDate <= toDate)
@@ -89,14 +95,20 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
     useEffect(() => {
         if (filteredOrders.length > 0) {
             const htmlContent = ReactDOMServer.renderToString(
-                <PDFLayout content={<OrdersReport orders={filteredOrders} />} />
+                <PDFLayout content={<OrdersReport orders={filteredOrders} users={users}/>} />
             );
             setPdfHtmlContent(htmlContent);
         }
     }, [filteredOrders]);
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
+        <Dialog
+        open={isOpen}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md"
+        TransitionComponent={Transition} // Apply the transition here
+      >
             <DialogContent>
                 <Typography variant="h6" component="h2" style={{ marginBottom: 20 }}>
                     All Orders Report
@@ -129,7 +141,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                                     <TableCell>{users.find(user => user._id === order.userId)?.name.firstName}</TableCell>
                                     <TableCell>{order.orderId}</TableCell>
                                     <TableCell>{order.userId}</TableCell>
-                                    <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                                    <TableCell>{new Date(order.createdAt as Date).toLocaleDateString()}</TableCell>
                                     <TableCell>{order.status}</TableCell>
                                 </TableRow>
                             ))}

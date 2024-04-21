@@ -1,6 +1,7 @@
 
 
 export default interface RootObject {
+  _id: string;
   accessToken: string;
   refreshToken: string;
   employeeId: string;
@@ -19,4 +20,7 @@ export default interface RootObject {
     countryId?: number;
   };
   focus: string;
+  accessDescription: string;
+  accessID: string;
+  createdAt: Date;
 }

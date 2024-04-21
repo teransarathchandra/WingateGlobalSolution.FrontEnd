@@ -1,10 +1,17 @@
 import api from "@app_utils/apiUtils";
 
-export const getAllEmployee = () => {
-  return api
-    .get("/employee")
-    .then((response) => response.data)
-    .catch((error) => error.message);
+export const getAllEmployee = (aggType?) => {
+  if (aggType) {
+    return api
+      .get(`/employee?type=${aggType}`)
+      .then((response) => response.data)
+      .catch((error) => error.message);
+  } else {
+    return api
+      .get("/employee")
+      .then((response) => response.data)
+      .catch((error) => error.message);
+  }
 };
 
 export const getEmployeeById = (id) => {
@@ -14,16 +21,16 @@ export const getEmployeeById = (id) => {
     .catch((error) => error.message);
 };
 
-export const createEmployee = (accessData) => {
+export const createEmployee = (employeeData) => {
   return api
-    .post("/employee", accessData)
+    .post("/employee", employeeData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };
 
-export const updateEmployee = (id, accessData) => {
+export const updateEmployee = (id, employeeData) => {
   return api
-    .put(`/employee/${id}`, accessData)
+    .patch(`/employee/${id}`, employeeData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };
