@@ -185,7 +185,8 @@ const CommercialInvoice = ({ order, item, receiver, sender }) => {
                 </Table>
             </div>
             <div style={{ marginTop: '50px' }}>
-                <QRCodeGenerator url={`${'http://localhost:5173/track-order?orderId='}${order.orderId}`} />
+                <img src={'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(' + `${'http://localhost:5173/track-order?orderId='}${order.orderId}` + ')}'} alt="QR-Code" style={{ width: '120px', height: '120px' }} />
+                {/* <QRCodeGenerator url={`${'http://localhost:5173/track-order?orderId='}${order.orderId}`} /> */}
             </div>
         </div>
     )
