@@ -5,7 +5,16 @@ import Button from '@mui/material/Button';
 import { DialogHeaderContainer, DialogHeaderLeft, DialogHeaderRight, DialogOrderDetails, DialogOrdersContainer, DialogUserContainer, DialogUserDetails, StyledDialogContainer } from '@app_styles/userDetailsDialog.styles';
 import { separateDateTime } from "@app_utils/separateDateTime";
 import { IOrder } from '@app_interfaces/IOrder';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import { ReactElement } from 'react';
 
+
+const Transition = React.forwardRef<HTMLDivElement, TransitionProps & { children: ReactElement }>(({ children, ...props }, ref) => {
+    return <Slide direction="right" ref={ref} {...props}>
+        {children}
+    </Slide>;
+});
 
 interface UserDetailsDialogProps {
     isOpen: boolean;
@@ -30,8 +39,13 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({ isOpen, user, ord
 
     return (
         <>
-            <Dialog open={isOpen} onClose={handleClose} fullWidth maxWidth="md">
-                <StyledDialogContainer>
+            <Dialog
+                open={isOpen}
+                onClose={handleClose}
+                fullWidth
+                maxWidth="md"
+                TransitionComponent={Transition} // Apply the transition here
+            >                <StyledDialogContainer>
                     <DialogHeaderContainer>
                         <DialogHeaderLeft>
                             <p>User ID: {user?.userId}</p> {/* User ID on its own line */}

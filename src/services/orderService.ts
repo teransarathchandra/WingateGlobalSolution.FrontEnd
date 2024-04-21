@@ -77,6 +77,13 @@ export const updateOrder = (id, orderData) => {
     .catch((error) => error.message);
 };
 
+export const updateOrderAndItem = (id, orderData) => {
+  return api
+    .put(`/order/updateOrderAndItem/${id}`, orderData)
+    .then((response) => response.data)
+    .catch((error) => error.message);
+};
+
 export const deleteOrder = (id) => {
   return api
     .delete(`/order/${id}`)

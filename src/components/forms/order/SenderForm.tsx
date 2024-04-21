@@ -43,20 +43,6 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
         email: activeUser?.email,
     });
 
-    // const defaultValues = {
-    //     name: {
-    //         firstName: `${userData?.firstName}`,
-    //         lastName: `${userData?.lastName}`,
-    //     }, address: {
-    //         state: userData?.address?.state,
-    //         city: userData?.address?.city,
-    //         street: userData?.address?.street,
-    //         countryId: selectedSendingCountryCode
-    //     },
-    //     contactNumber: userData?.contactNumber,
-    //     email: userData?.email,
-    // };
-
     const {
         register,
         handleSubmit,
@@ -69,10 +55,6 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
         mode: 'onTouched',
         defaultValues: defaultValues
     });
-
-    // useEffect(() => {
-    //     reset(defaultValues);
-    // }, [reset]);
 
     const toggleEdit = () => {
         setIsEditable((prev) => !prev);
@@ -91,7 +73,7 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
     }, [defaultValues, reset]);
 
     const handleCountrySelect = (code) => {
-        setValue("address.countryId", code); // Manually set the value of countryId in the form
+        setValue("address.countryId", code);
     };
 
     const onSubmit = async (data) => {
@@ -196,10 +178,10 @@ const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmi
                     <CountrySelector
                         id={field.name}
                         selectedCountry={field.value}
-                        countries={["LK"]} // List of countries codes
+                        countries={["LK"]}
                         disabled={!isEditable}
                         onCountrySelect={(code) => {
-                            field.onChange(code); // this will set the value and also trigger any validation
+                            field.onChange(code);
                             handleCountrySelect(code);
                         }}
                     />
