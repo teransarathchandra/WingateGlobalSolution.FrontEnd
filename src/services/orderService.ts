@@ -1,6 +1,6 @@
 import api from "@app_utils/apiUtils";
 
-export const getAllOrders = (aggType) => {
+export const getAllOrders = (aggType?) => {
   if (aggType) {
     return api
       .get(`/order?type=${aggType}`)
@@ -73,6 +73,13 @@ export const createOrder = (orderData) => {
 export const updateOrder = (id, orderData) => {
   return api
     .put(`/order/${id}`, orderData)
+    .then((response) => response.data)
+    .catch((error) => error.message);
+};
+
+export const updateOrderAndItem = (id, orderData) => {
+  return api
+    .put(`/order/updateOrderAndItem/${id}`, orderData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

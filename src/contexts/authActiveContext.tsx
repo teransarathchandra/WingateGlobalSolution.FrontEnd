@@ -73,13 +73,15 @@ export const AuthActiveContextProvider = ({
         logoutEmployee();
       }
 
-      sessionStorage.removeItem("app-active-user");
-      sessionStorage.removeItem("app-active-token");
-      sessionStorage.removeItem("app-active-refresh-token");
+      sessionStorage.clear();
 
-      setActiveUser(null);
-      setActiveToken(null);
-      setActiveRefreshToken(null);
+      // sessionStorage.removeItem("app-active-user");
+      // sessionStorage.removeItem("app-active-token");
+      // sessionStorage.removeItem("app-active-refresh-token");
+
+      // setActiveUser(null);
+      // setActiveToken(null);
+      // setActiveRefreshToken(null);
     }
   };
 

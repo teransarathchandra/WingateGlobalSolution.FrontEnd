@@ -23,7 +23,7 @@ export const createAccess = (accessData) => {
 
 export const updateAccess = (id, accessData) => {
   return api
-    .put(`/systemAccess/${id}`, accessData)
+    .patch(`/systemAccess/${id}`, accessData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

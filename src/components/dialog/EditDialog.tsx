@@ -38,7 +38,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
         const keys = name.split('.'); // Split the name by dots to get the path
 
         setFormData(prev => {
-            let updated = { ...prev }; // Create a shallow copy of the current state
+            const updated = { ...prev }; // Create a shallow copy of the current state
             let temp = updated; // Temporary reference to navigate the structure
 
             keys.forEach((key, index) => {
