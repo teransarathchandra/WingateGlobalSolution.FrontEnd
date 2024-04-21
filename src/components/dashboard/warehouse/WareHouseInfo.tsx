@@ -179,7 +179,7 @@ const WarehouseInfo: React.FC = () => {
         onSave={addWarehouse}
       />
 
-                <Button onClick={() =>  setShowPDFDialog(true)} color="secondary">
+                <Button onClick={() =>     setShowPDFDialog(true)} color="secondary">
                     Preview & Export PDF
                 </Button>
 
