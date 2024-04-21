@@ -44,6 +44,7 @@ const EmployeeAccessBox: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleAddClick = () => {
+    setCurrentAccess(null);
     setIsAddAccessOpen(true);
   };
 
@@ -79,6 +80,7 @@ const EmployeeAccessBox: React.FC = () => {
       console.log(response);
       const preparedAccess: IRow[] = response.data.map((access: IAccess) => ({
         ...access,
+        _id: access._id,
         createdAt: new Date(access.createdAt).toLocaleDateString(),
         updatedAt: new Date(access.updatedAt).toLocaleDateString(),
         edit: (
@@ -113,6 +115,8 @@ const EmployeeAccessBox: React.FC = () => {
 
   const addAccess = async (access) => {
     try {
+      delete access._id;
+      delete access.accessLevelId;
       await createAccess(access);
       fetchAndPrepareSystemAccess();
       setIsAddAccessOpen(false);
