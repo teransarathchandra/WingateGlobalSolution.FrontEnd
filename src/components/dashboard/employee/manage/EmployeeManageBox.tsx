@@ -89,7 +89,7 @@ const EmployeeManageBox: React.FC = () => {
       const preparedAccess: IRow[] = response.data.map((employee: IEmployee) => ({
         ...employee,
         _id: employee._id,
-        fullName: (employee.name.firstName || "") + " " + (employee.name.lastName || " "),
+        fullName: (employee?.name?.firstName || "") + " " + (employee?.name?.lastName || " "),
         createdAt: new Date(employee.createdAt as Date).toLocaleDateString(),
         edit: (
           <button
