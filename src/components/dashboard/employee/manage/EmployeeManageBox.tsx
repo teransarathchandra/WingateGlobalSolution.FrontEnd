@@ -14,6 +14,11 @@ import { IEmployee } from "@app_interfaces/IEmployee";
 import EditDialog from "@app_components/dialog/EditDialog";
 import AddDialog from "@app_components/dialog/AddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import Button from '@mui/material/Button';
+import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
+import ReactDOMServer from 'react-dom/server';
+import PDFLayout from '@app_components/pdf/PDFLayout';
+import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
 
 const columns: IColumn[] = [
   {
@@ -53,6 +58,8 @@ const EmployeeManageBox: React.FC = () => {
   const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
   const handleAddClick = () => {
     setIsAddEmployeeOpen(true);
@@ -178,6 +185,14 @@ const EmployeeManageBox: React.FC = () => {
       console.error("Failed to delete employee", error);
     }
   };
+  useEffect(() => {
+    if (employee.length > 0) {
+        const htmlContent = ReactDOMServer.renderToString(
+            <PDFLayout content={<EmployeesReport employees={employee} />} />
+        );
+        setPdfHtmlContent(htmlContent);
+    }
+}, [employee]);
 
   return (
     <>
@@ -250,6 +265,34 @@ const EmployeeManageBox: React.FC = () => {
         handleClose={() => setIsDeleteDialogOpen(false)}
         handleDelete={handleDeleteEmployeeConfirm}
       />
+      
+      <Button onClick={() => setShowPDFDialog(true)} style={
+          {
+            backgroundColor: "#e1bd05",
+            position: "absolute",
+            //marginTop: "40px",
+            color:"#fff ",
+            padding: "5px",
+            borderRadius:"10px",
+            cursor: "pointer",
+            border: "2px solid #e1bd05",
+            //bottom: "20px",
+           // right: "40px",
+
+            }}>
+                    Export PDF
+                </Button>
+            
+            {showPDFDialog && (
+                <PDFExportDialog
+                    open={showPDFDialog}
+                    onClose={() => setShowPDFDialog(false)}
+                    htmlContent={pdfHtmlContent}
+                    filename="EmployeeReport.pdf"
+                />
+            )}
+      
+       
     </>
   );
 };
