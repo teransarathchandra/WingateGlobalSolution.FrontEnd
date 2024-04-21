@@ -10,7 +10,6 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "@app_services/employeeService";
-import { IEmployee } from "@app_interfaces/IEmployee";
 import EditDialog from "@app_components/dialog/EditDialog";
 import AddDialog from "@app_components/dialog/AddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
@@ -19,6 +18,7 @@ import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import ReactDOMServer from 'react-dom/server';
 import PDFLayout from '@app_components/pdf/PDFLayout';
 import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
+import IEmployee from "@app_interfaces/IEmployee";
 
 const columns: IColumn[] = [
   {
@@ -131,13 +131,31 @@ const EmployeeManageBox: React.FC = () => {
     fetchEmployees();
   }, []);
 
-  const addAccess = async (employee) => {
+  const addEmployee = async (employee) => {
     try {
-      delete employee._id;
-      await createEmployee(employee);
+      // delete employee._id;
+      const payload = {
+        name: {
+          firstName: employee.firstName,
+          lastName: employee.lastName
+        },
+        address: {
+          street: employee.street,
+          city: employee.city,
+          state: employee.state,
+          country: employee.country
+        },
+        email: employee.email,
+        password: employee.password,
+        contactNumber: employee.contactNumber,
+        designationId: "65d44e402cdc44e12fe28378",
+        focus: employee.focus
+      }
+      
+      const response = await createEmployee(payload);
+      console.log('Employee added successfully', response.data);
       fetchEmployees();
       setIsAddEmployeeOpen(false);
-      console.log('Flight added successfully');
     } catch (error) {
       console.error('Failed to add flight', error);
     }
@@ -234,20 +252,44 @@ const EmployeeManageBox: React.FC = () => {
         onDelete={ondeleteEmployee}
       />
       <AddDialog
-        title="Add Access Level"
+        title="Add Employee"
         isOpen={isAddEmployeeOpen}
         handleClose={() => setIsAddEmployeeOpen(false)}
-        entity={currentEmployee}
+        // entity={currentEmployee}
         fields={[
           {
-            name: "name.firstName",
+            name: "firstName",
             label: "First Name",
             type: "text",
             disabled: false
           },
           {
-            name: "name.lastName",
+            name: "lastName",
             label: "Last Name",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "street",
+            label: "Street",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "city",
+            label: "City",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "state",
+            label: "State",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "country",
+            label: "Country",
             type: "text",
             disabled: false
           },
@@ -257,8 +299,26 @@ const EmployeeManageBox: React.FC = () => {
             type: "text",
             disabled: false
           },
+          {
+            name: "password",
+            label: "Password",
+            type: "password",
+            disabled: false
+          },
+          {
+            name: "contactNumber",
+            label: "Contact Number",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "focus",
+            label: "Focus",
+            type: "text",
+            disabled: false
+          }
         ]}
-        onSave={addAccess}
+        onSave={addEmployee}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}

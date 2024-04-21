@@ -1,6 +1,7 @@
 
 
 export default interface RootObject {
+  _id: string;
   accessToken: string;
   refreshToken: string;
   employeeId: string;
@@ -21,4 +22,5 @@ export default interface RootObject {
   focus: string;
   accessDescription: string;
   accessID: string;
+  createdAt: Date;
 }
