@@ -19,6 +19,8 @@ import ReactDOMServer from 'react-dom/server';
 import PDFLayout from '@app_components/pdf/PDFLayout';
 import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
 import IEmployee from "@app_interfaces/IEmployee";
+import { getAllAccess } from "@app_services/accessService";
+import { IAccess } from "@app_interfaces/IAccess";
 
 const columns: IColumn[] = [
   {
@@ -59,6 +61,7 @@ const EmployeeManageBox: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [accessLevels, setAccessLevels] = useState([]);
   const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
   const handleAddClick = () => {
@@ -127,8 +130,25 @@ const EmployeeManageBox: React.FC = () => {
     }
   };
 
+  const fetchAndPrepareSystemAccess = async () => {
+    try {
+      const accessLevelsResponse = await getAllAccess();
+      const accessOptions = accessLevelsResponse.data.map((access: IAccess) => ({
+        value: access._id,
+        label: access.description
+      }));
+      setAccessLevels(accessOptions);
+    } catch (error) {
+      console.error("Failed to fetch access", error);
+    }
+  };
+
   useEffect(() => {
     fetchEmployees();
+  }, []);
+
+  useEffect(() => {
+    fetchAndPrepareSystemAccess();
   }, []);
 
   const addEmployee = async (employee) => {
@@ -151,7 +171,7 @@ const EmployeeManageBox: React.FC = () => {
         designationId: "65d44e402cdc44e12fe28378",
         focus: employee.focus
       }
-      
+
       const response = await createEmployee(payload);
       console.log('Employee added successfully', response.data);
       fetchEmployees();
@@ -242,11 +262,59 @@ const EmployeeManageBox: React.FC = () => {
             disabled: false
           },
           {
+            name: "address.street",
+            label: "Street",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "address.city",
+            label: "City",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "address.state",
+            label: "State",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "address.country",
+            label: "Country",
+            type: "text",
+            disabled: false
+          },
+          {
             name: "email",
             label: "Email",
             type: "text",
             disabled: false
           },
+          {
+            name: "password",
+            label: "Password",
+            type: "password",
+            disabled: false
+          },
+          {
+            name: "contactNumber",
+            label: "Contact Number",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "focus",
+            label: "Focus",
+            type: "text",
+            disabled: false
+          },
+          // {
+          //   name: "accessLevel",
+          //   label: "Access Level",
+          //   type: "dropdown",
+          //   disabled: false,
+          // }
         ]}
         onSave={saveAccess}
         onDelete={ondeleteEmployee}
@@ -316,6 +384,13 @@ const EmployeeManageBox: React.FC = () => {
             label: "Focus",
             type: "text",
             disabled: false
+          },
+          {
+            name: "accessLevel",
+            label: "Access Level",
+            type: "dropdown",
+            disabled: false,
+            options: accessLevels
           }
         ]}
         onSave={addEmployee}
