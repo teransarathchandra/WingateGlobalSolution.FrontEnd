@@ -109,17 +109,6 @@ const EmployeeAccessBox: React.FC = () => {
     fetchAndPrepareSystemAccess();
   }, []);
 
-  const deleteSystemAccess = async (access) => {
-    try {
-      await deleteAccess(access);
-      fetchAndPrepareSystemAccess();
-      setIsAddAccessOpen(false);
-      console.log('Flight added successfully');
-    } catch (error) {
-      console.error('Failed to add flight', error);
-    }
-  };
-
   const addAccess = async (access) => {
     try {
       await createAccess(access);
