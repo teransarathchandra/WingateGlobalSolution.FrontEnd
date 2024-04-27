@@ -20,7 +20,7 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
   const [senderId, setSenderId] = useSessionStorage('order-sender-id');
   const [receiverId, setReceiverId] = useSessionStorage('order-receiver-id');
   const [orderId, setOrderId] = useSessionStorage('order-id');
-  const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
+  // const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
   const [, setOrderDetails] = useSessionStorage('order-details');
   const [senderFormValid, setSenderFormValid] = useState(false);
   const [receiverFormValid, setReceiverFormValid] = useState(false);
@@ -78,7 +78,8 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           setReceiverId(receiverObjId);
 
           const createOrderPayload = {
-            status: restrictedOrder == true ? 'Pending' : 'Processing',
+            // status: restrictedOrder == true ? 'Pending' : 'Processing',
+            status: 'Pending',
             itemId: itemId,
             senderId: senderObjId,
             receiverId: receiverObjId,

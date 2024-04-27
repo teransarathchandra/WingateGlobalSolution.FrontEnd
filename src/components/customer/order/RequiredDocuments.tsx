@@ -47,11 +47,11 @@ const RequiredDocuments = ({ goNext, goBack }) => {
 
     useEffect(() => {
         const restrictedOrder: RestrictedOrderFormat[] = [
-            { key: 'exportLicense', label: 'Export License', type: 'boolean', value: restrictedOrderType.exportLicense },
-            { key: 'importPermit', label: 'Import Permit', type: 'boolean', value: restrictedOrderType.importPermit },
-            { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', value: restrictedOrderType.safetyDataSheets },
-            { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', value: restrictedOrderType.phytosanitaryCertificate },
-            { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', value: restrictedOrderType.dangerousGoodsDeclaration },
+            { key: 'exportLicense', label: 'Export License', type: 'boolean', value: restrictedOrderType?.exportLicense },
+            { key: 'importPermit', label: 'Import Permit', type: 'boolean', value: restrictedOrderType?.importPermit },
+            { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', value: restrictedOrderType?.safetyDataSheets },
+            { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', value: restrictedOrderType?.phytosanitaryCertificate },
+            { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', value: restrictedOrderType?.dangerousGoodsDeclaration },
         ];
 
         const trueDocs = restrictedOrder
