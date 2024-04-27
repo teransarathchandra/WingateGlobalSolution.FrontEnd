@@ -1,7 +1,5 @@
-import QRCodeGenerator from "@app_components/shared/QRCodeGenerator";
+// import QRCodeGenerator from "@app_components/shared/QRCodeGenerator";
 import { CSSProperties, ReactNode } from "react";
-
-
 
 const CommercialInvoice = ({ order, item, receiver, sender }) => {
 
@@ -86,7 +84,7 @@ const CommercialInvoice = ({ order, item, receiver, sender }) => {
                     <div>{order.isPickupOrder == true ? 'Yes' : 'No'}</div>
                     <div style={labelStyle}>Pickup Order Date</div>
                     <div style={labelStyle}> : </div>
-                    <div>{order.pickupOrderDate ? order.pickupOrderDate : '-'}</div>
+                    <div>{order.isPickupOrder ? order.pickupOrderDate : '-'}</div>
                     <div style={labelStyle}>Order Placed Date</div>
                     <div style={labelStyle}> : </div>
                     <div>{new Date(order.createdAt).toLocaleDateString('en-US', {
@@ -187,7 +185,8 @@ const CommercialInvoice = ({ order, item, receiver, sender }) => {
                 </Table>
             </div>
             <div style={{ marginTop: '50px' }}>
-                <QRCodeGenerator url={`${'http://localhost:5173/track-order'}${order.orderId}`} />
+                <img src={'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(' + `${'http://localhost:5173/track-order?orderId='}${order.orderId}` + ')}'} alt="QR-Code" style={{ width: '120px', height: '120px' }} />
+                {/* <QRCodeGenerator url={`${'http://localhost:5173/track-order?orderId='}${order.orderId}`} /> */}
             </div>
         </div>
     )

@@ -14,7 +14,6 @@ interface RestrictedOrderFormat {
 }
 
 const RequiredDocuments = ({ goNext, goBack }) => {
-    const [itemObjectId,] = useSessionStorage('order-item-object-id');
     const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
     const [isRestrictedNoticeDialogOpen, setIsRestrictedNoticeDialogOpen] = useState(true);
     const [isSubmitButtonEnable, setSubmitButtonEnable] = useState(false);
@@ -22,7 +21,7 @@ const RequiredDocuments = ({ goNext, goBack }) => {
     const [itemId,] = useSessionStorage('order-item-id');
 
 
-   
+
     const handleSubmitDisability = () => {
         // debugger;
         setSubmitButtonEnable(true);
@@ -32,8 +31,8 @@ const RequiredDocuments = ({ goNext, goBack }) => {
         goBack();
     };
     const handleSubmit = (event) => {
+        event.preventDefault();
         if (isSubmitButtonEnable == true) {
-            event.preventDefault();
             goNext();
         }
     };
@@ -48,11 +47,11 @@ const RequiredDocuments = ({ goNext, goBack }) => {
 
     useEffect(() => {
         const restrictedOrder: RestrictedOrderFormat[] = [
-            { key: 'exportLicense', label: 'Export License', type: 'boolean', value: restrictedOrderType.exportLicense },
-            { key: 'importPermit', label: 'Import Permit', type: 'boolean', value: restrictedOrderType.importPermit },
-            { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', value: restrictedOrderType.safetyDataSheets },
-            { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', value: restrictedOrderType.phytosanitaryCertificate },
-            { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', value: restrictedOrderType.dangerousGoodsDeclaration },
+            { key: 'exportLicense', label: 'Export License', type: 'boolean', value: restrictedOrderType?.exportLicense },
+            { key: 'importPermit', label: 'Import Permit', type: 'boolean', value: restrictedOrderType?.importPermit },
+            { key: 'safetyDataSheets', label: 'Safety Data Sheets', type: 'boolean', value: restrictedOrderType?.safetyDataSheets },
+            { key: 'phytosanitaryCertificate', label: 'Phytosanitary Certificate', type: 'boolean', value: restrictedOrderType?.phytosanitaryCertificate },
+            { key: 'dangerousGoodsDeclaration', label: 'Dangerous Goods Declaration', type: 'boolean', value: restrictedOrderType?.dangerousGoodsDeclaration },
         ];
 
         const trueDocs = restrictedOrder

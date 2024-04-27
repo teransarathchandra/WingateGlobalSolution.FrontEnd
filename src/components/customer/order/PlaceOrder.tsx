@@ -14,18 +14,19 @@ interface FormMethods {
 
 const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void }) => {
 
-  const [itemId, ] = useSessionStorage('order-itemId');
+  const [itemId, ] = useSessionStorage('order-item-object-id');
   const [isPickupOrder, ] = useSessionStorage('order-is-pickup-order');
   const [priority, ] = useSessionStorage('order-delivery-option');
   const [senderId, setSenderId] = useSessionStorage('order-sender-id');
   const [receiverId, setReceiverId] = useSessionStorage('order-receiver-id');
   const [orderId, setOrderId] = useSessionStorage('order-id');
-  const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
-
+  // const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
+  const [, setOrderDetails] = useSessionStorage('order-details');
   const [senderFormValid, setSenderFormValid] = useState(false);
   const [receiverFormValid, setReceiverFormValid] = useState(false);
   const [senderData, setSenderData] = useState({});
   const [receiverData, setReceiverData] = useState({});
+  const [submitClicked, setSubmitClicked] = useState(false);
 
   const senderFormRef = useRef<FormMethods>(null);
   const receiverFormRef = useRef<FormMethods>(null);
@@ -47,10 +48,15 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
   };
 
   useEffect(() => {
-    const submitData = async () => {
-      if (senderFormValid && receiverFormValid) {
-        try {
+    if (senderFormValid && receiverFormValid) {
+      setSubmitClicked(true);
+    }
+  }, [senderFormValid, receiverFormValid]);
 
+  useEffect(() => {
+    const submitData = async () => {
+      if (submitClicked) {
+        try {
           let senderPromise;
           if (!senderId) {
             senderPromise = createSender(senderData);
@@ -62,7 +68,7 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           if(!receiverId) {
             receiverPromise = createReceiver(receiverData);
           } else {
-            receiverPromise = await updateReceiver(receiverId, senderData);
+            receiverPromise = await updateReceiver(receiverId, receiverData);
           }
 
           const [senderResponse, receiverResponse] = await Promise.all([senderPromise, receiverPromise]);
@@ -72,7 +78,8 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           setReceiverId(receiverObjId);
 
           const createOrderPayload = {
-            status: restrictedOrder == true ? 'Pending' : 'Processing',
+            // status: restrictedOrder == true ? 'Pending' : 'Processing',
+            status: 'Pending',
             itemId: itemId,
             senderId: senderObjId,
             receiverId: receiverObjId,
@@ -86,18 +93,24 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           } else {
             orderResponse = await updateOrder(orderId, createOrderPayload);
           }
-          const orderObjId = orderResponse.data._id;
-          setOrderId(orderObjId)
+
+          if (orderResponse) {
+            const orderObjId = orderResponse.data._id;
+            setOrderDetails(orderResponse.data)
+            setOrderId(orderObjId)
+          }
 
           goNext();
         } catch (error) {
           console.error("Error creating sender, receiver, or order:", error);
+        } finally {
+          setSubmitClicked(false);
         }
       }
     };
 
     submitData();
-  }, [senderFormValid, receiverFormValid, goNext]);
+  }, [submitClicked]);
 
   const handleGoBack = () => {
     goBack();
