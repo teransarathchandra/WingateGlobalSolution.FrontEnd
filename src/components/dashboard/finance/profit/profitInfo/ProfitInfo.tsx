@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
 import { getAllQuotations } from "@app_services/quotationService";
@@ -11,16 +11,19 @@ const columns: IColumn[] = [
 
 const ProfitInfo: React.FC = () => {
   const [quotations, setQuotations] = useState<IRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchAndPrepareQuotations = async () => {
     try {
       const response = await getAllQuotations();
-      const preparedQuotations: IRow[] = response.data.map((quotation: IQuotation) => ({
+      const preparedQuotations: IQuotation[] = response.data.filter((quotation: IQuotation) =>
+        quotation.createdAt.includes(searchTerm)
+      ).map((quotation: IQuotation) => ({
         ...quotation,
         createdAt: new Date(quotation.createdAt).toLocaleDateString(), // Convert date to string format
       }));
 
-      const profitDetails: { [key: string]: number } = {}; // Object to store profit for each day
+      const profitDetails: { [key: string]: number } = {};
 
       preparedQuotations.forEach((quotation) => {
         const createdAt = quotation.createdAt;
@@ -45,15 +48,21 @@ const ProfitInfo: React.FC = () => {
 
   useEffect(() => {
     fetchAndPrepareQuotations();
-  }, []);
+  }, [searchTerm]);
 
- return (
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  return (
     <>
       <ReusableTable
         columns={columns}
         rows={quotations}
         title="Profit Details"
         rowKey="createdAt"
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
     </>
   );
