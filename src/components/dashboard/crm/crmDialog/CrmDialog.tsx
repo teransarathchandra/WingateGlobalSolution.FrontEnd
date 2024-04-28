@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import { Grow } from '@mui/material';
 import { IOrder } from '@app_interfaces/IOrder';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -18,27 +19,40 @@ interface UserDetailsDialogProps {
     handleClose: () => void;
 }
 
-const userDetailsStyle = {
-    backgroundColor: 'lightyellow',
+const dialogStyle = {
+    background: '#f4f4f4',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    height: '100%',
+    width: '100%',
+    maxWidth: '600px',
+    borderTopLeftRadius: '0px',
+    borderBottomLeftRadius: '0px',
+    overflowY: 'auto',
+    transition: 'transform 0.3s ease-in-out'
+};
+
+const contentContainerStyle = {
     padding: '20px',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
-    maxWidth: '500px',
-    margin: 'auto',
-    marginBottom: '20px'
+    borderBottom: '1px solid #ccc',
+    backgroundColor: '#FFFFE0',
+    display: 'flex',
+    justifyContent: 'space-between',
+    transition: 'opacity 0.3s ease-in-out',
+    color: '#575757'
 };
 
-const detailItemStyle = {
-    marginBottom: '15px',
-    padding: '10px',
-    borderBottom: '1px solid #ccc'
-};
-
-const sectionTitleStyle = {
-    fontWeight: 'bold',
-    color: '#333',
-    fontSize: '18px',
-    marginBottom: '10px'
+const detailsContainerStyle = {
+    padding: '20px',
+    backgroundColor: '#fff',
+    borderBottom: '1px solid #ccc',
+    borderRadius: '16px',
+    boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
+    margin: '20px',
+    opacity: 1,
+    transition: 'all 0.3s ease',
+    color: '#575757'
 };
 
 const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
@@ -59,17 +73,41 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
 
     const sendBirthdayEmail = () => {
         const email = user?.email;
-        const subject = encodeURIComponent('Happy Birthday!');
-        const body = encodeURIComponent('Wishing you a wonderful birthday filled with joy and happiness.Best wishes from WinGate Global Solutions.');
+        const subject = encodeURIComponent('🎉 Happy Birthday from WinGate Global Solutions! 🎉');
+        const body = encodeURIComponent(
+            `Dear ${user?.name?.firstName || 'Valued Customer'},\n\n` +
+            `We at WinGate Global Solutions wish you a joyous and splendid birthday! 🎂🎈\n\n` +
+            `May your day be filled with laughter, happiness, and all things bright and beautiful. We are so glad to have you with us and look forward to celebrating many more milestones together.\n\n` +
+            `As a token of our appreciation, we've attached a special gift just for you in this email. Please check the attachments for a surprise!\n\n` +
+            `Wishing you all the best today and always,\n` +
+            `Your friends at WinGate Global Solutions 🌟\n\n` +
+            `P.S. Don't forget to treat yourself to something special—you deserve it!`
+        );
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     };
+    
 
     const sendReminderEmail = (reminderTime) => {
         const email = user?.email;
-        const subject = encodeURIComponent('Meeting Reminder');
-        const body = encodeURIComponent(`This is a reminder for your upcoming meeting. Please be ready ${reminderTime}.\n Wingate Global Solutiuons.`);
+        const subject = encodeURIComponent('Meeting Reminder from WinGate Global Solutions');
+        const body = encodeURIComponent(
+            `Dear ${user?.name?.firstName || 'Participant'},\n\n` +
+            `Just a friendly reminder from WinGate Global Solutions about your upcoming meeting.\n\n` +
+            `**Meeting Details:**\n` +
+            `- **Time:** Please be ready ${reminderTime}.\n` +
+            `- **Date:** [Insert Date Here]\n` +
+            `- **Location:** [Insert Location Here] or [Virtual Meeting Link]\n\n` +
+            `Here are a few tips to ensure a smooth and productive session:\n` +
+            `- Ensure your meeting software is updated and running prior to the meeting.\n` +
+            `- Have a list of topics you'd like to discuss or any questions prepared.\n` +
+            `- If it's a virtual meeting, find a quiet space to avoid background noise.\n\n` +
+            `We value your time and input, and look forward to a great meeting. Should you have any questions or need to reschedule, please do not hesitate to contact us.\n\n` +
+            `Thank you and see you soon,\n` +
+            `The Team at WinGate Global Solutions\n`
+        );
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     };
+    
 
     const handleReminderChange = (event) => {
         const reminderValue = event.target.value;
@@ -84,98 +122,47 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             fullWidth
             maxWidth="md"
             TransitionComponent={Transition}
-            PaperProps={{
-                style: {
-                    background: '#FFFFE0',
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    height: '100%',
-                    width: '100%',
-                    maxWidth: '600px',
-                    borderTopLeftRadius: '0px',
-                    borderBottomLeftRadius: '0px',
-                    overflowY: 'auto',
-                },
-            }}
+            PaperProps={{ style: dialogStyle }}
         >
-            <div style={{
-                padding: '20px',
-                borderBottom: '1px solid #ccc',
-                backgroundColor: '#FFFFE0',
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}>
-                <div>
-                    <p>Created On: {formattedDate}</p>
-                </div>
-                <div>
-                    <p>Status: Active</p>
-                </div>
-            </div>
-
-            <div style={{
-                padding: '20px',
-                backgroundColor: '#fff',
-                borderBottom: '1px solid #ccc',
-                borderRadius: '16px',
-                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)',
-                margin: '20px',
-            }}>
-                <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>Customer Details</h2>
-                <div style={userDetailsStyle}>
-                    <div style={sectionTitleStyle}>Basic Info</div>
-                    <div style={detailItemStyle}>First Name: {user?.name?.firstName || 'N/A'}</div>
-                    <div style={detailItemStyle}>Last Name: {user?.name?.lastName || 'N/A'}</div>
-                    <div style={detailItemStyle}>Email: {user?.email || 'N/A'}</div>
-                    <div style={detailItemStyle}>Phone Number: {user?.contactNumber || 'N/A'}</div>
-
-                    <div style={sectionTitleStyle}>Other Details</div>
-                    <div style={detailItemStyle}>Priority: {user?.priorityLevel || 'N/A'}</div>
-
-                    <div style={detailItemStyle}>
-                        <Button 
-                            variant="contained"
-                            style={{ 
-                                backgroundColor: '#4CAF50', 
-                                color: 'white',
-                                marginBottom: '10px',
-                                textTransform: 'none',
-                            }}
-                            onClick={sendBirthdayEmail}
-                        >
-                            Send Birthday Email
-                        </Button>
-                        <Select
-                            value={reminder}
-                            onChange={handleReminderChange}
-                            displayEmpty
-                            style={{ 
-                                backgroundColor: 'white',
-                                width: '100%',
-                            }}
-                        >
-                            <MenuItem value="" disabled>
-                                Set Meeting Reminder
-                            </MenuItem>
-                            <MenuItem value={'15min'}>15 Minutes Before</MenuItem>
-                            <MenuItem value={'30min'}>30 Minutes Before</MenuItem>
-                            <MenuItem value={'1hour'}>1 Hour Before</MenuItem>
-                        </Select>
+            <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
+                <div style={contentContainerStyle}>
+                    <div>
+                        <p>Created On: {formattedDate}</p>
+                    </div>
+                    <div>
+                        <p>Status: Active</p>
                     </div>
                 </div>
-            </div>
+            </Grow>
+
+            <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
+                <div style={detailsContainerStyle}>
+                    <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#4CAF50' }}>Customer Details</h2>
+                    <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>First Name: {user?.name?.firstName || 'N/A'}</div>
+                    <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Last Name: {user?.name?.lastName || 'N/A'}</div>
+                    <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Email: {user?.email || 'N/A'}</div>
+                    <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Phone Number: {user?.contactNumber || 'N/A'}</div>
+                    <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Priority: {user?.priorityLevel || 'N/A'}</div>
+                    <Button onClick={sendBirthdayEmail} variant="contained" style={{ backgroundColor: '#4CAF50', color: 'white', marginBottom: '10px', textTransform: 'none', borderRadius: '20px' }}>Send Birthday Email</Button>
+                    <Select
+                        value={reminder}
+                        onChange={handleReminderChange}
+                        displayEmpty
+                        style={{ backgroundColor: 'white', width: '100%', borderRadius: '20px' }}
+                   >
+                        <MenuItem value="" disabled>Set Meeting Reminder</MenuItem>
+                        <MenuItem value={'15min'}>15 Minutes Before</MenuItem>
+                        <MenuItem value={'30min'}>30 Minutes Before</MenuItem>
+                        <MenuItem value={'1hour'}>1 Hour Before</MenuItem>
+                    </Select>
+                </div>
+            </Grow>
 
             <DialogActions style={{ padding: '20px', borderTop: '1px solid #ccc', backgroundColor: '#FFFFE0' }}>
                 <Button 
                     onClick={handleClose}
                     variant="contained"
-                    style={{ 
-                        backgroundColor: 'rgb(225, 189, 5)', 
-                        color: 'white',
-                        textTransform: 'none',
-                        borderRadius: '20px',
-                    }}
+                    style={{ backgroundColor: 'rgb(225, 189, 5)', color: 'white', textTransform: 'none', borderRadius: '20px' }}
                 >
                     Close     
                 </Button>

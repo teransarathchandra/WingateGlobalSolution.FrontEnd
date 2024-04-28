@@ -1,6 +1,6 @@
 // Import necessary components and services for customer management and UI interactions.
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-import EditDialog from "@app_components/dialog/EditDialog";
+
 import ReusableTable from "@app_components/shared/ReusableTable";
 import { ICustomer } from "@app_interfaces/ICustomer";
 import { IColumn, IRow } from "@app_interfaces/ITable";
@@ -33,6 +33,7 @@ const columns: IColumn[] = [
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
   { id: "seeDetails", label: "See Details", numeric: false, disablePadding: false },
+  
 ];
 
 // Functional component for managing customer information.
@@ -257,6 +258,7 @@ const CustomerInfo: React.FC = () => {
           { name: "email", label: "Email", type: "text", disabled: false },
           { name: "priorityLevel", label: "Priority Level", type: "dropdown", options: priorityOptions },
           { name: "birthday", label: "Birth Date", type: "date", disabled: false },
+          
         ]}
         onSave={saveCustomer}
         onDelete={deleteCustomer}
