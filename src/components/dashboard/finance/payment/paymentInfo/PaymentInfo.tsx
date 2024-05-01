@@ -84,7 +84,7 @@ const PaymentInfo: React.FC = () => {
           { name: 'paymentDate', label: 'Payment Date', type: 'string', disabled: true },
           { name: 'description', label: 'Description', type: 'string', disabled: true },
           { name: 'paymentStatus', label: 'Payment Status', type: 'string', disabled: true },
-          { name: 'currency', label: 'Currency', type: 'string', disabled: true },
+          { name: 'amountDetail.currency', label: 'Currency', type: 'string', disabled: true },
           { name: 'amount', label: 'Amount', type: 'number', disabled: true },
           { name: 'paymentMethod.method', label: 'Payment Method', type: 'string', disabled: true },
           { name: 'paymentMethod.cardCustomerName', label: 'Customer Name', type: 'string', disabled: true },
