@@ -156,7 +156,7 @@ const QuotationInfo: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
-
+ 
       <EditDialog
         isOpen={isViewOpen}
         handleClose={() => setIsViewOpen(false)}
