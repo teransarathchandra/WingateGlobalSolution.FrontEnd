@@ -4,6 +4,7 @@ import ReusableTable from "../../../../shared/ReusableTable";
 import { getAllPayments } from "@app_services/paymentService";
 import EditDialog from "../../../../dialog/EditDialog";
 import { IPayment } from "@app_interfaces/IPayment";
+import { separateDateTime } from "@app_utils/separateDateTime";
 
 const columns: IColumn[] = [
   { id: "paymentId", label: "Payment ID", numeric: false, disablePadding: false },
@@ -30,20 +31,36 @@ const PaymentInfo: React.FC = () => {
 
   const fetchAndPreparePayments = async () => {
     try {
-      const aggType = 'paymentIds';
+      const aggType = "paymentIds";
       const { data } = await getAllPayments(aggType);
-      const preparedPayments: IRow[] = data.map((payment: IPayment) => ({
-        ...payment,
-        view: <button onClick={() => handleViewClick(payment)} style={{ cursor: "pointer",backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>View</button>,
+      const preparedPayments: IRow[] = await Promise.all(data.map(async (payment: IPayment) => {
+        const { date } = await separateDateTime(
+          payment.paymentDate,
+          "MM-DD-YYYY"
+        );
+        return {
+          ...payment,
+          paymentDate: date,
+          view: (
+            <button
+              onClick={() => handleViewClick(payment)}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "#e1bd05",
+                color: "#ffffff",
+                border: "2px solid #e1bd05",
+                borderRadius: "10px",
+              }}
+            >
+              View
+            </button>
+          ),
+        };
       }));
       setPayments(preparedPayments);
-      
-      console.log(preparedPayments)
-
     } catch (error) {
-      console.error('Failed to fetch payment', error);
+      console.error("Failed to fetch payment", error);
     }
-    
   };
 
   const savePayment = async (PaymentData) => {
