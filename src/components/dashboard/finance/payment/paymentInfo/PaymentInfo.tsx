@@ -11,7 +11,7 @@ const columns: IColumn[] = [
   { id: "paymentDate", label: "Payment Date", numeric: false, disablePadding: false },
   { id: "description", label: "Description", numeric: false, disablePadding: false },
   { id: "paymentStatus", label: "Payment Status", numeric: false, disablePadding: false },
-  { id: "currency", label: "Payment Date", numeric: false, disablePadding: false },
+  { id: "paymentMethod.method", label: "Payment Method", numeric: false, disablePadding: false },
   { id: "amount", label: "Amount", numeric: true, disablePadding: false },
   { id: "view", label: "View", numeric: false, disablePadding: false },
 ];
@@ -86,9 +86,9 @@ const PaymentInfo: React.FC = () => {
           { name: 'paymentStatus', label: 'Payment Status', type: 'string', disabled: true },
           { name: 'currency', label: 'Currency', type: 'string', disabled: true },
           { name: 'amount', label: 'Amount', type: 'number', disabled: true },
-          { name: 'method', label: 'Payment Method', type: 'number', disabled: true },
-          { name: 'cardCustomerName', label: 'Customer Name', type: 'string', disabled: true },
-          { name: 'cardNo', label: 'Card No', type: 'number', disabled: true },
+          { name: 'paymentMethod.method', label: 'Payment Method', type: 'number', disabled: true },
+          { name: 'paymentMethod.cardCustomerName', label: 'Customer Name', type: 'string', disabled: true },
+          { name: 'paymentMethod.cardNo', label: 'Card No', type: 'number', disabled: true },
           
         ]}
         onSave={savePayment}
