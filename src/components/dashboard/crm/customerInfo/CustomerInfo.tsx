@@ -1,7 +1,5 @@
 // Import necessary components and services for customer management and UI interactions.
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-
-import ReusableTable from "@app_components/shared/ReusableTable";
 import { ICustomer } from "@app_interfaces/ICustomer";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import {
@@ -16,11 +14,12 @@ import { useEffect, useState } from "react";
 import { getUserOrders } from "@app_services/userService";
 import IUser from "@app_interfaces/IUser";
 import UserDetailsDialog from "@app_components/dashboard/crm/crmDialog/CrmDialog";
-import { ReportButton } from "@app_styles/userDetailsDialog.styles";
+import { ReportButtonModified } from "@app_styles/shared/customer.styles";
 import UserReportDialog from "../crmDialog/CrmReportDialog";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
-import AddDialog from "@app_components/dialog/AddDialog";
-import EditDropdown from "@app_components/dialog/EditDropdown";
+import AddDialogModified from "@app_components/dialog/AddDialogModified";
+import ReusabletableSandeepa from "@app_components/shared/ReusabletableSandeepa";
+import { AddButtonModified } from "@app_styles/shared/customer.styles";
+import EditDialog from "@app_components/dialog/EditDialogModified";
 
 // Define the table columns for the customer data table.
 const columns: IColumn[] = [
@@ -238,7 +237,7 @@ const CustomerInfo: React.FC = () => {
   // Render component UI.
   return (
     <>
-      <ReusableTable
+      <ReusabletableSandeepa
         columns={columns}
         rows={customers}
         title="Customer Details"
@@ -246,7 +245,7 @@ const CustomerInfo: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
-      <EditDropdown
+      <EditDialog
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
         entity={currentCustomer}
@@ -278,9 +277,9 @@ const CustomerInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteCustomer}
       />
-      <ReportButton onClick={handleUserReportClick}>Generate Report</ReportButton>
-      <UpdateBtn onClick={handleAddClick}>Add Customer</UpdateBtn>
-      <AddDialog
+      <ReportButtonModified onClick={handleUserReportClick}>Generate Report</ReportButtonModified>
+      <AddButtonModified onClick={handleAddClick}>Add Customer</AddButtonModified>
+      <AddDialogModified
   isOpen={isAddCustomerOpen}
   handleClose={() => setIsAddCustomerOpen(false)}
   entity={currentCustomer}
@@ -301,5 +300,5 @@ const CustomerInfo: React.FC = () => {
   );
 };
 
-// Export the CustomerInfo component to be used in other parts of the application.
+// Export the CustomerInfo 
 export default CustomerInfo;
