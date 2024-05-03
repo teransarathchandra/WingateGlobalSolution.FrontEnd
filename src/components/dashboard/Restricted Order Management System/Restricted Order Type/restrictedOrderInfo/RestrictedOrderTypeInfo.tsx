@@ -6,6 +6,11 @@ import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import FullScreenDialog from "../dialogs/RestrictedOrderTypeDetailsInfo";
 import AddRestrictedOrderForm from '../dialogs/RestrictedOrderTypeAddDialog';
 import {ViewButton} from "@app_styles/RestrictedOrderStyles.styles"
+import RestrictedOrderReport from "@app_components/pdf/pdfTemplates/RestrictedOrderTypeReport";
+import ReactDOMServer from "react-dom/server";
+import PDFLayout from "@app_components/pdf/PDFLayout";
+import { Button } from "@mui/material";
+import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 
 
 const columns: IColumn[] = [
@@ -23,6 +28,8 @@ const RestrictedOrderTypeInfo: React.FC = () => {
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
   const [isAddOrderOpen, setIsAddOrderOpen] = useState(false);
   const [currentResOrder, setCurrentResOrder] = useState<IRestrictedOrder | null>(null);
+  const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
   const handleViewClick = (restrictedOrder: IRestrictedOrder) => {
     setIsViewDetailsOpen(true);
@@ -99,6 +106,15 @@ const RestrictedOrderTypeInfo: React.FC = () => {
     fetchAndPrepareResOrders();
   }, []);
 
+  useEffect(() => {
+    if (restrictedOrderTypes.length > 0) {
+        const htmlContent = ReactDOMServer.renderToString(
+            <PDFLayout content={<RestrictedOrderReport restrictedOrders={restrictedOrderTypes} />} />
+        );
+        setPdfHtmlContent(htmlContent);
+    }
+}, [restrictedOrderTypes]);
+
   return (
     <>
       <ReusableTable
@@ -139,6 +155,31 @@ const RestrictedOrderTypeInfo: React.FC = () => {
           { name: "dangerousGoodsDeclaration", label: "Dangerous Goods Declaration", type: Boolean, disabled: false },
         ]}
       />
+      <Button onClick={() => setShowPDFDialog(true)} style={
+          {
+            backgroundColor: "#e1bd05",
+            position: "fixed",
+            marginTop: "40px",
+            color:"#fff ",
+            padding: "5px",
+            borderRadius:"10px",
+            cursor: "pointer",
+            border: "2px solid #e1bd05",
+            bottom: "20px",
+            right: "40px",
+
+            }}>
+                    Export PDF
+                </Button>
+            
+            {showPDFDialog && (
+                <PDFExportDialog
+                    open={showPDFDialog}
+                    onClose={() => setShowPDFDialog(false)}
+                    htmlContent={pdfHtmlContent}
+                    filename="RestictedOrderTypesReport.pdf"
+                />
+            )}
     </>
   );
 };

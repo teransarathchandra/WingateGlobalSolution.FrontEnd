@@ -20,6 +20,8 @@ import { Button } from '@mui/material';
 import { IOrder } from '@app_interfaces/IOrder';
 import { IItem } from '@app_interfaces/IItem';
 import { ISubmittedDocuments } from '@app_interfaces/ISubmittedDocuments';
+import { IResOrder } from "@app_interfaces/IOrder";
+import { getOrderById } from '@app_services/orderService';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -43,44 +45,80 @@ interface RestrictedOrderViewDialogProps {
     onReject: (id, isApproved) => void;
     //   onEmail: (restrictedOrder: IRestrictedOrder) => void;
     //   onReport: (restrictedOrder: IRestrictedOrder) => void;
-    entity: any;
+    entity: IResOrder | null;
     handleViewClose: () => void;
     fields: FieldConfig[];
 }
 const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ isOpen, entity, onApprove, onReject, handleViewClose, fields }) => {
 
-
-    const [currentResOrder, setCurrentResOrder] = useState<IOrder | null>(entity);
-    const [item, setItem] = useState<IItem | null>(null);
+    //const [currentResOrder, setCurrentResOrder] = useState<IResOrder | null>(entity);
+    const [orderDetails, setOrder] = useState<IOrder>();
+    const [itemDetails, setItem] = useState<IItem | null>(null);
     const [documentDetails, setDocumentDetails] = useState<ISubmittedDocuments[] | null>(null);
-    const [senderDetails, setSenderDetails] = useState<any>(null);  // Type should be replaced with correct interface
-    const [receiverDetails, setReceiverDetails] = useState<any>(null); // Type should be replaced with correct interface
-    
+    const [senderDetails, setSenderDetails] = useState<any>(null);  // Type should be replaced with sender interface
+    const [receiverDetails, setReceiverDetails] = useState<any>(null); // Type should be replaced with Receiver interface
+
     useEffect(() => {
-        setCurrentResOrder(entity);
+
+        if (entity) {
+            // setCurrentResOrder(entity);
+            // console.log("currentResOrder", currentResOrder)
+            fetchOrder().catch(console.error);
+        } else {
+            console.log("currentResOrder  ", "NOt");
+        }
     }, [entity]);
 
-    useEffect(() => {
+    const fetchOrder = async () => {
+        if (!entity?._id) {
+            console.log("entity?._id", "NOt");
+            return
+        };
+        debugger;
+        try {
+            console.log("entity?._id", entity?._id);
+            const response = await getOrderById(entity?._id);
+            console.log(response.data);
 
-        if (currentResOrder) {
-            const fetchDetails = async () => {
-                const sender = await getSenderById(currentResOrder.senderId);
-                const receiver = await getReceiverById(currentResOrder.receiverId);
-                const fetchedItem = await getItemById(currentResOrder.itemId);
-                const documents = await getAllSubmittedDocumentByItemId(fetchedItem?._id, "itemId");
+            if (!response.data || !Array.isArray(response.data)) {
+                console.log("order data is not in expected format");
+            }
+            const order = response.data.map((order: IOrder) => ({
+                ...order,
+            }));
+            setOrder(response.data);
+            fetchDetails();
 
-                setSenderDetails(sender);
-                setReceiverDetails(receiver);
-                setItem(fetchedItem);
-                setDocumentDetails(documents);
-
-                console.log(sender , receiver )
-
-            };
-
-            fetchDetails().catch(console.error);
+        } catch (error) {
+            console.error("Error fetching order details:", error);
         }
-    }, [currentResOrder]);
+    };
+
+    const fetchDetails = async () => {
+       
+        console.log("orderDetails", orderDetails)
+        debugger;
+
+        const sender = await getSenderById(orderDetails?.senderId);
+        setSenderDetails(sender);
+        debugger;
+        console.log("senderDetails", senderDetails)
+        debugger;
+        const receiver = await getReceiverById(orderDetails?.receiverId);
+        setReceiverDetails(receiver);
+        debugger;
+        console.log("receiverDetails", receiverDetails)
+        debugger;
+        const item = await getItemById(orderDetails?.itemId);
+        setItem(item);
+        console.log("itemDetails", itemDetails)
+
+        const documents = await getAllSubmittedDocumentByItemId(itemDetails?._id, "itemId");
+        setDocumentDetails(documents);
+        console.log("documentDetails", documentDetails)
+
+    };
+
 
     const handleClose = () => {
         handleViewClose();
@@ -110,31 +148,31 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
 
     return (
         <Dialog open={isOpen} onClose={handleViewClose} TransitionComponent={Transition}>
-            <AppBar sx={{ position: 'relative' , width:"500px" }}>
+            <AppBar sx={{ position: 'relative', width: "500px" }}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleViewClose} aria-label="close">
                         <CloseIcon />
                     </IconButton>
                     <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                        Restricted Order - {currentResOrder?.orderId}
+                        Restricted Order - {orderDetails?.orderId}
                     </Typography>
                 </Toolbar>
             </AppBar>
             <List>
                 <ListItem>
-                    <ListItemText primary="Order ID" secondary={currentResOrder?.orderId} />
+                    <ListItemText primary="Order ID" secondary={orderDetails?.orderId} />
                     {/* <ListItemText primary="Package Count" secondary={currentResOrder?.packageCount} /> */}
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <ListItemText primary="Item ID" secondary={item?.itemId} />
-                    <ListItemText primary="Item Name" secondary={item?.itemName} />
-                    <ListItemText primary="Weight" secondary={item?.weight + 'kg'} />
-                    <ListItemText primary="Category" secondary={item?.categoryId} />
+                    <ListItemText primary="Item ID" secondary={itemDetails?.itemId} />
+                    <ListItemText primary="Item Name" secondary={itemDetails?.itemName} />
+                    <ListItemText primary="Weight" secondary={itemDetails?.weight + 'kg'} />
+                    <ListItemText primary="Category" secondary={itemDetails?.categoryId} />
                 </ListItem>
                 <Divider />
                 <ListItem>
-                    <ListItemText primary="Item Description" secondary={item?.description} />
+                    <ListItemText primary="Item Description" secondary={itemDetails?.description} />
                 </ListItem>
                 {/* ... Similar structure for receiver details, sender details, etc. */}
             </List>
@@ -144,7 +182,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             </ListItem>
             {/* Restricted Order Details Section */}
             <ListItem>
-                <ListItemText primary="Category" secondary={item?.description} />
+                <ListItemText primary="Category" secondary={itemDetails?.description} />
                 {/* <ListItemText primary="Required Documents" secondary={documentDetails} /> */}
             </ListItem>
             {/* Uploaded Documents Section */}
@@ -158,8 +196,8 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             {/* Footer buttons */}
             <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
                 <Button onClick={handleClose} color="primary">Cancel</Button>
-                <Button onClick={() => handleApprove(currentResOrder?._id)} color="secondary">Approve</Button>
-                <Button onClick={() => handleReject(currentResOrder?._id)} color="error">Reject</Button>
+                <Button onClick={() => handleApprove(orderDetails?._id)} color="secondary">Approve</Button>
+                <Button onClick={() => handleReject(orderDetails?._id)} color="error">Reject</Button>
             </div>
 
         </Dialog>
@@ -167,7 +205,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
 };
 export default RestrictedOrderViewDialog;
 
-            {/* {isEditDialogOpen == true &&
+{/* {isEditDialogOpen == true &&
         <RestrictedOrderTypeEditDialog
           isOpen={isEditDialogOpen}
           handleClose={handleClose}
