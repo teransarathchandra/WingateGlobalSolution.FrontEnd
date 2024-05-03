@@ -4,7 +4,10 @@ import { getAllOrderTransport, updateOrder } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
-import { getAllCountry } from "@app_services/countryService";
+import {
+  getAllCountry,
+  getCountryCountryCode,
+} from "@app_services/countryService";
 import { ICountry } from "@app_interfaces/ICountry";
 import { getAllCategory } from "@app_services/categoryService";
 import { ICategory } from "@app_interfaces/ICategory";
@@ -83,10 +86,9 @@ const OrderAggregation: React.FC = () => {
   const countryOptions = countries
     .filter((country) => country.name !== "Sri Lanka")
     .map((country) => ({
-      value: country._id,
+      value: country.countryCode,
       label: country.name,
     }));
-
   const categoryOptions = categories.map((category) => ({
     value: category._id,
     label: category.name,
@@ -94,8 +96,12 @@ const OrderAggregation: React.FC = () => {
 
   const handleCreateBulk = async () => {
     try {
+      const countryResponse = await getCountryCountryCode(selectedCountry);
+
+      const countryObjectId = countryResponse.data.objectId;
+
       const payload = {
-        destinationCountry: selectedCountry,
+        destinationCountry: countryObjectId,
         category: selectedCategory,
         priority: selectedPriority,
       };
@@ -107,17 +113,16 @@ const OrderAggregation: React.FC = () => {
       });
 
       await Promise.all(updatePromises);
-      
-      setSelectedCountry('');
-      setSelectedCategory('');
-      setSelectedPriority('');
+
+      setSelectedCountry("");
+      setSelectedCategory("");
+      setSelectedPriority("");
       await fetchAndPrepareOrders();
-  
     } catch (error) {
       console.error("Error creating bulk:", error);
     }
   };
-  
+
   return (
     <>
       <ReusableTableDropdown

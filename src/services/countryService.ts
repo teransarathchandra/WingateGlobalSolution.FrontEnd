@@ -30,3 +30,9 @@ export const deleteCountry = (id) => {
         .then((response) => response.data)
         .catch((error) => error.message);
 };
+
+export const getCountryCountryCode = (countryCode) => {
+    return api.get(`/country/countrycode/${countryCode}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};
