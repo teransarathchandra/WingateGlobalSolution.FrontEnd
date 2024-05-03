@@ -21,7 +21,7 @@ const UserDrawer = ({ isVisible }) => {
   const { activeUser, logout, isEmployee } = useActiveAuthContext();
   const { logoutEmployee } = useEmployeeAuthContext();
   const { logoutUser } = useUserAuthContext();
-  
+
   const firstName = activeUser?.name?.firstName || "Unknown";
   const lastName = activeUser?.name?.lastName || "User";
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -38,7 +38,7 @@ const UserDrawer = ({ isVisible }) => {
   const handleLogout = () => {
     const isUserEmployee = isEmployee() || false;
     if (isEmployee() != null) {
-      
+
       isUserEmployee ? logoutEmployee() : logoutUser();
       logout();
       logoutCurrentUser(isUserEmployee);
@@ -108,13 +108,6 @@ const UserDrawer = ({ isVisible }) => {
           >
             <MenuItem onClick={handleClose}>
               <Avatar /> {firstName + " " + lastName}
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleClose}>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              Settings
             </MenuItem>
             <MenuItem
               onClick={() => {

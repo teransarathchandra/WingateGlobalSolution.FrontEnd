@@ -55,9 +55,8 @@ const SideNav = () => {
       '3-5': 'app/airline',
       '4-1': 'app/crm',
       '5-1': 'app/user',
-      '6-1': 'app/warehouse',
-      '6-2': 'app/warehouseInfo',
-      '6-3': 'app/assign-details',
+      '6-1': 'app/warehouseInfo',
+      '6-2': 'app/assign-details',
       '7-1': 'app/employee-manage',
       '7-2': 'app/employee-access',
     };
@@ -170,9 +169,8 @@ const SideNav = () => {
                     title="Warehouse"
                     icon={<MagicIcon />}
                   >
-                    <Nav.Item eventKey="6-1" onSelect={handleSelect}>Warehouse Info</Nav.Item>
-                    <Nav.Item eventKey="6-2" onSelect={handleSelect}>Warehouse Availability</Nav.Item>
-                    <Nav.Item eventKey="6-3" onSelect={handleSelect}>Assign Drivers</Nav.Item>
+                    <Nav.Item eventKey="6-1" onSelect={handleSelect}>Warehouse Availability</Nav.Item>
+                    <Nav.Item eventKey="6-2" onSelect={handleSelect}>Assign Drivers</Nav.Item>
                   </Nav.Menu>
                   <Nav.Menu
                     placement="rightStart"
