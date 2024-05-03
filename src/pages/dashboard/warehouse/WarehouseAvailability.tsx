@@ -3,6 +3,7 @@ import { IColumn, IRow } from "@app_interfaces/ITable";
 import { getAllOrders } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
+import ReusableTable from "@app_components/shared/ReusableTable";
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
@@ -40,18 +41,19 @@ const WarehouseAvailability: React.FC = () => {
 
   return (
     <>
-      {/* <TableDropdown
+      {/* { { <TableDropdown }
         columns={columns}
         rows={orders}
         title="Warehouse Availability"
         rowKey="orderId"
-      /> */}
-      {/* <ReusableTableDropdown
+      /> } */}
+      <ReusableTable
         columns={columns}
         rows={orders}
-        title="Order Warehouse Availability"
+        title="PickUP Ready Orders"
         rowKey="orderId" 
-        filterLabels={undefined} filterSelects={undefined}      /> */}
+        //filterLabels={undefined} filterSelects={undefined}    
+          /> 
     </>
   );
 };

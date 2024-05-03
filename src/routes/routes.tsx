@@ -42,13 +42,19 @@ const Airline = lazy(() => import("@app_pages/transport/Airline"));
 const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 
 //Warehouse
-const Warehouse = lazy(() => import("@app_pages/dashboard/warehouse/WarehouseAvailability"));
+const Warehouse = lazy(
+  () => import("@app_pages/dashboard/warehouse/WarehouseAvailability")
+);
 
 //Warehouse Infor
-const WarehouseInfo = lazy(() => import("@app_pages/dashboard/warehouse/WarehouseInfo"));
+const WarehouseInfo = lazy(
+  () => import("@app_pages/dashboard/warehouse/WarehouseInfo")
+);
 
 //Assign Details
-const AssignDetails = lazy(() => import("@app_pages/dashboard/warehouse/AssignDetails"));
+const AssignDetails = lazy(
+  () => import("@app_pages/dashboard/warehouse/AssignDetails")
+);
 
 //Order Aggregation
 const OrderAggregation = lazy(
