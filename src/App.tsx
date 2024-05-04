@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <CommonLoading loading={false} />
         <Toaster position="bottom-right" reverseOrder={false} />
         <SideNav />

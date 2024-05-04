@@ -44,7 +44,6 @@ const SideNav = () => {
     } else {
       toastUtil.error("Access Denied!");
     }
-
   };
 
   const eventKeyMapping = (eventKey) => {

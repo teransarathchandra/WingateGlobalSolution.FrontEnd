@@ -16,6 +16,9 @@ import warehouseIcon from "@app_assets/images/warehouse.png"
 import driverIcon from "@app_assets/images/driver.png"
 import empManager from "@app_assets/images/empManager.png"
 import empAccessIcon from "@app_assets/images/empAccess.png"
+import { useAppNavigation } from "@app_utils/appNavigation";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import toastUtil from "@app_utils/toastUtil";
 
 
 // ProfileImage Component
@@ -185,6 +188,17 @@ const App = () => {
 
 
   ];
+  const { handleAppNavigation } = useAppNavigation();
+  const { employee } = useEmployeeAuthContext();
+  const handleSelect = async (path) => {
+    console.log("Xpath", path || "Error")
+    if (employee) {
+      const route = path;
+      handleAppNavigation(route, employee.accessToken);
+    } else {
+      toastUtil.error("Access Denied!");
+    }
+  };
 
   return (
     <PageWrapper>
@@ -200,7 +214,7 @@ const App = () => {
           <GridTitle>{section.sectionName}</GridTitle>
           <MenuGrid>
             {section.items.map((item, idx) => (
-              <MenuItem key={idx} >
+              <MenuItem key={idx} onClick={() => handleSelect(item.path)}>
                 <MenuItemIcon src={item.icon} alt={item.label} />
                 <MenuItemLabel>{item.label}</MenuItemLabel>
               </MenuItem>
