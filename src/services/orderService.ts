@@ -52,7 +52,7 @@ export const getAllOrderInfo = (aggType) => {
 
 export const getOrderById = (id) => {
   return api
-    .get(`/order/${id}`)
+    .get(`/order/byObjectId/${id}`)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

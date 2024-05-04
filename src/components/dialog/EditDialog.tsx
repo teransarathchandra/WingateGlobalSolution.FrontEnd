@@ -25,7 +25,7 @@ interface EditDialogProps {
     entity: any;
     handleClose: () => void;
     fields: FieldConfig[];
-    onSave: (data: any) => void;
+    onSave:  any;
     onDelete: (data: any) => void;
 }
 

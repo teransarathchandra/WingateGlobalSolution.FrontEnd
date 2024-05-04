@@ -12,8 +12,8 @@ const PaymentConfirmation = ({ goNext, goBack }: { goNext: () => void, goBack: (
   const {activeUser} = useActiveAuthContext();
 
   const customerDetails = {
-    first_name: activeUser?.name?.firstName,
-    last_name: activeUser?.name?.lastName,
+    firstName: activeUser?.name?.firstName,
+    lastName: activeUser?.name?.lastName,
     email: activeUser?.email,
     phone: activeUser?.contactNumber,
     address: activeUser?.address?.street,

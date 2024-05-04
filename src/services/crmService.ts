@@ -14,10 +14,16 @@ export const createCustomer = (CustomerData) => {
     .catch((error) => error.message);
 };
 
-export const updateCustomer = (id, CustomerData) => {
-    return api.patch(`/customer/${id}`, CustomerData);
-};
-
+export const updateCustomer = async (id, customerData) => {
+    const { data } = await api
+        .patch(`/customer/${id}`, { contactNumber: customerData.contactNumber, email: customerData.email,priorityLevel:customerData.priorityLevel,birthday:customerData.birthday })
+        .then((result) => result.data)
+        .catch((error) => {
+            console.log(error);
+        });
+    
+    return data;
+    }
 export const deleteCustomer = (id) => {
     return api.delete(`/customer/${id}`);
 };

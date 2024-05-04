@@ -18,11 +18,17 @@ export const createQuotation = (quotationData) => {
         .catch((error) => error.message);
 };
 
-export const updateQuotation = (id, quotationData) => {
-    return api.put(`/quotation/${id}`, quotationData)
-        .then((response) => response.data)
-        .catch((error) => error.message);
+export const updateQuotation = async (id, quotationData) => {
+    const { data } = await api
+        .patch(`/quotation/${id}`, { packagingCost: quotationData.packagingCost, routeCost: quotationData.routeCost, unitWeightCost: quotationData.unitWeightCost, pickUpCost: quotationData.pickUpCost,surcharge: quotationData.surcharge, })
+        .then((result) => result.data)
+        .catch((error) => {
+            console.log(error);
+        });
+
+    return data;
 };
+
 
 export const deleteQuotation = (id) => {
     return api.delete(`/quotation/${id}`)
