@@ -168,7 +168,8 @@ const QuotationInfo: React.FC = () => {
           { name: 'unitWeightCost', label: 'Unit Weight Cost', type: 'number', disabled: true },
           { name: 'pickUpCost', label: 'Pickup Cost', type: 'number', disabled: true },
           { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: true },
-          
+          { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: true },
+          { name: 'fullAmount', label: 'Total Amount', type: 'number', disabled: true },
         ]}
         onSave={saveQuotation}
         onDelete={deleteQuotation}
