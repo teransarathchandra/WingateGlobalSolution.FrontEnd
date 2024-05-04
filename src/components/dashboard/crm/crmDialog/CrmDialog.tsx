@@ -6,7 +6,7 @@ import Slide from '@mui/material/Slide';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { Grow } from '@mui/material';
-import { IOrder } from '@app_interfaces/IOrder';
+
 
 const Transition = React.forwardRef(function Transition(
     props: React.ComponentProps<typeof Slide>,
@@ -15,11 +15,9 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
-
 interface UserDetailsDialogProps {
     isOpen: boolean;
     user: any;
-    orders: IOrder[];
     handleClose: () => void;
 }
 
@@ -36,7 +34,6 @@ const dialogStyle = {
     overflowY: 'auto' as const,  
     transition: 'transform 0.3s ease-in-out'  
 };
-
 
 const contentContainerStyle = {
     padding: '20px',
@@ -75,18 +72,38 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
         }
     }, [user]);
 
-    const sendBirthdayEmail = () => {
+    const sendEmail = (emailType: 'birthday' | 'reminder') => {
         const email = user?.email;
-        const subject = encodeURIComponent('🎉 Happy Birthday from WinGate Global Solutions! 🎉');
-        const body = encodeURIComponent(
-            `Dear ${user?.name?.firstName || 'Valued Customer'},\n\n` +
-            `We at WinGate Global Solutions wish you a joyous and splendid birthday! 🎂🎈\n\n` +
-            `May your day be filled with laughter, happiness, and all things bright and beautiful. We are so glad to have you with us and look forward to celebrating many more milestones together.\n\n` +
-            `As a token of our appreciation, we've attached a special gift just for you in this email. Please check the attachments for a surprise!\n\n` +
-            `Wishing you all the best today and always,\n` +
-            `Your friends at WinGate Global Solutions 🌟\n\n` +
-            `P.S. Don't forget to treat yourself to something special—you deserve it!`
-        );
+        let subject = '';
+        let body = '';
+
+        if (emailType === 'birthday') {
+            subject = encodeURIComponent('🎉 Happy Birthday from WinGate Global Solutions! 🎉');
+            body = encodeURIComponent(
+                `Dear ${user?.name?.firstName || 'Valued Customer'},\n\n` +
+                `We at WinGate Global Solutions wish you a joyous and splendid birthday! 🎂🎈\n\n` +
+                `May your day be filled with laughter, happiness, and all things bright and beautiful. We are so glad to have you with us and look forward to celebrating many more milestones together.\n\n` +
+                `\n\n` +
+                `Wishing you all the best today and always,\n` +
+                `Your friends at WinGate Global Solutions 🌟\n\n` +
+                `P.S. Don't forget to treat yourself to something special—you deserve it!`
+            );
+        } else if (emailType === 'reminder' && reminder) {
+            subject = encodeURIComponent('Meeting Reminder from WinGate Global Solutions');
+            const reminderTimeText = {
+                '15min': '15 minutes',
+                '30min': '30 minutes',
+                '1hour': '1 hour'
+            }[reminder] || 'soon';
+            body = encodeURIComponent(
+                `Dear ${user?.name?.firstName || 'Valued Customer'},\n\n` +
+                `This is a friendly reminder that our scheduled meeting is due to start in ${reminderTimeText}. Please ensure that you are prepared and join the meeting on time.\n\n` +
+                `We look forward to our discussion and are eager to explore further opportunities together.\n\n` +
+                `Warm regards,\n` +
+                `Your team at WinGate Global Solutions 🌟`
+            );
+        }
+
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     };
 
@@ -106,7 +123,7 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
                         <p>Status: Active</p>
                     </div>
                     <div>
-                        <Button onClick={sendBirthdayEmail} variant="contained" style={{ backgroundColor: '#e1bd05', color: 'white', textTransform: 'none', borderRadius: '20px' }}>
+                        <Button onClick={() => sendEmail('birthday')} variant="contained" style={{ backgroundColor: '#e1bd05', color: 'white', textTransform: 'none', borderRadius: '20px' }}>
                             Send Birthday Email
                         </Button>
                     </div>
@@ -132,6 +149,9 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
                         <MenuItem value={'30min'}>30 Minutes Before</MenuItem>
                         <MenuItem value={'1hour'}>1 Hour Before</MenuItem>
                     </Select>
+                    <Button onClick={() => sendEmail('reminder')} variant="contained" style={{ backgroundColor: '#e1bd05', color: 'white', textTransform: 'none', borderRadius: '20px', marginTop: '10px' }}>
+                        Send Reminder Email
+                    </Button>
                 </div>
             </Grow>
 

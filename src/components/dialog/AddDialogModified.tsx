@@ -1,33 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import styled, { keyframes } from 'styled-components';
-import logo from "../../assets/images/logo.png"; 
 import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material'; // Import icons
-
-interface FieldConfig {
-    name: string;
-    label: string;
-    type?: string;
-    disabled?: boolean;
-    options?: { value: string | number, label: string }[];
-}
-
-interface AddDialogProps {
-    isOpen: boolean;
-    entity?: any;
-    handleClose: () => void;
-    fields: FieldConfig[];
-    onSave: (data: any) => void;
-    title?: string;
-}
+import logo from "../../assets/images/logo.png"; // Import logo image
 
 const popIn = keyframes`
   from {
@@ -65,72 +51,90 @@ const AddDialogModified = styled(Dialog)`
   }
 `;
 
-const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title }) => {
-    const [formData, setFormData] = useState(entity || {});
+// Define the Yup validation schema
+const validationSchema = Yup.object().shape({
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  email: Yup.string().required('Email is required').email('Email is invalid'),
+  contactNumber: Yup.string().required('Contact number is required').matches(/^[0-9]+$/, "Only digits are allowed"),
+  priorityLevel: Yup.string().required('Priority level is required'),
+  
+});
 
-    useEffect(() => {
-        setFormData(entity || {});
-    }, [entity]);
+const AddDialog = ({ isOpen, handleClose, entity, fields, onSave, title }) => {
+  const { control, handleSubmit, reset, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: entity || {
+      firstName: '',
+      lastName: '',
+      email: '',
+      contactNumber: '',
+      priorityLevel: '',
+      birthday: 'null',
+    },
+    mode:"onSubmit"
+  });
 
-    const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  useEffect(() => {
+    reset(entity);
+  }, [entity, reset]);
 
-    return (
-        <AddDialogModified open={isOpen} onClose={handleClose}>
-            <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold' }}>{title || "Add Details"}</DialogTitle>
-            <DialogHeaderContainer>
-                <DialogHeaderImage src={logo} alt="Logo" />
-            </DialogHeaderContainer>
-            <DialogContent>
-                {fields.map((field) => (
-                    field.type === 'dropdown' ? (
-                        <div key={field.name}>
-                            <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
-                            <Select
-                                labelId={`${field.name}-label`}
-                                margin="dense"
-                                id={field.name}
-                                fullWidth
-                                variant="outlined"
-                                name={field.name}
-                                value={formData[field.name] || ''}
-                                disabled={field.disabled}
-                                onChange={handleChange}
-                            >
-                                {field.options && field.options.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </div>
-                    ) : (
-                        <TextField
-                            key={field.name}
-                            autoFocus
-                            margin="dense"
-                            id={field.name}
-                            label={field.label}
-                            type={field.type}
-                            fullWidth
-                            variant="outlined"
-                            name={field.name}
-                            value={formData[field.name] || ''}
-                            disabled={field.disabled}
-                            onChange={(e) => handleChange(e as SelectChangeEvent)}
-                        />
-                    )
-                ))}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="primary" startIcon={<CloseIcon />}>Cancel</Button>
-                <Button onClick={() => onSave(formData)} color="secondary" endIcon={<SaveIcon />}>Add</Button>
-            </DialogActions>
-        </AddDialogModified>
-    );
+  return (
+    <AddDialogModified open={isOpen} onClose={handleClose}>
+      <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold' }}>{title || "Add Details"}</DialogTitle>
+      <DialogHeaderContainer>
+        <DialogHeaderImage src={logo} alt="Logo" />
+      </DialogHeaderContainer>
+      <DialogContent>
+        {fields.map((field) => (
+          <Controller
+            key={field.name}
+            name={field.name}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              field.type === 'dropdown' ? (
+                <div>
+                  <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                  <Select
+                    labelId={`${field.name}-label`}
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={value || ''}
+                    onChange={onChange}
+                    error={!!errors[field.name]}
+                    
+                  >
+                    {field.options?.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+              ) : (
+                <TextField
+                  margin="dense"
+                  fullWidth
+                  variant="outlined"
+                  label={field.label}
+                  type={field.type}
+                  value={value || ''}
+                  onChange={onChange}
+                  error={!!errors[field.name]}
+                  helperText={errors[field.name]?.message as string}
+                />
+              )
+            )}
+          />
+        ))}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary" startIcon={<CloseIcon />}>Cancel</Button>
+        <Button onClick={handleSubmit(onSave)} color="secondary" endIcon={<SaveIcon />}>Save</Button>
+      </DialogActions>
+    </AddDialogModified>
+  );
 };
 
 export default AddDialog;
