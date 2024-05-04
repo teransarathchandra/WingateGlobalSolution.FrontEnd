@@ -8,9 +8,13 @@ import Select from '@mui/material/Select';
 import { Grow } from '@mui/material';
 import { IOrder } from '@app_interfaces/IOrder';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef(function Transition(
+    props: React.ComponentProps<typeof Slide>,
+    ref: React.Ref<unknown>,
+) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
+
 
 interface UserDetailsDialogProps {
     isOpen: boolean;
@@ -21,16 +25,16 @@ interface UserDetailsDialogProps {
 
 const dialogStyle = {
     background: '#f4f4f4',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    height: '100%',
-    width: '100%',
-    maxWidth: '600px',
-    borderTopLeftRadius: '0px',
-    borderBottomLeftRadius: '0px',
-    overflowY: 'auto',
-    transition: 'transform 0.3s ease-in-out'
+    position: 'absolute' as 'absolute', 
+    top: '0',  
+    right: '0',  
+    height: '100%',  
+    width: '100%',  
+    maxWidth: '600px', 
+    borderTopLeftRadius: '0px',  
+    borderBottomLeftRadius: '0px',  
+    overflowY: 'auto' as 'auto',  
+    transition: 'transform 0.3s ease-in-out'  
 };
 
 const contentContainerStyle = {
@@ -58,7 +62,6 @@ const detailsContainerStyle = {
 const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
     isOpen,
     user,
-    orders,
     handleClose,
 }) => {
     const [formattedDate, setFormattedDate] = useState('');
@@ -85,35 +88,6 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
         );
         window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
     };
-    
-
-    const sendReminderEmail = (reminderTime) => {
-        const email = user?.email;
-        const subject = encodeURIComponent('Meeting Reminder from WinGate Global Solutions');
-        const body = encodeURIComponent(
-            `Dear ${user?.name?.firstName || 'Participant'},\n\n` +
-            `Just a friendly reminder from WinGate Global Solutions about your upcoming meeting.\n\n` +
-            `**Meeting Details:**\n` +
-            `- **Time:** Please be ready ${reminderTime}.\n` +
-            `- **Date:** [Insert Date Here]\n` +
-            `- **Location:** [Insert Location Here] or [Virtual Meeting Link]\n\n` +
-            `Here are a few tips to ensure a smooth and productive session:\n` +
-            `- Ensure your meeting software is updated and running prior to the meeting.\n` +
-            `- Have a list of topics you'd like to discuss or any questions prepared.\n` +
-            `- If it's a virtual meeting, find a quiet space to avoid background noise.\n\n` +
-            `We value your time and input, and look forward to a great meeting. Should you have any questions or need to reschedule, please do not hesitate to contact us.\n\n` +
-            `Thank you and see you soon,\n` +
-            `The Team at WinGate Global Solutions\n`
-        );
-        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-    };
-    
-
-    const handleReminderChange = (event) => {
-        const reminderValue = event.target.value;
-        setReminder(reminderValue);
-        sendReminderEmail(reminderValue);
-    };
 
     return (
         <Dialog
@@ -121,34 +95,36 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
             onClose={handleClose}
             fullWidth
             maxWidth="md"
-            TransitionComponent={Transition}
+            TransitionComponent={Transition}  
             PaperProps={{ style: dialogStyle }}
         >
             <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
                 <div style={contentContainerStyle}>
                     <div>
                         <p>Created On: {formattedDate}</p>
+                        <p>Status: Active</p>
                     </div>
                     <div>
-                        <p>Status: Active</p>
+                        <Button onClick={sendBirthdayEmail} variant="contained" style={{ backgroundColor: '#e1bd05', color: 'white', textTransform: 'none', borderRadius: '20px' }}>
+                            Send Birthday Email
+                        </Button>
                     </div>
                 </div>
             </Grow>
 
             <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
                 <div style={detailsContainerStyle}>
-                    <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#4CAF50' }}>Customer Details</h2>
+                    <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#e1bd05' }}>Customer Details</h2>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>First Name: {user?.name?.firstName || 'N/A'}</div>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Last Name: {user?.name?.lastName || 'N/A'}</div>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Email: {user?.email || 'N/A'}</div>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Phone Number: {user?.contactNumber || 'N/A'}</div>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Priority: {user?.priorityLevel || 'N/A'}</div>
-                    <Button onClick={sendBirthdayEmail} variant="contained" style={{ backgroundColor: '#4CAF50', color: 'white', marginBottom: '10px', textTransform: 'none', borderRadius: '20px' }}>Send Birthday Email</Button>
                     <Select
                         value={reminder}
-                        onChange={handleReminderChange}
+                        onChange={(event) => setReminder(event.target.value)}
                         displayEmpty
-                        style={{ backgroundColor: 'white', width: '100%', borderRadius: '20px' }}
+                        style={{ backgroundColor: 'white', width: '100%', borderRadius: '20px', marginTop: '10px' }}
                    >
                         <MenuItem value="" disabled>Set Meeting Reminder</MenuItem>
                         <MenuItem value={'15min'}>15 Minutes Before</MenuItem>
