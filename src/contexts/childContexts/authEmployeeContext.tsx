@@ -15,10 +15,10 @@ const AuthContext = createContext<AuthContextType>({
   employee: null,
   employeeToken: null,
   employeeRefreshToken: null,
-  setEmployee: () => {},
-  setEmployeeToken: () => {},
-  setEmployeeRefreshToken: () => {},
-  logoutEmployee: () => {},
+  setEmployee: () => { },
+  setEmployeeToken: () => { },
+  setEmployeeRefreshToken: () => { },
+  logoutEmployee: () => { },
 });
 
 export const AuthEmployeeContextProvider = ({

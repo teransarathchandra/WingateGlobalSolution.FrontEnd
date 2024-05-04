@@ -41,3 +41,10 @@ export const deleteEmployee = (id) => {
     .then((response) => response.data)
     .catch((error) => error.message);
 };
+
+export const canAccess = (accessData) => {
+  return api
+    .post("/employee/canAccess", accessData)
+    .then((response) => response.data)
+    .catch((error) => error.message);
+};
