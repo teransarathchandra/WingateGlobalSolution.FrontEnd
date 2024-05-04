@@ -191,7 +191,6 @@ const App = () => {
   const { handleAppNavigation } = useAppNavigation();
   const { employee } = useEmployeeAuthContext();
   const handleSelect = async (path) => {
-    console.log("Xpath", path || "Error")
     if (employee) {
       const route = path;
       handleAppNavigation(route, employee.accessToken);
@@ -206,7 +205,7 @@ const App = () => {
         <ProfileImage />
         <MessageContainer>
           <WelcomeMessage>Welcome Back,</WelcomeMessage>
-          <WelcomeMessage>Prashan!</WelcomeMessage>
+          <WelcomeMessage>{employee?.name.firstName || "User"}</WelcomeMessage>
         </MessageContainer>
       </ProfileContainer>
       {menuItems.map((section, index) => (
