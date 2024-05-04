@@ -23,10 +23,9 @@ interface EditDialogProps {
     handleClose: () => void;
     fields: FieldConfig[];
     onSave: (data: any) => void;
-    onDelete: (data: any) => void;
 }
 
-const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, onDelete }) => {
+const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fields, onSave }) => {
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
@@ -86,7 +85,6 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
             <DialogActions>
                 <Button onClick={handleClose} color="primary">Cancel</Button>
                 <Button onClick={() => onSave(formData)} color="secondary">Save</Button>
-                {onDelete && <Button onClick={() => onDelete(entity)} color="error">Delete</Button>}
             </DialogActions>
         </Dialog>
     );

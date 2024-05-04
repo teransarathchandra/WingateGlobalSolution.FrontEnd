@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus, faFile } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../shared/ReusableTable";
@@ -8,7 +9,7 @@ import { createWarehouse, deleteWarehouse, getAllWarehouse, updateWarehouse } fr
 import { IWarehouse } from "@app_interfaces/IWarehouse";
 import EditDropdown from "@app_components/dialog/EditDropdown";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import { UpdateBtn, ReportBtn } from "@app_styles/warehouse.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import Button from "@mui/material/Button";
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
@@ -147,6 +148,7 @@ const WarehouseInfo: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
+
       <EditDropdown
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
@@ -158,14 +160,13 @@ const WarehouseInfo: React.FC = () => {
           { name: 'location', label: 'Location', type: 'text', disabled: false },
         ]}
         onSave={saveWarehouse}
-        onDelete={handleDeleteWarehouse}
       />
       <DeleteDialog
         isOpen= {isDeleteDialogOpen}
         handleClose={() => setisDeleteDialogOpen(false)}        
         handleDelete={handleDeleteWarehouse}
       />
-      <UpdateBtn onClick={handleAddClick}>Add</UpdateBtn>
+      <UpdateBtn onClick={handleAddClick}><FontAwesomeIcon icon={faSquarePlus} style={{ cursor: "pointer", color: "#fffff" }} />&nbsp;&nbsp;Add</UpdateBtn>
       <AddDialog
         isOpen={isAddWarehouseOpen}
         handleClose={() => setIsAddWarehouseOpen(false)}
@@ -179,19 +180,19 @@ const WarehouseInfo: React.FC = () => {
         onSave={addWarehouse}
       />
 
-                <Button onClick={() =>     setShowPDFDialog(true)} color="secondary">
-                    Preview & Export PDF
-                </Button>
+                <ReportBtn onClick={() =>     setShowPDFDialog(true)} color="secondary">
+                <FontAwesomeIcon icon={faFile} style={{ cursor: "pointer", color: "#fffff" }} />&nbsp;&nbsp;  Export PDF
+                </ReportBtn>
 
                 {showPDFDialog && (
                 <PDFExportDialog
                     open={showPDFDialog}
                     onClose={() => setShowPDFDialog(false)}
                     htmlContent={pdfHtmlContent}
-                    filename="OrdersReport.pdf"
+                    filename="Warehouse Report.pdf"
                 />
             )}
-    </>
+    </> 
   );
 };
 
