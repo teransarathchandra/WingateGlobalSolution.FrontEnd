@@ -13,6 +13,7 @@ export function useAppNavigation() {
                 destination: route
             }
             toastUtil.info("Waiting For Access!");
+            const fallback = "app/portal-welcome"
             await canAccess(accessData).then(response => {
 
                 console.log('Resp:', response);
@@ -20,12 +21,12 @@ export function useAppNavigation() {
                     navigate(response.data.destination);
                 } else {
                     console.error('No page URL found in the response');
-                    navigate("portal-welcome");
+                    navigate(fallback);
                 }
             })
                 .catch(error => {
                     console.error('Error accessing data:', error);
-                    navigate(error.destination || "portal-welcome");
+                    navigate(error.destination || fallback);
                 });;
 
         } else {
