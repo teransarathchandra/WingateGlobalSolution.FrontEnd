@@ -19,10 +19,19 @@ export const createCountry = (countryData) => {
         .catch((error) => error.message);
 };
 
-export const updateCountry = (id, countryData) => {
-    return api.patch(`/country/${id}`, countryData)
-        .then((response) => response.data)
-        .catch((error) => error.message);
+export const updateCountry = async(id, countryData) => {
+    const { data } = await api
+        .patch(`/country/${id}`, 
+        {   countryCode: countryData.countryCode, 
+            name: countryData.name, 
+            currency: countryData.currency, 
+            cost: countryData.cost})
+        .then((result) => result.data)
+        .catch((error) => {
+            console.log(error);
+        });
+
+    return data;
 };
 
 export const deleteCountry = (id) => {

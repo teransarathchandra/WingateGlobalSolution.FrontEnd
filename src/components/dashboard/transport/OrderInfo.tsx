@@ -5,6 +5,7 @@ import { getAllOrderInfo } from "@app_services/orderService";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 //import { pdfDownloadButton} from "@app_components/shared/PDFDownloadButton"
 import { useEffect, useState } from "react";
+import BulkReportDialog from "./dialog/bulkReportDialog";
 
 
 
@@ -18,6 +19,11 @@ const Order: React.FC = () => {
 
     const [orders, setOrders] = useState<IRow[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [isUserReportDialogOpen, setIsUserReportDialogOpen] = useState(false);
+
+    const handleUserReportClick = () => {
+      setIsUserReportDialogOpen(true);
+    };
 
     const fetchAndPrepareOrders = async () => {
       try {
@@ -51,7 +57,11 @@ const Order: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
-      <UpdateBtn>Get Report</UpdateBtn>
+      <BulkReportDialog
+        isOpen={isUserReportDialogOpen}
+        handleClose={() => setIsUserReportDialogOpen(false)}
+      />
+      <UpdateBtn onClick={handleUserReportClick}>Get Report</UpdateBtn>
       </>
        
     );
