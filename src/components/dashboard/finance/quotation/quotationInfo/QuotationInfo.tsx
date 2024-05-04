@@ -168,7 +168,6 @@ const QuotationInfo: React.FC = () => {
           { name: 'unitWeightCost', label: 'Unit Weight Cost', type: 'number', disabled: true },
           { name: 'pickUpCost', label: 'Pickup Cost', type: 'number', disabled: true },
           { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: true },
-          { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: true },
           { name: 'fullAmount', label: 'Total Amount', type: 'number', disabled: true },
         ]}
         onSave={saveQuotation}
@@ -214,7 +213,9 @@ const QuotationInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteQuotation}
       />
-      <Button onClick={() => setShowPDFDialog(true)} color="secondary">
+
+      
+      <Button onClick={() => setShowPDFDialog(true)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>
         Preview & Export PDF
       </Button>
 
