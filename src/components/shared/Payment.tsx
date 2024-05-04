@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import api from "@app_utils/apiUtils";
 import { IPaymentDetail } from "@app_interfaces/IPaymentDetail";
+import useSessionStorage from "@app_hooks/useSessionStorage";
 
 const Payment = ({
     paymentTitle,
@@ -11,6 +12,8 @@ const Payment = ({
     goNext,
     goBack
 }) => {
+
+    const [, setOrderPaymentDetails] = useSessionStorage('order-payment-details');
 
     const fetchHash = async (paymentData) => {
         const response = await api.post('/payment/generate_hash', paymentData);
@@ -149,6 +152,7 @@ const Payment = ({
             const paymentDetails = await fetchPaymentDetails(order_id, accessToken);
             console.log("Payment Details:", paymentDetails);
             await insertPaymentDetails(paymentDetails);
+            setOrderPaymentDetails(paymentDetails);
             goNext();
         } catch (error) {
             console.error('Error in payment process:', error);
