@@ -10,14 +10,7 @@ import EditDialog from "@app_components/dialog/EditDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { addAirlineSchema } from "@app_schemas/bulk/addAirline.Schema";
-// import { useForm } from "react-hook-form";
-// import { yupResolver } from "@hookform/resolvers/yup";
-// import { addAirlineSchema } from "@app_schemas/bulk/addAirline.Schema";
-
-
 
 const columns: IColumn[] = [
   { id: "airlineId", label: "Airline ID", numeric: false, disablePadding: true },
@@ -27,8 +20,6 @@ const columns: IColumn[] = [
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
 
-
-
 const AirlineInfo: React.FC = () => {
   const [airlines, setAirlne] = useState<IRow[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,14 +27,6 @@ const AirlineInfo: React.FC = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [isAddAirlineOpen, setIsAddAirlineOpen] = useState(false);
   const [currentAirline, setCurrentAirline] = useState<IAirline | null>(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(addAirlineSchema),
-  });
 
   const handleEditClick = (airline: IAirline) => {
     console.log("Airline", airline);
@@ -161,6 +144,7 @@ const AirlineInfo: React.FC = () => {
 
         ]}
         onSave={addAirline}
+        schema={addAirlineSchema}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
