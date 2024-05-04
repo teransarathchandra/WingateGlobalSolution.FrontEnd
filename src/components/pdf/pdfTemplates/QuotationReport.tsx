@@ -11,6 +11,7 @@ const QuotationReport = ({ quotation }) => {
                         <th style={{ borderBottom: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Unit Weight Cost</th>
                         <th style={{ borderBottom: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Pickup Cost </th>
                         <th style={{ borderBottom: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Surcharge </th>
+                        <th style={{ borderBottom: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Total Amount </th>
                         <th style={{ borderBottom: '1px solid #ddd', padding: '12px', textAlign: 'left', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Date </th>
                         
 
@@ -23,10 +24,9 @@ const QuotationReport = ({ quotation }) => {
                             <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.packagingCost}</td>
                             <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.routeCost}</td>
                             <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.unitWeightCost}</td>
-                            <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.pickupCost}</td>
+                            <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.pickUpCost}</td>
                             <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.surcharge}</td>
-
-
+                            <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{quotation.fullAmount}</td>
                             <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{new Date(quotation.createdAt).toLocaleDateString()}</td>
                         </tr>
                     ))}
