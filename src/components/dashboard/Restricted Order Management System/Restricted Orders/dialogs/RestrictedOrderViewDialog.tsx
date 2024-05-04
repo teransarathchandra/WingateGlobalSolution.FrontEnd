@@ -1,154 +1,152 @@
 import React, { useEffect, useState } from 'react';
-import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import { Dialog, AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemText, Divider, Button, Slide } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
+import { getOrderById } from '@app_services/orderService';
 import { getSenderById } from "@app_services/senderService";
 import { getReceiverById } from "@app_services/receiverService";
 import { getItemById } from "@app_services/itemService";
-import { getAllSubmittedDocumentByItemId } from "@app_services/submittedDocumentService";
-//import { getRestrictedOrderById, deleteRestrictedOrder, updateRestrictedOrder } from@"../../../../../services/restrictedOrderService";
-import { Button } from '@mui/material';
+import { sendApprovalEmail } from "@app_services/orderService";
 import { IOrder } from '@app_interfaces/IOrder';
 import { IItem } from '@app_interfaces/IItem';
 import { ISubmittedDocuments } from '@app_interfaces/ISubmittedDocuments';
-import { IResOrder } from "@app_interfaces/IOrder";
-import { getOrderById } from '@app_services/orderService';
+
 
 const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & {
-        children: React.ReactElement;
-    },
+    props: TransitionProps & { children: React.ReactElement; },
     ref: React.Ref<unknown>,
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-interface FieldConfig {
-    name: string;
-    label: string;
-    type: any;
-    disabled?: boolean;
-}
-
 interface RestrictedOrderViewDialogProps {
-    isOpen: boolean;
+    isViewClicked: boolean;
+    currentResOrderId: string;
+    handleViewClose: () => void;
     onApprove: (id, isApproved) => void;
     onReject: (id, isApproved) => void;
     //   onEmail: (restrictedOrder: IRestrictedOrder) => void;
     //   onReport: (restrictedOrder: IRestrictedOrder) => void;
-    entity: IResOrder | null;
-    handleViewClose: () => void;
-    fields: FieldConfig[];
 }
-const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ isOpen, entity, onApprove, onReject, handleViewClose, fields }) => {
+const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ isViewClicked, currentResOrderId, handleViewClose, onApprove, onReject }) => {
 
-    //const [currentResOrder, setCurrentResOrder] = useState<IResOrder | null>(entity);
     const [orderDetails, setOrder] = useState<IOrder>();
-    const [itemDetails, setItem] = useState<IItem | null>(null);
+    const [itemDetails, setItem] = useState<IItem>();
     const [documentDetails, setDocumentDetails] = useState<ISubmittedDocuments[] | null>(null);
-    const [senderDetails, setSenderDetails] = useState<any>(null);  // Type should be replaced with sender interface
-    const [receiverDetails, setReceiverDetails] = useState<any>(null); // Type should be replaced with Receiver interface
+    const [senderDetails, setSenderDetails] = useState<any>(null);
+    const [receiverDetails, setReceiverDetails] = useState<any>(null);
+
+    useEffect(() => {
+        if (isViewClicked && currentResOrderId) {
+            fetchOrder();
+        }
+    }, [isViewClicked, currentResOrderId]);
 
     useEffect(() => {
 
-        if (entity) {
-            // setCurrentResOrder(entity);
-            // console.log("currentResOrder", currentResOrder)
-            fetchOrder().catch(console.error);
-        } else {
-            console.log("currentResOrder  ", "NOt");
+        if (orderDetails) {
+            fetchSenderDetails(orderDetails.senderId);
+            fetchReceiverDetails(orderDetails.receiverId);
+            fetchItemDetails(orderDetails.itemId);
         }
-    }, [entity]);
+        if (itemDetails) {
+            fetchDocuments(itemDetails.itemId);
+        }
+
+    }, [orderDetails]);
 
     const fetchOrder = async () => {
-        if (!entity?._id) {
-            console.log("entity?._id", "NOt");
-            return
-        };
-        debugger;
         try {
-            console.log("entity?._id", entity?._id);
-            const response = await getOrderById(entity?._id);
-            console.log(response.data);
-
-            if (!response.data || !Array.isArray(response.data)) {
-                console.log("order data is not in expected format");
-            }
-            const order = response.data.map((order: IOrder) => ({
-                ...order,
-            }));
-            setOrder(response.data);
-            fetchDetails();
+            const orderResponse = await getOrderById(currentResOrderId);
+            setOrder(orderResponse.data);
 
         } catch (error) {
             console.error("Error fetching order details:", error);
         }
     };
 
-    const fetchDetails = async () => {
-       
-        console.log("orderDetails", orderDetails)
-        debugger;
-
-        const sender = await getSenderById(orderDetails?.senderId);
-        setSenderDetails(sender);
-        debugger;
-        console.log("senderDetails", senderDetails)
-        debugger;
-        const receiver = await getReceiverById(orderDetails?.receiverId);
-        setReceiverDetails(receiver);
-        debugger;
-        console.log("receiverDetails", receiverDetails)
-        debugger;
-        const item = await getItemById(orderDetails?.itemId);
-        setItem(item);
-        console.log("itemDetails", itemDetails)
-
-        const documents = await getAllSubmittedDocumentByItemId(itemDetails?._id, "itemId");
-        setDocumentDetails(documents);
-        console.log("documentDetails", documentDetails)
-
+    const fetchSenderDetails = async (senderId) => {
+        try {
+            const senderResponse = await getSenderById(senderId);
+            setSenderDetails(senderResponse.data);
+        } catch (error) {
+            console.error("Error fetching sender details:", error);
+        }
     };
 
+    const fetchReceiverDetails = async (receiverId) => {
+        try {
+            const receiverResponse = await getReceiverById(receiverId);
+            setReceiverDetails(receiverResponse.data);
+        } catch (error) {
+            console.error("Error fetching receiver details:", error);
+        }
+    };
+
+    const fetchItemDetails = async (itemId) => {
+        try {
+            const itemResponse = await getItemById(itemId);
+            setItem(itemResponse.data);
+        } catch (error) {
+            console.error("Error fetching item details:", error);
+        }
+    };
+    const fetchDocuments = async (itemId) => {
+        try {
+
+        } catch (error) {
+            console.error("Error fetching documents details:", error);
+        }
+
+    };
 
     const handleClose = () => {
         handleViewClose();
-        // console.log("view data " , ViewData)
     };
+
     const handleApprove = (id) => {
         onApprove(id, true);
-        //console.log("view data " , ViewData)
     };
+
     const handleReject = (id) => {
         onReject(id, false);
-        // console.log("view data ", ViewData)
     };
-    const handleEmail = () => {
-        // onSave(ViewData);
-        // console.log("view data ", ViewData)
+
+    const handleEmail = async () => {
+        try {
+            if (orderDetails) {
+                const emailData = {
+                    email: senderDetails.email,
+                    name: senderDetails.name.firstName,
+                    orderID: orderDetails.orderId,
+                    status: orderDetails.status,
+                    reason: "security policy"
+                };
+                sendApprovalEmail(emailData);
+                console.log("emailData", emailData);
+                console.log("emailData orderID", emailData.orderID);
+
+                // if (status === "Approved") {
+
+                // } else if (status === "Rejected") {
+                //     sendApprovalEmail(emailData);
+                // }
+            }
+        } catch {
+            console.log("error in emqil sending ")
+        }
+        handleClose;
     };
+
     const handleReport = () => {
         // onSave(ViewData);
         // console.log("view data ", ViewData)
     };
 
-    // useEffect(() => {
-    //     setViewData(entity || {});
-    // }, [entity]);
-
-
     return (
-        <Dialog open={isOpen} onClose={handleViewClose} TransitionComponent={Transition}>
-            <AppBar sx={{ position: 'relative', width: "500px" }}>
+        <Dialog open={isViewClicked} onClose={handleViewClose} TransitionComponent={Transition} >
+
+            <><AppBar sx={{ position: 'relative', width: "1600px" }} >
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleViewClose} aria-label="close">
                         <CloseIcon />
@@ -158,47 +156,69 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <List>
-                <ListItem>
-                    <ListItemText primary="Order ID" secondary={orderDetails?.orderId} />
-                    {/* <ListItemText primary="Package Count" secondary={currentResOrder?.packageCount} /> */}
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Item ID" secondary={itemDetails?.itemId} />
-                    <ListItemText primary="Item Name" secondary={itemDetails?.itemName} />
-                    <ListItemText primary="Weight" secondary={itemDetails?.weight + 'kg'} />
-                    <ListItemText primary="Category" secondary={itemDetails?.categoryId} />
-                </ListItem>
-                <Divider />
-                <ListItem>
-                    <ListItemText primary="Item Description" secondary={itemDetails?.description} />
-                </ListItem>
-                {/* ... Similar structure for receiver details, sender details, etc. */}
-            </List>
-            {/* Sender Notes Section */}
-            <ListItem>
-                {/* <ListItemText primary="Sender Notes" secondary={} /> */}
-            </ListItem>
-            {/* Restricted Order Details Section */}
-            <ListItem>
-                <ListItemText primary="Category" secondary={itemDetails?.description} />
-                {/* <ListItemText primary="Required Documents" secondary={documentDetails} /> */}
-            </ListItem>
-            {/* Uploaded Documents Section */}
-            {/* Iterate over the documents and display them */}
-            {documentDetails?.map((document) => (
-                <ListItem key={document.submittedDocumentId}>
-                    {/* Display document information */}
-                    <ListItemText primary={document.documentName} />
-                </ListItem>
-            ))}
-            {/* Footer buttons */}
-            <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
-                <Button onClick={handleClose} color="primary">Cancel</Button>
-                <Button onClick={() => handleApprove(orderDetails?._id)} color="secondary">Approve</Button>
-                <Button onClick={() => handleReject(orderDetails?._id)} color="error">Reject</Button>
-            </div>
+                <List>
+                    <ListItem>
+                        <ListItemText primary="Order ID" secondary={orderDetails?.orderId} />
+                    </ListItem>
+                    <Divider />
+
+                    <h3 style={{ marginLeft: "10px" }}>Item Details</h3>
+                    <ListItem>
+                        <ListItemText primary="Item ID" secondary={itemDetails?.itemId} />
+                        <ListItemText primary="Item Name" secondary={itemDetails?.itemName} />
+                        <ListItemText primary="Weight" secondary={itemDetails?.weight + 'kg'} />
+                        <ListItemText primary="Category" secondary={itemDetails?.categoryId} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Item Description" secondary={itemDetails?.description} />
+                    </ListItem>
+                    <Divider />
+
+                    <h3 style={{ marginLeft: "10px" }}>Sender Details</h3>
+                    <ListItem>
+                        <ListItemText primary="Sender Name" secondary={senderDetails?.name.firstName + " " + senderDetails?.name.lastName} />
+                        <ListItemText primary="Contact Number" secondary={senderDetails?.contactNumber} />
+                        <ListItemText primary="Email" secondary={senderDetails?.email} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Address" secondary={senderDetails?.address.street + " , " + senderDetails?.address.city + " , " + senderDetails?.address.state} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Country Code" secondary={senderDetails?.address.countryId} />
+                    </ListItem>
+                    <Divider />
+
+
+                    <h3 style={{ marginLeft: "10px" }}>Receiver Details</h3>
+                    <ListItem>
+                        <ListItemText primary="Receiver Name" secondary={receiverDetails?.name.firstName + " " + receiverDetails?.name.lastName} />
+                        <ListItemText primary="Contact Number" secondary={receiverDetails?.contactNumber} />
+                        <ListItemText primary="Email" secondary={receiverDetails?.email} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Address" secondary={receiverDetails?.address.street + " , " + receiverDetails?.address.city + " , " + receiverDetails?.address.state} />
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText primary="Country Code" secondary={receiverDetails?.address.countryId} />
+                    </ListItem>
+                    <Divider />
+
+                </List>
+
+                {documentDetails?.map((document) => (
+                    <ListItem key={document.submittedDocumentId}>
+                        <ListItemText primary={document.documentName} />
+                    </ListItem>
+                ))}
+
+                <div style={{ display: 'flex', justifyContent: "flex-end", gap: '25px', paddingRight: '30px', paddingBottom: '60px' }}>
+                    <Button onClick={() => handleEmail()} color="primary">Email</Button>
+                    <Button onClick={() => handleReport()} color="primary" style={{ paddingRight: '80px' }}>Report</Button>
+                    <Button onClick={handleClose} color="primary">Cancel</Button>
+                    <Button onClick={() => handleApprove(orderDetails?._id)} color="secondary">Approve</Button>
+                    <Button onClick={() => handleReject(orderDetails?._id)} color="error">Reject</Button>
+                </div>
+            </>
 
         </Dialog>
     );
@@ -317,3 +337,68 @@ export default RestrictedOrderViewDialog;
 //       console.error('Failed to update order', error);
 //     }
 //   };
+
+
+
+
+
+
+
+
+// console.log(response.data);
+// console.log("senderId" ,orderResponse.data.senderId)
+
+// if (!response.data || !Array.isArray(response.data)) {
+//     console.log("order data is not in expected format");
+// }
+// const order = orderResponse.data.map((order: IOrder) => ({
+//     ...order,
+// }));
+// if (!response.data) {
+//     console.log("No order data available.");
+//     return;
+// }
+
+// let order: IOrder;
+// if (Array.isArray(response.data)) {
+//     // If data is an array, process it as an array
+//     order = response.data.map((orderData) => ({
+//         ...orderData,
+//     }));
+// } else {
+//     // If data is not an array, process it as a single object
+
+
+
+
+
+// const fetchDetails = async () => {
+//     if (orderDetails) {
+//         try {
+//             console.log("Sender Id:", orderDetails.senderId);
+//             const sender = await getSenderById(orderDetails.senderId);
+//             console.log("Sender details:", sender);
+//             setSenderDetails(sender);
+
+
+//             const receiver = await getReceiverById(orderDetails.receiverId); // Accessing receiverId directly
+//             setReceiverDetails(receiver.data);
+//             console.log("Receiver details:", receiver.data);
+
+//             const item = await getItemById(orderDetails.itemId); // Accessing itemId directly
+//             setItem(item.data);
+//             console.log("Item details:", item.data);
+
+//             if (orderDetails && itemDetails && senderDetails && receiverDetails && isViewClicked) {
+//                 setLoading(false); // End loading regardless of outcome
+//             } else {
+//                 console.log("errror")
+//             }
+//             // const documents = await getAllSubmittedDocumentByItemId(orderDetails.itemId, "itemId"); // Using itemId to fetch documents
+//             // setDocumentDetails(documents);
+//             // console.log("Document details:", documents);
+//         } catch (error) {
+//             console.error("Error fetching related details:", error);
+//         }
+//     }
+// };

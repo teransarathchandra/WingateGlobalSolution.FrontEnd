@@ -52,7 +52,7 @@ export const getAllOrderInfo = (aggType) => {
 
 export const getOrderById = (id) => {
   return api
-    .get(`/order/byObjectId/${id}`)
+    .get(`/order/${id}`)
     .then((response) => response.data)
     .catch((error) => error.message);
 };
@@ -73,6 +73,13 @@ export const createOrder = (orderData) => {
 export const updateOrder = (id, orderData) => {
   return api
     .put(`/order/${id}`, orderData)
+    .then((response) => response.data)
+    .catch((error) => error.message);
+};
+
+export const sendApprovalEmail = (emailData) => {
+  return api
+    .post(`/order/email`, emailData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

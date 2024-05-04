@@ -6,9 +6,9 @@ export const getSubmittedDocumentById = (id) => {
         .catch((error) => error.message);
 };
 
-export const getAllSubmittedDocumentByItemId = (id, aggType) => {
-    if (aggType) {
-        return api.get(`/submittedDocument/${id}?type=${aggType}`)
+export const getAllSubmittedDocumentByItemId = (itemId) => {
+    if (itemId) {
+        return api.get(`/submittedDocument/byItemId/${itemId}`)
         .then((response) => response.data)
         .catch((error) => error.message);
     } else {
@@ -17,3 +17,14 @@ export const getAllSubmittedDocumentByItemId = (id, aggType) => {
         .catch((error) => error.message);
     }
 };
+// export const getAllSubmittedDocumentByItemId = (id, aggType) => {
+//     if (aggType) {
+//         return api.get(`/submittedDocument/${id}?type=${aggType}`)
+//         .then((response) => response.data)
+//         .catch((error) => error.message);
+//     } else {
+//         return api.get("/submittedDocument")
+//         .then((response) => response.data)
+//         .catch((error) => error.message);
+//     }
+// };

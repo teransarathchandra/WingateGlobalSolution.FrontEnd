@@ -19,6 +19,8 @@ const columns: IColumn[] = [
   { id: "receivingCountryId", label: "Receiver Country", numeric: false, disablePadding: false },
   { id: "categoryId", label: "Category", numeric: false, disablePadding: false },
   { id: "viewMore", label: "View", numeric: false, disablePadding: false },
+  { id: "maxQuantity", label: "maxQuantity", numeric: true, disablePadding: false },
+
 ];
 
 const RestrictedOrderTypeInfo: React.FC = () => {
@@ -112,8 +114,8 @@ const RestrictedOrderTypeInfo: React.FC = () => {
             <PDFLayout content={<RestrictedOrderReport restrictedOrders={restrictedOrderTypes} />} />
         );
         setPdfHtmlContent(htmlContent);
-    }
-}, [restrictedOrderTypes]);
+  }
+}, [restrictedOrderTypes]);
 
   return (
     <>

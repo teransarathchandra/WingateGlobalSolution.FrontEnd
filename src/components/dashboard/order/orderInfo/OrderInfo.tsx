@@ -89,7 +89,7 @@ const OrderInfo: React.FC = () => {
   }, []);
 
   const orderUpdate = async (orderData) => {
-    debugger;
+
     console.log("Order Updating Data :", orderData);
     setIsDialogOpen(false);
     try {
