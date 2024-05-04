@@ -93,6 +93,10 @@ const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 //Customer
 const Customer = lazy(() => import("@app_pages/dashboard/crm/Customer"));
 
+//portal
+const portal = lazy(() => import("@app_pages/employee/portal/portal-welcome"));
+
+
 export const privateRoutes = [
   {
     path: "/order",
@@ -223,6 +227,12 @@ export const privateRoutes = [
   {
     path: "/app/restricted-orders",
     component: RestrictedOrders,
+    isPrivate: true,
+    forEmployeeOnly: true,
+  },
+  {
+    path: "/app/portal-welcome",
+    component: portal,
     isPrivate: true,
     forEmployeeOnly: true,
   },
