@@ -21,7 +21,7 @@ import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
 import IEmployee from "@app_interfaces/IEmployee";
 import { getAllAccess } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
-import { password } from "@app_constants/regExp";
+// import { password } from "@app_constants/regExp";
 
 const columns: IColumn[] = [
   {
@@ -70,6 +70,7 @@ const EmployeeManageBox: React.FC = () => {
   };
   const handleEditClick = (employee: IEmployee) => {
     setCurrentEmployee(employee);
+    console.log('currentEmployee', employee)
     setIsDialogOpen(true);
   };
 
@@ -86,7 +87,7 @@ const EmployeeManageBox: React.FC = () => {
     if (currentEmployee) {
       try {
         await deleteEmployee(currentEmployee._id);
-        setEmployee(flights => flights.filter(b => b._id !== currentEmployee._id));
+        setEmployee(employee => employee.filter(b => b._id !== currentEmployee._id));
         setIsDeleteDialogOpen(false);
       } catch (error) {
         console.error('Failed to delete bulk', error);
@@ -324,12 +325,11 @@ const EmployeeManageBox: React.FC = () => {
             disabled: false
           },
           {
-            name: "accessLevel",
+            name: "systemAccessID",
             label: "Access Level",
             type: "dropdown",
             disabled: false,
-            options: accessLevels,
-            default: "accessLevel"
+            options: accessLevels
           }
         ]}
         onSave={saveAccess}
