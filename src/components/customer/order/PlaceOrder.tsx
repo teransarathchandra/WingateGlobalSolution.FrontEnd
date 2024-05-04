@@ -20,7 +20,7 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
   const [senderId, setSenderId] = useSessionStorage('order-sender-id');
   const [receiverId, setReceiverId] = useSessionStorage('order-receiver-id');
   const [orderId, setOrderId] = useSessionStorage('order-id');
-  // const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
+  const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
   const [, setOrderDetails] = useSessionStorage('order-details');
   const [senderFormValid, setSenderFormValid] = useState(false);
   const [receiverFormValid, setReceiverFormValid] = useState(false);
@@ -100,7 +100,12 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
             setOrderId(orderObjId)
           }
 
-          goNext();
+          if(restrictedOrder){
+            goNext(6);
+          }else{
+            goNext(5);
+          }
+          
         } catch (error) {
           console.error("Error creating sender, receiver, or order:", error);
         } finally {

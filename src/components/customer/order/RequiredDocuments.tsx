@@ -14,16 +14,15 @@ interface RestrictedOrderFormat {
 }
 
 const RequiredDocuments = ({ goNext, goBack }) => {
+    
     const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
     const [isRestrictedNoticeDialogOpen, setIsRestrictedNoticeDialogOpen] = useState(true);
     const [isSubmitButtonEnable, setSubmitButtonEnable] = useState(false);
+    const [isSendToApprovalButtonEnable, setSendToApprovalButtonEnable] = useState(false);
     const [requiredTrueDocuments, setRequiredTrueDocuments] = useState<string[]>([]);
     const [itemId,] = useSessionStorage('order-item-id');
-
-
-
+    
     const handleSubmitDisability = () => {
-        // debugger;
         setSubmitButtonEnable(true);
     };
 
@@ -40,10 +39,11 @@ const RequiredDocuments = ({ goNext, goBack }) => {
     const handleProceed = () => {
         setIsRestrictedNoticeDialogOpen(false)
     };
-    const handleAllDocumentsUploaded = () => {
-        setSubmitButtonEnable(true); // Enable the button when all documents are uploaded
-    };
 
+    const handleAllDocumentsUploaded = (isEnable) => {
+        setSendToApprovalButtonEnable(isEnable); 
+        console.log("isSendToApprovalButtonEnable" , isSendToApprovalButtonEnable)
+    };
 
     useEffect(() => {
         const restrictedOrder: RestrictedOrderFormat[] = [
@@ -79,7 +79,7 @@ const RequiredDocuments = ({ goNext, goBack }) => {
                 </FlexRow>
                 <FlexRow justifyContent='center' alignItems='center' columnGap='1rem' padding='0.5rem 0'>
                     <PrimaryButton width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="1rem 0" onClick={handleGoBack}>Back</PrimaryButton>
-                    <PrimaryButton width="200px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="2rem 0" onClick={handleSubmit} disabled={!isSubmitButtonEnable}>Send to Approval</PrimaryButton>
+                    <PrimaryButton width="200px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="2rem 0" onClick={handleSubmit} disabled={isSendToApprovalButtonEnable}>Send to Approval</PrimaryButton>
                 </FlexRow>
             </Container>
 

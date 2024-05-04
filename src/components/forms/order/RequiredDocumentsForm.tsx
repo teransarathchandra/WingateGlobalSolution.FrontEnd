@@ -6,17 +6,17 @@ import { useEffect, useState } from "react";
 interface RequiredDocumentsFormProps {
     trueDocumentList: string[];
     itemID: string;
-    onAllDocumentsUploaded: () => void; 
+    onAllDocumentsUploaded: (boolean) => void; 
     handleSubmitDisability: () => void;
 }
 const RequiredDocumentsForm: React.FC<RequiredDocumentsFormProps> = ({ trueDocumentList, itemID, handleSubmitDisability , onAllDocumentsUploaded }) => {
+    
+    let [documentCount, setDocumentCount] = useState(trueDocumentList.length);
+    
     console.log('itemID', itemID)
-    const [documentCount, setDocumentCount] = useState(trueDocumentList.length);
     console.log('documentCount:', documentCount);
     console.log('trueDocumentList:', trueDocumentList);
-    // if (documentCount === 0) {
-    //     handleSubmitDisability();
-    // }
+
     useEffect(() => {
         // Update the documentCount whenever trueDocumentList changes
         setDocumentCount(trueDocumentList.length);
@@ -26,9 +26,13 @@ const RequiredDocumentsForm: React.FC<RequiredDocumentsFormProps> = ({ trueDocum
             handleSubmitDisability();
         }
         if (documentCount === 0) {
-            onAllDocumentsUploaded(); // Call this when all documents are uploaded
+            onAllDocumentsUploaded(true); // Call this when all documents are uploaded
+            console.log("isSendToApprovalButtonEnable in if doc =0 ")
+        }else{
+             onAllDocumentsUploaded(false);
         }
-    }, [trueDocumentList, handleSubmitDisability]);
+
+    }, [documentCount]);
 
     return (
         <StyledForm width="400px">
@@ -40,10 +44,10 @@ const RequiredDocumentsForm: React.FC<RequiredDocumentsFormProps> = ({ trueDocum
                         folderPath={`Submitted Documents/${docName}`}
                         onUploadSuccess={(data) => {
                             console.log('Success:', data);
-                            setDocumentCount(prevCount => prevCount - 1); // Correctly update the count
-                            if (documentCount - 1 === 0) { // Check after decrement
-                                onAllDocumentsUploaded(); // Notify that all documents have been uploaded
-                            }
+                            setDocumentCount(documentCount - 1); // Correctly update the count
+                            // if (documentCount - 1 === 0) { // Check after decrement
+                            //     onAllDocumentsUploaded(); // Notify that all documents have been uploaded
+                            // }
                         }}
                         onUploadError={(error) => console.error('Error:', error)}
                         itemID={itemID}

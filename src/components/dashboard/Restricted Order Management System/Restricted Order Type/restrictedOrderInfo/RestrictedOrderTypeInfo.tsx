@@ -6,7 +6,7 @@ import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import FullScreenDialog from "../dialogs/RestrictedOrderTypeDetailsInfo";
 import AddRestrictedOrderForm from '../dialogs/RestrictedOrderTypeAddDialog';
 import {ViewButton} from "@app_styles/RestrictedOrderStyles.styles"
-import RestrictedOrderReport from "@app_components/pdf/pdfTemplates/RestrictedOrderTypeReport";
+import {RestrictedOrderReport}  from "@app_components/pdf/pdfTemplates/RestrictedOrderTypeReport";
 import ReactDOMServer from "react-dom/server";
 import PDFLayout from "@app_components/pdf/PDFLayout";
 import { Button } from "@mui/material";
@@ -19,8 +19,6 @@ const columns: IColumn[] = [
   { id: "receivingCountryId", label: "Receiver Country", numeric: false, disablePadding: false },
   { id: "categoryId", label: "Category", numeric: false, disablePadding: false },
   { id: "viewMore", label: "View", numeric: false, disablePadding: false },
-  { id: "maxQuantity", label: "maxQuantity", numeric: true, disablePadding: false },
-
 ];
 
 const RestrictedOrderTypeInfo: React.FC = () => {
@@ -101,8 +99,6 @@ const RestrictedOrderTypeInfo: React.FC = () => {
       console.error('Failed to fetch order types', error);
     }
   };
-
-
 
   useEffect(() => {
     fetchAndPrepareResOrders();
