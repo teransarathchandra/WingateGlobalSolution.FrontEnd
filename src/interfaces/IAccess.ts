@@ -1,5 +1,6 @@
 export interface IAccess {
   _id: string;
+  accessID: string;
   accessLevelId: string;
   description: string;
   createdAt: string;

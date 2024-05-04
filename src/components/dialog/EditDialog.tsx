@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import Select, { SelectChangeEvent } from '@mui/material/Select'; // Import SelectChangeEvent
+import Select from '@mui/material/Select'; // Import SelectChangeEvent
 
 interface FieldConfig {
     name: string;
@@ -17,7 +17,6 @@ interface FieldConfig {
     type?: string;
     disabled?: boolean;
     options?: { value: string | number, label: string }[];
-    default?: string | number | boolean
 }
 
 interface EditDialogProps {
@@ -83,7 +82,6 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                                 value={formData[field.name] || ''}
                                 disabled={field.disabled}
                                 onChange={handleChange}
-                                defaultValue={field.default || ''}
                             >
                                 {field.options && field.options.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>

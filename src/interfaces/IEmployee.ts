@@ -22,5 +22,6 @@ export default interface RootObject {
   focus: string;
   accessDescription: string;
   accessID: string;
+  systemAccessID: string;
   createdAt: Date;
 }
