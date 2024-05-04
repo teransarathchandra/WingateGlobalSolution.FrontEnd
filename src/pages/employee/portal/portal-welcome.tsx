@@ -55,7 +55,8 @@ const MenuItem = styled.div`
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
   padding: 20px;
   margin: 10px;
-  width: 160px;
+  width: 80px;
+  height: 80px;
   transition: transform 0.3s ease;
   cursor: pointer;
 
@@ -74,7 +75,7 @@ const MenuItemIcon = styled.img`
 `;
 
 const MenuItemLabel = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   color: #333333;
   text-align: center;
 `;
@@ -82,10 +83,10 @@ const MenuItemLabel = styled.span`
 // MenuSection Component
 const MenuSection = styled.section`
   margin-top: 20px;
-  padding: 5px;
+  padding: 0px;
   background: rgba(255, 255, 255, 0.1);  // Lighter background for a more glass-like effect
   backdrop-filter: blur(10px);  // Blurs any content behind the section
-  border-radius: 20px;  // Rounded corners
+  border-radius: 20px;  
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);  // Subtle shadow for depth
   border: 1px solid rgba(255, 255, 255, 0.18);  // Subtle border can enhance the glass effect
 `;
@@ -93,8 +94,8 @@ const MenuSection = styled.section`
 
 const GridTitle = styled.h2`
   color: #333333;
-  font-size: 22px;
-  margin-bottom: 15px;
+  font-size: 18px;
+  margin-bottom: 0px;
   text-align: left;
   padding: 10px;
 `;
