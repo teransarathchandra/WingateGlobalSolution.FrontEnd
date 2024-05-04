@@ -95,17 +95,13 @@ const OrderAggregation: React.FC = () => {
     try {
 
       const countryResponse = await getCountryCountryCode(selectedCountry);
-      debugger;
-console.log(selectedCountry ,countryResponse )
       const countryObjectId = countryResponse.data._id;
-
       const payload = {
         destinationCountry: countryObjectId,
         category: selectedCategory,
         priority: selectedPriority,
       };
       const response = await createBulk(payload);
-      console.log("Bulk created successfully:", response);
       const newBulkId = response.data._id;
       const updatePromises = filteredOrders.map((order) => {
         updateOrder(order._id, { bulkId: newBulkId });

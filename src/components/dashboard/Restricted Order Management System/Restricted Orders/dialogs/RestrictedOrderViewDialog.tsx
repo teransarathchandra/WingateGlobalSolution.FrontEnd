@@ -113,7 +113,6 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
         }
     };
     const fetchCategory = async (categoryId) => {
-        debugger;
         try {
             const categoryResponse = await getCategoryById(categoryId);
             setCategory(categoryResponse.data.data.name);
@@ -184,13 +183,6 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             console.log("error in email sending ")
         }
         handleClose;
-    };
-
-
-
-    const handleReport = () => {
-        // onSave(ViewData);
-        // console.log("view data ", ViewData)
     };
 
     const handleDocumentClick = async (folderName, documentName, e) => {

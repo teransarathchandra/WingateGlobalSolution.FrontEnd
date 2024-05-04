@@ -11,7 +11,7 @@ interface RequiredDocumentsFormProps {
 }
 const RequiredDocumentsForm: React.FC<RequiredDocumentsFormProps> = ({ trueDocumentList, itemID, handleSubmitDisability , onAllDocumentsUploaded }) => {
     
-    let [documentCount, setDocumentCount] = useState(trueDocumentList.length);
+    const [documentCount, setDocumentCount] = useState(trueDocumentList.length);
     
     console.log('itemID', itemID)
     console.log('documentCount:', documentCount);
