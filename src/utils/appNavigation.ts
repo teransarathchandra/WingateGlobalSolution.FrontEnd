@@ -5,6 +5,7 @@ export function useAppNavigation() {
     const navigate = useNavigate();
 
     const handleAppNavigation = async (eventKey, accessToken) => {
+
         if (accessToken) {
             const route = eventKey;
             const accessData = {
@@ -34,6 +35,7 @@ export function useAppNavigation() {
     };
 
     const shouldContinueAppNavigation = async (eventKey, accessToken) => {
+        debugger;
         if (accessToken) {
             const route = eventKey;
             const accessData = {

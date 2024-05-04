@@ -43,7 +43,7 @@ const App = () => {
         </UserDrawerContainer>
         <Routes>
           {publicRoutes.concat(privateRoutes).map((route) => {
-            const Component = route.component; // Name component with capital C as per React convention
+            const Component = route.component;
             const routeElement = (
               <Suspense fallback={<CommonLoading loading={true} />}>
                 <Component />
@@ -56,7 +56,7 @@ const App = () => {
                 element={
                   route.isPrivate ? (
                     <ProtectedRoute
-                      isEmployeeRoute={route.forEmployeeOnly}
+                      route={route}
                       children={routeElement}
                     ></ProtectedRoute>
                   ) : (
