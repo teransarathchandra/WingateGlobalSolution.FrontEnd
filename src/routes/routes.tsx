@@ -94,13 +94,7 @@ const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 const Customer = lazy(() => import("@app_pages/dashboard/crm/Customer"));
 
 //portal
-const portal = lazy(() => import("@app_pages/employee/portal/portal-welcome"));
-
-
-//portal
-const portal = lazy(() => import("@app_pages/employee/portal/portal-welcome"));
-
-
+const Portal = lazy(() => import("@app_pages/employee/portal/portal-welcome"));
 
 export const privateRoutes: IRoute[] = [
   {
@@ -237,7 +231,7 @@ export const privateRoutes: IRoute[] = [
   },
   {
     path: "/app/portal-welcome",
-    component: portal,
+    component: Portal,
     isPrivate: true,
     forEmployeeOnly: true,
   },
