@@ -44,10 +44,11 @@ const OrderInfo: React.FC = () => {
   };
 
   const fetchAndPrepareOrders = async () => {
+    debugger;
     try {
       const aggType = "restrictedOrders";
       const response = await getAllOrders(aggType);
-      console.error('response', response);
+      //console.error('response', response);
       const preparedOrders: IRow[] = response.data.map((resOrder: IResOrder) => ({
         ...resOrder,
         viewMore: <ViewButton onClick={() => handleViewClick(resOrder)} style={{ cursor: "pointer", color: "#000000" }}>View</ViewButton>,

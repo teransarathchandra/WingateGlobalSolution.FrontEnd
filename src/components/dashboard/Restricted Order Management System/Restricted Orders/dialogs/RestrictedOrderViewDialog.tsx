@@ -6,6 +6,7 @@ import { getOrderById } from '@app_services/orderService';
 import { getSenderById } from "@app_services/senderService";
 import { getReceiverById } from "@app_services/receiverService";
 import { getItemById } from "@app_services/itemService";
+import { getAllSubmittedDocumentByItemId, getSubmittedDocumentAccessibleURL } from "@app_services/submittedDocumentService";
 import { sendApprovalEmail } from "@app_services/orderService";
 import { IOrder } from '@app_interfaces/IOrder';
 import { IItem } from '@app_interfaces/IItem';
@@ -49,11 +50,19 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             fetchReceiverDetails(orderDetails.receiverId);
             fetchItemDetails(orderDetails.itemId);
         }
+        // if (itemDetails) {
+        //     fetchDocuments(itemDetails.itemId);
+        // }
+
+
+    }, [orderDetails]);
+
+    useEffect(() => {
         if (itemDetails) {
             fetchDocuments(itemDetails.itemId);
         }
-
-    }, [orderDetails]);
+    }, [itemDetails]);
+    
 
     const fetchOrder = async () => {
         try {
@@ -91,15 +100,29 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             console.error("Error fetching item details:", error);
         }
     };
-    const fetchDocuments = async (itemId) => {
-        try {
 
+    
+    
+    const fetchDocuments = async (itemId) => {
+        debugger;
+        try {
+            const response = await getAllSubmittedDocumentByItemId(itemId)
+            setDocumentDetails(response.data);
         } catch (error) {
             console.error("Error fetching documents details:", error);
         }
 
     };
-
+    const fetchAccessibleURL = async (folderName, documentName) => {
+        const blobName = "&blobName="+folderName + "/" +documentName;
+        try {
+            const url = await getSubmittedDocumentAccessibleURL(blobName);
+            return url;
+        } catch (error) {
+            console.error("Error fetching URL:", error);
+        }
+    };
+    
     const handleClose = () => {
         handleViewClose();
     };
@@ -125,22 +148,27 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
                 sendApprovalEmail(emailData);
                 console.log("emailData", emailData);
                 console.log("emailData orderID", emailData.orderID);
-
-                // if (status === "Approved") {
-
-                // } else if (status === "Rejected") {
-                //     sendApprovalEmail(emailData);
-                // }
             }
         } catch {
-            console.log("error in emqil sending ")
+            console.log("error in email sending ")
         }
         handleClose;
     };
 
+
+
     const handleReport = () => {
         // onSave(ViewData);
         // console.log("view data ", ViewData)
+    };
+
+    const handleDocumentClick = async (folderName, documentName, e) => {
+        e.preventDefault();  // Prevent the link from navigating
+        const url = await fetchAccessibleURL(folderName, documentName);
+        if (url !== "#") {
+            window.open(url, "_blank");
+        }
+        console.log("url" , url)
     };
 
     return (
@@ -205,9 +233,11 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
 
                 </List>
 
+                <h3 style={{ marginLeft: "10px" }}>Submitted Documents</h3>
                 {documentDetails?.map((document) => (
                     <ListItem key={document.submittedDocumentId}>
-                        <ListItemText primary={document.documentName} />
+                        <ListItemText primary={document.documentType} />
+                        <a href="#" onClick={(e) => handleDocumentClick(document.folderName, document.documentName, e)} target="_blank" rel="noopener noreferrer">View Document</a>
                     </ListItem>
                 ))}
 

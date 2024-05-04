@@ -17,14 +17,8 @@ export const getAllSubmittedDocumentByItemId = (itemId) => {
         .catch((error) => error.message);
     }
 };
-// export const getAllSubmittedDocumentByItemId = (id, aggType) => {
-//     if (aggType) {
-//         return api.get(`/submittedDocument/${id}?type=${aggType}`)
-//         .then((response) => response.data)
-//         .catch((error) => error.message);
-//     } else {
-//         return api.get("/submittedDocument")
-//         .then((response) => response.data)
-//         .catch((error) => error.message);
-//     }
-// };
+export const getSubmittedDocumentAccessibleURL = (blobName) => {
+    return api.get(`/submittedDocument/getBlobSasUrl/${blobName}`)
+    .then((response) => response.data)
+    .catch((error) => error.message);
+}
