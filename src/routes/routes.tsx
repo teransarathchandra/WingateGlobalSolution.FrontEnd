@@ -1,5 +1,5 @@
 import { lazy } from "react";
-
+import { IRoute } from "@app_interfaces/IRoute"
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
 
@@ -93,7 +93,8 @@ const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 //Customer
 const Customer = lazy(() => import("@app_pages/dashboard/crm/Customer"));
 
-export const privateRoutes = [
+
+export const privateRoutes: IRoute[] = [
   {
     path: "/order",
     component: PlaceOrder,
@@ -228,7 +229,7 @@ export const privateRoutes = [
   },
 ];
 
-export const publicRoutes = [
+export const publicRoutes: IRoute[] = [
   {
     path: "/",
     component: Home,
