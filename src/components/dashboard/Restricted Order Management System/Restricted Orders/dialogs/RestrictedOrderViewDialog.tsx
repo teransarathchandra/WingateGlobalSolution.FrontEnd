@@ -100,8 +100,6 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             console.error("Error fetching item details:", error);
         }
     };
-
-    
     
     const fetchDocuments = async (itemId) => {
         debugger;
@@ -113,15 +111,28 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
         }
 
     };
-    const fetchAccessibleURL = async (folderName, documentName) => {
-        const blobName = "&blobName="+folderName + "/" +documentName;
+    const fetchAccessibleURL = async (folderName, documentName , itemId ) => {
+        const containerName = "wingatecontainer";
+        const blobName = folderName + "/" + insertItemIdBeforeExtension(documentName, itemId);
         try {
-            const url = await getSubmittedDocumentAccessibleURL(blobName);
-            return url;
+            const response = await getSubmittedDocumentAccessibleURL(containerName, blobName);
+            return response.url;
         } catch (error) {
             console.error("Error fetching URL:", error);
         }
     };
+
+    function insertItemIdBeforeExtension(documentName, itemId) {
+        const parts = documentName.split('.');
+        if (parts.length > 1) {
+            // Assumes there is at least one dot in the filename
+            let extension = parts.pop();  // Remove and capture the extension
+            return parts.join('.') + '_' + itemId + '.' + extension;  // Reassemble with itemId before the extension
+        } else {
+            // No extension found, fallback to original method
+            return documentName + '_' + itemId;
+        }
+    }
     
     const handleClose = () => {
         handleViewClose();
@@ -164,7 +175,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
 
     const handleDocumentClick = async (folderName, documentName, e) => {
         e.preventDefault();  // Prevent the link from navigating
-        const url = await fetchAccessibleURL(folderName, documentName);
+        const url = await fetchAccessibleURL(folderName, documentName , itemDetails?.itemId);
         if (url !== "#") {
             window.open(url, "_blank");
         }
