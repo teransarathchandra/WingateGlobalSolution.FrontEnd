@@ -11,10 +11,10 @@ import { IOrder } from '@app_interfaces/IOrder';
 const Transition = React.forwardRef(function Transition(
     props: React.ComponentProps<typeof Slide>,
     ref: React.Ref<unknown>,
-  ) {
+) {
     return <Slide direction="left" ref={ref} {...props} />;
-  });
-  
+});
+
 
 interface UserDetailsDialogProps {
     isOpen: boolean;
@@ -66,10 +66,6 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
 }) => {
     const [formattedDate, setFormattedDate] = useState('');
     const [reminder, setReminder] = useState('');
-    // Generate a random color for each avatar
-    const initials = user?.name?.firstName[0] + user?.name?.lastName[0];
-    const backgroundColor = Math.floor(Math.random()*16777215).toString(16);
-    const uiAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${backgroundColor}&color=fff&length=2`;
 
     useEffect(() => {
         if (user && user.createdAt) {
@@ -95,31 +91,30 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
 
     return (
         <Dialog
-    open={isOpen}
-    onClose={handleClose}
-    fullWidth
-    maxWidth="md"
-    TransitionComponent={Transition}  
-    PaperProps={{ style: dialogStyle }}
->
+            open={isOpen}
+            onClose={handleClose}
+            fullWidth
+            maxWidth="md"
+            TransitionComponent={Transition}  
+            PaperProps={{ style: dialogStyle }}
+        >
             <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
                 <div style={contentContainerStyle}>
                     <div>
                         <p>Created On: {formattedDate}</p>
                         <p>Status: Active</p>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Button onClick={sendBirthdayEmail} variant="contained" style={{ backgroundColor: '#4CAF50', color: 'white', textTransform: 'none', borderRadius: '20px' }}>
+                    <div>
+                        <Button onClick={sendBirthdayEmail} variant="contained" style={{ backgroundColor: '#e1bd05', color: 'white', textTransform: 'none', borderRadius: '20px' }}>
                             Send Birthday Email
                         </Button>
-                        <img src={uiAvatarUrl} alt="User Avatar" style={{ width: '80px', height: '80px', marginLeft: '20px' }} />
                     </div>
                 </div>
             </Grow>
 
             <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
                 <div style={detailsContainerStyle}>
-                    <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#4CAF50' }}>Customer Details</h2>
+                    <h2 style={{ marginBottom: '20px', textAlign: 'center', color: '#e1bd05' }}>Customer Details</h2>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>First Name: {user?.name?.firstName || 'N/A'}</div>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Last Name: {user?.name?.lastName || 'N/A'}</div>
                     <div style={{ marginBottom: '15px', padding: '10px', borderBottom: '1px solid #ccc' }}>Email: {user?.email || 'N/A'}</div>

@@ -253,7 +253,7 @@ const CustomerInfo: React.FC = () => {
           { name: "customerId", label: "Customer ID", type: "text", disabled: true },
           // { name: "name.firstName", label: "First Name", type: "text", disabled: false },
           //{ name: "name.lastName", label: "Last Name", type: "text", disabled: false },
-          { name: "contactNumber", label: "Contact Number", type: "text", disabled: false },
+          { name: "contactNumber", label: "Contact Number", type: "number", disabled: false },
           { name: "email", label: "Email", type: "text", disabled: false },
           { name: "priorityLevel", label: "Priority Level", type: "dropdown", options: priorityOptions },
           { name: "birthday", label: "Birth Date", type: "date", disabled: false },
@@ -288,7 +288,7 @@ const CustomerInfo: React.FC = () => {
     { name: 'firstName', label: 'First Name', type: 'text', disabled: false },
     { name: 'lastName', label: 'Last Name', type: 'text', disabled: false },
     { name: "email", label: "Email", type: 'text', disabled: false },
-    { name: "contactNumber", label: "Contact Number", type: 'text', disabled: false },
+    { name: "contactNumber", label: "Contact Number", type: 'number', disabled: false },
     { name: "priorityLevel", label: "Priority Level", type: 'dropdown', options: priorityOptions },
     { name: "birthday", label: "Birthday", type: 'date', disabled: false },
   ]}
