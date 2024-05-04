@@ -95,8 +95,9 @@ const OrderAggregation: React.FC = () => {
     try {
 
       const countryResponse = await getCountryCountryCode(selectedCountry);
-
-      const countryObjectId = countryResponse.data.objectId;
+      debugger;
+console.log(selectedCountry ,countryResponse )
+      const countryObjectId = countryResponse.data._id;
 
       const payload = {
         destinationCountry: countryObjectId,
