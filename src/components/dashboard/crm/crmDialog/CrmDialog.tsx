@@ -8,9 +8,13 @@ import Select from '@mui/material/Select';
 import { Grow } from '@mui/material';
 import { IOrder } from '@app_interfaces/IOrder';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef(function Transition(
+    props: React.ComponentProps<typeof Slide>,
+    ref: React.Ref<unknown>,
+  ) {
     return <Slide direction="left" ref={ref} {...props} />;
-});
+  });
+  
 
 interface UserDetailsDialogProps {
     isOpen: boolean;
@@ -21,16 +25,16 @@ interface UserDetailsDialogProps {
 
 const dialogStyle = {
     background: '#f4f4f4',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    height: '100%',
-    width: '100%',
-    maxWidth: '600px',
-    borderTopLeftRadius: '0px',
-    borderBottomLeftRadius: '0px',
-    overflowY: 'auto',
-    transition: 'transform 0.3s ease-in-out'
+    position: 'absolute' as 'absolute', 
+    top: '0',  
+    right: '0',  
+    height: '100%',  
+    width: '100%',  
+    maxWidth: '600px', 
+    borderTopLeftRadius: '0px',  
+    borderBottomLeftRadius: '0px',  
+    overflowY: 'auto' as 'auto',  
+    transition: 'transform 0.3s ease-in-out'  
 };
 
 const contentContainerStyle = {
@@ -58,7 +62,6 @@ const detailsContainerStyle = {
 const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
     isOpen,
     user,
-    orders,
     handleClose,
 }) => {
     const [formattedDate, setFormattedDate] = useState('');
@@ -92,13 +95,13 @@ const UserDetailsDialog: React.FC<UserDetailsDialogProps> = ({
 
     return (
         <Dialog
-            open={isOpen}
-            onClose={handleClose}
-            fullWidth
-            maxWidth="md"
-            TransitionComponent={Transition}
-            PaperProps={{ style: dialogStyle }}
-        >
+    open={isOpen}
+    onClose={handleClose}
+    fullWidth
+    maxWidth="md"
+    TransitionComponent={Transition}  
+    PaperProps={{ style: dialogStyle }}
+>
             <Grow in={isOpen} style={{ transformOrigin: '0 0 0' }} timeout={1000}>
                 <div style={contentContainerStyle}>
                     <div>

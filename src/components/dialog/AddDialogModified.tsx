@@ -9,7 +9,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import styled, { keyframes } from 'styled-components';
-import logo from "../../assets/images/logo.png";
+import logo from "../../assets/images/logo.png"; 
 import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material'; // Import icons
 
 interface FieldConfig {
@@ -29,14 +29,14 @@ interface AddDialogProps {
     title?: string;
 }
 
-const slideIn = keyframes`
+const popIn = keyframes`
   from {
-    transform: translateY(-100%);
     opacity: 0;
+    transform: scale(0.5);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: scale(1);
   }
 `;
 
@@ -57,7 +57,7 @@ const AddDialogModified = styled(Dialog)`
     background-color: #f5f5f5;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    animation: ${slideIn} 0.5s ease forwards; /* Apply animation */
+    animation: ${popIn} 0.3s ease-out forwards; // Apply pop animation
   }
 
   &:hover {
@@ -126,7 +126,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                 ))}
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleClose} color="primary" startIcon={<CloseIcon />}>Cancel</Button>
+                <Button onClick={handleClose} color="primary" startIcon={<CloseIcon />}>Cancel</Button>
                 <Button onClick={() => onSave(formData)} color="secondary" endIcon={<SaveIcon />}>Add</Button>
             </DialogActions>
         </AddDialogModified>

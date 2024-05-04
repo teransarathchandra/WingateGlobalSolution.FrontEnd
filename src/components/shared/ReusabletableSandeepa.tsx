@@ -49,15 +49,14 @@ const ReusabletableSandeepa: React.FC<ReusableTableProps> = ({
 
   const handleSort = (columnId: string) => {
     if (columnId === columns[0].id) { // Sorting only for the first column
-      let direction = 'asc';
+      let direction: 'asc' | 'desc' = 'asc';
       if (sortConfig && sortConfig.key === columnId && sortConfig.direction === 'asc') {
         direction = 'desc';
-      } else {
-        direction = 'asc';
       }
       setSortConfig({ key: columnId, direction });
     }
   };
+  
 
   const sortedRows = React.useMemo(() => {
     let sortableItems = [...rows];

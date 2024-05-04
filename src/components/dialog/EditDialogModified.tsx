@@ -7,8 +7,8 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import styled, { keyframes } from 'styled-components';
-import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material'; // Import icons
-import logo from "../../assets/images/logo.png";
+import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material';
+import logo from "../../assets/images/logo.png"; 
 
 interface FieldOption {
     value: string;
@@ -29,17 +29,17 @@ interface EditDialogProps {
     handleClose: () => void;
     fields: FieldConfig[];
     onSave: (data: any) => void;
-    onDelete?: (data: any) => void; // onDelete is optional
+    onDelete?: (data: any) => void;
 }
 
-const slideInFromBottom = keyframes`
+const popIn = keyframes`
   from {
-    transform: translateY(100%);
     opacity: 0;
+    transform: scale(0.5);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: scale(1);
   }
 `;
 
@@ -69,7 +69,7 @@ const EditDialogModified = styled(Dialog)`
     background-color: #fff;
     transition: all 0.3s ease;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    animation: ${slideInFromBottom} 0.5s ease forwards; /* Apply animation */
+    animation: ${popIn} 0.3s ease-out forwards;
   }
 
   &:hover {
@@ -82,16 +82,17 @@ const HeaderText = styled.h2`
   margin: 10px 0;
 `;
 
-const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, onDelete }) => {
+const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fields, onSave,  }) => {
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
+        // This will reset the form data to the initial entity whenever the entity changes or the dialog is reopened
         setFormData(entity || {});
     }, [entity]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | { name?: string; value: unknown }>) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name as string]: value }));
+    const handleChange = (field: FieldConfig, value: any) => {
+        // Updates the form data state based on field name and value
+        setFormData(prev => ({ ...prev, [field.name]: value }));
     };
 
     return (
@@ -101,7 +102,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                 <DialogHeaderImage src={logo} alt="Logo" />
             </DialogHeaderContainer>
             <DialogContentWrapper>
-                {fields && fields.map((field) => (
+                {fields.map((field) => (
                     field.type === 'dropdown' ? (
                         <Select
                             key={field.name}
@@ -113,9 +114,9 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                             name={field.name}
                             value={formData[field.name] || ''}
                             disabled={field.disabled}
-                            onChange={handleChange}
+                            onChange={(e) => handleChange(field, e.target.value)}
                         >
-                            {field.options && field.options.map((option) => (
+                            {field.options?.map((option) => (
                                 <MenuItem key={option.value} value={option.value}>
                                     {option.label}
                                 </MenuItem>
@@ -128,13 +129,13 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                             margin="dense"
                             id={field.name}
                             label={field.label}
-                            type={field.type}
+                            type={field.type || 'text'}
                             fullWidth
                             variant="outlined"
                             name={field.name}
                             value={formData[field.name] || ''}
                             disabled={field.disabled}
-                            onChange={handleChange}
+                            onChange={(e) => handleChange(field, e.target.value)}
                         />
                     )
                 ))}
