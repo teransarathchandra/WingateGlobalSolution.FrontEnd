@@ -36,9 +36,10 @@ const CategoryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
+    fetchAndPrepareCategory();
     setEditDialogOpen(false);
     setAddCategoryOpen(false);
-    fetchAndPrepareCategory();
+   
   };
   const handleAddClick = () => {
     setAddCategoryOpen(true);
@@ -144,7 +145,7 @@ const CategoryInfo: React.FC = () => {
         handleClose={() => setEditDialogOpen(false)}
         entity={currentCategory}
         fields={[
-          { name: 'categoryId', label: 'Category Id', type: 'text', disabled: false },
+          { name: 'categoryId', label: 'Category Id', type: 'text', disabled: true },
           { name: 'name', label: 'Name', type: 'text', disabled: false },
           { name: 'description', label: 'Description', type: 'text', disabled: false },
           { name: 'costPerKilo', label: 'Cost Per Kilo', type: 'number', disabled: false },

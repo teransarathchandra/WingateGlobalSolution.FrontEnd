@@ -78,7 +78,8 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           setReceiverId(receiverObjId);
 
           const createOrderPayload = {
-            status: restrictedOrder == true ? 'Pending' : 'Processing',
+            // status: restrictedOrder == true ? 'Pending' : 'Processing',
+            status: 'Pending',
             itemId: itemId,
             senderId: senderObjId,
             receiverId: receiverObjId,
@@ -99,7 +100,12 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
             setOrderId(orderObjId)
           }
 
-          goNext();
+          if(restrictedOrder){
+            goNext(6);
+          }else{
+            goNext(5);
+          }
+          
         } catch (error) {
           console.error("Error creating sender, receiver, or order:", error);
         } finally {

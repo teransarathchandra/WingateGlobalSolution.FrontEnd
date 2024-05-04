@@ -10,6 +10,11 @@ import EditDropdown from "@app_components/dialog/EditDropdown";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
+import Button from "@mui/material/Button";
+import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
+import PDFLayout from "@app_components/pdf/PDFLayout";
+import ReactDOMServer from "react-dom/server";
+import WarehouseReport from "@app_components/pdf/pdfTemplates/WarehouseReport";
 
 const columns: IColumn[] = [
   { id: "warehouseId", label: "Warehouse ID", numeric: false, disablePadding: true },
@@ -27,6 +32,19 @@ const WarehouseInfo: React.FC = () => {
   const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [pdfHtmlContent, setPdfHtmlContent] = useState('');
+
+
+  useEffect(() => {
+    if (warehouse.length > 0) {
+      const htmlContent = ReactDOMServer.renderToString(
+        <PDFLayout content={<WarehouseReport warehouse={warehouse} />} />
+      );
+      setPdfHtmlContent(htmlContent);
+    }
+  }, [warehouse]);
+
   const handleEditClick = (warehouse: IWarehouse) => {
     setCurrentWarehouse(warehouse);
     setIsDialogOpen(true);
@@ -38,7 +56,7 @@ const WarehouseInfo: React.FC = () => {
   };
 
   const handleDeleteClick = (warehouse: IWarehouse) => {
-    console.log("Warehouse" , warehouse);
+    console.log("Warehouse", warehouse);
     setCurrentWarehouse(warehouse);
     setisDeleteDialogOpen(true);
   };
@@ -75,7 +93,7 @@ const WarehouseInfo: React.FC = () => {
         await updateWarehouse(warehouseId, warehouseData);
         console.log(warehouseData)
         console.log('Warehouse updated successfully');
-        
+
 
         fetchAndPrepareWarehouse();
       }
@@ -114,10 +132,10 @@ const WarehouseInfo: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const availabiltyOptions = [ 
-    {value: true, label: 'Available'},
-    {value: false, label: 'Unavailable'}
-  ]
+  const availabiltyOptions = [
+    { value: true, label: 'Available' },
+    { value: false, label: 'Unavailable' }
+  ];
 
   return (
     <>
@@ -143,8 +161,8 @@ const WarehouseInfo: React.FC = () => {
         onDelete={handleDeleteWarehouse}
       />
       <DeleteDialog
-        isOpen= {isDeleteDialogOpen}
-        handleClose={() => setisDeleteDialogOpen(false)}        
+        isOpen={isDeleteDialogOpen}
+        handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteWarehouse}
       />
       <UpdateBtn onClick={handleAddClick}>Add</UpdateBtn>
@@ -156,10 +174,23 @@ const WarehouseInfo: React.FC = () => {
           { name: 'storageCapacity', label: 'Capacity', type: 'text', disabled: false },
           { name: "availability", label: "Availability", type: 'dropdown', options: availabiltyOptions },
           { name: "location", label: "Location", type: 'text', disabled: false },
-          
+
         ]}
         onSave={addWarehouse}
       />
+
+      <Button onClick={() => setShowPDFDialog(true)} color="secondary">
+        Preview & Export PDF
+      </Button>
+
+      {showPDFDialog && (
+        <PDFExportDialog
+          open={showPDFDialog}
+          onClose={() => setShowPDFDialog(false)}
+          htmlContent={pdfHtmlContent}
+          filename="OrdersReport.pdf"
+        />
+      )}
     </>
   );
 };

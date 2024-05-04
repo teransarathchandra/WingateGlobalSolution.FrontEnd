@@ -7,12 +7,16 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select'; // Import SelectChangeEvent
 
 interface FieldConfig {
     name: string;
     label: string;
     type?: string;
     disabled?: boolean;
+    options?: { value: string | number, label: string }[];
 }
 
 interface EditDialogProps {
@@ -20,7 +24,7 @@ interface EditDialogProps {
     entity: any;
     handleClose: () => void;
     fields: FieldConfig[];
-    onSave: (data: any) => void;
+    onSave:  any;
     onDelete: (data: any) => void;
 }
 
@@ -65,7 +69,28 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
             </DialogHeaderContainer>
             <DialogContent>
                 {fields && fields.map((field) => (
-                    <TextField
+                    field.type === 'dropdown' ? (
+                        <div key={field.name}>
+                            <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                            <Select
+                                labelId={`${field.name}-label`}
+                                margin="dense"
+                                id={field.name}
+                                fullWidth
+                                variant="outlined"
+                                name={field.name}
+                                value={formData[field.name] || ''}
+                                disabled={field.disabled}
+                                onChange={handleChange}
+                            >
+                                {field.options && field.options.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                    ) : (<TextField
                         key={field.name}
                         autoFocus
                         margin="dense"
@@ -79,6 +104,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                         disabled={field.disabled}
                         onChange={handleChange}
                     />
+                    )
                 ))}
             </DialogContent>
             <DialogActions>

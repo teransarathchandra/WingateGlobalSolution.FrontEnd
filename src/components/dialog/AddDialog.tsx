@@ -18,10 +18,16 @@ interface FieldConfig {
     disabled?: boolean;
     options?: { value: string | number, label: string }[];
 }
-
+interface FieldConfig {
+    name: string;
+    label: string;
+    type?: string;
+    disabled?: boolean;
+    options?: { value: string | number, label: string }[];
+}
 interface AddDialogProps {
     isOpen: boolean;
-    entity: any;
+    entity?: any;
     handleClose: () => void;
     fields: FieldConfig[];
     onSave: (data: any) => void;

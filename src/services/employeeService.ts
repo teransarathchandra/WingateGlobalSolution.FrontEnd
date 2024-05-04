@@ -21,16 +21,16 @@ export const getEmployeeById = (id) => {
     .catch((error) => error.message);
 };
 
-export const createEmployee = (accessData) => {
+export const createEmployee = (employeeData) => {
   return api
-    .post("/employee", accessData)
+    .post("/employee", employeeData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };
 
-export const updateEmployee = (id, accessData) => {
+export const updateEmployee = (id, employeeData) => {
   return api
-    .patch(`/employee/${id}`, accessData)
+    .patch(`/employee/${id}`, employeeData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };
@@ -38,6 +38,13 @@ export const updateEmployee = (id, accessData) => {
 export const deleteEmployee = (id) => {
   return api
     .delete(`/employee/${id}`)
+    .then((response) => response.data)
+    .catch((error) => error.message);
+};
+
+export const canAccess = (accessData) => {
+  return api
+    .post("/employee/canAccess", accessData)
     .then((response) => response.data)
     .catch((error) => error.message);
 };

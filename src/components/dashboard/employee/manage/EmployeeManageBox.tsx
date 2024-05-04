@@ -10,7 +10,6 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "@app_services/employeeService";
-import { IEmployee } from "@app_interfaces/IEmployee";
 import EditDialog from "@app_components/dialog/EditDialog";
 import AddDialog from "@app_components/dialog/AddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
@@ -19,6 +18,10 @@ import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import ReactDOMServer from 'react-dom/server';
 import PDFLayout from '@app_components/pdf/PDFLayout';
 import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
+import IEmployee from "@app_interfaces/IEmployee";
+import { getAllAccess } from "@app_services/accessService";
+import { IAccess } from "@app_interfaces/IAccess";
+// import { password } from "@app_constants/regExp";
 
 const columns: IColumn[] = [
   {
@@ -59,6 +62,7 @@ const EmployeeManageBox: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [accessLevels, setAccessLevels] = useState([]);
   const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
   const handleAddClick = () => {
@@ -66,6 +70,7 @@ const EmployeeManageBox: React.FC = () => {
   };
   const handleEditClick = (employee: IEmployee) => {
     setCurrentEmployee(employee);
+    console.log('currentEmployee', employee)
     setIsDialogOpen(true);
   };
 
@@ -82,7 +87,7 @@ const EmployeeManageBox: React.FC = () => {
     if (currentEmployee) {
       try {
         await deleteEmployee(currentEmployee._id);
-        setEmployee(flights => flights.filter(b => b._id !== currentEmployee._id));
+        setEmployee(employee => employee.filter(b => b._id !== currentEmployee._id));
         setIsDeleteDialogOpen(false);
       } catch (error) {
         console.error('Failed to delete bulk', error);
@@ -92,10 +97,12 @@ const EmployeeManageBox: React.FC = () => {
   const fetchEmployees = async () => {
     try {
       const response = await getAllEmployee("withAccess");
+
       console.log(response);
       const preparedAccess: IRow[] = response.data.map((employee: IEmployee) => ({
         ...employee,
         _id: employee._id,
+        password: null,
         fullName: (employee?.name?.firstName || "") + " " + (employee?.name?.lastName || " "),
         createdAt: new Date(employee.createdAt as Date).toLocaleDateString(),
         edit: (
@@ -127,34 +134,80 @@ const EmployeeManageBox: React.FC = () => {
     }
   };
 
+  const fetchAndPrepareSystemAccess = async () => {
+    try {
+      const accessLevelsResponse = await getAllAccess();
+      const accessOptions = accessLevelsResponse.data.map((access: IAccess) => ({
+        value: access._id,
+        label: access.description
+      }));
+      setAccessLevels(accessOptions);
+    } catch (error) {
+      console.error("Failed to fetch access", error);
+    }
+  };
+
   useEffect(() => {
     fetchEmployees();
   }, []);
 
-  const addAccess = async (employee) => {
+  useEffect(() => {
+    fetchAndPrepareSystemAccess();
+  }, []);
+
+  const addEmployee = async (employee) => {
     try {
-      delete employee._id;
-      await createEmployee(employee);
+      // delete employee._id;
+      const payload = {
+        name: {
+          firstName: employee.firstName,
+          lastName: employee.lastName
+        },
+        address: {
+          street: employee.street,
+          city: employee.city,
+          state: employee.state,
+          country: employee.country
+        },
+        email: employee.email,
+        password: employee.password,
+        contactNumber: employee.contactNumber,
+        designationId: "65d44e402cdc44e12fe28378",
+        focus: employee.focus,
+        accessLevels: employee.accessLevels
+      }
+
+      const response = await createEmployee(payload);
+      console.log('Employee added successfully', response.data);
       fetchEmployees();
       setIsAddEmployeeOpen(false);
-      console.log('Flight added successfully');
     } catch (error) {
       console.error('Failed to add flight', error);
     }
   };
 
-  const saveAccess = async (employeeData: IEmployee) => {
-    console.log("Saving Access:", employeeData);
+  const saveAccess = async (employee) => {
+    console.log("Saving Access:", employee);
     try {
 
-      const employeeId = employeeData._id;
+      const employeeId = employee._id;
       const empUpdateData = {
         name: {
-          firstName: employeeData.name.firstName,
-          lastName: employeeData.name.lastName,
+          firstName: employee.name.firstName,
+          lastName: employee.name.lastName
         },
-        email: employeeData.email,
-        contactNumber: employeeData.contactNumber,
+        address: {
+          street: employee.address.street,
+          city: employee.address.city,
+          state: employee.address.state,
+          country: employee.address.country
+        },
+        email: employee.email,
+        password: employee.password,
+        contactNumber: employee.contactNumber,
+        designationId: "65d44e402cdc44e12fe28378",
+        focus: employee.focus,
+        accessLevel: employee.accessLevel
       };
 
       if (employeeId) {
@@ -224,30 +277,103 @@ const EmployeeManageBox: React.FC = () => {
             disabled: false
           },
           {
+            name: "address.street",
+            label: "Street",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "address.city",
+            label: "City",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "address.state",
+            label: "State",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "address.country",
+            label: "Country",
+            type: "text",
+            disabled: false
+          },
+          {
             name: "email",
             label: "Email",
             type: "text",
             disabled: false
           },
+          {
+            name: "password",
+            label: "Password",
+            type: "password",
+            disabled: false
+          },
+          {
+            name: "contactNumber",
+            label: "Contact Number",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "focus",
+            label: "Focus",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "systemAccessID",
+            label: "Access Level",
+            type: "dropdown",
+            disabled: false,
+            options: accessLevels
+          }
         ]}
         onSave={saveAccess}
         onDelete={ondeleteEmployee}
       />
       <AddDialog
-        title="Add Access Level"
+        title="Add Employee"
         isOpen={isAddEmployeeOpen}
         handleClose={() => setIsAddEmployeeOpen(false)}
-        entity={currentEmployee}
+        // entity={currentEmployee}
         fields={[
           {
-            name: "name.firstName",
+            name: "firstName",
             label: "First Name",
             type: "text",
             disabled: false
           },
           {
-            name: "name.lastName",
+            name: "lastName",
             label: "Last Name",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "street",
+            label: "Street",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "city",
+            label: "City",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "state",
+            label: "State",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "country",
+            label: "Country",
             type: "text",
             disabled: false
           },
@@ -257,8 +383,33 @@ const EmployeeManageBox: React.FC = () => {
             type: "text",
             disabled: false
           },
+          {
+            name: "password",
+            label: "Password",
+            type: "password",
+            disabled: false
+          },
+          {
+            name: "contactNumber",
+            label: "Contact Number",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "focus",
+            label: "Focus",
+            type: "text",
+            disabled: false
+          },
+          {
+            name: "accessLevel",
+            label: "Access Level",
+            type: "dropdown",
+            disabled: false,
+            options: accessLevels
+          }
         ]}
-        onSave={addAccess}
+        onSave={addEmployee}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
