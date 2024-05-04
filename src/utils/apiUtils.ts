@@ -3,6 +3,8 @@ import toastUtil from "./toastUtil";
 import { authService } from "@app_services/authService";
 import { authUserService } from "@app_services/authUserService";
 import { authEmployeeService } from "@app_services/authEmployeeService";
+import store from "@app_redux/store";
+import { startLoading, stopLoading } from "@app_redux/actions/loadingActions";
 
 const BASE_URL = process.env.API_URL;
 
@@ -17,6 +19,7 @@ const api = axios.create({
 // Add a request interceptor to add the bearer token to the headers
 api.interceptors.request.use(
   (config) => {
+    store.dispatch(startLoading());
     const token = authService.getAccessToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,6 +27,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    store.dispatch(stopLoading());
     return Promise.reject(error);
   }
 );
@@ -31,12 +35,14 @@ api.interceptors.request.use(
 // Add a response interceptor
 api.interceptors.response.use(
   (response) => {
+    store.dispatch(stopLoading());
     if (response && response.data.message) {
       toastUtil.success(response.data.message);
     }
     return response;
   },
   async (error) => {
+    store.dispatch(stopLoading());
     const originalRequest = error.config;
 
     if (error.response?.status === 401 && originalRequest.url.includes("refresh_token")) {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toastUtil from './toastUtil';
 import { canAccess } from "@app_services/employeeService";
@@ -27,7 +26,7 @@ export function useAppNavigation() {
                 .catch(error => {
                     console.error('Error accessing data:', error);
                     navigate(error.destination || fallback);
-                });;
+                });
 
         } else {
             toastUtil.error("Access Denied!");

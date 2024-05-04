@@ -1,6 +1,6 @@
 import { IQuotation } from "@app_interfaces/IQuotation";
 import { IColumn, IRow } from "@app_interfaces/ITable";
-import {createQuotation, getAllQuotations, deleteQuotation, updateQuotation } from "@app_services/quotationService";
+import { createQuotation, getAllQuotations, deleteQuotation, updateQuotation } from "@app_services/quotationService";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -46,13 +46,13 @@ const QuotationInfo: React.FC = () => {
   };
 
   const handleEditClick = (quotation: IQuotation) => {
-    console.log("Quotation" , quotation);
+    console.log("Quotation", quotation);
     setCurrentQuotation(quotation);
     setIsDialogOpen(true);
   };
 
   const handleDeleteClick = (quotation: IQuotation) => {
-    console.log("Quotation" , quotation);
+    console.log("Quotation", quotation);
     setCurrentQuotation(quotation);
     setisDeleteDialogOpen(true);
   };
@@ -62,7 +62,7 @@ const QuotationInfo: React.FC = () => {
       const response = await getAllQuotations();
       const preparedQuotations: IRow[] = response.data.map((quotation: IQuotation) => ({
         ...quotation,
-        view: <button onClick={() => handleViewClick(quotation)} style={{ cursor: "pointer",backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>View</button>,
+        view: <button onClick={() => handleViewClick(quotation)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>View</button>,
         edit: <button onClick={() => handleEditClick(quotation)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#23a840" }} /></button>,
         delete: <button onClick={() => handleDeleteClick(quotation)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
@@ -89,7 +89,7 @@ const QuotationInfo: React.FC = () => {
         await updateQuotation(quotationId, quotationData);
         console.log(quotationData)
         console.log('Quotation updated successfully');
-        
+
 
         fetchAndPrepareQuotations();
       }
@@ -139,12 +139,12 @@ const QuotationInfo: React.FC = () => {
 
   useEffect(() => {
     if (quotations.length > 0) {
-        const htmlContent = ReactDOMServer.renderToString(
-            <PDFLayout content={<QuotationReport quotation={quotations} />} />
-        );
-        setPdfHtmlContent(htmlContent);
-    }
-}, [quotations]);
+      const htmlContent = ReactDOMServer.renderToString(
+        <PDFLayout content={<QuotationReport quotation={quotations} />} />
+      );
+      setPdfHtmlContent(htmlContent);
+    }
+  }, [quotations]);
 
   return (
     <>
@@ -156,7 +156,7 @@ const QuotationInfo: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
- 
+
       <EditDialog
         isOpen={isViewOpen}
         handleClose={() => setIsViewOpen(false)}
@@ -168,12 +168,12 @@ const QuotationInfo: React.FC = () => {
           { name: 'unitWeightCost', label: 'Unit Weight Cost', type: 'number', disabled: true },
           { name: 'pickUpCost', label: 'Pickup Cost', type: 'number', disabled: true },
           { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: true },
-          
+          { name: 'fullAmount', label: 'Total Amount', type: 'number', disabled: true },
         ]}
         onSave={saveQuotation}
         onDelete={deleteQuotation}
       />
-      
+
       <EditDialog
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
@@ -185,13 +185,13 @@ const QuotationInfo: React.FC = () => {
           { name: 'unitWeightCost', label: 'Unit Weight Cost', type: 'number', disabled: false },
           { name: 'pickUpCost', label: 'Pickup Cost', type: 'number', disabled: false },
           { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: false },
-          
+
         ]}
         onSave={saveQuotation}
         onDelete={deleteQuotation}
       />
 
-<UpdateBtn onClick={handleAddClick}>Add Quotation</UpdateBtn>
+      <UpdateBtn onClick={handleAddClick}>Add Quotation</UpdateBtn>
       <AddDialog
         isOpen={isAddQuotationOpen}
         handleClose={() => setIsAddQuotationOpen(false)}
@@ -203,28 +203,30 @@ const QuotationInfo: React.FC = () => {
           { name: 'unitWeightCost', label: 'Unit Weight Cost', type: 'number', disabled: false },
           { name: 'pickUpCost', label: 'Pickup Cost', type: 'number', disabled: false },
           { name: 'surcharge', label: 'Surcharge', type: 'number', disabled: false },
-          
+
         ]}
         onSave={addQuotation}
       />
 
       <DeleteDialog
-        isOpen= {isDeleteDialogOpen}
-        handleClose={() => setisDeleteDialogOpen(false)}        
+        isOpen={isDeleteDialogOpen}
+        handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteQuotation}
       />
-                  <Button onClick={() => setShowPDFDialog(true)} color="secondary">
-                    Preview & Export PDF
-                </Button>
 
-                {showPDFDialog && (
-                <PDFExportDialog
-                    open={showPDFDialog}
-                    onClose={() => setShowPDFDialog(false)}
-                    htmlContent={pdfHtmlContent}
-                    filename="QuotationReport.pdf"
-                />
-            )}
+      
+      <Button onClick={() => setShowPDFDialog(true)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>
+        Preview & Export PDF
+      </Button>
+
+      {showPDFDialog && (
+        <PDFExportDialog
+          open={showPDFDialog}
+          onClose={() => setShowPDFDialog(false)}
+          htmlContent={pdfHtmlContent}
+          filename="QuotationReport.pdf"
+        />
+      )}
     </>
   );
 };

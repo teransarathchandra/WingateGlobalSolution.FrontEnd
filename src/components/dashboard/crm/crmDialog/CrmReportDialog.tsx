@@ -19,7 +19,8 @@ import PDFLayout from '@app_components/pdf/PDFLayout';
 import CrmReport from '@app_components/pdf/pdfTemplates/CrmReport';
 import ReactDOMServer from 'react-dom/server';
 import PDFExportDialog from '@app_components/pdf/PDFPreviewDialog';
-import { Grow, Fade } from '@mui/material';
+import { Grow } from '@mui/material';
+
 import './CrmReportDialog.css';  
 
 interface UserReportDialogProps {
@@ -148,8 +149,8 @@ const CrmReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose 
                     onClose={() => setShowPDFDialog(false)}
                     htmlContent={pdfHtmlContent}
                     filename="OrdersReport.pdf"
-                    TransitionComponent={Fade}
-                    transitionDuration={500}
+                    
+                    
                 />
             )}
         </Dialog>

@@ -6,7 +6,7 @@ import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import FullScreenDialog from "../dialogs/RestrictedOrderTypeDetailsInfo";
 import AddRestrictedOrderForm from '../dialogs/RestrictedOrderTypeAddDialog';
 import {ViewButton} from "@app_styles/RestrictedOrderStyles.styles"
-import RestrictedOrderReport from "@app_components/pdf/pdfTemplates/RestrictedOrderTypeReport";
+import {RestrictedOrderReport}  from "@app_components/pdf/pdfTemplates/RestrictedOrderTypeReport";
 import ReactDOMServer from "react-dom/server";
 import PDFLayout from "@app_components/pdf/PDFLayout";
 import { Button } from "@mui/material";
@@ -100,8 +100,6 @@ const RestrictedOrderTypeInfo: React.FC = () => {
     }
   };
 
-
-
   useEffect(() => {
     fetchAndPrepareResOrders();
   }, []);
@@ -112,8 +110,8 @@ const RestrictedOrderTypeInfo: React.FC = () => {
             <PDFLayout content={<RestrictedOrderReport restrictedOrders={restrictedOrderTypes} />} />
         );
         setPdfHtmlContent(htmlContent);
-    }
-}, [restrictedOrderTypes]);
+  }
+}, [restrictedOrderTypes]);
 
   return (
     <>
