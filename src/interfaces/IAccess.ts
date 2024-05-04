@@ -6,6 +6,7 @@ export interface IAccess {
   createdAt: string;
   updatedAt: string;
   orderId: string;
+  accessAreas: string;
 }
 
 export interface IApiResponse {

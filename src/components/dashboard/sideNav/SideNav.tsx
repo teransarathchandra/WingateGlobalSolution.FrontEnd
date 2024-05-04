@@ -17,7 +17,8 @@ const SideNav = () => {
 
   const [expanded, setExpanded] = useState(false);
   const [activeKey, setActiveKey] = useState("1");
-
+  const { employee } = useEmployeeAuthContext();
+  const { handleAppNavigation } = useAppNavigation();
   if (!isEmployee()) {
     return null;
   }
@@ -28,11 +29,16 @@ const SideNav = () => {
     expanded: boolean;
   };
 
-  const handleSelect = (eventKey) => {
+  const handleSelect = async (eventKey) => {
     setActiveKey(eventKey);
-    const route = eventKeyMapping(eventKey);
-    navigate(route);
-    setExpanded(false);
+    if (employee) {
+      const route = eventKeyMapping(eventKey);
+      handleAppNavigation(route, employee.accessToken);
+      setExpanded(false);
+    } else {
+      toastUtil.error("Access Denied!");
+    }
+
   };
 
   const eventKeyMapping = (eventKey) => {

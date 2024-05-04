@@ -36,9 +36,10 @@ const CategoryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
+    fetchAndPrepareCategory();
     setEditDialogOpen(false);
     setAddCategoryOpen(false);
-    fetchAndPrepareCategory();
+   
   };
   const handleAddClick = () => {
     setAddCategoryOpen(true);

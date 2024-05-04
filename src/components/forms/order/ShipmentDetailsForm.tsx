@@ -21,7 +21,7 @@ import { separateDateTime } from "@app_utils/separateDateTime";
 import { createItem, updateItem } from "@app_services/itemService";
 import { filterRestrictedOrders } from "@app_services/restrictedOrderService";
 
-const ShipmentDetailsForm = ({ goNext }) => {
+const ShipmentDetailsForm = ({ goNext, goBack }) => {
 
   const [shipmentDetails, setShipmentDetails] = useSessionStorage('order-shipment-details', {
     itemName: '',
@@ -78,6 +78,10 @@ const ShipmentDetailsForm = ({ goNext }) => {
   //   setFormValue("pickupOrderDate", defaultDate);
   // }, [setFormValue, defaultDate]);
 
+  const handleGoBack = () => {
+    goBack();
+  };
+
   useEffect(() => {
     if (pickupOrderDate) {
       setFormValue("pickupOrderDate", dayjs(pickupOrderDate));
@@ -120,7 +124,7 @@ const ShipmentDetailsForm = ({ goNext }) => {
     } else {
       data.pickupOrderDate = null; // Ensure no date is passed if not a pickup order
     }
-    
+
     try {
       let response;
       if (itemSubmitted && itemObjectId) {
@@ -346,7 +350,8 @@ const ShipmentDetailsForm = ({ goNext }) => {
           </LocalizationProvider>
         )}
       </FlexRow>
-      <FlexRow justifyContent="center" alignItems="center">
+      <FlexRow justifyContent="center" alignItems="center" columnGap="1rem">
+        <PrimaryButton type="button" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="1rem 0" onClick={handleGoBack}>Back</PrimaryButton>
         <PrimaryButton type="submit" width="100px" fontSize="1rem" padding=".5rem 2rem" borderRadius="5px" margin="1rem 0">Next</PrimaryButton>
       </FlexRow>
     </StyledForm>

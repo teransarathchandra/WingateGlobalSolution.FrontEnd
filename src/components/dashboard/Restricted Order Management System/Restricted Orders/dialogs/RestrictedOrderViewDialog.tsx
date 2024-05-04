@@ -6,11 +6,16 @@ import { getOrderById } from '@app_services/orderService';
 import { getSenderById } from "@app_services/senderService";
 import { getReceiverById } from "@app_services/receiverService";
 import { getItemById } from "@app_services/itemService";
+import { getCategoryById } from "@app_services/categoryService";
 import { getAllSubmittedDocumentByItemId, getSubmittedDocumentAccessibleURL } from "@app_services/submittedDocumentService";
 import { sendApprovalEmail } from "@app_services/orderService";
 import { IOrder } from '@app_interfaces/IOrder';
 import { IItem } from '@app_interfaces/IItem';
 import { ISubmittedDocuments } from '@app_interfaces/ISubmittedDocuments';
+import ReactDOMServer from 'react-dom/server';
+import PDFLayout from '@app_components/pdf/PDFLayout';
+import PDFExportDialog from '@app_components/pdf/PDFPreviewDialog';
+import { RestrictedOrderDetailsReport } from "@app_components/pdf/pdfTemplates/RestrictedOrderTypeReport";
 
 
 const Transition = React.forwardRef(function Transition(
@@ -33,9 +38,12 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
 
     const [orderDetails, setOrder] = useState<IOrder>();
     const [itemDetails, setItem] = useState<IItem>();
-    const [documentDetails, setDocumentDetails] = useState<ISubmittedDocuments[] | null>(null);
     const [senderDetails, setSenderDetails] = useState<any>(null);
     const [receiverDetails, setReceiverDetails] = useState<any>(null);
+    const [category, setCategory] = useState<any>(null);
+    const [documentDetails, setDocumentDetails] = useState<ISubmittedDocuments[] | null>(null);
+    const [showPDFDialog, setShowPDFDialog] = useState(false);
+    const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
     useEffect(() => {
         if (isViewClicked && currentResOrderId) {
@@ -50,19 +58,23 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             fetchReceiverDetails(orderDetails.receiverId);
             fetchItemDetails(orderDetails.itemId);
         }
-        // if (itemDetails) {
-        //     fetchDocuments(itemDetails.itemId);
-        // }
-
 
     }, [orderDetails]);
 
     useEffect(() => {
         if (itemDetails) {
             fetchDocuments(itemDetails.itemId);
+            fetchCategory(itemDetails.categoryId)
         }
     }, [itemDetails]);
-    
+
+    useEffect(() => {
+        const htmlContent = ReactDOMServer.renderToString(
+            <PDFLayout content={<RestrictedOrderDetailsReport orderDetails={orderDetails} itemDetails={itemDetails} senderDetails={senderDetails} receiverDetails={receiverDetails} category={category} documentDetails={documentDetails} />} />
+        );
+        setPdfHtmlContent(htmlContent);
+    }, [orderDetails, itemDetails, receiverDetails,category, documentDetails]);
+
 
     const fetchOrder = async () => {
         try {
@@ -100,7 +112,15 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             console.error("Error fetching item details:", error);
         }
     };
-    
+    const fetchCategory = async (categoryId) => {
+        try {
+            const categoryResponse = await getCategoryById(categoryId);
+            setCategory(categoryResponse.data.data.name);
+        } catch (error) {
+            console.error("Error fetching category", error);
+        }
+    };
+
     const fetchDocuments = async (itemId) => {
         try {
             const response = await getAllSubmittedDocumentByItemId(itemId)
@@ -110,7 +130,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
         }
 
     };
-    const fetchAccessibleURL = async (folderName, documentName , itemId ) => {
+    const fetchAccessibleURL = async (folderName, documentName, itemId) => {
         const containerName = "wingatecontainer";
         const blobName = folderName + "/" + insertItemIdBeforeExtension(documentName, itemId);
         try {
@@ -132,7 +152,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
             return documentName + '_' + itemId;
         }
     }
-    
+
     const handleClose = () => {
         handleViewClose();
     };
@@ -165,20 +185,13 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
         handleClose;
     };
 
-
-
-    const handleReport = () => {
-        // onSave(ViewData);
-        // console.log("view data ", ViewData)
-    };
-
     const handleDocumentClick = async (folderName, documentName, e) => {
         e.preventDefault();  // Prevent the link from navigating
-        const url = await fetchAccessibleURL(folderName, documentName , itemDetails?.itemId);
+        const url = await fetchAccessibleURL(folderName, documentName, itemDetails?.itemId);
         if (url !== "#") {
             window.open(url, "_blank");
         }
-        console.log("url" , url)
+        console.log("url", url)
     };
 
     return (
@@ -197,6 +210,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
                 <List>
                     <ListItem>
                         <ListItemText primary="Order ID" secondary={orderDetails?.orderId} />
+                        <ListItemText primary="Order ID" secondary={orderDetails?.status} />
                     </ListItem>
                     <Divider />
 
@@ -205,7 +219,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
                         <ListItemText primary="Item ID" secondary={itemDetails?.itemId} />
                         <ListItemText primary="Item Name" secondary={itemDetails?.itemName} />
                         <ListItemText primary="Weight" secondary={itemDetails?.weight + 'kg'} />
-                        <ListItemText primary="Category" secondary={itemDetails?.categoryId} />
+                        <ListItemText primary="Category" secondary={category} />
                     </ListItem>
                     <ListItem>
                         <ListItemText primary="Item Description" secondary={itemDetails?.description} />
@@ -251,13 +265,23 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
                     </ListItem>
                 ))}
 
-                <div style={{ display: 'flex', justifyContent: "flex-end", gap: '25px', paddingRight: '30px', paddingBottom: '60px' }}>
+                <div style={{ display: 'flex', paddingTop: '40px', justifyContent: "flex-end", gap: '25px', paddingRight: '30px', paddingBottom: '60px' }}>
                     <Button onClick={() => handleEmail()} color="primary">Email</Button>
-                    <Button onClick={() => handleReport()} color="primary" style={{ paddingRight: '80px' }}>Report</Button>
+                    <Button onClick={() => setShowPDFDialog(true)} color="primary" style={{ paddingRight: '80px' }}>Report</Button>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
                     <Button onClick={() => handleApprove(orderDetails?._id)} color="secondary">Approve</Button>
                     <Button onClick={() => handleReject(orderDetails?._id)} color="error">Reject</Button>
                 </div>
+
+                {showPDFDialog && (
+                    <PDFExportDialog
+                        open={showPDFDialog}
+                        onClose={() => setShowPDFDialog(false)}
+                        htmlContent={pdfHtmlContent}
+                        filename="RestrictedOrderDetailReport.pdf"
+                    />
+                )}
+
             </>
 
         </Dialog>
