@@ -12,7 +12,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@app_assets/images/logo.png";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
-import { useNavigate } from "react-router-dom";
 
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import toastUtil from '@app_utils/toastUtil'
@@ -20,7 +19,6 @@ import { useAppNavigation } from '@app_utils/appNavigation'
 
 const SideNav = () => {
   // const { employee } = useSelector((state: IRootState) => state.auth);
-  const navigate = useNavigate();
   const { isEmployee } = useActiveAuthContext();
 
   const [expanded, setExpanded] = useState(false);

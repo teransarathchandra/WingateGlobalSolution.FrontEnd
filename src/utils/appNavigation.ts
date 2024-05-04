@@ -13,8 +13,21 @@ export function useAppNavigation() {
                 destination: route
             }
             toastUtil.info("Waiting For Access!");
-            await canAccess(accessData);
-            navigate(route);
+            await canAccess(accessData).then(response => {
+
+                console.log('Resp:', response);
+                if (response.data && response.data.destination) {
+                    navigate(response.data.destination);
+                } else {
+                    console.error('No page URL found in the response');
+                    navigate("portal-welcome");
+                }
+            })
+                .catch(error => {
+                    console.error('Error accessing data:', error);
+                    navigate(error.destination || "portal-welcome");
+                });;
+
         } else {
             toastUtil.error("Access Denied!");
         }
