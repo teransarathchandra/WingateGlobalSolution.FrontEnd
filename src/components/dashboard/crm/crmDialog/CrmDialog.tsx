@@ -25,7 +25,7 @@ interface UserDetailsDialogProps {
 
 const dialogStyle = {
     background: '#f4f4f4',
-    position: 'absolute' as 'absolute', 
+    position: 'absolute' as const,  
     top: '0',  
     right: '0',  
     height: '100%',  
@@ -33,9 +33,10 @@ const dialogStyle = {
     maxWidth: '600px', 
     borderTopLeftRadius: '0px',  
     borderBottomLeftRadius: '0px',  
-    overflowY: 'auto' as 'auto',  
+    overflowY: 'auto' as const,  
     transition: 'transform 0.3s ease-in-out'  
 };
+
 
 const contentContainerStyle = {
     padding: '20px',

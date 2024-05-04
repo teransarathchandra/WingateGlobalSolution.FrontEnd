@@ -59,7 +59,7 @@ const ReusabletableSandeepa: React.FC<ReusableTableProps> = ({
   
 
   const sortedRows = React.useMemo(() => {
-    let sortableItems = [...rows];
+    const sortableItems = [...rows];
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
