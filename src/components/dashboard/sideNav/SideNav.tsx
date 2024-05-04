@@ -38,9 +38,10 @@ const SideNav = () => {
   const handleSelect = async (eventKey) => {
     setActiveKey(eventKey);
     if (employee) {
+      console.log("Side", employee)
       const route = eventKeyMapping(eventKey);
       const accessData = {
-        id: employee._id,
+        token: employee.accessToken,
         destination: route
       }
       toastUtil.info("Waiting For Access!");
@@ -192,7 +193,7 @@ const SideNav = () => {
                     icon={<MagicIcon />}
                   >
                     <Nav.Item eventKey="7-1" onSelect={handleSelect}>Employee Management</Nav.Item>
-                    <Nav.Item eventKey="7-2" onSelect={handleSelect}>Access</Nav.Item>
+                    <Nav.Item eventKey="7-2" onSelect={handleSelect}>Employee Access</Nav.Item>
                   </Nav.Menu>
                 </Nav>
               </Sidenav.Body>
