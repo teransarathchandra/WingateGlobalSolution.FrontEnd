@@ -102,7 +102,6 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
     };
     
     const fetchDocuments = async (itemId) => {
-        debugger;
         try {
             const response = await getAllSubmittedDocumentByItemId(itemId)
             setDocumentDetails(response.data);
@@ -126,7 +125,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
         const parts = documentName.split('.');
         if (parts.length > 1) {
             // Assumes there is at least one dot in the filename
-            let extension = parts.pop();  // Remove and capture the extension
+            const extension = parts.pop();  // Remove and capture the extension
             return parts.join('.') + '_' + itemId + '.' + extension;  // Reassemble with itemId before the extension
         } else {
             // No extension found, fallback to original method

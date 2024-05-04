@@ -44,7 +44,6 @@ const OrderInfo: React.FC = () => {
   };
 
   const fetchAndPrepareOrders = async () => {
-    debugger;
     try {
       const aggType = "restrictedOrders";
       const response = await getAllOrders(aggType);
