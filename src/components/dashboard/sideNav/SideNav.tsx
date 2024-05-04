@@ -40,7 +40,6 @@ const SideNav = () => {
   const handleSelect = async (eventKey) => {
     setActiveKey(eventKey);
     if (employee) {
-      console.log("Side", employee)
       const route = eventKeyMapping(eventKey);
       handleAppNavigation(route, employee.accessToken);
       setExpanded(false);
