@@ -21,6 +21,7 @@ import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
 import IEmployee from "@app_interfaces/IEmployee";
 import { getAllAccess } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
+import { password } from "@app_constants/regExp";
 
 const columns: IColumn[] = [
   {
@@ -95,10 +96,12 @@ const EmployeeManageBox: React.FC = () => {
   const fetchEmployees = async () => {
     try {
       const response = await getAllEmployee("withAccess");
+
       console.log(response);
       const preparedAccess: IRow[] = response.data.map((employee: IEmployee) => ({
         ...employee,
         _id: employee._id,
+        password: null,
         fullName: (employee?.name?.firstName || "") + " " + (employee?.name?.lastName || " "),
         createdAt: new Date(employee.createdAt as Date).toLocaleDateString(),
         edit: (
@@ -169,7 +172,8 @@ const EmployeeManageBox: React.FC = () => {
         password: employee.password,
         contactNumber: employee.contactNumber,
         designationId: "65d44e402cdc44e12fe28378",
-        focus: employee.focus
+        focus: employee.focus,
+        accessLevels: employee.accessLevels
       }
 
       const response = await createEmployee(payload);
@@ -181,18 +185,28 @@ const EmployeeManageBox: React.FC = () => {
     }
   };
 
-  const saveAccess = async (employeeData: IEmployee) => {
-    console.log("Saving Access:", employeeData);
+  const saveAccess = async (employee) => {
+    console.log("Saving Access:", employee);
     try {
 
-      const employeeId = employeeData._id;
+      const employeeId = employee._id;
       const empUpdateData = {
         name: {
-          firstName: employeeData.name.firstName,
-          lastName: employeeData.name.lastName,
+          firstName: employee.name.firstName,
+          lastName: employee.name.lastName
         },
-        email: employeeData.email,
-        contactNumber: employeeData.contactNumber,
+        address: {
+          street: employee.address.street,
+          city: employee.address.city,
+          state: employee.address.state,
+          country: employee.address.country
+        },
+        email: employee.email,
+        password: employee.password,
+        contactNumber: employee.contactNumber,
+        designationId: "65d44e402cdc44e12fe28378",
+        focus: employee.focus,
+        accessLevel: employee.accessLevel
       };
 
       if (employeeId) {
@@ -309,12 +323,14 @@ const EmployeeManageBox: React.FC = () => {
             type: "text",
             disabled: false
           },
-          // {
-          //   name: "accessLevel",
-          //   label: "Access Level",
-          //   type: "dropdown",
-          //   disabled: false,
-          // }
+          {
+            name: "accessLevel",
+            label: "Access Level",
+            type: "dropdown",
+            disabled: false,
+            options: accessLevels,
+            default: "accessLevel"
+          }
         ]}
         onSave={saveAccess}
         onDelete={ondeleteEmployee}
