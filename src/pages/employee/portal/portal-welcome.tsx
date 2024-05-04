@@ -16,11 +16,6 @@ import warehouseIcon from "@app_assets/images/warehouse.png"
 import driverIcon from "@app_assets/images/driver.png"
 import empManager from "@app_assets/images/empManager.png"
 import empAccessIcon from "@app_assets/images/empAccess.png"
-
-
-
-
-
 import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 
@@ -101,6 +96,7 @@ const GridTitle = styled.h2`
   font-size: 22px;
   margin-bottom: 15px;
   text-align: left;
+  padding: 10px;
 `;
 
 const MenuGrid = styled.div`
@@ -122,7 +118,7 @@ const MessageContainer = styled.div`
   margin: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  align-items: flex-start;
 `;
 
 
