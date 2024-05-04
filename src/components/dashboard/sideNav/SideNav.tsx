@@ -13,8 +13,9 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@app_assets/images/logo.png";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 import { useNavigate } from "react-router-dom";
-// import IRootState from "@app_interfaces/IRootState";
-// import { useSelector } from "react-redux";
+import { canAccess } from "@app_services/employeeService";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import toastUtil from '@app_utils/toastUtil'
 
 const SideNav = () => {
   // const { employee } = useSelector((state: IRootState) => state.auth);
@@ -23,7 +24,7 @@ const SideNav = () => {
 
   const [expanded, setExpanded] = useState(false);
   const [activeKey, setActiveKey] = useState("1");
-
+  const { employee } = useEmployeeAuthContext();
   if (!isEmployee()) {
     return null;
   }
@@ -34,11 +35,23 @@ const SideNav = () => {
     expanded: boolean;
   };
 
-  const handleSelect = (eventKey) => {
+  const handleSelect = async (eventKey) => {
     setActiveKey(eventKey);
-    const route = eventKeyMapping(eventKey);
-    navigate(route);
-    setExpanded(false);
+    if (employee) {
+      const route = eventKeyMapping(eventKey);
+      const accessData = {
+        id: employee._id,
+        destination: route
+      }
+      toastUtil.info("Waiting For Access!");
+      await canAccess(accessData);
+      navigate(route);
+      setExpanded(false);
+    } else {
+      toastUtil.error("Access Denied!");
+    }
+
+
   };
 
   const eventKeyMapping = (eventKey) => {
