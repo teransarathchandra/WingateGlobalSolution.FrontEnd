@@ -4,9 +4,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "../../../../../interfaces/ITable";
 import ReusableTable from "../../../../shared/ReusableTable";
-import { getAllCategory, updateCategory, deleteCategory } from "../../../../../services/categoryService";
+import { createCategory, getAllCategory, updateCategory, deleteCategory } from "../../../../../services/categoryService";
 import { ICategory } from "../../../../../interfaces/ICategory";
 import EditDialog from "../../../../dialog/EditDialog";
+import AddCategoryForm from "../dialogs/CategoryAddDialog";
 
 const columns: IColumn[] = [
   { id: "categoryId", label: "Category ID", numeric: false, disablePadding: true },
@@ -19,8 +20,15 @@ const columns: IColumn[] = [
 
 const CategoryInfo: React.FC = () => {
   const [category, setCategory] = useState<IRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [isEditDialogOpen, setEditDialogOpen] = useState(false);
   const [currentCategory, setCurrentCategory] = useState<ICategory | null>(null);
+  const [isAddCategoryOpen, setAddCategoryOpen] = useState(false);
+
+  useEffect(() => {
+    fetchAndPrepareCategory();
+  }, []);
+
 
   const handleEditClick = (category: ICategory) => {
     setCurrentCategory(category);
@@ -28,16 +36,43 @@ const CategoryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
+    fetchAndPrepareCategory();
     setEditDialogOpen(false);
+    setAddCategoryOpen(false);
+   
   };
+  const handleAddClick = () => {
+    setAddCategoryOpen(true);
+  };
+  const handleDelete = (countryId) => {
+    handleDeleteCategory(countryId)
+    fetchAndPrepareCategory();
+  };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+
+
+  const handleAddCategory = async (category: ICategory) => {
+    try {
+      createCategory(category);
+      fetchAndPrepareCategory();
+
+    } catch (error) {
+      console.error('Failed to fetch categories', error);
+    }
+  };
+
 
   const fetchAndPrepareCategory = async () => {
     try {
       const response = await getAllCategory();
-      const preparedCategory: IRow[] = response.data.data.map((category: ICategory) => ({
+      const preparedCategory: IRow[] = response.data.map((category: ICategory) => ({
         ...category,
         edit: <button onClick={() => handleEditClick(category)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer", color: "#0c1821" }} /></button>,
-        delete: <button onClick={() => handleDeleteCategory(category?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
+        delete: <button onClick={() => handleDelete(category?._id)} style={{ all: 'unset' }}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer", color: "#dd0426" }} /></button>,
       }));
       setCategory(preparedCategory);
     } catch (error) {
@@ -45,22 +80,12 @@ const CategoryInfo: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAndPrepareCategory();
-  }, []);
-
   const saveCategory = async (categoryData) => {
     console.log('Saving category:', categoryData);
-    setEditDialogOpen(false);
+
     try {
       const categoryId = currentCategory?._id;
       if (categoryId) {
-
-        // const dataToUpdate = categoryData;
-        // console.log(dataToUpdate);
-        // delete dataToUpdate._id;
-        // delete dataToUpdate.categoryId;
-        // console.log(dataToUpdate);
 
         const data = {
           name: categoryData.name,
@@ -70,9 +95,9 @@ const CategoryInfo: React.FC = () => {
         await updateCategory(categoryId, data);
         console.log('category updated successfully');
 
-        fetchAndPrepareCategory();
+        handleClose();
       }
-      setEditDialogOpen(false);
+
     } catch (error) {
       console.error('Failed to update category', error);
     }
@@ -102,20 +127,32 @@ const CategoryInfo: React.FC = () => {
         rows={category}
         title="Category"
         rowKey="categoryID"
+        onAdd={handleAddClick}
+        showAddButton={true}
+        // showSearchBar={true}
+        // label="Search"
+        //onSearch={handleSearch}
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
       />
-      {<EditDialog
+      <AddCategoryForm
+        onAdd={handleAddCategory}
+        isOpen={isAddCategoryOpen}
+        handleClose={handleClose}
+      />
+      <EditDialog
         isOpen={isEditDialogOpen}
         handleClose={() => setEditDialogOpen(false)}
         entity={currentCategory}
         fields={[
-          { name: 'categoryId', label: 'Category Id', type: 'text', disabled: false },
+          { name: 'categoryId', label: 'Category Id', type: 'text', disabled: true },
           { name: 'name', label: 'Name', type: 'text', disabled: false },
           { name: 'description', label: 'Description', type: 'text', disabled: false },
           { name: 'costPerKilo', label: 'Cost Per Kilo', type: 'number', disabled: false },
         ]}
         onSave={saveCategory}
         onDelete={deleteCategory}
-      />}
+      />
     </>
   );
 };

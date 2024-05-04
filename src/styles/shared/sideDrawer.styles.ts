@@ -9,6 +9,7 @@ export const Drawer = styled.div`
   background-color: #e1bd05;
   width: 300px;
   min-height: 100vh;
+  z-index: 2;
 `;
 
 export const HeaderImage = styled.img`
@@ -58,7 +59,7 @@ export const StepIndicator = styled.div<{ isActive: boolean }>`
   &::before {
     content: "";
     position: absolute;
-    margin: -20px 0;
+    margin: -15px 0;
     height: 50px;
     width: 1px;
     z-index: ${({ isActive }) => isActive ? -1 : 1 };

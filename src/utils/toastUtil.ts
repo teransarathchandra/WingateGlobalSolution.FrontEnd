@@ -6,20 +6,26 @@ const toastUtil = {
         toast.success(message, {
             // Customization options
             duration: 4000,
-            position: 'top-right',
+            position: 'bottom-right',
         });
     },
     error: (message) => {
         toast.error(message, {
             // Customization options
             duration: 4000,
-            position: 'top-right',
+            position: 'bottom-right',
         });
     },
     info: (message) => {
         toast(message, { // Default toast for informational messages
             duration: 4000,
-            position: 'top-right',
+            position: 'bottom-right',
+        });
+    },
+    loading: (message) => {
+        toast.loading(message, {
+            duration: 4000,
+            position: 'bottom-right',
         });
     },
     // Add more custom functions as needed

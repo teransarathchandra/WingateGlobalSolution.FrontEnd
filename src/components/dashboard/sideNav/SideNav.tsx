@@ -11,16 +11,21 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@app_assets/images/logo.png";
-import IRootState from "@app_interfaces/IRootState";
-import { useSelector } from "react-redux";
+import { useActiveAuthContext } from "@app_contexts/authActiveContext";
+
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import toastUtil from '@app_utils/toastUtil'
+import { useAppNavigation } from '@app_utils/appNavigation'
 
 const SideNav = () => {
-  const { employee } = useSelector((state: IRootState) => state.auth);
+  // const { employee } = useSelector((state: IRootState) => state.auth);
+  const { isEmployee } = useActiveAuthContext();
 
   const [expanded, setExpanded] = useState(false);
   const [activeKey, setActiveKey] = useState("1");
-
-  if (!employee?.isAdmin) {
+  const { employee } = useEmployeeAuthContext();
+  const { handleAppNavigation } = useAppNavigation();
+  if (!isEmployee()) {
     return null;
   }
 
@@ -28,6 +33,40 @@ const SideNav = () => {
 
   type Expand = {
     expanded: boolean;
+  };
+
+  const handleSelect = async (eventKey) => {
+    setActiveKey(eventKey);
+    if (employee) {
+      const route = eventKeyMapping(eventKey);
+      handleAppNavigation(route, employee.accessToken);
+      setExpanded(false);
+    } else {
+      toastUtil.error("Access Denied!");
+    }
+
+  };
+
+  const eventKeyMapping = (eventKey) => {
+    const mapping = {
+      '1-1': 'app/order',
+      '2-1': 'app/restricted-orders',
+      '2-2': 'app/restricted-order-type',
+      '2-3': 'app/country',
+      '2-4': 'app/category',
+      '3-1': 'app/order-aggregation',
+      '3-2': 'app/bulk-details',
+      '3-3': 'app/bulk',
+      '3-4': 'app/flight',
+      '3-5': 'app/airline',
+      '4-1': 'app/crm',
+      '5-1': 'app/user',
+      '6-1': 'app/warehouseInfo',
+      '6-2': 'app/assign-details',
+      '7-1': 'app/employee-manage',
+      '7-2': 'app/employee-access',
+    };
+    return mapping[eventKey] || '/';
   };
 
   const Container = styled.div<Expand>`
@@ -65,7 +104,7 @@ const SideNav = () => {
           <Overlay show={expanded} onClick={() => setExpanded(false)} />
           <Container expanded={expanded}>
             <Sidenav
-              defaultOpenKeys={["1", "2", "3"]}
+              // defaultOpenKeys={["1", "2", "3", "4", "5", "6"]}
               style={{ minHeight: "100vh" }}
             >
               <Sidenav.Header
@@ -82,37 +121,71 @@ const SideNav = () => {
                 />
               </Sidenav.Header>
               <Sidenav.Body>
-                <Nav activeKey={activeKey} onSelect={setActiveKey}>
+                <Nav activeKey={activeKey}>
                   <Nav.Menu
                     placement="rightStart"
                     eventKey="1"
-                    title="Customers"
+                    title="Order"
                     icon={<MagicIcon />}
                   >
-                    <Nav.Item eventKey="1-1">Customer Info</Nav.Item>
+                    <Nav.Item eventKey="1-1" onSelect={handleSelect}>Order Management</Nav.Item>
                   </Nav.Menu>
                   <Nav.Menu
                     placement="rightStart"
                     eventKey="2"
-                    title="Orders"
+                    title="Restricted Order"
                     icon={<MagicIcon />}
                   >
-                    <Nav.Item eventKey="2-1">Order Info</Nav.Item>
-                    <Nav.Item eventKey="2-1">
-                      Restricted Order Approval
-                    </Nav.Item>
-                    <Nav.Item eventKey="2-1">Dummy Option</Nav.Item>
+                    <Nav.Item eventKey="2-1" onSelect={handleSelect}>Restricted Orders</Nav.Item>
+                    <Nav.Item eventKey="2-2" onSelect={handleSelect}>Restricted Order Types</Nav.Item>
+                    <Nav.Item eventKey="2-3" onSelect={handleSelect}>Country Info</Nav.Item>
+                    <Nav.Item eventKey="2-4" onSelect={handleSelect}>Category Info</Nav.Item>
                   </Nav.Menu>
                   <Nav.Menu
                     placement="rightStart"
                     eventKey="3"
-                    title="Customer Information"
+                    title="Transport"
                     icon={<MagicIcon />}
                   >
-                    <Nav.Item eventKey="3-1">Customer Information</Nav.Item>
-                    <Nav.Item eventKey="3-2">Customer Information</Nav.Item>
-                    <Nav.Item eventKey="3-3">Customer Information</Nav.Item>
-                    <Nav.Item eventKey="3-4">Customer Information</Nav.Item>
+                    <Nav.Item eventKey="3-1" onSelect={handleSelect}>Order Aggregation</Nav.Item>
+                    <Nav.Item eventKey="3-2" onSelect={handleSelect}>Bulk Details</Nav.Item>
+                    <Nav.Item eventKey="3-3" onSelect={handleSelect}>Bulk</Nav.Item>
+                    <Nav.Item eventKey="3-4" onSelect={handleSelect}>Flight</Nav.Item>
+                    <Nav.Item eventKey="3-5" onSelect={handleSelect}>Airline</Nav.Item>
+                  </Nav.Menu>
+                  <Nav.Menu
+                    placement="rightStart"
+                    eventKey="4"
+                    title="Customer"
+                    icon={<MagicIcon />}
+                  >
+                    <Nav.Item eventKey="4-1" onSelect={handleSelect}>Customer Info</Nav.Item>
+                  </Nav.Menu>
+                  <Nav.Menu
+                    placement="rightStart"
+                    eventKey="5"
+                    title="User"
+                    icon={<MagicIcon />}
+                  >
+                    <Nav.Item eventKey="5-1" onSelect={handleSelect}>User Info</Nav.Item>
+                  </Nav.Menu>
+                  <Nav.Menu
+                    placement="rightStart"
+                    eventKey="6"
+                    title="Warehouse"
+                    icon={<MagicIcon />}
+                  >
+                    <Nav.Item eventKey="6-1" onSelect={handleSelect}>Warehouse Availability</Nav.Item>
+                    <Nav.Item eventKey="6-2" onSelect={handleSelect}>Assign Drivers</Nav.Item>
+                  </Nav.Menu>
+                  <Nav.Menu
+                    placement="rightStart"
+                    eventKey="7"
+                    title="Employee"
+                    icon={<MagicIcon />}
+                  >
+                    <Nav.Item eventKey="7-1" onSelect={handleSelect}>Employee Management</Nav.Item>
+                    <Nav.Item eventKey="7-2" onSelect={handleSelect}>Employee Access</Nav.Item>
                   </Nav.Menu>
                 </Nav>
               </Sidenav.Body>

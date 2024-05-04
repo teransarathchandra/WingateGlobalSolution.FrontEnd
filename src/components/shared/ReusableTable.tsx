@@ -7,13 +7,37 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField,
+  TextField
 } from "@mui/material";
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
+import AddButton from "./AddButton";
 
-const ReusableTable = ({ columns, rows, title, rowKey }) => {
+interface ReusableTableProps {
+  columns;
+  rows;
+  title;
+  rowKey;
+  onAdd?: () => void;
+  showAddButton?: boolean;
+  showActiveSwitch?: boolean;
+  searchTerm?: string;
+  handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch, searchTerm, handleSearch }) => {
+
+  const filteredRows = rows.filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(searchTerm?.toLowerCase() || '')
+    )
+  );
+
+  const getNestedValue = (obj, path) => {
+    return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
       <div
@@ -38,18 +62,28 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
         <Paper sx={{ width: "100%", mb: 2 }}>
           <FlexRow
             style={{
+              display: 'flex',
               alignItems: "center",
-              justifyContent: "space-between",
-              margin: "0 2rem 0 0",
+              padding: "1rem 0",
+              justifyContent: "space-between"
             }}
           >
-            <TextField
-              style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
-              label="Search"
-              id="outlined-size-small"
-              size="small"
-            />
-            <SwitchBtn />
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
+              <TextField
+                style={{ width: "300px", margin: "1rem 0 2rem 1rem" }}
+                label="Search"
+                id="outlined-size-small"
+                size="small"
+                value={searchTerm}
+                onChange={handleSearch || (() => { })}
+              />
+            </div>
+            <div>
+              {showActiveSwitch && <SwitchBtn />}
+            </div>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', paddingRight: "55px" }}>
+              {showAddButton && onAdd && <AddButton onClick={onAdd} />}
+            </div>
           </FlexRow>
           <TableContainer>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -69,11 +103,14 @@ const ReusableTable = ({ columns, rows, title, rowKey }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row: IRow) => {
+                {filteredRows.map((row: IRow) => {
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (
-                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id == 'edit' || column.id == 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
+                        // <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
+                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>
+                          {getNestedValue(row, column.id)}
+                        </TableCell>
                       ))}
                     </TableRow>
                   );

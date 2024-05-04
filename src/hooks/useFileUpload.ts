@@ -1,16 +1,17 @@
 import api from '@app_utils/apiUtils';
 import { useState } from 'react';
 
-const useFileUpload = (url, initialFolderPath) => {
+const useFileUpload = (url, initialFolderPath, itemID , documentType) => {
+    console.log('itemIDabc', itemID)
     const [file, setFile] = useState(null);
     const [folderPath, setFolderPath] = useState(initialFolderPath);
 
     const handleFileChange = async (event) => {
         const newFile = event.target.files[0];
         setFile(newFile);
-        if (newFile) {
-            await handleFileUpload(newFile);
-        }
+        // if (newFile) {
+        //     await handleFileUpload(newFile);
+        // }
     };
 
     const handleFileUpload = async (uploadFile) => {
@@ -19,6 +20,8 @@ const useFileUpload = (url, initialFolderPath) => {
 
         const formData = new FormData();
         formData.append("folderPath", folderPath);
+        formData.append("itemId", itemID);
+        formData.append("documentType", documentType);
         formData.append("file", uploadFile, filenameWithTimestamp);
 
         const response = await api.post(url, formData, {
@@ -27,7 +30,6 @@ const useFileUpload = (url, initialFolderPath) => {
             },
         });
         return response.data;
-
     };
 
     return {

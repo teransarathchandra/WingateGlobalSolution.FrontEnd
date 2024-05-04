@@ -15,6 +15,7 @@ import { updateBulkSchema } from "@app_schemas/bulk/updateBulk";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IFlight } from "@app_interfaces/IFlight";
 import { getAllFlights } from "@app_services/flightService";
+import { IApiResponse } from "@app_interfaces/ICountry";
 
 const BulkDetails = () => {
     const [bulkData, setBulkData] = useState<IBulk | null>(null);
@@ -34,7 +35,7 @@ const BulkDetails = () => {
         try {
           const aggFlight = 'airlineIds';
           const response = await getAllFlights(aggFlight);
-          const preparedFlights = response.data.data.map((flight: IFlight) => ({
+          const preparedFlights = response.data.map((flight: IApiResponse) => ({
             ...flight,
            
           }));
@@ -50,6 +51,7 @@ const BulkDetails = () => {
                 const response = await getLastAddedBulk(aggType);
                 if (response) {
                     setBulkData(response.data[0]);
+                    console.log(response.data[0]);
                     const formattedDate = await separateDateTime( response.data[0].createdAt, "YYYY-MM-DD" );
                     setBulkCreatedDate(formattedDate.date);
                     setBulkCreatedTime(formattedDate.time);
@@ -63,7 +65,10 @@ const BulkDetails = () => {
         fetchLastBulk();
     }, []);
 
+    console.log(bulkData)
+
     const bulkId = bulkData?.bulkId;
+    const destinationCountry = bulkData?.destinationCountry;
 
     const handleUpdate = async (data) => {
         try {
@@ -90,7 +95,7 @@ const BulkDetails = () => {
                     Bulk ID : {bulkId}
                     <br />
                     <br />
-                    Destination Country : {bulkData?.destinationCountry}
+                    Destination Country : {destinationCountry}
                     <br />
                     <br />
                     Created Date : {bulkCreatedDate}
