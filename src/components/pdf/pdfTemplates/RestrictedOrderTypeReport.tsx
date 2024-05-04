@@ -42,6 +42,10 @@ const RestrictedOrderDetailsReport = ({ orderDetails, itemDetails, senderDetails
                             <th style={{ borderBottom: '1px solid #ddd', padding: '12px', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Order ID</th>
                             <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{orderDetails?.orderId}</td>
                         </tr>
+                        <tr>
+                            <th style={{ borderBottom: '1px solid #ddd', padding: '12px', fontWeight: 'bold', fontSize: '16px', color: '#333' }}>Order Status</th>
+                            <td style={{ borderBottom: '1px solid #ddd', padding: '12px' }}>{orderDetails?.status}</td>
+                        </tr>
                     </tbody>
                 </table>
     

@@ -219,6 +219,7 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
                 <List>
                     <ListItem>
                         <ListItemText primary="Order ID" secondary={orderDetails?.orderId} />
+                        <ListItemText primary="Order ID" secondary={orderDetails?.status} />
                     </ListItem>
                     <Divider />
 
