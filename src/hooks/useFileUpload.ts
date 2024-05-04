@@ -9,9 +9,9 @@ const useFileUpload = (url, initialFolderPath, itemID , documentType) => {
     const handleFileChange = async (event) => {
         const newFile = event.target.files[0];
         setFile(newFile);
-        if (newFile) {
-            await handleFileUpload(newFile);
-        }
+        // if (newFile) {
+        //     await handleFileUpload(newFile);
+        // }
     };
 
     const handleFileUpload = async (uploadFile) => {

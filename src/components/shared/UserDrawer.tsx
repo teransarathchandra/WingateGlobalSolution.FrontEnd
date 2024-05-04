@@ -1,14 +1,14 @@
 import {
   Avatar,
   Box,
-  Divider,
+  // Divider,
   IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
   Tooltip,
 } from "@mui/material";
-import Settings from "@mui/icons-material/Settings";
+// import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import useAuth from "@app_hooks/useAuth";
 import { useState } from "react";

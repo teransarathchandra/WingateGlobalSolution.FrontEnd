@@ -16,7 +16,6 @@ import warehouseIcon from "@app_assets/images/warehouse.png"
 import driverIcon from "@app_assets/images/driver.png"
 import empManager from "@app_assets/images/empManager.png"
 import empAccessIcon from "@app_assets/images/empAccess.png"
-import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 
 // ProfileImage Component
@@ -187,10 +186,6 @@ const App = () => {
 
 
     ];
-
-const handleSelect = (path) => {
-
-}
 
     return (
         <PageWrapper>

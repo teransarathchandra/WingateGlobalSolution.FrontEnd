@@ -4,8 +4,8 @@ import { FlexRow } from "@app_styles/signForm.styles";
 const EmployeeSignIn = () => {
   return (
     <>
-    <FlexRow style={{ justifyContent: "center" }} >
-      <EmpSignInBox onSignUpClick={ () => null } />
+      <FlexRow style={{ justifyContent: "center" }} >
+        <EmpSignInBox onSignUpClick={() => null} />
       </FlexRow>
     </>
   )

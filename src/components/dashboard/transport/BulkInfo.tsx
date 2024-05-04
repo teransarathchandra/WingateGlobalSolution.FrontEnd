@@ -9,6 +9,11 @@ import { IBulk } from "../../../interfaces/IBulk";
 import EditDropdown from "../../dialog/EditDropdown";
 import { getAllFlights } from "@app_services/flightService";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import Button from '@mui/material/Button';
+import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
+import BulkReport from "@app_components/pdf/pdfTemplates/BulkReport";
+import ReactDOMServer from 'react-dom/server';
+import PDFLayout from '@app_components/pdf/PDFLayout';
 
 
 const columns: IColumn[] = [
@@ -29,6 +34,8 @@ const BulkInfo: React.FC = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [currentBulk, setCurrentBulk] = useState<IBulk | null>(null);
   const [flightOptions, setFlightOptions] = useState([]);
+  const [showPDFDialog, setShowPDFDialog] = useState(false);
+  const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
   const handleViewClick = (bulk: IBulk) => {
     setIsViewOpen(true);
@@ -136,7 +143,16 @@ const BulkInfo: React.FC = () => {
     { value: "Departed", label: "Departed" },
     { value: "In Transit", label: "In Transit" },
 
-  ]
+  ];
+
+  useEffect(() => {
+    if (bulks.length > 0) {
+        const htmlContent = ReactDOMServer.renderToString(
+            <PDFLayout content={<BulkReport bulks={bulks} />} />
+        );
+        setPdfHtmlContent(htmlContent);
+    }
+}, [bulks]);
 
 
   return (
@@ -186,6 +202,31 @@ const BulkInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}        
         handleDelete={handleDeleteBulk}
       />
+        <Button onClick={() => setShowPDFDialog(true)} style={
+          {
+            backgroundColor: "#e1bd05",
+            position: "fixed",
+            marginTop: "40px",
+            color:"#fff ",
+            padding: "5px",
+            borderRadius:"10px",
+            cursor: "pointer",
+            border: "2px solid #e1bd05",
+            bottom: "20px",
+            right: "40px",
+
+            }}>
+                    Export PDF
+                </Button>
+            
+            {showPDFDialog && (
+                <PDFExportDialog
+                    open={showPDFDialog}
+                    onClose={() => setShowPDFDialog(false)}
+                    htmlContent={pdfHtmlContent}
+                    filename="BulkReport.pdf"
+                />
+            )}
     </>
   );
 };

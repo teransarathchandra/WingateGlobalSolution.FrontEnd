@@ -1,5 +1,5 @@
 import { lazy } from "react";
-
+import { IRoute } from "@app_interfaces/IRoute"
 //Landing
 const Home = lazy(() => import("@app_pages/Home"));
 
@@ -42,13 +42,19 @@ const Airline = lazy(() => import("@app_pages/transport/Airline"));
 const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 
 //Warehouse
-const Warehouse = lazy(() => import("@app_pages/dashboard/warehouse/WarehouseAvailability"));
+const Warehouse = lazy(
+  () => import("@app_pages/dashboard/warehouse/WarehouseAvailability")
+);
 
 //Warehouse Infor
-const WarehouseInfo = lazy(() => import("@app_pages/dashboard/warehouse/WarehouseInfo"));
+const WarehouseInfo = lazy(
+  () => import("@app_pages/dashboard/warehouse/WarehouseInfo")
+);
 
 //Assign Details
-const AssignDetails = lazy(() => import("@app_pages/dashboard/warehouse/AssignDetails"));
+const AssignDetails = lazy(
+  () => import("@app_pages/dashboard/warehouse/AssignDetails")
+);
 
 //Order Aggregation
 const OrderAggregation = lazy(
@@ -88,10 +94,9 @@ const UserPassword = lazy(() => import("@app_pages/user/UserPassword"));
 const Customer = lazy(() => import("@app_pages/dashboard/crm/Customer"));
 
 //portal
-const portal = lazy(() => import("@app_pages/employee/portal/portal-welcome"));
+const Portal = lazy(() => import("@app_pages/employee/portal/portal-welcome"));
 
-
-export const privateRoutes = [
+export const privateRoutes: IRoute[] = [
   {
     path: "/order",
     component: PlaceOrder,
@@ -226,13 +231,13 @@ export const privateRoutes = [
   },
   {
     path: "/app/portal-welcome",
-    component: portal,
+    component: Portal,
     isPrivate: true,
     forEmployeeOnly: true,
   },
 ];
 
-export const publicRoutes = [
+export const publicRoutes: IRoute[] = [
   {
     path: "/",
     component: Home,

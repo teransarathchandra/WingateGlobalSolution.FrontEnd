@@ -12,18 +12,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@app_assets/images/logo.png";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
-import { useNavigate } from "react-router-dom";
-// import IRootState from "@app_interfaces/IRootState";
-// import { useSelector } from "react-redux";
+
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import toastUtil from '@app_utils/toastUtil'
+import { useAppNavigation } from '@app_utils/appNavigation'
 
 const SideNav = () => {
   // const { employee } = useSelector((state: IRootState) => state.auth);
-  const navigate = useNavigate();
   const { isEmployee } = useActiveAuthContext();
 
   const [expanded, setExpanded] = useState(false);
   const [activeKey, setActiveKey] = useState("1");
-
+  const { employee } = useEmployeeAuthContext();
+  const { handleAppNavigation } = useAppNavigation();
   if (!isEmployee()) {
     return null;
   }
@@ -34,11 +35,16 @@ const SideNav = () => {
     expanded: boolean;
   };
 
-  const handleSelect = (eventKey) => {
+  const handleSelect = async (eventKey) => {
     setActiveKey(eventKey);
-    const route = eventKeyMapping(eventKey);
-    navigate(route);
-    setExpanded(false);
+    if (employee) {
+      const route = eventKeyMapping(eventKey);
+      handleAppNavigation(route, employee.accessToken);
+      setExpanded(false);
+    } else {
+      toastUtil.error("Access Denied!");
+    }
+
   };
 
   const eventKeyMapping = (eventKey) => {
@@ -179,7 +185,7 @@ const SideNav = () => {
                     icon={<MagicIcon />}
                   >
                     <Nav.Item eventKey="7-1" onSelect={handleSelect}>Employee Management</Nav.Item>
-                    <Nav.Item eventKey="7-2" onSelect={handleSelect}>Access</Nav.Item>
+                    <Nav.Item eventKey="7-2" onSelect={handleSelect}>Employee Access</Nav.Item>
                   </Nav.Menu>
                 </Nav>
               </Sidenav.Body>
