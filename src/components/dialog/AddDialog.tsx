@@ -41,7 +41,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: schema ? yupResolver(schema) : undefined,
-        // defaultValues: entity || {},
+        //defaultValues: entity || {},
     });
 
     const [formData, setFormData] = useState(entity || {});
