@@ -90,7 +90,7 @@ const SideNav = () => {
   const NavItem = styled(Nav.Item)`
 padding: 10px 20px; // Adjust padding if necessary
 width: 100%; // Ensure full width
-border-radius: 10px;
+border-radius: 0px;
 transition: background-color 0.2s;
 &:hover {
   background-color: #f7dc6f;
@@ -101,10 +101,10 @@ transition: background-color 0.2s;
   const NavMenu = styled(Nav.Menu)`
 padding: 10px 20px; // Adjust padding if necessary
 width: 100%; // Ensure full width
-border-radius: 10px;
+border-radius: 0px;
 transition: background-color 0.2s;
 &:hover {
-  background-color: #e1bd05;
+  background-color: #fbfaf3;
   width: 100%; // Ensure the background covers full width on hover
 }
 `;
@@ -136,7 +136,7 @@ transition: background-color 0.2s;
             <Sidenav
               style={{
                 minHeight: "100vh",
-                borderRadius: 10,
+                borderRadius: 0,
                 overflow: "hidden"
               }}
             >
@@ -276,9 +276,9 @@ transition: background-color 0.2s;
                   position: "absolute",
                   top: 10,
                   right: 10,
-                  backgroundColor: "#e1bd05",
-                  borderRadius: 10,
-                  padding: 10,
+                  backgroundColor: "#ffffff",
+                  borderRadius: 0,
+                  
                   cursor: "pointer"
                 }} />
             </Sidenav>
