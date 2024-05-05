@@ -2,19 +2,23 @@ import CommonLoading from "@app_components/loader/CommonLoading";
 import PDFLayout from "@app_components/pdf/PDFLayout";
 import CommercialInvoice from "@app_components/pdf/pdfTemplates/CommercialInvoice"
 import PDFDownloadButton from "@app_components/shared/PDFDownloadButton"
+import useClearSessionStorage from "@app_hooks/useClearSessionStorage";
 import useSessionStorage from "@app_hooks/useSessionStorage";
 import { sendEmail } from "@app_services/emailService";
+import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface OrderData {
-    order: any;
-    item: any;
-    receiver: any;
-    sender: any;
-    payment: any;
+    order?: any;
+    item?: any;
+    receiver?: any;
+    sender?: any;
+    payment?: any;
 }
 
 const PaymentConfirmation = () => {
+
+    const clearStorageAndGoHome = useClearSessionStorage();
 
     const [orderData, setOrderData] = useState<OrderData | null>(null);
     const [orderDetails,] = useSessionStorage('order-details');
@@ -22,6 +26,7 @@ const PaymentConfirmation = () => {
     const [receiverDetails,] = useSessionStorage('receiver-form-data');
     const [senderDetails,] = useSessionStorage('sender-form-data');
     const [orderPaymentDetails,] = useSessionStorage('order-payment-details');
+    const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
 
     useEffect(() => {
 
@@ -124,18 +129,40 @@ const PaymentConfirmation = () => {
         `;
     };
 
-    if (!orderData) {
+    if (!orderData && !restrictedOrder) {
         return <CommonLoading loading={true}></CommonLoading>;
     }
 
     return (
-        <div style={{ marginTop: '1rem' }}>
-            <PDFLayout content={<CommercialInvoice {...orderData} />} />
-            <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0' }}>
-                <PDFDownloadButton content={<CommercialInvoice {...orderData} />} typeName={'Order'} id={orderData.order.orderId} />
-            </div>
-        </div>
-    )
+        restrictedOrder ? (
+            <div style={{ marginTop: '1rem', textAlign: 'center', padding: '2rem' }}>
+                <h2>Thank You for Your Order!</h2>
+                <p>We've received your order. To proceed further, one of our agents will contact you shortly.</p>
+                <Button
+                    onClick={clearStorageAndGoHome}
+                    href="/order"
+                    variant="contained"
+                    color="primary">
+                    Home
+                </Button>
+            </div>)
+            : (
+                <div style={{ marginTop: '1rem' }}>
+                    <PDFLayout content={<CommercialInvoice {...orderData} />} />
+                    <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0', columnGap: '1rem' }}>
+                        <Button
+                            onClick={clearStorageAndGoHome}
+                            href="/order"
+                            variant="contained"
+                            component="label"
+                            color="primary">
+                            Home
+                        </Button>
+                        <PDFDownloadButton content={<CommercialInvoice {...orderData} />} typeName={'Order'} id={orderData?.order.orderId} />
+                    </div>
+                </div>
+            )
+    );
 }
 
 export default PaymentConfirmation

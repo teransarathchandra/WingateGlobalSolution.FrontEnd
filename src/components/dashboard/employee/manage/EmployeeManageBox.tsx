@@ -21,6 +21,9 @@ import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
 import IEmployee from "@app_interfaces/IEmployee";
 import { getAllAccess } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
+import employeeGeneralSchema from "@app_schemas/generalEmployee.Schema";
+import employeeEditSchema from "@app_schemas/editEmployee.Schema";
+
 // import { password } from "@app_constants/regExp";
 
 const columns: IColumn[] = [
@@ -334,12 +337,14 @@ const EmployeeManageBox: React.FC = () => {
         ]}
         onSave={saveAccess}
         onDelete={ondeleteEmployee}
+        schema={employeeEditSchema}
       />
       <AddDialog
         title="Add Employee"
         isOpen={isAddEmployeeOpen}
         handleClose={() => setIsAddEmployeeOpen(false)}
-        // entity={currentEmployee}
+        onSave={addEmployee}
+        schema={employeeGeneralSchema}
         fields={[
           {
             name: "firstName",
@@ -409,7 +414,6 @@ const EmployeeManageBox: React.FC = () => {
             options: accessLevels
           }
         ]}
-        onSave={addEmployee}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}

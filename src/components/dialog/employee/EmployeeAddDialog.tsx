@@ -8,10 +8,34 @@ import Select, { SelectChangeEvent } from '@mui/material/Select'; // Import Sele
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import React, { useEffect, useState } from 'react';
-import { DialogHeaderContainer, DialogHeaderImage } from '../../styles/shared/editDialog.styles';
-import logo from "../../assets/images/logo.png";
+import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
+import logo from "@app_assets/images/logo.png";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { Chip } from '@mui/material';
+
+interface ChipData {
+    key: number;
+    label: string;
+}
+
+const ListItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.5),
+}));
+
+const ListSItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.9),
+}));
+
+
+const chipData: ChipData[] = ([
+    { key: 0, label: 'Angular' },
+    { key: 1, label: 'jQuery' },
+    { key: 2, label: 'Polymer' },
+    { key: 3, label: 'React' },
+    { key: 4, label: 'Vue.js' },
+]);
 
 interface FieldConfig {
     name: string;
@@ -34,12 +58,11 @@ interface AddDialogProps {
     fields: FieldConfig[];
     onSave: (data: any) => void;
     title?: string;
-    schema?: any;
 }
 
 const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
 
-    const { register, control, handleSubmit, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: schema ? yupResolver(schema) : undefined,
         // defaultValues: entity || {},
     });
@@ -73,33 +96,23 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                         field.type === 'dropdown' ? (
                             <div key={field.name}>
                                 <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
-                                <Controller
+                                <Select
+                                    labelId={`${field.name}-label`}
+                                    margin="dense"
+                                    id={field.name}
+                                    fullWidth
+                                    variant="outlined"
                                     name={field.name}
-                                    control={control}
-                                    render={({ field: FieldConfig }) => (
-
-                                        <Select
-                                            labelId={`${field.name}-label`}
-                                            margin="dense"
-                                            id={field.name}
-                                            fullWidth
-                                            variant="outlined"
-                                            name={field.name}
-                                            value={formData[field.name] || ''}
-                                            disabled={field.disabled}
-                                            onChange={handleChange}
-                                        >
-                                            {field.options && field.options.map((option) => (
-                                                <MenuItem key={option.value} value={option.value}
-
-                                                    {...register(option.label)}>
-                                                    {option.label}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-
-                                    )}
-                                />
+                                    value={formData[field.name] || ''}
+                                    disabled={field.disabled}
+                                    onChange={handleChange}
+                                >
+                                    {field.options && field.options.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </div>
                         ) : (
                             <TextField
@@ -121,6 +134,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                             />
                         )
                     ))}
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
@@ -128,7 +142,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                     {/* <Button onClick={() => onSave(formData)} color="secondary">Add</Button> */}
                 </DialogActions>
             </form>
-        </Dialog>
+        </Dialog >
     );
 };
 
