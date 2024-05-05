@@ -5,17 +5,17 @@ export function useAppNavigation() {
     const navigate = useNavigate();
 
     const handleAppNavigation = async (eventKey, accessToken) => {
+
         if (accessToken) {
-            const route = eventKey;
+            const route = eventKey.toString();
             const accessData = {
                 token: accessToken,
                 destination: route
             }
             toastUtil.info("Waiting For Access!");
-            const fallback = "app/portal-welcome"
-            await canAccess(accessData).then(response => {
+            const fallback = "/app/portal-welcome"
 
-                console.log('Resp:', response);
+            await canAccess(accessData).then(response => {
                 if (response.data && response.data.destination) {
                     navigate(response.data.destination);
                 } else {
@@ -34,6 +34,7 @@ export function useAppNavigation() {
     };
 
     const shouldContinueAppNavigation = async (eventKey, accessToken) => {
+        debugger;
         if (accessToken) {
             const route = eventKey;
             const accessData = {

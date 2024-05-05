@@ -16,12 +16,15 @@ import warehouseIcon from "@app_assets/images/warehouse.png"
 import driverIcon from "@app_assets/images/driver.png"
 import empManager from "@app_assets/images/empManager.png"
 import empAccessIcon from "@app_assets/images/empAccess.png"
+import { useAppNavigation } from "@app_utils/appNavigation";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import toastUtil from "@app_utils/toastUtil";
 
 
 // ProfileImage Component
 const ProfileImage = styled.img.attrs({
-    src: "https://cdn.builder.io/api/v1/image/assets/TEMP/586a24e8a819d8897da2bd2e082e42316b56cba40f9e096cf913851b9ad85175?apiKey=b8067976cf2a44fabfe1f4ad3e297451&",
-    alt: "Profile"
+  src: "https://cdn.builder.io/api/v1/image/assets/TEMP/586a24e8a819d8897da2bd2e082e42316b56cba40f9e096cf913851b9ad85175?apiKey=b8067976cf2a44fabfe1f4ad3e297451&",
+  alt: "Profile"
 })`
   width: 130px;
   height: 130px;
@@ -163,17 +166,26 @@ const App = () => {
                 { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
 
 
-            ]
-        },
-        {
-            sectionName: "Employee",
-            items: [
-                { label: "Employee Management", path: "app/employee-manage", icon: empManager },
-                { label: "Employee Access", path: "app/employee-access", icon: empAccessIcon },
+      ]
+    },
+    {
+      sectionName: "Employee",
+      items: [
+        { label: "Employee Management", path: "app/employee-manage", icon: empManager },
+        { label: "Employee Access", path: "app/employee-access", icon: empAccessIcon },
 
 
-            ]
-        },
+      ]
+    },
+    {
+      sectionName: "Finance",
+      items: [
+        { label: "Quotation", path: "app/quotation", icon: empManager },
+        { label: "Payments", path: "app/payment", icon: empAccessIcon },
+
+
+      ]
+    },
         {
             sectionName: "Order",
             items: [
@@ -195,34 +207,42 @@ const App = () => {
             ]
         },
 
-    ];
+  ];
+  const { handleAppNavigation } = useAppNavigation();
+  const { employee } = useEmployeeAuthContext();
+  const handleSelect = async (path) => {
+    if (employee) {
+      const route = path;
+      handleAppNavigation(route, employee.accessToken);
+    } else {
+      toastUtil.error("Access Denied!");
+    }
+  };
 
-    return (
-        <PageWrapper>
-            <ProfileContainer>
-                <ProfileImage />
-                <MessageContainer>
-                    <WelcomeMessage>Welcome Back,</WelcomeMessage>
-                    <WelcomeMessage>Prashan!</WelcomeMessage>
-                </MessageContainer>
-            </ProfileContainer>
-<MenuContainer>
-            {menuItems.map((section, index) => (
-                <MenuSection key={index}>
-                    <GridTitle>{section.sectionName}</GridTitle>
-                    <MenuGrid>
-                        {section.items.map((item, idx) => (
-                            <MenuItem key={idx} >
-                                    <MenuItemIcon src={item.icon} alt={item.label} />
-                                    <MenuItemLabel>{item.label}</MenuItemLabel>
-                            </MenuItem>
-                        ))}
-                    </MenuGrid>
-                </MenuSection>
+  return (
+    <PageWrapper>
+      <ProfileContainer>
+        <ProfileImage />
+        <MessageContainer>
+          <WelcomeMessage>Welcome Back,</WelcomeMessage>
+          <WelcomeMessage>{employee?.name.firstName || "User"}</WelcomeMessage>
+        </MessageContainer>
+      </ProfileContainer>
+      {menuItems.map((section, index) => (
+        <MenuSection key={index}>
+          <GridTitle>{section.sectionName}</GridTitle>
+          <MenuGrid>
+            {section.items.map((item, idx) => (
+              <MenuItem key={idx} onClick={() => handleSelect(item.path)}>
+                <MenuItemIcon src={item.icon} alt={item.label} />
+                <MenuItemLabel>{item.label}</MenuItemLabel>
+              </MenuItem>
             ))}
-            </MenuContainer>
-        </PageWrapper>
-    );
+          </MenuGrid>
+        </MenuSection>
+      ))}
+    </PageWrapper>
+  );
 };
 
 export default App;
