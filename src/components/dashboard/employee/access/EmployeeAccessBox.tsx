@@ -28,6 +28,12 @@ const columns: IColumn[] = [
     numeric: false,
     disablePadding: false,
   },
+  {
+    id: "accessAreas",
+    label: "Access Areas",
+    numeric: false,
+    disablePadding: false,
+  },
   { id: "createdAt", label: "Created", numeric: false, disablePadding: false },
   { id: "updatedAt", label: "Modified", numeric: false, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
@@ -129,17 +135,19 @@ const EmployeeAccessBox: React.FC = () => {
   const saveAccess = async (accessData: IAccess) => {
     console.log("Saving Access:", accessData);
     try {
-      // Assuming your currentAccess state has the order's ID
-      // And that accessData contains the updated order fields
       const accessId = accessData._id;
+      const tempAccess = {
+        accessAreas: accessData.accessAreas,
+        description: accessData.description
+      }
       if (accessId) {
-        await updateAccess(accessId, { description: accessData.description }); // Call to your orderService
+        await updateAccess(accessId, tempAccess);
         console.log("Order updated successfully");
 
-        // Optionally, refresh the access list to show the updated data
+
         fetchAndPrepareSystemAccess();
       }
-      setIsDialogOpen(false); // Close the dialog after saving
+      setIsDialogOpen(false);
     } catch (error) {
       console.error("Failed to update order", error);
     }
@@ -192,6 +200,12 @@ const EmployeeAccessBox: React.FC = () => {
             type: "text",
             disabled: false,
           },
+          {
+            name: "accessAreas",
+            label: "Access Areas",
+            type: "text",
+            disabled: false,
+          },
         ]}
 
         onSave={saveAccess}
@@ -212,6 +226,12 @@ const EmployeeAccessBox: React.FC = () => {
           {
             name: "description",
             label: "Description",
+            type: "text",
+            disabled: false,
+          },
+          {
+            name: "accessAreas",
+            label: "Access Areas",
             type: "text",
             disabled: false,
           },

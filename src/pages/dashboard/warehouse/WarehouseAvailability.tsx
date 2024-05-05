@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import { getAllOrders } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
-import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
 import ReusableTable from "@app_components/shared/ReusableTable";
 
 const columns: IColumn[] = [

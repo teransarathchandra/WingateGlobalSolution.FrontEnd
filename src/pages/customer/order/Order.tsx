@@ -33,9 +33,9 @@ const Order = () => {
 
     const [restrictedOrder, setRestrictedOrder] = useSessionStorage('order-is-restricted-order');
 
-    const handleStepClick = (stepIndex: number) => {
-        setCurrentStep(stepIndex);
-    };
+    // const handleStepClick = (stepIndex: number) => {
+    //     setCurrentStep(stepIndex);
+    // };
 
     const stepsComponents = [
         <ChooseDestination key={0} goNext={() => setCurrentStep(1)} />,
@@ -59,7 +59,8 @@ const Order = () => {
 
     return (
         <>
-            <SideDrawer steps={steps} currentStep={currentStep} onStepClick={handleStepClick} />
+            {/* <SideDrawer steps={steps} currentStep={currentStep} onStepClick={handleStepClick} /> */}
+            <SideDrawer steps={steps} currentStep={currentStep} />
             <AnimatePresence>
                 <motion.div
                     key={currentStep}

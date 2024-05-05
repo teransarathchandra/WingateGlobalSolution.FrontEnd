@@ -50,7 +50,8 @@ const BulkDetails = () => {
                 const aggType = "lastBulkIds";
                 const response = await getLastAddedBulk(aggType);
                 if (response) {
-                    setBulkData(response.data);
+                    setBulkData(response.data[0]);
+                    console.log(response.data[0]);
                     const formattedDate = await separateDateTime( response.data[0].createdAt, "YYYY-MM-DD" );
                     setBulkCreatedDate(formattedDate.date);
                     setBulkCreatedTime(formattedDate.time);
@@ -64,7 +65,10 @@ const BulkDetails = () => {
         fetchLastBulk();
     }, []);
 
+    console.log(bulkData)
+
     const bulkId = bulkData?.bulkId;
+    const destinationCountry = bulkData?.destinationCountry;
 
     const handleUpdate = async (data) => {
         try {
@@ -91,7 +95,7 @@ const BulkDetails = () => {
                     Bulk ID : {bulkId}
                     <br />
                     <br />
-                    Destination Country : {bulkData?.destinationCountry}
+                    Destination Country : {destinationCountry}
                     <br />
                     <br />
                     Created Date : {bulkCreatedDate}

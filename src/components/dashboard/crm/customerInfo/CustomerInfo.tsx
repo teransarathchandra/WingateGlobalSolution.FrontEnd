@@ -1,7 +1,5 @@
 // Import necessary components and services for customer management and UI interactions.
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-import EditDialog from "@app_components/dialog/EditDialog";
-import ReusableTable from "@app_components/shared/ReusableTable";
 import { ICustomer } from "@app_interfaces/ICustomer";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import {
@@ -16,10 +14,12 @@ import { useEffect, useState } from "react";
 import { getUserOrders } from "@app_services/userService";
 import IUser from "@app_interfaces/IUser";
 import UserDetailsDialog from "@app_components/dashboard/crm/crmDialog/CrmDialog";
-import { ReportButton } from "@app_styles/userDetailsDialog.styles";
+import { ReportButtonModified } from "@app_styles/shared/customer.styles";
 import UserReportDialog from "../crmDialog/CrmReportDialog";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
-import AddDialog from "@app_components/dialog/AddDialog";
+import AddDialogModified from "@app_components/dialog/AddDialogModified";
+import ReusabletableSandeepa from "@app_components/shared/ReusabletableSandeepa";
+import { AddButtonModified } from "@app_styles/shared/customer.styles";
+import EditDialog from "@app_components/dialog/EditDialogModified";
 
 // Define the table columns for the customer data table.
 const columns: IColumn[] = [
@@ -32,6 +32,7 @@ const columns: IColumn[] = [
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
   { id: "seeDetails", label: "See Details", numeric: false, disablePadding: false },
+  
 ];
 
 // Functional component for managing customer information.
@@ -57,7 +58,6 @@ const CustomerInfo: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [currentCustomer, setCurrentCustomer] = useState<ICustomer | null>(null);
-  const [isViewOpen, setIsViewOpen] = useState(false);
   const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
 
   const handleAddClick = () => {
@@ -65,10 +65,7 @@ const CustomerInfo: React.FC = () => {
     setCurrentCustomer(null);
   };
 
-  const handleViewClick = (customer: ICustomer) => {
-    setIsViewOpen(true);
-    setCurrentCustomer(customer);
-  };
+  
 
   const [isUserReportDialogOpen, setIsUserReportDialogOpen] = useState(false);
 
@@ -93,8 +90,8 @@ const CustomerInfo: React.FC = () => {
       const preparedCustomer: IRow[] = response.data.data.map((customer: ICustomer) => ({
         ...customer,
         _id: customer._id,
-        firstName: customer.name.firstName,
-        lastName: customer.name.lastName,
+       firstName: customer.name?.firstName || '', // Use optional chaining and nullish coalescing
+      lastName: customer.name?.lastName || '',
         email: customer.email,
       priorityLevel: customer.priorityLevel,
       birthday: customer.birthday ? customer.birthday.split('T')[0] : '',
@@ -119,28 +116,101 @@ const CustomerInfo: React.FC = () => {
   useEffect(() => {
     fetchAndPrepareCustomers();
   }, []);
+  // const updateCustomerDetails = async (customerId, updatedData) => {
+  //   try {
+  //     // Prepare the data for the update request in the required structure
+  //     const updateData = {
+  //       name: {
+  //         firstName: updatedData.firstName, // these should be taken from form inputs
+  //         lastName: updatedData.lastName,   // these should be taken from form inputs
+  //       },
+  //       email: updatedData.email,           // these should be taken from form inputs
+  //       contactNumber: updatedData.contactNumber, // these should be taken from form inputs
+  //       priorityLevel: updatedData.priorityLevel, // these should be taken from form inputs
+  //       birthday: updatedData.birthday,     // these should be taken from form inputs
+  //     };
+  
+    
+  //     const response = await updateCustomerDetails(customerId, updateData);
+  
+  
+  //   } catch (error) {
+  //     console.error('Failed to update customer details:', error);
+     
+  //   }
+  // };
+
 
   const saveCustomer = async (customerData) => {
+    console.log('Saving customer:', customerData);
+
     setIsDialogOpen(false);
+
     try {
-      if (currentCustomer?._id) {
-        await updateCustomer(currentCustomer._id, customerData);
+      console.log('Saving');
+      const customerId = currentCustomer?._id;
+      console.log('Customer ID:', currentCustomer);
+      if (customerId) {
+        console.log(customerData);
+        await updateCustomer(customerId, customerData);
+        console.log(customerData);
+        console.log('Customer updated successfully');
+        
+
         fetchAndPrepareCustomers();
       }
+      setIsDialogOpen(false);
+
     } catch (error) {
-      console.error("Failed to update customer", error);
+      console.error('Failed to update customer', error);
+
     }
   };
-
-  const addCustomer = async (customerData) => {
+  const addCustomer = async (formData) => {
+    // Construct the new customer object with nested 'name' object
+    const CustomerInfo = {
+      name: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+      },
+      email: formData.email,
+      contactNumber: formData.contactNumber,
+      priorityLevel: formData.priorityLevel,
+      birthday: formData.birthday,
+    };
+  
     try {
-      await createCustomer(customerData);
-      fetchAndPrepareCustomers();
-      setIsAddCustomerOpen(false);
+      await createCustomer(CustomerInfo);
+      fetchAndPrepareCustomers(); // Refresh the list
+      setIsAddCustomerOpen(false); // Close the dialog
     } catch (error) {
       console.error('Failed to add customer', error);
     }
   };
+  
+
+  // const saveCustomer = async (customerData) => {
+  //   setIsDialogOpen(false);
+    
+  //   try {
+  //     if (currentCustomer?._id) {
+  //       await updateCustomer(currentCustomer._id, customerData);
+  //       fetchAndPrepareCustomers();
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to update customer", error);
+  //   }
+  // };
+
+  // const addCustomer = async (customerData) => {
+  //   try {
+  //     await createCustomer(customerData);
+  //     fetchAndPrepareCustomers();
+  //     setIsAddCustomerOpen(false);
+  //   } catch (error) {
+  //     console.error('Failed to add customer', error);
+  //   }
+  // };
 
   const handleDeleteCustomer = async () => {
     if (currentCustomer) {
@@ -158,10 +228,16 @@ const CustomerInfo: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
+  const priorityOptions= [
+    { value: "High Priority", label: "High Priority" },
+    { value: "Medium Priority", label: "Medium Priority" },
+    { value: "Low Priority", label: "Low Priority" }
+  ];
+
   // Render component UI.
   return (
     <>
-      <ReusableTable
+      <ReusabletableSandeepa
         columns={columns}
         rows={customers}
         title="Customer Details"
@@ -175,9 +251,13 @@ const CustomerInfo: React.FC = () => {
         entity={currentCustomer}
         fields={[
           { name: "customerId", label: "Customer ID", type: "text", disabled: true },
-          { name: "name.firstName", label: "First Name", type: "text", disabled: false },
-          { name: "name.lastName", label: "Last Name", type: "text", disabled: false },
+          // { name: "name.firstName", label: "First Name", type: "text", disabled: false },
+          //{ name: "name.lastName", label: "Last Name", type: "text", disabled: false },
+          { name: "contactNumber", label: "Contact Number", type: "number", disabled: false },
           { name: "email", label: "Email", type: "text", disabled: false },
+          { name: "priorityLevel", label: "Priority Level", type: "dropdown", options: priorityOptions },
+          { name: "birthday", label: "Birth Date", type: "date", disabled: false },
+          
         ]}
         onSave={saveCustomer}
         onDelete={deleteCustomer}
@@ -197,26 +277,27 @@ const CustomerInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteCustomer}
       />
-      <ReportButton onClick={handleUserReportClick}>Report</ReportButton>
-      <UpdateBtn onClick={handleAddClick}>Add Customer</UpdateBtn>
-      <AddDialog
+      <ReportButtonModified onClick={handleUserReportClick}>Generate Report</ReportButtonModified>
+      <AddButtonModified onClick={handleAddClick}>Add Customer</AddButtonModified>
+      <AddDialogModified
         isOpen={isAddCustomerOpen}
         handleClose={() => setIsAddCustomerOpen(false)}
         entity={currentCustomer}
         fields={[
-          { name: 'customerId', label: 'Customer ID', type: 'text', disabled: false },
+          // Assuming 'customerId' is auto-generated by the backend and should not be in the add form.
           { name: 'firstName', label: 'First Name', type: 'text', disabled: false },
           { name: 'lastName', label: 'Last Name', type: 'text', disabled: false },
           { name: "email", label: "Email", type: 'text', disabled: false },
           { name: "contactNumber", label: "Contact Number", type: 'text', disabled: false },
-          { name: "priorityLevel", label: "Priority Level", type: 'text', disabled: false },
-          { name: "birthday", label: "Birthday", type: 'text', disabled: false },
+          { name: "priorityLevel", label: "Priority Level", type: 'dropdown', options: priorityOptions },
+          { name: "birthday", label: "Birthday", type: 'date', disabled: false },
         ]}
-        onSave={addCustomer}
-      />
+        onSave={addCustomer} title={undefined}  
+/>
+
     </>
   );
 };
 
-// Export the CustomerInfo component to be used in other parts of the application.
+// Export the CustomerInfo 
 export default CustomerInfo;

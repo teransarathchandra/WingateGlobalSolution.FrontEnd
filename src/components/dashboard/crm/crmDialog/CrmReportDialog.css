@@ -1,0 +1,55 @@
+.dialog-content {
+    background-color: #ebf5fb;
+    border-radius: 16px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.title {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-field, .select-field {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: calc(50% - 12px);
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+.dialog-actions {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.button-close, .button-pdf {
+    border-radius: 20px;
+    color: #fff;
+    padding: 10px 20px;
+}
+
+.button-close {
+    background-color: rgb(225, 189, 5);
+}
+
+.button-pdf {
+    background-color: #4CAF50;
+}
+
+.button-close:hover, .button-pdf:hover {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
