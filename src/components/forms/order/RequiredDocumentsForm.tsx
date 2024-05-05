@@ -18,7 +18,7 @@ const RequiredDocumentsForm: React.FC<RequiredDocumentsFormProps> = ({ trueDocum
     console.log('trueDocumentList:', trueDocumentList);
 
     useEffect(() => {
-        // Update the documentCount whenever trueDocumentList changes
+        // Update documentCount when trueDocumentList changes
         setDocumentCount(trueDocumentList.length);
 
         // Check if the document count is zero and call handleSubmitDisability if so

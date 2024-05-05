@@ -13,20 +13,11 @@ import {
 import { ICountry } from "../../../../../interfaces/ICountry";
 import EditDialog from "../../../../dialog/EditDialog";
 import AddCountryForm from "../dialogs/CountryAddDialog";
+import countrySchema from "@app_schemas/countrySchema";
 
 const columns: IColumn[] = [
-  {
-    id: "countryId",
-    label: "Country ID",
-    numeric: false,
-    disablePadding: true,
-  },
-  {
-    id: "countryCode",
-    label: "Country Code",
-    numeric: false,
-    disablePadding: false,
-  },
+  { id: "countryId",label: "Country ID",numeric: false,disablePadding: true,},
+  { id: "countryCode",label: "Country Code",numeric: false,disablePadding: false,},
   { id: "name", label: "Name", numeric: false, disablePadding: false },
   { id: "currency", label: "Currency", numeric: false, disablePadding: false },
   { id: "cost", label: "Cost", numeric: false, disablePadding: false },
@@ -175,29 +166,15 @@ const CountryInfo: React.FC = () => {
         handleClose={handleClose}
         entity={currentCountry}
         fields={[
-          {
-            name: "countryId",
-            label: "Country Id",
-            type: "text",
-            disabled: false,
-          },
-          {
-            name: "countryCode",
-            label: "Country Code",
-            type: "text",
-            disabled: false,
-          },
+          { name: "countryId", label: "Country Id", type: "text", disabled: true,},
+          { name: "countryCode",label: "Country Code",type: "text",disabled: false,},
           { name: "name", label: "Name", type: "text", disabled: false },
-          {
-            name: "currency",
-            label: "Currency",
-            type: "text",
-            disabled: false,
-          },
+          { name: "currency",label: "Currency",type: "text", disabled: false,},
           { name: "cost", label: "Cost", type: "text", disabled: false },
         ]}
         onSave={saveCountry}
         onDelete={deleteCountry}
+        schema={countrySchema}
       />
     </>
   );

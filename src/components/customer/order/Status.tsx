@@ -135,33 +135,69 @@ const PaymentConfirmation = () => {
 
     return (
         restrictedOrder ? (
-            <div style={{ marginTop: '1rem', textAlign: 'center', padding: '2rem' }}>
-                <h2>Thank You for Your Order!</h2>
-                <p>We've received your order. To proceed further, one of our agents will contact you shortly.</p>
-                <Button
-                    onClick={clearStorageAndGoHome}
-                    href="/order"
-                    variant="contained"
-                    color="primary">
-                    Home
-                </Button>
-            </div>)
-            : (
-                <div style={{ marginTop: '1rem' }}>
-                    <PDFLayout content={<CommercialInvoice {...orderData} />} />
-                    <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0', columnGap: '1rem' }}>
-                        <Button
-                            onClick={clearStorageAndGoHome}
-                            href="/order"
-                            variant="contained"
-                            component="label"
-                            color="primary">
-                            Home
-                        </Button>
-                        <PDFDownloadButton content={<CommercialInvoice {...orderData} />} typeName={'Order'} id={orderData?.order.orderId} />
-                    </div>
+            <div style={{
+                marginTop: '10rem',
+                marginBottom: '0rem',
+                textAlign: 'center',
+                padding: '2rem',
+                border: '1px solid #ccc', // adds a light border
+                borderRadius: '10px', // adds rounded corners
+                boxShadow: '0 4px 8px rgba(0,0,0,0.1)', // subtle shadow for depth
+                backgroundColor: '#f9f9f9' // light background color
+            }}>
+                <div style={{ marginBottom: '1rem', marginTop:'3rem' }}>
+                    <h2 style={{
+                        color: '#333', // darker color for better readability
+                        fontFamily: '"Segoe UI", Helvetica, Arial, sans-serif', // attractive, readable font
+                        fontSize: '24px' // slightly larger text
+                    }}>Thank You for Your Order!</h2>
                 </div>
-            )
+                <div style={{ marginBottom: '1rem' }}>
+                    <p style={{
+                        fontFamily: '"Segoe UI", Helvetica, Arial, sans-serif', // consistent font
+                        fontSize: '16px', // appropriate text size
+                        color: '#666' // softer color for text
+                    }}>
+                        We've received your order. To proceed further, one of our agents will contact you shortly.
+                    </p>
+                    <Button
+                        style={{
+                            marginTop: '3rem',
+                            marginBottom: '1rem',
+                            backgroundColor: '#fcd703', // vibrant button color
+                            color: 'white', // text color
+                            padding: '10px 20px', // larger padding for a better button size
+                            fontSize: '16px', // text size
+                            borderRadius: '5px', // rounded button edges
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.2)', // subtle shadow for the button
+                            border: 'none', // no border
+                            cursor: 'pointer' // cursor indication for clickability
+                        }}
+                        onClick={clearStorageAndGoHome}
+                        href="/order"
+                        variant="contained"
+                        color="primary"
+                    >
+                        Home
+                    </Button>
+                </div>
+            </div>
+        ) : (
+            <div style={{ marginTop: '1rem' }}>
+                <PDFLayout content={<CommercialInvoice {...orderData} />} />
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '1rem 0', columnGap: '1rem' }}>
+                    <Button
+                        onClick={clearStorageAndGoHome}
+                        href="/order"
+                        variant="contained"
+                        component="label"
+                        color="primary">
+                        Home
+                    </Button>
+                    <PDFDownloadButton content={<CommercialInvoice {...orderData} />} typeName={'Order'} id={orderData?.order.orderId} />
+                </div>
+            </div>
+        )
     );
 }
 
