@@ -5,10 +5,10 @@ const HeaderDiv = styled.div`
   max-width: 100%;
   height: 120px;
   font-size: 56px;
-  color: #ffffff;
-  padding-left: 50px;
-  padding-top: 50px;
-  text-align: left;
+  color: #ffffff; 
+  padding-left: 50px; 
+  padding-top: 50px; 
+  text-align: left; 
 `;
 
 const Div = styled.div`
@@ -16,44 +16,45 @@ const Div = styled.div`
   margin-bottom: 100px;
   padding: 20px;
   align-items: left;
+  display: flex; 
+  flex-direction: column; 
 `;
 
 const Form = styled.form`
   background-color: #ffffff;
   max-width: 50%;
-  height: 850px;
-  margin: 100px;
+  height: auto;
+  margin: 100px auto;
   align-items: left;
-  text-align: left;
-  font-size: 36px;
-  font-weight: 10px;
-  justify-content: left;
-  padding-left: 25px;
-  padding-top: 15px;
-  -webkit-box-shadow: 6px 7px 13px 0px rgba(158, 153, 158, 1);
-  -moz-box-shadow: 6px 7px 13px 0px rgba(158, 153, 158, 1);
-  box-shadow: 6px 7px 13px 0px rgba(158, 153, 158, 1);
+  text-align: left; 
+  font-size: 36px; 
+  font-weight: normal;
+  padding: 25px;
+  box-shadow: 6px 7px 13px rgba(158, 153, 158, 1);
 `;
 
 const FieldGroup = styled.div`
   padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: left;
-  flex-direction: row;
+  margin-bottom: 20px;
 `;
 
 const UpdateBtn = styled.button`
   background-color: #e1bd05;
   color: #fff;
   border-radius: 10px;
-  margin-top: 40px;
-  padding: 5px;
-  width: 100px;
-  height: 40px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  border: 2px solid #e1bd05;
-  position: fixed;
-  bottom: 40px; 
-  right: 40px; 
+  border: none;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #d4b305; 
+  }
 `;
 
 export { HeaderDiv, Form, FieldGroup, UpdateBtn, Div };
