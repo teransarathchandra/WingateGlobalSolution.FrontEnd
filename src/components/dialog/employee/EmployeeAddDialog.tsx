@@ -35,7 +35,6 @@ interface AddDialogProps {
     onSave: (data: any) => void;
     title?: string;
     schema?: any;
-    default?: any;
 }
 
 const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
