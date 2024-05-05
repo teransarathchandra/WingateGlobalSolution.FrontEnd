@@ -15,6 +15,7 @@ const columns: IColumn[] = [
   { id: "userId", label: "User ID", numeric: false, disablePadding: false },
   { id: "email", label: "Email", numeric: false, disablePadding: false },
   { id: "createdAt", label: "Date", numeric: false, disablePadding: false },
+  { id: "itemName", label: "Item Name", numeric: false, disablePadding: false },
   { id: "description", label: "Description", numeric: false, disablePadding: false },
   { id: "amount", label: "Amount", numeric: true, disablePadding: false },
   { id: "status", label: "Status", numeric: true, disablePadding: false },
@@ -99,6 +100,7 @@ const OrderInfo: React.FC = () => {
           status: orderData.status,
         },
         itemUpdates: {
+          itemName: orderData.itemName,
           description: orderData.description
         }
       };
@@ -137,6 +139,8 @@ const OrderInfo: React.FC = () => {
     { value: "In Progress", label: "In Progress" },
     { value: "Processing", label: "Processing" },
     { value: "Pending", label: "Pending" },
+    { value: "Rejected", label: "Rejected" },
+    { value: "Approved", label: "Approved" },
     { value: "Completed", label: "Completed" },
   ];
 
@@ -158,6 +162,7 @@ const OrderInfo: React.FC = () => {
           { name: "orderId", label: "Order ID", type: "text", disabled: true },
           { name: "userId", label: "User ID", type: "text", disabled: true },
           { name: "createdAt", label: "Date", type: "text", disabled: true },
+          { name: "itemName", label: "Item Name", type: "text", disabled: false },
           { name: "description", label: "Description", type: "text", disabled: false },
           { name: "amount", label: "Amount", type: "number", disabled: true },
           { name: "status", label: "Status", type: "dropdown", options: statusOptions },
