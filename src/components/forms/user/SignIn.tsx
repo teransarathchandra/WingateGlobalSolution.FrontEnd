@@ -54,6 +54,7 @@ const SignIn: React.FC<SignInProps> = ({ onSignUpClick }) => {
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken && signInAttempted) {
+      console.log("logged:", auth.user)
       setUser(auth.user);
       setUserToken(auth.user.accessToken);
       setUserRefreshToken(auth.user.refreshToken);
