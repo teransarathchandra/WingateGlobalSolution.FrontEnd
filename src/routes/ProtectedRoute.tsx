@@ -29,14 +29,12 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
   const { shouldContinueAppNavigation } = useAppNavigation();
   const [isAllowed, setIsAllowed] = useState(false);
   const [checkPageAccess, setCheckPageAccess] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAccess = async () => {
       if (route.forEmployeeOnly && employee && employeeToken && isAllowed == false) {
 
         await shouldContinueAppNavigation(route.path, employeeToken).then(resp => {
-          console.log("resp:", resp);
           setIsAllowed(true);
         });
 
@@ -45,9 +43,10 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
 
     };
 
-    checkAccess();
 
-    if (route.isPrivate) {
+
+    if (route.forEmployeeOnly) {
+      checkAccess();
       console.log("route access: employee");
       if (!employee || !employeeToken) {
         toastUtil.error("Please login before accessing this page.");
@@ -81,7 +80,6 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
       if (isAllowed) {
         return children
       } else {
-
         return <Navigate to="/app/portal-welcome" replace />
       }
     } else {
