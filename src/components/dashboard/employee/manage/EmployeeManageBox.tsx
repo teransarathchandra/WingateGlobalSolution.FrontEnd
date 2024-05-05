@@ -342,6 +342,7 @@ const EmployeeManageBox: React.FC = () => {
         isOpen={isAddEmployeeOpen}
         handleClose={() => setIsAddEmployeeOpen(false)}
         onSave={addEmployee}
+        schema={employeeGeneralSchema}
         fields={[
           {
             name: "firstName",

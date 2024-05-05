@@ -72,9 +72,6 @@ const employeeGeneralSchema = Yup.object().shape({
 
 
 
-  accessLevel: Yup.string().nullable().typeError("Select an access level")
-    .required('Access level is required')
-
 
 });
 
