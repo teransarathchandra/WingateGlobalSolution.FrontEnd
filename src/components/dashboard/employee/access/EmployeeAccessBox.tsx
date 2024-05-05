@@ -217,7 +217,6 @@ const EmployeeAccessBox: React.FC = () => {
         isOpen={isAddAccessOpen}
         handleClose={() => setIsAddAccessOpen(false)}
         entity={currentAccess}
-        schema={accessGeneralSchema}
         fields={[
           {
             name: "accessLevelId",

@@ -10,32 +10,6 @@ import InputLabel from '@mui/material/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
 import logo from "@app_assets/images/logo.png";
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { Chip } from '@mui/material';
-
-interface ChipData {
-    key: number;
-    label: string;
-}
-
-const ListItem = styled('li')(({ theme }) => ({
-    margin: theme.spacing(0.5),
-}));
-
-const ListSItem = styled('li')(({ theme }) => ({
-    margin: theme.spacing(0.9),
-}));
-
-
-const chipData: ChipData[] = ([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-]);
 
 interface FieldConfig {
     name: string;
@@ -60,23 +34,12 @@ interface AddDialogProps {
     title?: string;
 }
 
-const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
-
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: schema ? yupResolver(schema) : undefined,
-        // defaultValues: entity || {},
-    });
-
+const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title }) => {
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
         setFormData(entity || {});
     }, [entity]);
-
-    const onSubmit = data => {
-        onSave(data);
-        handleClose();
-    };
 
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name;
@@ -86,66 +49,57 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <DialogTitle>{title || "Add Item"}</DialogTitle>
-                <DialogHeaderContainer>
-                    <DialogHeaderImage src={logo}></DialogHeaderImage>
-                </DialogHeaderContainer>
-                <DialogContent>
-                    {fields.map((field) => (
-                        field.type === 'dropdown' ? (
-                            <div key={field.name}>
-                                <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
-                                <Select
-                                    labelId={`${field.name}-label`}
-                                    margin="dense"
-                                    id={field.name}
-                                    fullWidth
-                                    variant="outlined"
-                                    name={field.name}
-                                    value={formData[field.name] || ''}
-                                    disabled={field.disabled}
-                                    onChange={handleChange}
-                                >
-                                    {field.options && field.options.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </div>
-                        ) : (
-                            <TextField
-                                key={field.name}
-                                autoFocus
+            <DialogTitle>{title || "Add Item"}</DialogTitle>
+            <DialogHeaderContainer>
+                <DialogHeaderImage src={logo}></DialogHeaderImage>
+            </DialogHeaderContainer>
+            <DialogContent>
+                {fields.map((field) => (
+                    field.type === 'dropdown' ? (
+                        <div key={field.name}>
+                            <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                            <Select
+                                labelId={`${field.name}-label`}
                                 margin="dense"
                                 id={field.name}
-                                label={field.label}
-                                type={field.type}
                                 fullWidth
                                 variant="outlined"
+                                name={field.name}
                                 value={formData[field.name] || ''}
                                 disabled={field.disabled}
-                                {...register(field.name)}
-                                name={field.name}
-                                onChange={(e) => handleChange(e as SelectChangeEvent)}
-                                error={!!errors[field.name]}
-                                helperText={errors[field.name]?.message as string}
-                            />
-                        )
-                    ))}
-
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="secondary">Add</Button>
-                    {/* <Button onClick={() => onSave(formData)} color="secondary">Add</Button> */}
-                </DialogActions>
-            </form>
-        </Dialog >
+                                onChange={handleChange}
+                            >
+                                {field.options && field.options.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                    ) : (
+                        <TextField
+                            key={field.name}
+                            autoFocus
+                            margin="dense"
+                            id={field.name}
+                            label={field.label}
+                            type={field.type}
+                            fullWidth
+                            variant="outlined"
+                            name={field.name}
+                            value={formData[field.name] || ''}
+                            disabled={field.disabled}
+                            onChange={(e) => handleChange(e as SelectChangeEvent)}
+                        />
+                    )
+                ))}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} color="primary">Cancel</Button>
+                <Button onClick={() => onSave(formData)} color="secondary">Add</Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 
 export default AddDialog;
-
-
