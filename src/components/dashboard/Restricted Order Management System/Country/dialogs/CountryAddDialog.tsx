@@ -24,6 +24,7 @@ const AddCountryForm: React.FC<AddDialogProps> = ({ isOpen, handleClose, onAdd }
         { key: 'countryCode', label: 'Country Code', type: 'string', defaultValue: '' },
         { key: 'name', label: 'Name', type: 'string', defaultValue: '' },
         { key: 'currency', label: 'Currency', type: 'string', defaultValue: '' },
+        { key: 'cost', label: 'Cost', type: 'number', defaultValue: '' },
     ];
     const defaultFormData = Object.fromEntries(formFields.map(field => [field.key, field.defaultValue]));
 
