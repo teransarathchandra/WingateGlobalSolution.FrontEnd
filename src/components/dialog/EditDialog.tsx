@@ -76,7 +76,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={schema ? handleSubmit(onSubmit) : onSubmit}>
                 <DialogHeaderContainer>
                     <DialogHeaderImage src={logo}></DialogHeaderImage>
                 </DialogHeaderContainer>
@@ -91,6 +91,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                                     id={field.name}
                                     fullWidth
                                     variant="outlined"
+                                    {...register(field.name)}
                                     name={field.name}
                                     value={formData[field.name] || ''}
                                     disabled={field.disabled}
