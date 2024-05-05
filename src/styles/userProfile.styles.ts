@@ -292,7 +292,21 @@ const StyledButton = styled.button`
   padding: 2rem 0;
 `; */
 
+// Styled component for a table row
+const ClickableRow = styled.span`
+  cursor: pointer;
+  color: #007bff;
+  display: block; // Make it block to fill the cell for better clickability
+
+  &:hover {
+    background-color: #f5f5f5;  // Light grey background on hover
+    text-decoration: underline; // Optional: underline on hover for emphasis
+  }
+`
+
+
 export {
+  ClickableRow,
   HeaderContainer,
   WgsLogo,
   SecHeadContainer,

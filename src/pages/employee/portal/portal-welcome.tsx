@@ -13,9 +13,10 @@ import airline from "@app_assets/images/airline.png"
 import crmIcon from "@app_assets/images/crm.png"
 import userIcon from "@app_assets/images/user.png"
 import warehouseIcon from "@app_assets/images/warehouse.png"
-import driverIcon from "@app_assets/images/driver.png"
 import empManager from "@app_assets/images/empManager.png"
 import empAccessIcon from "@app_assets/images/empAccess.png"
+import quotIcon from "@app_assets/images/quatation.png"
+import payIcon from "@app_assets/images/payments.png"
 import { useAppNavigation } from "@app_utils/appNavigation";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import toastUtil from "@app_utils/toastUtil";
@@ -185,8 +186,7 @@ const App = () => {
         {
             sectionName: "Warehouse",
             items: [
-                { label: "Warehouse Availability", path: "app/warehouseInfo", icon: warehouseIcon },
-                { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
+                { label: "Warehouse Info", path: "app/warehouseInfo", icon: warehouseIcon },
 
 
             ]
@@ -203,13 +203,13 @@ const App = () => {
         {
             sectionName: "Finance",
             items: [
-                { label: "Quotation", path: "app/quotation", icon: empManager },
-                { label: "Payments", path: "app/payment", icon: empAccessIcon },
+                { label: "Quotation", path: "app/quotation", icon: quotIcon },
+                { label: "Payments", path: "app/payment", icon: payIcon },
 
 
             ]
         },
-        
+
 
     ];
     const { handleAppNavigation } = useAppNavigation();
