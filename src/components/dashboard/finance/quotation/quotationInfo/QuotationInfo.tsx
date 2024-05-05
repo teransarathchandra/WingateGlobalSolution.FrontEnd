@@ -14,17 +14,16 @@ import PDFLayout from "@app_components/pdf/PDFLayout";
 import QuotationReport from "@app_components/pdf/pdfTemplates/QuotationReport";
 import ReactDOMServer from "react-dom/server";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
-import {quotationYupSchema}  from "@app_schemas/Quotation.Schema"
+import { quotationYupSchema } from "@app_schemas/quotation.Schema";
 
 const columns: IColumn[] = [
   { id: "quotationId", label: "Quotation ID", numeric: false, disablePadding: true },
-  { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
   { id: "packagingCost", label: "Packaging Cost", numeric: true, disablePadding: false },
   { id: "routeCost", label: "Route Cost", numeric: true, disablePadding: false },
   { id: "unitWeightCost", label: "Unit Weight Cost", numeric: true, disablePadding: false },
   { id: "pickUpCost", label: "Pickup Cost", numeric: true, disablePadding: false },
   { id: "surcharge", label: "Surcharge", numeric: true, disablePadding: false },
-  { id: 'fullAmount', label: 'Total Amount', numeric: true, disablePadding: true },
+  //{ id: 'fullAmount', label: 'Total Amount', numeric: true, disablePadding: true },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
@@ -168,6 +167,7 @@ const QuotationInfo: React.FC = () => {
         ]}
         onSave={saveQuotation}
         onDelete={deleteQuotation}
+        schema={quotationYupSchema}
       />
 
       <UpdateBtn onClick={handleAddClick}>Add Quotation</UpdateBtn>
