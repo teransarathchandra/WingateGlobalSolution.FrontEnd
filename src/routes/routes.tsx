@@ -43,7 +43,7 @@ const BulkDetails = lazy(() => import("@app_pages/transport/BulkDetails"));
 
 //Warehouse
 const Warehouse = lazy(
-  () => import("@app_pages/dashboard/warehouse/WarehouseAvailability")
+  () => import("@app_pages/dashboard/warehouse/Warehouse")
 );
 
 //Warehouse Infor
