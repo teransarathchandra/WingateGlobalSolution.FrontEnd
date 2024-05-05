@@ -52,8 +52,8 @@ const MenuItem = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  padding: 20px;
-  margin: 10px;
+  padding: 10px;
+  margin: 8px;
   width: 80px;
   height: 80px;
   transition: transform 0.3s ease;
@@ -87,23 +87,32 @@ const MenuSection = styled.section`
   backdrop-filter: blur(10px);  // Blurs any content behind the section
   border-radius: 20px;  
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);  // Subtle shadow for depth
-  border: 1px solid rgba(255, 255, 255, 0.18);  // Subtle border can enhance the glass effect
+  border: 1px solid rgba(255, 255, 255, 0.18);
 `;
 
 
 const GridTitle = styled.h2`
   color: #333333;
-  font-size: 18px;
+  font-size: 15px;
   margin-bottom: 0px;
   text-align: left;
-  padding: 10px;
+  padding-left: 10px;
 `;
 
 const MenuGrid = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
   justify-content: flex-start;
-  gap: 20px;
+  gap: 5px;
+  column-count: 5;
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 // Container for Profile Image and Welcome Message
@@ -123,25 +132,11 @@ const MessageContainer = styled.div`
 
 
 
+
+
 // App Component
 const App = () => {
     const menuItems = [
-        {
-            sectionName: "Order",
-            items: [
-                { label: "Order Management", path: "app/order", icon: orderIcon },
-
-            ]
-        },
-        {
-            sectionName: "Restricted Order",
-            items: [
-                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
-                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
-                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
-                { label: "Category Info", path: "app/category", icon: CategoryIcon },
-            ]
-        },
         {
             sectionName: "Transport",
             items: [
@@ -153,16 +148,12 @@ const App = () => {
             ]
         },
         {
-            sectionName: "Customer",
+            sectionName: "Restricted Order",
             items: [
-                { label: "Customer Info", path: "app/crm", icon: crmIcon },
-            ]
-        },
-        {
-            sectionName: "User",
-            items: [
-                { label: "User Info", path: "app/user", icon: userIcon },
-
+                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
+                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
+                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
+                { label: "Category Info", path: "app/category", icon: CategoryIcon },
             ]
         },
         {
@@ -183,7 +174,26 @@ const App = () => {
 
             ]
         },
+        {
+            sectionName: "Order",
+            items: [
+                { label: "Order Management", path: "app/order", icon: orderIcon },
 
+            ]
+        },
+        {
+            sectionName: "Customer",
+            items: [
+                { label: "Customer Info", path: "app/crm", icon: crmIcon },
+            ]
+        },
+        {
+            sectionName: "User",
+            items: [
+                { label: "User Info", path: "app/user", icon: userIcon },
+
+            ]
+        },
 
     ];
 
@@ -196,6 +206,7 @@ const App = () => {
                     <WelcomeMessage>Prashan!</WelcomeMessage>
                 </MessageContainer>
             </ProfileContainer>
+<MenuContainer>
             {menuItems.map((section, index) => (
                 <MenuSection key={index}>
                     <GridTitle>{section.sectionName}</GridTitle>
@@ -209,6 +220,7 @@ const App = () => {
                     </MenuGrid>
                 </MenuSection>
             ))}
+            </MenuContainer>
         </PageWrapper>
     );
 };
