@@ -9,15 +9,18 @@ import {
   Tooltip,
 } from "@mui/material";
 // import Settings from "@mui/icons-material/Settings";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import Logout from "@mui/icons-material/Logout";
 import useAuth from "@app_hooks/useAuth";
 import { useState } from "react";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
+import { useNavigate } from "react-router-dom";
 
 const UserDrawer = ({ isVisible }) => {
   const { logoutCurrentUser } = useAuth();
+  const navigate = useNavigate();
   const { activeUser, logout, isEmployee } = useActiveAuthContext();
   const { logoutEmployee } = useEmployeeAuthContext();
   const { logoutUser } = useUserAuthContext();
@@ -30,6 +33,10 @@ const UserDrawer = ({ isVisible }) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const navigateToPortal = () => {
+    navigate('/app/portal-welcome');
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -108,6 +115,16 @@ const UserDrawer = ({ isVisible }) => {
           >
             <MenuItem onClick={handleClose}>
               <Avatar /> {firstName + " " + lastName}
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigateToPortal();
+              }}
+            >
+              <ListItemIcon>
+                <DashboardIcon fontSize="small" />
+              </ListItemIcon>
+              Portal
             </MenuItem>
             <MenuItem
               onClick={() => {
