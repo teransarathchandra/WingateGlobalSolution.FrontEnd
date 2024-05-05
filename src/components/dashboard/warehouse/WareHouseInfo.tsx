@@ -33,7 +33,6 @@ const WarehouseInfo: React.FC = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [showPDFDialog, setShowPDFDialog] = useState(false);
   const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
@@ -135,8 +134,8 @@ const WarehouseInfo: React.FC = () => {
   };
 
   const availabiltyOptions = [
-    { value: true, label: 'Available' },
-    { value: false, label: 'Unavailable' }
+    { value: true, label: "Available" },
+    { value: false, label: "Unavailable" }
   ];
 
   return (

@@ -51,6 +51,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
     }, [entity]);
 
     const onSubmit = data => {
+        console.log("onSubmit " , data)
         onSave(data);
         handleClose();
     };
@@ -114,8 +115,8 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="secondary">Add</Button>
-                    {/* <Button onClick={() => onSave(formData)} color="secondary">Add</Button> */}
+                    {/* <Button type="submit" color="secondary">Add</Button> */}
+                    <Button onClick={() => onSave(formData)} color="secondary">Add</Button>
                 </DialogActions>
             </form>
         </Dialog>
