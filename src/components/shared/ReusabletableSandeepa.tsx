@@ -100,7 +100,7 @@ const ReusabletableSandeepa: React.FC<ReusableTableProps> = ({
           {title}
         </Typography>
       </div>
-      <div style={{ padding: "0 3rem" }}>
+      <div style={{ padding: "0 5rem" }}>
         <Paper
           sx={{
             width: "100%", mb: 2, borderRadius: "20px", overflow: "hidden",
