@@ -4,14 +4,17 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Select, { SelectChangeEvent } from '@mui/material/Select'; // Import SelectChangeEvent
+// import Select, { SelectChangeEvent } from '@mui/material/Select'; // Import SelectChangeEvent
+import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import React, { useEffect, useState } from 'react';
+// import InputLabel from '@mui/material/InputLabel';
+// import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '../../styles/shared/editDialog.styles';
 import logo from "../../assets/images/logo.png";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
+import { FormHelperText } from '@mui/material';
 
 interface FieldConfig {
     name: string;
@@ -37,29 +40,41 @@ interface AddDialogProps {
     schema?: any;
 }
 
-const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
-
-    const { register, control, handleSubmit, formState: { errors } } = useForm({
+// const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
+const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, fields, onSave, title, schema }) => {
+    console.log('fields', fields)
+    const { register, control, handleSubmit, setValue, formState: { errors } } = useForm({
         resolver: schema ? yupResolver(schema) : undefined,
         // defaultValues: entity || {},
+        mode: 'onSubmit'
     });
 
-    const [formData, setFormData] = useState(entity || {});
-
     useEffect(() => {
-        setFormData(entity || {});
-    }, [entity]);
+        fields.forEach(field => {
+            setValue(field.name, field.type === 'dropdown' ? '' : '');
+        });
+    }, [fields, setValue]);
+
+    // const [formData, setFormData] = useState(entity || {});
+
+    // useEffect(() => {
+    //     setFormData(entity || {});
+    // }, [entity]);
 
     const onSubmit = data => {
         onSave(data);
         handleClose();
     };
 
-    const handleChange = (event: SelectChangeEvent) => {
-        const name = event.target.name;
-        const value = event.target.value;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+    const handleChange = (name: string, value: any) => {
+        setValue(name, value, { shouldValidate: true });
     };
+
+    // const handleChange = (event: SelectChangeEvent) => {
+    //     const name = event.target.name;
+    //     const value = event.target.value;
+    //     setFormData((prev) => ({ ...prev, [name]: value }));
+    // };
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
@@ -72,34 +87,35 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                     {fields.map((field) => (
                         field.type === 'dropdown' ? (
                             <div key={field.name}>
-                                <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                                {/* <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel> */}
                                 <Controller
                                     name={field.name}
                                     control={control}
-                                    render={({ field: FieldConfig }) => (
-
+                                    render={({ field: { value }, fieldState: { error } }) => (
                                         <Select
-                                            labelId={`${field.name}-label`}
+                                            label={field.label as string}
                                             margin="dense"
                                             id={field.name}
                                             fullWidth
-                                            variant="outlined"
-                                            name={field.name}
-                                            value={formData[field.name] || ''}
+                                            value={value}
+                                            onChange={(e) => handleChange(field.name, e.target.value)}
                                             disabled={field.disabled}
-                                            onChange={handleChange}
+                                            error={!!error}
                                         >
+                                            <MenuItem value="">
+                                                <em>Select</em>
+                                            </MenuItem>
                                             {field.options && field.options.map((option) => (
-                                                <MenuItem key={option.value} value={option.value}
-
-                                                    {...register(option.label)}>
+                                                <MenuItem key={option.value} value={option.value}>
                                                     {option.label}
                                                 </MenuItem>
                                             ))}
                                         </Select>
-
                                     )}
                                 />
+                                <FormHelperText error={!!errors[field.name]}>
+                                    {errors[field.name]?.message as string}
+                                </FormHelperText>
                             </div>
                         ) : (
                             <TextField
@@ -111,11 +127,11 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                                 type={field.type}
                                 fullWidth
                                 variant="outlined"
-                                value={formData[field.name] || ''}
+                                // value={formData[field.name] || ''}
                                 disabled={field.disabled}
                                 {...register(field.name)}
                                 name={field.name}
-                                onChange={(e) => handleChange(e as SelectChangeEvent)}
+                                // onChange={(e) => handleChange(e as SelectChangeEvent)}
                                 error={!!errors[field.name]}
                                 helperText={errors[field.name]?.message as string}
                             />
