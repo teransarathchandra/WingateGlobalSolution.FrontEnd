@@ -185,6 +185,15 @@ const App = () => {
 
       ]
     },
+    {
+      sectionName: "Finance",
+      items: [
+        { label: "Quotation", path: "app/quotation", icon: empManager },
+        { label: "Payments", path: "app/payment", icon: empAccessIcon },
+
+
+      ]
+    },
 
 
   ];
