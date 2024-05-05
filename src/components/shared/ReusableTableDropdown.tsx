@@ -69,9 +69,9 @@ const ReusableTableDropdown = ({
                     backgroundColor: "#fff",
                     borderRadius: "5px",
                     width: "250px",
-                    marginLeft: "px",
+                    marginLeft: "5px",
                     marginBottom: "10px",
-                    marginRight: "50px",
+                    marginRight: "30px",
                   }}
                 />
               </label>
