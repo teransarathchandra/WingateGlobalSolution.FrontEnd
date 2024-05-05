@@ -130,7 +130,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
 
                                 <TableCell>User Name</TableCell>
                                 <TableCell>Order ID</TableCell>
-                                <TableCell>User ID</TableCell>
+                                <TableCell>E mail</TableCell>
                                 <TableCell>Date</TableCell>
                                 <TableCell>Status</TableCell>
                             </TableRow>
@@ -140,7 +140,7 @@ const UserReportDialog: React.FC<UserReportDialogProps> = ({ isOpen, handleClose
                                 <TableRow key={order.orderId}>
                                     <TableCell>{users.find(user => user._id === order.userId)?.name.firstName}</TableCell>
                                     <TableCell>{order.orderId}</TableCell>
-                                    <TableCell>{order.userId}</TableCell>
+                                    <TableCell>{users.find(user => user._id === order.userId)?.email}</TableCell>
                                     <TableCell>{new Date(order.createdAt as Date).toLocaleDateString()}</TableCell>
                                     <TableCell>{order.status}</TableCell>
                                 </TableRow>
