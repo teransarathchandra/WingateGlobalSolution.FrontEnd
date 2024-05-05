@@ -62,6 +62,7 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                     {fields && fields.map((field) => (
                         field.type === 'dropdown' ? (
                             <Select
+                                {...register(field.name)}
                                 key={field.name}
                                 margin="dense"
                                 id={field.name}

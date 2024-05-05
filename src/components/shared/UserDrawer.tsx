@@ -45,7 +45,6 @@ const UserDrawer = ({ isVisible }) => {
   const handleLogout = () => {
     const isUserEmployee = isEmployee() || false;
     if (isEmployee() != null) {
-
       isUserEmployee ? logoutEmployee() : logoutUser();
       logout();
       logoutCurrentUser(isUserEmployee);
@@ -116,16 +115,17 @@ const UserDrawer = ({ isVisible }) => {
             <MenuItem onClick={handleClose}>
               <Avatar /> {firstName + " " + lastName}
             </MenuItem>
-            <MenuItem
-              onClick={() => {
+            {isEmployee() && (
+              <MenuItem onClick={() => {
                 navigateToPortal();
-              }}
-            >
-              <ListItemIcon>
-                <DashboardIcon fontSize="small" />
-              </ListItemIcon>
-              Portal
-            </MenuItem>
+                handleClose();
+              }}>
+                <ListItemIcon>
+                  <DashboardIcon fontSize="small" />
+                </ListItemIcon>
+                Portal
+              </MenuItem>
+            )}
             <MenuItem
               onClick={() => {
                 handleClose();
