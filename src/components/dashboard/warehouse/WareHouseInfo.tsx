@@ -178,6 +178,7 @@ const WarehouseInfo: React.FC = () => {
 
         ]}
         onSave={addWarehouse}
+        schema={warehouseSchema}
       />
 
                 <ReportBtn onClick={() =>     setShowPDFDialog(true)} color="secondary">
