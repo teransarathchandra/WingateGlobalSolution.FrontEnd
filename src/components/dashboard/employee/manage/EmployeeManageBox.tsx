@@ -10,9 +10,9 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "@app_services/employeeService";
-import EditDialog from "@app_components/dialog/EditDialog";
-import AddDialog from "@app_components/dialog/AddDialog";
-import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import EditDialog from "@app_components/dialog/employee/EmployeeEditDialog";
+import AddDialog from "@app_components/dialog/employee/EmployeeAddDialog";
+import DeleteDialog from "@app_components/dialog/employee/EmployeeDeleteDialog";
 import Button from '@mui/material/Button';
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import ReactDOMServer from 'react-dom/server';
