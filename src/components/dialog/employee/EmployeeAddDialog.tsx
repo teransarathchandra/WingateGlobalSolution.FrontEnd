@@ -10,6 +10,8 @@ import InputLabel from '@mui/material/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
 import logo from "@app_assets/images/logo.png";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 interface FieldConfig {
     name: string;
@@ -32,9 +34,10 @@ interface AddDialogProps {
     fields: FieldConfig[];
     onSave: (data: any) => void;
     title?: string;
+    schema?: any;
 }
 
-const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title }) => {
+const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
@@ -46,6 +49,10 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
         const value = event.target.value;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: schema ? yupResolver(schema) : undefined,
+    });
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
