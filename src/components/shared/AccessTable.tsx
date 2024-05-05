@@ -7,14 +7,26 @@ import {
   TableHead,
   TableRow,
   Paper,
-  TextField
+  TextField,
+  Chip,
+  styled
 } from "@mui/material";
 import SwitchBtn from "./SwitchBtn";
 import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import AddButton from "./AddButton";
 
-interface ReusableTableProps {
+interface ChipData {
+  key: number;
+  label: string;
+}
+
+const ListItem = styled('li')(({ theme }) => ({
+  display: 'inline-block',
+  margin: theme.spacing(0.5),
+}));
+
+interface AccessReusableTableProps {
   columns;
   rows;
   title;
@@ -26,7 +38,7 @@ interface ReusableTableProps {
   handleSearch?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch, searchTerm, handleSearch }) => {
+const AccessReusableTable: React.FC<AccessReusableTableProps> = ({ columns, rows, title, rowKey, onAdd, showAddButton, showActiveSwitch, searchTerm, handleSearch }) => {
 
   const filteredRows = rows.filter(row =>
     Object.values(row).some(value =>
@@ -36,6 +48,10 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
 
   const getNestedValue = (obj, path) => {
     return path.split('.').reduce((acc, part) => acc && acc[part], obj);
+  };
+
+  const getChips = (string: String) => {
+    return string.split(';')
   };
 
   return (
@@ -107,10 +123,23 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
                   return (
                     <TableRow key={row[rowKey]}>
                       {columns.map((column: IColumn) => (
-                        // <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>{row[column.id]}</TableCell>
-                        <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>
-                          {getNestedValue(row, column.id)}
-                        </TableCell>
+                        column.type == "chips" ? (
+                          <TableCell>
+                            {getChips(row[column.id]).map((chipName, index) => (
+
+                              <ListItem key={chipName}>
+                                <Chip
+                                  label={chipName}
+                                />
+                              </ListItem>
+                            ))
+                            }
+                          </TableCell>
+
+                        ) : (
+                          <TableCell key={column.id} align={column.numeric ? "right" : (column.id === 'edit' || column.id === 'delete' ? "center" : "left")}>
+                            {getNestedValue(row, column.id)}
+                          </TableCell>)
                       ))}
                     </TableRow>
                   );
@@ -124,4 +153,4 @@ const ReusableTable: React.FC<ReusableTableProps> = ({ columns, rows, title, row
   );
 };
 
-export default ReusableTable;
+export default AccessReusableTable;
