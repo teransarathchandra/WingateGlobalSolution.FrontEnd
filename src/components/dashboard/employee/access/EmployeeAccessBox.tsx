@@ -11,9 +11,9 @@ import {
   deleteAccess,
 } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
-import EditDialog from "@app_components/dialog/EditDialog";
-import AddDialog from "@app_components/dialog/AddDialog";
-import DeleteDialog from "@app_components/dialog/DeleteDialog";
+import EditDialog from "@app_components/dialog/employee/EmployeeEditDialog";
+import AddDialog from "@app_components/dialog/employee/EmployeeAddDialog";
+import DeleteDialog from "@app_components/dialog/employee/EmployeeDeleteDialog";
 
 const columns: IColumn[] = [
   {

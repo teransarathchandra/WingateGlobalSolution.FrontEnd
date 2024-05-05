@@ -12,6 +12,30 @@ import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/edi
 import logo from "@app_assets/images/logo.png";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
+import { Chip } from '@mui/material';
+
+interface ChipData {
+    key: number;
+    label: string;
+}
+
+const ListItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.5),
+}));
+
+const ListSItem = styled('li')(({ theme }) => ({
+    margin: theme.spacing(0.9),
+}));
+
+
+const chipData: ChipData[] = ([
+    { key: 0, label: 'Angular' },
+    { key: 1, label: 'jQuery' },
+    { key: 2, label: 'Polymer' },
+    { key: 3, label: 'React' },
+    { key: 4, label: 'Vue.js' },
+]);
 
 interface FieldConfig {
     name: string;
@@ -34,7 +58,6 @@ interface AddDialogProps {
     fields: FieldConfig[];
     onSave: (data: any) => void;
     title?: string;
-    schema?: any;
 }
 
 const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
@@ -111,6 +134,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                             />
                         )
                     ))}
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
@@ -118,7 +142,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                     {/* <Button onClick={() => onSave(formData)} color="secondary">Add</Button> */}
                 </DialogActions>
             </form>
-        </Dialog>
+        </Dialog >
     );
 };
 
