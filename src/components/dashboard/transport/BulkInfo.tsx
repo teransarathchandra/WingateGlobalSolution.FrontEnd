@@ -14,6 +14,7 @@ import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import BulkReport from "@app_components/pdf/pdfTemplates/BulkReport";
 import ReactDOMServer from 'react-dom/server';
 import PDFLayout from '@app_components/pdf/PDFLayout';
+import editBulkSchema from "@app_schemas/bulk/editBulk.Schema";
 
 
 const columns: IColumn[] = [
@@ -179,6 +180,7 @@ const BulkInfo: React.FC = () => {
         ]}
         onSave={saveBulk}
         onDelete={deleteBulk}
+        schema={editBulkSchema}
       />
 
 <EditDropdown

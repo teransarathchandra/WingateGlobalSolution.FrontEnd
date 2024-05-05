@@ -11,6 +11,7 @@ import { UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import { addAirlineSchema } from "@app_schemas/bulk/addAirline.Schema";
+import editAirlineSchema from "@app_schemas/bulk/editAirline.Schema";
 
 const columns: IColumn[] = [
   { id: "airlineId", label: "Airline ID", numeric: false, disablePadding: true },
@@ -131,6 +132,7 @@ const AirlineInfo: React.FC = () => {
         ]}
         onSave={saveAirline}
         onDelete={deleteAirline}
+        schema={editAirlineSchema}
       />
       <UpdateBtn onClick={handleAddClick}>Add Airline</UpdateBtn>
       <AddDialog

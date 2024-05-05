@@ -12,12 +12,14 @@ import AddDialog from "@app_components/dialog/AddDialog";
 import { getAllAirlines } from "@app_services/airlineService";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import { getAllCountry } from "@app_services/countryService";
+import addFlightSchema from "@app_schemas/bulk/addFlight.Schema";
+import editFlightSchema from "@app_schemas/bulk/editFlight.Schema";
 
 
 const columns: IColumn[] = [
   { id: "flightId", label: "Flight No", numeric: false, disablePadding: false },
   { id: "type", label: "Type", numeric: false, disablePadding: false },
-  { id: "routeCostPerKilo", label: "Route Cost", numeric: false, disablePadding: false },
+  //{ id: "routeCostPerKilo", label: "Route Cost", numeric: false, disablePadding: false },
   { id: "arrival", label: "Arrival", numeric: false, disablePadding: false },
   { id: "arrivalTime", label: "Arrival Time", numeric: false, disablePadding: false },
   { id: "departure", label: "Departure", numeric: false, disablePadding: false },
@@ -194,10 +196,11 @@ const handleSearch = (event) => {
         fields={[
           { name: 'arrivalTime', label: 'Arrival time', type: 'text', disabled: false },
           { name: "departureTime", label: "Departure Time", type: 'text', disabled: false },
-          { name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
+          //{ name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
         ]}
         onSave={saveFlight}
         onDelete={deleteFlight}
+        schema={editFlightSchema}
       />
       <UpdateBtn onClick={handleAddClick}>Add Flight</UpdateBtn>
       <AddDialog
@@ -207,7 +210,7 @@ const handleSearch = (event) => {
         fields={[
           { name: 'flightId', label: 'Flight No', type: 'text', disabled: false },
           { name: 'type', label: 'Type', type: 'text', disabled: false },
-          { name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
+          //{ name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
           { name: "arrival", label: "Arrival", type: 'dropdown', options: countryOptions },
           { name: 'arrivalTime', label: 'Arrival time', type: 'text', disabled: false },
           { name: "departure", label: "Departure", type: 'dropdown',  options: country },
@@ -216,6 +219,7 @@ const handleSearch = (event) => {
           
         ]}
         onSave={addFlight}
+        schema={addFlightSchema}
       />
       <DeleteDialog
         isOpen= {isDeleteDialogOpen}

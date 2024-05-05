@@ -55,9 +55,10 @@ const MenuItem = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  padding: 20px;
-  margin: 10px;
-  width: 160px;
+  padding: 10px;
+  margin: 8px;
+  width: 80px;
+  height: 80px;
   transition: transform 0.3s ease;
   cursor: pointer;
 
@@ -76,7 +77,7 @@ const MenuItemIcon = styled.img`
 `;
 
 const MenuItemLabel = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   color: #333333;
   text-align: center;
 `;
@@ -84,28 +85,37 @@ const MenuItemLabel = styled.span`
 // MenuSection Component
 const MenuSection = styled.section`
   margin-top: 20px;
-  padding: 5px;
+  padding: 0px;
   background: rgba(255, 255, 255, 0.1);  // Lighter background for a more glass-like effect
   backdrop-filter: blur(10px);  // Blurs any content behind the section
-  border-radius: 20px;  // Rounded corners
+  border-radius: 20px;  
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);  // Subtle shadow for depth
-  border: 1px solid rgba(255, 255, 255, 0.18);  // Subtle border can enhance the glass effect
+  border: 1px solid rgba(255, 255, 255, 0.18);
 `;
 
 
 const GridTitle = styled.h2`
   color: #333333;
-  font-size: 22px;
-  margin-bottom: 15px;
+  font-size: 15px;
+  margin-bottom: 0px;
   text-align: left;
-  padding: 10px;
+  padding-left: 10px;
 `;
 
 const MenuGrid = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
   justify-content: flex-start;
-  gap: 20px;
+  gap: 5px;
+  column-count: 5;
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
 `;
 
 // Container for Profile Image and Welcome Message
@@ -125,53 +135,35 @@ const MessageContainer = styled.div`
 
 
 
+
+
 // App Component
 const App = () => {
-  const menuItems = [
-    {
-      sectionName: "Order",
-      items: [
-        { label: "Order Management", path: "app/order", icon: orderIcon },
-
-      ]
-    },
-    {
-      sectionName: "Restricted Order",
-      items: [
-        { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
-        { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
-        { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
-        { label: "Category Info", path: "app/category", icon: CategoryIcon },
-      ]
-    },
-    {
-      sectionName: "Transport",
-      items: [
-        { label: "Order Aggregation", path: "app/order-aggregation", icon: orderAggIcon },
-        { label: "Bulk Details", path: "app/bulk-details", icon: bulkDetIcon },
-        { label: "Bulk", path: "app/bulk", icon: truckIcon },
-        { label: "Flight", path: "app/flight", icon: flight },
-        { label: "Airline", path: "app/airline", icon: airline },
-      ]
-    },
-    {
-      sectionName: "Customer",
-      items: [
-        { label: "Customer Info", path: "app/crm", icon: crmIcon },
-      ]
-    },
-    {
-      sectionName: "User",
-      items: [
-        { label: "User Info", path: "app/user", icon: userIcon },
-
-      ]
-    },
-    {
-      sectionName: "Warehouse",
-      items: [
-        { label: "Warehouse Availability", path: "app/warehouseInfo", icon: warehouseIcon },
-        { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
+    const menuItems = [
+        {
+            sectionName: "Transport",
+            items: [
+                { label: "Order Aggregation", path: "app/order-aggregation", icon: orderAggIcon },
+                { label: "Bulk Details", path: "app/bulk-details", icon: bulkDetIcon },
+                { label: "Bulk", path: "app/bulk", icon: truckIcon },
+                { label: "Flight", path: "app/flight", icon: flight},
+                { label: "Airline", path: "app/airline", icon: airline },
+            ]
+        },
+        {
+            sectionName: "Restricted Order",
+            items: [
+                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
+                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
+                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
+                { label: "Category Info", path: "app/category", icon: CategoryIcon },
+            ]
+        },
+        {
+            sectionName: "Warehouse",
+            items: [
+                { label: "Warehouse Availability", path: "app/warehouseInfo", icon: warehouseIcon },
+                { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
 
 
       ]
@@ -194,7 +186,26 @@ const App = () => {
 
       ]
     },
+        {
+            sectionName: "Order",
+            items: [
+                { label: "Order Management", path: "app/order", icon: orderIcon },
 
+            ]
+        },
+        {
+            sectionName: "Customer",
+            items: [
+                { label: "Customer Info", path: "app/crm", icon: crmIcon },
+            ]
+        },
+        {
+            sectionName: "User",
+            items: [
+                { label: "User Info", path: "app/user", icon: userIcon },
+
+            ]
+        },
 
   ];
   const { handleAppNavigation } = useAppNavigation();
