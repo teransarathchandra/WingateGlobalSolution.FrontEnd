@@ -177,7 +177,7 @@ const ReusabletableSandeepa: React.FC<ReusableTableProps> = ({
                         transform: 'scale(1.02)',
                         transition: 'transform 0.3s ease-in-out',
                         boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-                        backgroundColor: 'action.hover'
+                        backgroundColor: '#ffffff'
                       },
                       cursor: 'pointer'
                     }}
