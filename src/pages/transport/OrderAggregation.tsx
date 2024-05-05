@@ -3,7 +3,7 @@ import { IColumn, IRow } from "@app_interfaces/ITable";
 import { getAllOrderTransport, updateOrder } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTableDropdown from "@app_components/shared/ReusableTableDropdown";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import { ButtonContainer, UpdateBtn } from "@app_styles/bulkDetails.styles";
 import { getAllCountry, getCountryCountryCode } from "@app_services/countryService";
 import { ICountry } from "@app_interfaces/ICountry";
 import { getAllCategory } from "@app_services/categoryService";
@@ -145,9 +145,12 @@ const OrderAggregation: React.FC = () => {
           },
         ]}
       />
+      <ButtonContainer>
       <UpdateBtn type="submit" onClick={handleCreateBulk}>
         Generate Bulk
       </UpdateBtn>
+      </ButtonContainer>
+      
     </>
   );
 };

@@ -57,4 +57,10 @@ const UpdateBtn = styled.button`
   }
 `;
 
-export { HeaderDiv, Form, FieldGroup, UpdateBtn, Div };
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end; // Aligns children (button) to the right
+  padding: 10px; // Optional: adds some spacing from the edges
+`;
+
+export { HeaderDiv, Form, FieldGroup, UpdateBtn, Div, ButtonContainer };

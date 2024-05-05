@@ -7,7 +7,7 @@ import ReusableTable from "../../shared/ReusableTable";
 import { getAllFlights, updateFlight, createFlight, deleteFlight } from "../../../services/flightService";
 import { IFlight } from "../../../interfaces/IFlight";
 import EditDialog from "../../dialog/EditDialog";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import { ButtonContainer, UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import { getAllAirlines } from "@app_services/airlineService";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
@@ -202,7 +202,10 @@ const FlightInfo: React.FC = () => {
         onDelete={deleteFlight}
         schema={editFlightSchema}
       />
+      <ButtonContainer>
       <UpdateBtn onClick={handleAddClick}>Add Flight</UpdateBtn>
+      </ButtonContainer>
+      
       <AddDialog
         isOpen={isAddFlightOpen}
         handleClose={() => setIsAddFlightOpen(false)}
