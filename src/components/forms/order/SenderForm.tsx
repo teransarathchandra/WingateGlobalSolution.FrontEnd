@@ -23,7 +23,7 @@ interface SenderFormMethods {
 
 const SenderForm = forwardRef<SenderFormMethods, SenderFormProps>(({ onFormSubmit }, ref) => {
 
-    const {activeUser} = useActiveAuthContext();
+    const { activeUser } = useActiveAuthContext();
     const [selectedSendingCountryCode,] = useSessionStorage('order-sending-country-code', 'LK');
     const [, setStoredData] = useSessionStorage('sender-form-data', {});
     const [isEditable, setIsEditable] = useState(false);

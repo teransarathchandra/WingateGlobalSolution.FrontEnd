@@ -4,7 +4,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import toastUtil from "@app_utils/toastUtil";
 // import { useAuth } from '@app_contexts/authContext';
 import { useEffect, useState } from "react";
-// import CommonLoading from '@app_components/loader/CommonLoading';
+import CommonLoading from '@app_components/loader/CommonLoading';
 import { useUserAuthContext } from "@app_contexts/childContexts/authUserContext";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
@@ -28,16 +28,16 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
 
   const { shouldContinueAppNavigation } = useAppNavigation();
   const [isAllowed, setIsAllowed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [checkPageAccess, setCheckPageAccess] = useState(false);
 
   useEffect(() => {
     const checkAccess = async () => {
       if (route.forEmployeeOnly && employee && employeeToken && isAllowed == false) {
-
         await shouldContinueAppNavigation(route.path, employeeToken).then(resp => {
           setIsAllowed(true);
+          setIsLoading(true);
         });
-
       }
 
 
@@ -77,6 +77,9 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
   if (route.forEmployeeOnly) {
     if (employee && employeeToken) {
       console.log("route access", route.path, " allowed: ", isAllowed);
+      if (!isLoading) {
+        return <CommonLoading loading={true}></CommonLoading>;
+      }
       if (isAllowed) {
         return children
       } else {

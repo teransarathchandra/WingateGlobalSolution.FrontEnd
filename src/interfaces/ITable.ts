@@ -3,6 +3,7 @@ export interface IColumn {
   label: string;
   numeric?: boolean;
   disablePadding?: boolean;
+  type?: string;
 }
 
 export interface IRow {
