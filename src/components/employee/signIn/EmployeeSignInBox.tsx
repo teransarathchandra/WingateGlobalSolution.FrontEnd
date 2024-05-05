@@ -69,7 +69,7 @@ const EmployeeSignInBox = () => {
       setTimeout("", 500);
       const focus = auth.employee.focus || "order";
       navigate("/app/" + focus);
-    }else{
+    } else {
       setEmployee(null);
       setEmployeeToken(null);
       setEmployeeRefreshToken(null);
@@ -129,14 +129,6 @@ const EmployeeSignInBox = () => {
                 helperText={errors.password?.message}
               />
             </FieldGroup>
-            <PasswordHandleSection>
-              <div>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-              </div>
-            </PasswordHandleSection>
             <FieldGroup>
               <SignButton type="submit">Sign in</SignButton>
             </FieldGroup>

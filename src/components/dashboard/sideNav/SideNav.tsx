@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppNavigation } from "@app_utils/appNavigation";
 import toastUtil from "@app_utils/toastUtil";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import { Box } from "@mui/material";
 
 const SideNav = () => {
   const navigate = useNavigate();
@@ -78,13 +79,19 @@ const SideNav = () => {
 
   const Container = styled.div<Expand>`
   width: 300px;
-  position: absolute;
+  height: 100vh;
+  position: fixed;
   top: 0%;
   left: 0;
   transform: translateY(-50%);
-  z-index: 4;
+  z-index: 10000;
   display: ${({ expanded }) => (expanded ? "block" : "none")};
   animation: ${slideIn} 0.5s forwards; /* Apply the slideIn animation */
+`;
+
+  const ScrollableArea = styled(Box)`
+  max-height: 100vh;
+  overflow-y: auto; // Enable vertical scrolling
 `;
 
   const NavItem = styled(Nav.Item)`
@@ -133,155 +140,157 @@ transition: background-color 0.2s;
         <>
           <Overlay show={expanded} onClick={() => setExpanded(false)} />
           <Container expanded={expanded}>
-            <Sidenav
-              style={{
-                minHeight: "100vh",
-                borderRadius: 0,
-                overflow: "hidden"
-              }}
-            >
-              <Sidenav.Header
+            <ScrollableArea>
+              <Sidenav
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: 20,
-                  borderBottom: "1px solid #ddd"
+                  minHeight: "100vh",
+                  borderRadius: 0,
+                  overflow: "auto"
                 }}
               >
-                <img
-                  src={logo}
-                  alt=""
-                  style={{ width: "200px", height: "200px", borderRadius: 10 }}
-                />
-              </Sidenav.Header>
-              <Sidenav.Body>
-                <Nav activeKey={activeKey}>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="1"
-                    title="Order"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="1-1" onSelect={handleSelect}>
-                      Order Management
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="2"
-                    title="Restricted Order"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="2-1" onSelect={handleSelect}>
-                      Restricted Orders
-                    </NavItem>
-                    <NavItem eventKey="2-2" onSelect={handleSelect}>
-                      Restricted Order Types
-                    </NavItem>
-                    <NavItem eventKey="2-3" onSelect={handleSelect}>
-                      Country Info
-                    </NavItem>
-                    <NavItem eventKey="2-4" onSelect={handleSelect}>
-                      Category Info
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="3"
-                    title="Transport"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="3-1" onSelect={handleSelect}>
-                      Order Aggregation
-                    </NavItem>
-                    <NavItem eventKey="3-2" onSelect={handleSelect}>
-                      Bulk Details
-                    </NavItem>
-                    <NavItem eventKey="3-3" onSelect={handleSelect}>
-                      Bulk
-                    </NavItem>
-                    <NavItem eventKey="3-4" onSelect={handleSelect}>
-                      Flight
-                    </NavItem>
-                    <NavItem eventKey="3-5" onSelect={handleSelect}>
-                      Airline
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="4"
-                    title="Customer"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="4-1" onSelect={handleSelect}>
-                      Customer Info
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="5"
-                    title="User"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="5-1" onSelect={handleSelect}>
-                      User Info
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="6"
-                    title="Warehouse"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="6-1" onSelect={handleSelect}>
-                      Warehouse Availability
-                    </NavItem>
-                    <NavItem eventKey="6-2" onSelect={handleSelect}>
-                      Assign Drivers
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="7"
-                    title="Employee"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="7-1" onSelect={handleSelect}>
-                      Employee Management
-                    </NavItem>
-                    <NavItem eventKey="7-2" onSelect={handleSelect}>
-                      Access
-                    </NavItem>
-                  </NavMenu>
-                  <NavMenu
-                    placement="rightStart"
-                    eventKey="8"
-                    title="Finance"
-                    icon={<MagicIcon />}
-                  >
-                    <NavItem eventKey="8-1" onSelect={handleSelect}>
-                      Quotation
-                    </NavItem>
-                    <NavItem eventKey="8-2" onSelect={handleSelect}>
-                      Payment
-                    </NavItem>
-                  </NavMenu>
-                </Nav>
-              </Sidenav.Body>
-              <Sidenav.Toggle
-                expanded={expanded}
-                onToggle={(expanded) => setExpanded(expanded)}
-                style={{
-                  position: "absolute",
-                  top: 10,
-                  right: 10,
-                  backgroundColor: "#ffffff",
-                  borderRadius: 0,
-                  
-                  cursor: "pointer"
-                }} />
-            </Sidenav>
+                <Sidenav.Header
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: 20,
+                    borderBottom: "1px solid #ddd"
+                  }}
+                >
+                  <img
+                    src={logo}
+                    alt=""
+                    style={{ width: "200px", height: "200px", borderRadius: 10 }}
+                  />
+                </Sidenav.Header>
+                <Sidenav.Body>
+                  <Nav activeKey={activeKey}>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="1"
+                      title="Order"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="1-1" onSelect={handleSelect}>
+                        Order Management
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="2"
+                      title="Restricted Order"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="2-1" onSelect={handleSelect}>
+                        Restricted Orders
+                      </NavItem>
+                      <NavItem eventKey="2-2" onSelect={handleSelect}>
+                        Restricted Order Types
+                      </NavItem>
+                      <NavItem eventKey="2-3" onSelect={handleSelect}>
+                        Country Info
+                      </NavItem>
+                      <NavItem eventKey="2-4" onSelect={handleSelect}>
+                        Category Info
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="3"
+                      title="Transport"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="3-1" onSelect={handleSelect}>
+                        Order Aggregation
+                      </NavItem>
+                      <NavItem eventKey="3-2" onSelect={handleSelect}>
+                        Bulk Details
+                      </NavItem>
+                      <NavItem eventKey="3-3" onSelect={handleSelect}>
+                        Bulk
+                      </NavItem>
+                      <NavItem eventKey="3-4" onSelect={handleSelect}>
+                        Flight
+                      </NavItem>
+                      <NavItem eventKey="3-5" onSelect={handleSelect}>
+                        Airline
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="4"
+                      title="Customer"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="4-1" onSelect={handleSelect}>
+                        Customer Info
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="5"
+                      title="User"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="5-1" onSelect={handleSelect}>
+                        User Info
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="6"
+                      title="Warehouse"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="6-1" onSelect={handleSelect}>
+                        Warehouse Availability
+                      </NavItem>
+                      <NavItem eventKey="6-2" onSelect={handleSelect}>
+                        Assign Drivers
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="7"
+                      title="Employee"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="7-1" onSelect={handleSelect}>
+                        Employee Management
+                      </NavItem>
+                      <NavItem eventKey="7-2" onSelect={handleSelect}>
+                        Access
+                      </NavItem>
+                    </NavMenu>
+                    <NavMenu
+                      placement="rightStart"
+                      eventKey="8"
+                      title="Finance"
+                      icon={<MagicIcon />}
+                    >
+                      <NavItem eventKey="8-1" onSelect={handleSelect}>
+                        Quotation
+                      </NavItem>
+                      <NavItem eventKey="8-2" onSelect={handleSelect}>
+                        Payment
+                      </NavItem>
+                    </NavMenu>
+                  </Nav>
+                </Sidenav.Body>
+                <Sidenav.Toggle
+                  expanded={expanded}
+                  onToggle={(expanded) => setExpanded(expanded)}
+                  style={{
+                    position: "absolute",
+                    top: 10,
+                    right: 10,
+                    backgroundColor: "#ffffff",
+                    borderRadius: 0,
+
+                    cursor: "pointer"
+                  }} />
+              </Sidenav>
+            </ScrollableArea>
           </Container>
         </>
       )}

@@ -46,13 +46,21 @@ const Order = () => {
             goBack={() => setCurrentStep(0)}
         />,
         <RequiredDocuments key={2} goNext={() => setCurrentStep(3)} goBack={() => setCurrentStep(1)} />,
-        <DeliveryOptions key={3} goNext={() => setCurrentStep(4)}
+        <DeliveryOptions key={3}
+            goNext={() => setCurrentStep(4)}
             goBack={() => {
-                    setCurrentStep(restrictedOrder ? 2 : 1)
-                }
+                setCurrentStep(restrictedOrder ? 2 : 1)
+            }
             }
         />,
-        <PlaceOrder key={4} goNext={() => setCurrentStep(5)} goBack={() => setCurrentStep(3)} />,
+        // <PlaceOrder key={4} goNext={() => setCurrentStep(5)} goBack={() => setCurrentStep(3)} />,
+        <PlaceOrder key={4}
+            goNext={() => setCurrentStep(restrictedOrder ? 6 : 5)}
+            goBack={() => {
+                setCurrentStep(3)
+            }
+            }
+        />,
         <PaymentConfirmation key={5} goNext={() => setCurrentStep(6)} goBack={() => setCurrentStep(4)} />,
         <Status key={6} />,
     ];
