@@ -9,8 +9,8 @@ const columns: IColumn[] = [
   { id: "createdAt", label: "Date", numeric: false, disablePadding: false },
   { id: "itemId", label: "Weight", numeric: false, disablePadding: false },
   {
-    id: "packageCount",
-    label: "Package Count",
+    id: "warehouse",
+    label: "Warehouse",
     numeric: false,
     disablePadding: false,
   },
@@ -49,7 +49,7 @@ const WarehouseAvailability: React.FC = () => {
       <ReusableTable
         columns={columns}
         rows={orders}
-        title="PickUP Ready Orders"
+        title="Warehouse"
         rowKey="orderId" 
         //filterLabels={undefined} filterSelects={undefined}    
           /> 

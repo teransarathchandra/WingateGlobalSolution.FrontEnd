@@ -207,7 +207,7 @@ const EmployeeManageBox: React.FC = () => {
         contactNumber: employee.contactNumber,
         designationId: "65d44e402cdc44e12fe28378",
         focus: employee.focus,
-        accessLevel: employee.accessLevel
+        accessLevel: employee.systemAccessID
       };
 
       if (employeeId) {
