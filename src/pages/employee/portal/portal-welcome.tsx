@@ -23,8 +23,8 @@ import toastUtil from "@app_utils/toastUtil";
 
 // ProfileImage Component
 const ProfileImage = styled.img.attrs({
-  src: "https://cdn.builder.io/api/v1/image/assets/TEMP/586a24e8a819d8897da2bd2e082e42316b56cba40f9e096cf913851b9ad85175?apiKey=b8067976cf2a44fabfe1f4ad3e297451&",
-  alt: "Profile"
+    src: "https://cdn.builder.io/api/v1/image/assets/TEMP/586a24e8a819d8897da2bd2e082e42316b56cba40f9e096cf913851b9ad85175?apiKey=b8067976cf2a44fabfe1f4ad3e297451&",
+    alt: "Profile"
 })`
   width: 130px;
   height: 130px;
@@ -57,8 +57,8 @@ const MenuItem = styled.div`
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
   padding: 10px;
   margin: 8px;
-  width: 80px;
-  height: 80px;
+  width: 6rem;
+  height: 7rem;
   transition: transform 0.3s ease;
   cursor: pointer;
 
@@ -72,7 +72,7 @@ const MenuItem = styled.div`
 const MenuItemIcon = styled.img`
   width: 60%;
   height: 60%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   object-fit: contain;
 `;
 
@@ -80,6 +80,7 @@ const MenuItemLabel = styled.span`
   font-size: 12px;
   color: #333333;
   text-align: center;
+  padding-bottom: 2px;
 `;
 
 // MenuSection Component
@@ -100,6 +101,7 @@ const GridTitle = styled.h2`
   margin-bottom: 0px;
   text-align: left;
   padding-left: 10px;
+  padding-top: 5px;
 `;
 
 const MenuGrid = styled.div`
@@ -116,6 +118,7 @@ const MenuContainer = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   flex-direction: row;
+  margin-top: 0px;
 `;
 
 // Container for Profile Image and Welcome Message
@@ -141,52 +144,6 @@ const MessageContainer = styled.div`
 const App = () => {
     const menuItems = [
         {
-            sectionName: "Transport",
-            items: [
-                { label: "Order Aggregation", path: "app/order-aggregation", icon: orderAggIcon },
-                { label: "Bulk Details", path: "app/bulk-details", icon: bulkDetIcon },
-                { label: "Bulk", path: "app/bulk", icon: truckIcon },
-                { label: "Flight", path: "app/flight", icon: flight},
-                { label: "Airline", path: "app/airline", icon: airline },
-            ]
-        },
-        {
-            sectionName: "Restricted Order",
-            items: [
-                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
-                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
-                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
-                { label: "Category Info", path: "app/category", icon: CategoryIcon },
-            ]
-        },
-        {
-            sectionName: "Warehouse",
-            items: [
-                { label: "Warehouse Availability", path: "app/warehouseInfo", icon: warehouseIcon },
-                { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
-
-
-      ]
-    },
-    {
-      sectionName: "Employee",
-      items: [
-        { label: "Employee Management", path: "app/employee-manage", icon: empManager },
-        { label: "Employee Access", path: "app/employee-access", icon: empAccessIcon },
-
-
-      ]
-    },
-    {
-      sectionName: "Finance",
-      items: [
-        { label: "Quotation", path: "app/quotation", icon: empManager },
-        { label: "Payments", path: "app/payment", icon: empAccessIcon },
-
-
-      ]
-    },
-        {
             sectionName: "Order",
             items: [
                 { label: "Order Management", path: "app/order", icon: orderIcon },
@@ -206,43 +163,92 @@ const App = () => {
 
             ]
         },
+        {
+            sectionName: "Transport",
+            items: [
+                { label: "Order Aggregation", path: "app/order-aggregation", icon: orderAggIcon },
+                { label: "Bulk Details", path: "app/bulk-details", icon: bulkDetIcon },
+                { label: "Bulk", path: "app/bulk", icon: truckIcon },
+                { label: "Flight", path: "app/flight", icon: flight },
+                { label: "Airline", path: "app/airline", icon: airline },
+            ]
+        },
+        {
+            sectionName: "Restricted Order",
+            items: [
+                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
+                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
+                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
+                { label: "Category Info", path: "app/category", icon: CategoryIcon },
+            ]
+        },
+        {
+            sectionName: "Warehouse",
+            items: [
+                { label: "Warehouse Availability", path: "app/warehouseInfo", icon: warehouseIcon },
+                { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
 
-  ];
-  const { handleAppNavigation } = useAppNavigation();
-  const { employee } = useEmployeeAuthContext();
-  const handleSelect = async (path) => {
-    if (employee) {
-      const route = path;
-      handleAppNavigation(route, employee.accessToken);
-    } else {
-      toastUtil.error("Access Denied!");
-    }
-  };
 
-  return (
-    <PageWrapper>
-      <ProfileContainer>
-        <ProfileImage />
-        <MessageContainer>
-          <WelcomeMessage>Welcome Back,</WelcomeMessage>
-          <WelcomeMessage>{employee?.name.firstName || "User"}</WelcomeMessage>
-        </MessageContainer>
-      </ProfileContainer>
-      {menuItems.map((section, index) => (
-        <MenuSection key={index}>
-          <GridTitle>{section.sectionName}</GridTitle>
-          <MenuGrid>
-            {section.items.map((item, idx) => (
-              <MenuItem key={idx} onClick={() => handleSelect(item.path)}>
-                <MenuItemIcon src={item.icon} alt={item.label} />
-                <MenuItemLabel>{item.label}</MenuItemLabel>
-              </MenuItem>
-            ))}
-          </MenuGrid>
-        </MenuSection>
-      ))}
-    </PageWrapper>
-  );
+            ]
+        },
+        {
+            sectionName: "Employee",
+            items: [
+                { label: "Employee Management", path: "app/employee-manage", icon: empManager },
+                { label: "Employee Access", path: "app/employee-access", icon: empAccessIcon },
+
+
+            ]
+        },
+        {
+            sectionName: "Finance",
+            items: [
+                { label: "Quotation", path: "app/quotation", icon: empManager },
+                { label: "Payments", path: "app/payment", icon: empAccessIcon },
+
+
+            ]
+        },
+        
+
+    ];
+    const { handleAppNavigation } = useAppNavigation();
+    const { employee } = useEmployeeAuthContext();
+    const handleSelect = async (path) => {
+        if (employee) {
+            const route = path;
+            handleAppNavigation(route, employee.accessToken);
+        } else {
+            toastUtil.error("Access Denied!");
+        }
+    };
+
+    return (
+        <PageWrapper>
+            <ProfileContainer>
+                <ProfileImage />
+                <MessageContainer>
+                    <WelcomeMessage>Welcome Back,</WelcomeMessage>
+                    <WelcomeMessage>{employee?.name.firstName || "User"}!</WelcomeMessage>
+                </MessageContainer>
+            </ProfileContainer>
+            <MenuContainer>
+                {menuItems.map((section, index) => (
+                    <MenuSection key={index}>
+                        <GridTitle>{section.sectionName}</GridTitle>
+                        <MenuGrid>
+                            {section.items.map((item, idx) => (
+                                <MenuItem key={idx} onClick={() => handleSelect(item.path)}>
+                                    <MenuItemIcon src={item.icon} alt={item.label} />
+                                    <MenuItemLabel>{item.label}</MenuItemLabel>
+                                </MenuItem>
+                            ))}
+                        </MenuGrid>
+                    </MenuSection>
+                ))}
+            </MenuContainer>
+        </PageWrapper>
+    );
 };
 
 export default App;
@@ -255,7 +261,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 40px 20px;
+  padding: 0px 20px;
   min-height: 100vh;
 `;
 
