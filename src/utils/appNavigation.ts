@@ -16,8 +16,6 @@ export function useAppNavigation() {
             const fallback = "/app/portal-welcome"
 
             await canAccess(accessData).then(response => {
-
-                console.log('RespDest:', response.data.destination);
                 if (response.data && response.data.destination) {
                     navigate(response.data.destination);
                 } else {
