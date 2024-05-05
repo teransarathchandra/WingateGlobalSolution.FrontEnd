@@ -37,7 +37,7 @@ const columns: IColumn[] = [
 
 // Functional component for managing customer information.
 const CustomerInfo: React.FC = () => {
-  const [selectedUserOrders, setSelectedUserOrders] = useState([]);
+  const [, setSelectedUserOrders] = useState([]);
   const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
