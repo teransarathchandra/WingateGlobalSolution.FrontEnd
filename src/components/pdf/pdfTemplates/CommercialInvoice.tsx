@@ -1,7 +1,15 @@
 // import QRCodeGenerator from "@app_components/shared/QRCodeGenerator";
 import { CSSProperties, ReactNode } from "react";
 
-const CommercialInvoice = ({ order, item, receiver, sender }) => {
+interface CommercialInvoiceProps {
+    order?: any;
+    item?: any;
+    receiver?: any;
+    sender?: any;
+    payment?: any;
+}
+
+const CommercialInvoice: React.FC<CommercialInvoiceProps> = ({ order, item, receiver, sender }) => {
 
     const formatMoney = (amount) => {
         return `LKR ${amount.toFixed(2)}`;

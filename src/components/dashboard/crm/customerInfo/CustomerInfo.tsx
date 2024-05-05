@@ -16,10 +16,10 @@ import IUser from "@app_interfaces/IUser";
 import UserDetailsDialog from "@app_components/dashboard/crm/crmDialog/CrmDialog";
 import { ReportButtonModified } from "@app_styles/shared/customer.styles";
 import UserReportDialog from "../crmDialog/CrmReportDialog";
-import AddDialogModified from "@app_components/dialog/AddDialogModified";
+import AddDialogModified from "@app_components/dialog/Modified/AddDialogModified";
 import ReusabletableSandeepa from "@app_components/shared/ReusabletableSandeepa";
 import { AddButtonModified } from "@app_styles/shared/customer.styles";
-import EditDialog from "@app_components/dialog/EditDialogModified";
+import EditDialog from "@app_components/dialog/Modified/EditDialogModified";
 
 // Define the table columns for the customer data table.
 const columns: IColumn[] = [
@@ -32,7 +32,7 @@ const columns: IColumn[] = [
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
   { id: "seeDetails", label: "See Details", numeric: false, disablePadding: false },
-  
+
 ];
 
 // Functional component for managing customer information.
@@ -65,7 +65,7 @@ const CustomerInfo: React.FC = () => {
     setCurrentCustomer(null);
   };
 
-  
+
 
   const [isUserReportDialogOpen, setIsUserReportDialogOpen] = useState(false);
 
@@ -90,11 +90,11 @@ const CustomerInfo: React.FC = () => {
       const preparedCustomer: IRow[] = response.data.data.map((customer: ICustomer) => ({
         ...customer,
         _id: customer._id,
-       firstName: customer.name?.firstName || '', // Use optional chaining and nullish coalescing
-      lastName: customer.name?.lastName || '',
+        firstName: customer.name?.firstName || '', // Use optional chaining and nullish coalescing
+        lastName: customer.name?.lastName || '',
         email: customer.email,
-      priorityLevel: customer.priorityLevel,
-      birthday: customer.birthday ? customer.birthday.split('T')[0] : '',
+        priorityLevel: customer.priorityLevel,
+        birthday: customer.birthday ? customer.birthday.split('T')[0] : '',
         seeDetails: <button onClick={() => handleUserClick(customer)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>See More</button>,
         edit: (
           <button onClick={() => handleEditClick(customer)} style={{ all: "unset" }}>
@@ -129,14 +129,14 @@ const CustomerInfo: React.FC = () => {
   //       priorityLevel: updatedData.priorityLevel, // these should be taken from form inputs
   //       birthday: updatedData.birthday,     // these should be taken from form inputs
   //     };
-  
-    
+
+
   //     const response = await updateCustomerDetails(customerId, updateData);
-  
-  
+
+
   //   } catch (error) {
   //     console.error('Failed to update customer details:', error);
-     
+
   //   }
   // };
 
@@ -155,7 +155,7 @@ const CustomerInfo: React.FC = () => {
         await updateCustomer(customerId, customerData);
         console.log(customerData);
         console.log('Customer updated successfully');
-        
+
 
         fetchAndPrepareCustomers();
       }
@@ -178,7 +178,7 @@ const CustomerInfo: React.FC = () => {
       priorityLevel: formData.priorityLevel,
       birthday: formData.birthday,
     };
-  
+
     try {
       await createCustomer(CustomerInfo);
       fetchAndPrepareCustomers(); // Refresh the list
@@ -187,11 +187,11 @@ const CustomerInfo: React.FC = () => {
       console.error('Failed to add customer', error);
     }
   };
-  
+
 
   // const saveCustomer = async (customerData) => {
   //   setIsDialogOpen(false);
-    
+
   //   try {
   //     if (currentCustomer?._id) {
   //       await updateCustomer(currentCustomer._id, customerData);
@@ -228,7 +228,7 @@ const CustomerInfo: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const priorityOptions= [
+  const priorityOptions = [
     { value: "High Priority", label: "High Priority" },
     { value: "Medium Priority", label: "Medium Priority" },
     { value: "Low Priority", label: "Low Priority" }
@@ -257,7 +257,7 @@ const CustomerInfo: React.FC = () => {
           { name: "email", label: "Email", type: "text", disabled: false },
           { name: "priorityLevel", label: "Priority Level", type: "dropdown", options: priorityOptions },
           { name: "birthday", label: "Birth Date", type: "date", disabled: false },
-          
+
         ]}
         onSave={saveCustomer}
         onDelete={deleteCustomer}
@@ -292,8 +292,8 @@ const CustomerInfo: React.FC = () => {
           { name: "priorityLevel", label: "Priority Level", type: 'dropdown', options: priorityOptions },
           { name: "birthday", label: "Birthday", type: 'date', disabled: false },
         ]}
-        onSave={addCustomer} title={undefined}  
-/>
+        onSave={addCustomer} title={undefined}
+      />
 
     </>
   );
