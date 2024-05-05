@@ -58,7 +58,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().required('Email is required').email('Email is invalid'),
   contactNumber: Yup.string().required('Contact number is required').matches(/^[0-9]+$/, "Only digits are allowed"),
   priorityLevel: Yup.string().required('Priority level is required'),
-  
+  birthday: Yup.date().nullable().typeError('Birthday is Required').max(new Date(),  "Birthday is Invalid")
 });
 
 const AddDialog = ({ isOpen, handleClose, entity, fields, onSave, title }) => {
