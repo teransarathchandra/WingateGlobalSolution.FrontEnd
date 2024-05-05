@@ -63,7 +63,7 @@ const AddCategoryForm: React.FC<AddDialogProps> = ({ isOpen, handleClose, onAdd 
                         <CloseIcon />
                     </IconButton>
                     <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                        Add new Country
+                        Add new Category    
                     </Typography>
                 </Toolbar>
             </AppBar>

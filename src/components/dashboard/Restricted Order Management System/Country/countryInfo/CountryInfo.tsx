@@ -13,6 +13,7 @@ import {
 import { ICountry } from "../../../../../interfaces/ICountry";
 import EditDialog from "../../../../dialog/EditDialog";
 import AddCountryForm from "../dialogs/CountryAddDialog";
+import countrySchema from "@app_schemas/countrySchema";
 
 const columns: IColumn[] = [
   { id: "countryId",label: "Country ID",numeric: false,disablePadding: true,},
@@ -173,7 +174,7 @@ const CountryInfo: React.FC = () => {
         ]}
         onSave={saveCountry}
         onDelete={deleteCountry}
-        
+        schema={countrySchema}
       />
     </>
   );

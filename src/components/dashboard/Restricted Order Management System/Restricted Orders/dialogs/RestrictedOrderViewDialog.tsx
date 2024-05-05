@@ -146,9 +146,8 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
     function insertItemIdBeforeExtension(documentName, itemId) {
         const parts = documentName.split('.');
         if (parts.length > 1) {
-            // Assumes there is at least one dot in the filename
-            const extension = parts.pop();  // Remove and capture the extension
-            return parts.join('.') + '_' + itemId + '.' + extension;  // Reassemble with itemId before the extension
+            const extension = parts.pop(); 
+            return parts.join('.') + '_' + itemId + '.' + extension;  // put itemId before the extension
         } else {
             // No extension found, fallback to original method
             return documentName + '_' + itemId;

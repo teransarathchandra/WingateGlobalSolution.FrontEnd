@@ -8,6 +8,7 @@ import { createCategory, getAllCategory, updateCategory, deleteCategory } from "
 import { ICategory } from "../../../../../interfaces/ICategory";
 import EditDialog from "../../../../dialog/EditDialog";
 import AddCategoryForm from "../dialogs/CategoryAddDialog";
+import categorySchema from "@app_schemas/categorySchema";
 
 const columns: IColumn[] = [
   { id: "categoryId", label: "Category ID", numeric: false, disablePadding: true },
@@ -152,6 +153,7 @@ const CategoryInfo: React.FC = () => {
         ]}
         onSave={saveCategory}
         onDelete={deleteCategory}
+        schema={categorySchema}
       />
     </>
   );
