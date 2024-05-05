@@ -14,13 +14,12 @@ interface FormMethods {
 
 const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void }) => {
 
-  const [itemId, ] = useSessionStorage('order-item-object-id');
-  const [isPickupOrder, ] = useSessionStorage('order-is-pickup-order');
-  const [priority, ] = useSessionStorage('order-delivery-option');
+  const [itemId,] = useSessionStorage('order-item-object-id');
+  const [isPickupOrder,] = useSessionStorage('order-is-pickup-order');
+  const [priority,] = useSessionStorage('order-delivery-option');
   const [senderId, setSenderId] = useSessionStorage('order-sender-id');
   const [receiverId, setReceiverId] = useSessionStorage('order-receiver-id');
   const [orderId, setOrderId] = useSessionStorage('order-id');
-  const [restrictedOrder,] = useSessionStorage('order-is-restricted-order');
   const [, setOrderDetails] = useSessionStorage('order-details');
   const [senderFormValid, setSenderFormValid] = useState(false);
   const [receiverFormValid, setReceiverFormValid] = useState(false);
@@ -63,9 +62,9 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
           } else {
             senderPromise = await updateSender(senderId, senderData);
           }
-          
+
           let receiverPromise;
-          if(!receiverId) {
+          if (!receiverId) {
             receiverPromise = createReceiver(receiverData);
           } else {
             receiverPromise = await updateReceiver(receiverId, receiverData);
@@ -100,12 +99,8 @@ const PlaceOrder = ({ goNext, goBack }: { goNext: () => void, goBack: () => void
             setOrderId(orderObjId)
           }
 
-          if(restrictedOrder){
-            goNext(6);
-          }else{
-            goNext(5);
-          }
-          
+          goNext();
+
         } catch (error) {
           console.error("Error creating sender, receiver, or order:", error);
         } finally {

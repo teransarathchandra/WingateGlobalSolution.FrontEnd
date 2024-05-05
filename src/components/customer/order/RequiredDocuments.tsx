@@ -14,14 +14,14 @@ interface RestrictedOrderFormat {
 }
 
 const RequiredDocuments = ({ goNext, goBack }) => {
-    
+
     const [restrictedOrderType,] = useSessionStorage('restricted-order-order-type');
     const [isRestrictedNoticeDialogOpen, setIsRestrictedNoticeDialogOpen] = useState(true);
     const [isSubmitButtonEnable, setSubmitButtonEnable] = useState(false);
     const [isSendToApprovalButtonEnable, setSendToApprovalButtonEnable] = useState(false);
     const [requiredTrueDocuments, setRequiredTrueDocuments] = useState<string[]>([]);
     const [itemId,] = useSessionStorage('order-item-id');
-    
+
     const handleSubmitDisability = () => {
         setSubmitButtonEnable(true);
     };
@@ -41,8 +41,8 @@ const RequiredDocuments = ({ goNext, goBack }) => {
     };
 
     const handleAllDocumentsUploaded = (isEnable) => {
-        setSendToApprovalButtonEnable(isEnable); 
-        console.log("isSendToApprovalButtonEnable" , isSendToApprovalButtonEnable)
+        setSendToApprovalButtonEnable(isEnable);
+        console.log("isSendToApprovalButtonEnable", isSendToApprovalButtonEnable)
     };
 
     useEffect(() => {
