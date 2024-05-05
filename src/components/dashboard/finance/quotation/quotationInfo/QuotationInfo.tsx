@@ -14,9 +14,11 @@ import PDFLayout from "@app_components/pdf/PDFLayout";
 import QuotationReport from "@app_components/pdf/pdfTemplates/QuotationReport";
 import ReactDOMServer from "react-dom/server";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import {quotationYupSchema}  from "@app_schemas/Quotation.Schema"
 
 const columns: IColumn[] = [
   { id: "quotationId", label: "Quotation ID", numeric: false, disablePadding: true },
+  { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
   { id: "packagingCost", label: "Packaging Cost", numeric: true, disablePadding: false },
   { id: "routeCost", label: "Route Cost", numeric: true, disablePadding: false },
   { id: "unitWeightCost", label: "Unit Weight Cost", numeric: true, disablePadding: false },
@@ -26,7 +28,7 @@ const columns: IColumn[] = [
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
-
+9
 const QuotationInfo: React.FC = () => {
   const [quotations, setQuotations] = useState<IRow[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -183,6 +185,7 @@ const QuotationInfo: React.FC = () => {
 
         ]}
         onSave={addQuotation}
+        schema ={quotationYupSchema}
       />
 
       <DeleteDialog
@@ -192,7 +195,7 @@ const QuotationInfo: React.FC = () => {
       />
 
       
-      <Button onClick={() => setShowPDFDialog(true)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>
+      <Button onClick={() => setShowPDFDialog(true)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" ,margin:"2rem 0 2rem 1rem"}}>
         Preview & Export PDF
       </Button>
 
