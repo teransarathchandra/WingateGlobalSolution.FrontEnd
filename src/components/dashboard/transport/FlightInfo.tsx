@@ -219,7 +219,7 @@ const handleSearch = (event) => {
           
         ]}
         onSave={addFlight}
-        schema={addFlightSchema}
+        //schema={addFlightSchema}
       />
       <DeleteDialog
         isOpen= {isDeleteDialogOpen}
