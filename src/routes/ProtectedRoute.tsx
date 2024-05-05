@@ -77,10 +77,11 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
 
   if (route.forEmployeeOnly) {
     if (employee && employeeToken) {
-
+      console.log("route access", route.path, " allowed: ", isAllowed);
       if (isAllowed) {
         return children
       } else {
+
         return <Navigate to="/app/portal-welcome" replace />
       }
     } else {

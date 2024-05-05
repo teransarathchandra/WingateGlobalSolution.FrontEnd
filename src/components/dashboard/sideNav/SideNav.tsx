@@ -61,6 +61,8 @@ const SideNav = () => {
       '6-2': 'app/assign-details',
       '7-1': 'app/employee-manage',
       '7-2': 'app/employee-access',
+      '8-1': 'app/quotation',
+      '8-2': 'app/payment',
     };
     return mapping[eventKey] || '/';
   };
@@ -81,11 +83,11 @@ const SideNav = () => {
   left: 0;
   transform: translateY(-50%);
   z-index: 4;
-  display: ${({ expanded }) => (expanded? "block" : "none")};
+  display: ${({ expanded }) => (expanded ? "block" : "none")};
   animation: ${slideIn} 0.5s forwards; /* Apply the slideIn animation */
 `;
 
-const NavItem = styled(Nav.Item)`
+  const NavItem = styled(Nav.Item)`
 padding: 10px 20px; // Adjust padding if necessary
 width: 100%; // Ensure full width
 border-radius: 10px;
@@ -96,7 +98,7 @@ transition: background-color 0.2s;
 }
 `;
 
-const NavMenu = styled(Nav.Menu)`
+  const NavMenu = styled(Nav.Menu)`
 padding: 10px 20px; // Adjust padding if necessary
 width: 100%; // Ensure full width
 border-radius: 10px;
@@ -152,7 +154,7 @@ transition: background-color 0.2s;
                   alt=""
                   style={{ width: "200px", height: "200px", borderRadius: 10 }}
                 />
-             </Sidenav.Header>
+              </Sidenav.Header>
               <Sidenav.Body>
                 <Nav activeKey={activeKey}>
                   <NavMenu
@@ -252,6 +254,19 @@ transition: background-color 0.2s;
                       Access
                     </NavItem>
                   </NavMenu>
+                  <NavMenu
+                    placement="rightStart"
+                    eventKey="8"
+                    title="Finance"
+                    icon={<MagicIcon />}
+                  >
+                    <NavItem eventKey="8-1" onSelect={handleSelect}>
+                      Quotation
+                    </NavItem>
+                    <NavItem eventKey="8-2" onSelect={handleSelect}>
+                      Payment
+                    </NavItem>
+                  </NavMenu>
                 </Nav>
               </Sidenav.Body>
               <Sidenav.Toggle
@@ -265,7 +280,7 @@ transition: background-color 0.2s;
                   borderRadius: 10,
                   padding: 10,
                   cursor: "pointer"
-                }}/>
+                }} />
             </Sidenav>
           </Container>
         </>
