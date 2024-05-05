@@ -11,11 +11,12 @@ import EditDropdown from "@app_components/dialog/EditDropdown";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import { UpdateBtn, ReportBtn } from "@app_styles/warehouse.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
-import Button from "@mui/material/Button";
+//import Button from "@mui/material/Button";
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import PDFLayout from "@app_components/pdf/PDFLayout";
 import ReactDOMServer from "react-dom/server";
 import WarehouseReport from "@app_components/pdf/pdfTemplates/WarehouseReport";
+import { warehouseSchema } from "@app_schemas/warehouse.Schema";
 
 const columns: IColumn[] = [
   { id: "warehouseId", label: "Warehouse ID", numeric: false, disablePadding: true },
@@ -101,7 +102,7 @@ const WarehouseInfo: React.FC = () => {
       setIsDialogOpen(false);
 
     } catch (error) {
-      console.error('Failed to update bulk', error);
+      console.error('Failed to update warehouse', error);
 
     }
   };
@@ -124,7 +125,7 @@ const WarehouseInfo: React.FC = () => {
         setWarehouse(warehouses => warehouses.filter(w => w._id !== currentWarehouse._id));
         setisDeleteDialogOpen(false);
       } catch (error) {
-        console.error('Failed to delete bulk', error);
+        console.error('Failed to delete warehouse', error);
       }
     }
   };
@@ -160,6 +161,7 @@ const WarehouseInfo: React.FC = () => {
           { name: 'location', label: 'Location', type: 'text', disabled: false },
         ]}
         onSave={saveWarehouse}
+        onDelete={handleDeleteWarehouse}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}
@@ -178,6 +180,7 @@ const WarehouseInfo: React.FC = () => {
 
         ]}
         onSave={addWarehouse}
+        schema={warehouseSchema}
       />
 
                 <ReportBtn onClick={() =>     setShowPDFDialog(true)} color="secondary">
