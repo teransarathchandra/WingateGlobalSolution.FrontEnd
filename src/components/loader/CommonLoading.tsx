@@ -25,7 +25,7 @@ const CommonLoading = ({ loading }) => {
         stroke="5"
         stroke-length="0.25"
         bg-opacity="0.1"
-        speed="2"
+        speed="1.2"
         color="#0051A2"
       ></l-ring>
     </SpinnerOverlay>
