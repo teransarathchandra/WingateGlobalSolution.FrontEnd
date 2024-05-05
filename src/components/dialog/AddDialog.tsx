@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '../../styles/shared/editDialog.styles';
 import logo from "../../assets/images/logo.png";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 interface FieldConfig {
     name: string;
@@ -39,7 +39,7 @@ interface AddDialogProps {
 
 const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const { register, control, handleSubmit, formState: { errors } } = useForm({
         resolver: schema ? yupResolver(schema) : undefined,
         // defaultValues: entity || {},
     });
@@ -73,23 +73,33 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                         field.type === 'dropdown' ? (
                             <div key={field.name}>
                                 <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
-                                <Select
-                                    labelId={`${field.name}-label`}
-                                    margin="dense"
-                                    id={field.name}
-                                    fullWidth
-                                    variant="outlined"
+                                <Controller
                                     name={field.name}
-                                    value={formData[field.name] || ''}
-                                    disabled={field.disabled}
-                                    onChange={handleChange}
-                                >
-                                    {field.options && field.options.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                    control={control}
+                                    render={({ field: FieldConfig }) => (
+
+                                        <Select
+                                            labelId={`${field.name}-label`}
+                                            margin="dense"
+                                            id={field.name}
+                                            fullWidth
+                                            variant="outlined"
+                                            name={field.name}
+                                            value={formData[field.name] || ''}
+                                            disabled={field.disabled}
+                                            onChange={handleChange}
+                                        >
+                                            {field.options && field.options.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}
+
+                                                    {...register(option.label)}>
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))}
+                                        </Select>
+
+                                    )}
+                                />
                             </div>
                         ) : (
                             <TextField
