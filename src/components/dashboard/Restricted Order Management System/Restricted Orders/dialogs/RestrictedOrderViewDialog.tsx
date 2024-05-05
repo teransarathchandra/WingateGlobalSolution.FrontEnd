@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dialog, AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemText, Divider, Button, Slide } from '@mui/material';
+import { Dialog, AppBar, Toolbar, IconButton, Typography, List, ListItem, ListItemText, Divider, Button, Fade } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { TransitionProps } from '@mui/material/transitions';
 import { getOrderById } from '@app_services/orderService';
@@ -19,11 +19,13 @@ import { RestrictedOrderDetailsReport } from "@app_components/pdf/pdfTemplates/R
 
 
 const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children: React.ReactElement; },
+    props: TransitionProps & {
+      children: React.ReactElement;
+    },
     ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+  ) {
+    return <Fade in={true} ref={ref} {...props} />;
+  });
 
 interface RestrictedOrderViewDialogProps {
     isViewClicked: boolean;
@@ -288,181 +290,3 @@ const RestrictedOrderViewDialog: React.FC<RestrictedOrderViewDialogProps> = ({ i
     );
 };
 export default RestrictedOrderViewDialog;
-
-{/* {isEditDialogOpen == true &&
-        <RestrictedOrderTypeEditDialog
-          isOpen={isEditDialogOpen}
-          handleClose={handleClose}
-          entity={currentResOrder}
-          fields={fields}
-          onSave={handleUpdatedRestrictedOrderType}
-          onDelete={handleDeleteRestrictedOrderType} />
-      } */}
-
-// <Dialog open={isOpen} onClose={handleClose} fullScreen TransitionComponent={Transition}>
-
-//     <List>
-//         <ListItem>
-//             <ListItemText primary="Order ID" secondary={currentResOrder?.orderId} />
-//             {/* <ListItemText primary="Package Count" secondary={currentResOrder?.packageCount} /> */}
-//         </ListItem>
-//         <Divider />
-//         <ListItem>
-//             <ListItemText primary="Item ID" secondary={item?.itemId} />
-//             <ListItemText primary="Item Name" secondary={item?.itemName} />
-//             <ListItemText primary="Weight" secondary={item?.weight + 'kg'} />
-//             <ListItemText primary="Category" secondary={item?.categoryId} />
-//         </ListItem>
-//         <Divider />
-//         <ListItem>
-//             <ListItemText primary="Item Description" secondary={item?.description} />
-//         </ListItem>
-//         {/* ... Similar structure for receiver details, sender details, etc. */}
-//     </List>
-//     {/* Sender Notes Section */}
-//     <ListItem>
-//         {/* <ListItemText primary="Sender Notes" secondary={} /> */}
-//     </ListItem>
-//     {/* Restricted Order Details Section */}
-//     <ListItem>
-//         <ListItemText primary="Category" secondary={item?.description} />
-//         {/* <ListItemText primary="Required Documents" secondary={documentDetails} /> */}
-//     </ListItem>
-//     {/* Uploaded Documents Section */}
-//     {/* Iterate over the documents and display them */}
-//     {documentDetails?.map((document, index) => (
-//         <ListItem key={document.submittedDocumentId}>
-//             {/* Display document information */}
-//             <ListItemText primary={document.documentName} />
-//         </ListItem>
-//     ))}
-//     {/* Footer buttons */}
-//     <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
-//         <Button onClick={handleClose} color="primary">Cancel</Button>
-//         <Button onClick={() => handleApprove(currentResOrder?._id)} color="secondary">Approve</Button>
-//         <Button onClick={() => handleReject(currentResOrder?._id)} color="error">Reject</Button>
-//     </div>
-// </Dialog>
-
-
-
-
-//   const handleEditClick = async (id) => {
-//     const { data } = await getRestrictedOrderById(id)
-//     console.log(data);
-//     setCurrentResOrder(data);
-//     setIsEditDialogOpen(true);
-//     handleClose;
-//   };
-
-//   const handleDeleteRestrictedOrderType = async (ResOrderID) => {
-//     const ResOrderId = currentResOrder?._id || ResOrderID;
-//     if (!ResOrderId) {
-//       console.error('No ID available for deleting the restricted order type');
-//       return;
-//     }
-//     try {
-//       const response = await deleteRestrictedOrder(ResOrderId);
-//       console.log('Order deleted successfully:', response);
-//       handleViewClose();
-//       // setIsEditDialogOpen(false);
-//       // isOpen = false;
-//     } catch (error) {
-//       console.error('Failed to update order', error);
-//     }
-//    };
-
-
-//   const handleUpdatedRestrictedOrderType = async (updatedData: IRestrictedOrder) => {
-//     if (!updatedData?._id) {
-//       console.error('No ID available for updating the order');
-//       return;
-//     }
-//     try {
-//       const id = currentResOrder?._id
-//       const dataToUpdate = { ...updatedData };
-//       delete dataToUpdate._id;
-//       delete dataToUpdate.restrictedOrderId;
-//       delete (dataToUpdate as any).createdAt;
-//       delete (dataToUpdate as any).updatedAt;
-//       delete (dataToUpdate as any).__v;
-
-//       console.log(dataToUpdate)
-
-//       if (id) {
-//         const aggType = 'restrictedOrderTypes';
-//         const response = await updateRestrictedOrder(id, aggType, dataToUpdate);
-//         console.log("edited ", response.data.data[0]);
-//         setViewData(response.data.data[0]);
-//         handleClose();
-//       }
-
-//     } catch (error) {
-//       console.error('Failed to update order', error);
-//     }
-//   };
-
-
-
-
-
-
-
-
-// console.log(response.data);
-// console.log("senderId" ,orderResponse.data.senderId)
-
-// if (!response.data || !Array.isArray(response.data)) {
-//     console.log("order data is not in expected format");
-// }
-// const order = orderResponse.data.map((order: IOrder) => ({
-//     ...order,
-// }));
-// if (!response.data) {
-//     console.log("No order data available.");
-//     return;
-// }
-
-// let order: IOrder;
-// if (Array.isArray(response.data)) {
-//     // If data is an array, process it as an array
-//     order = response.data.map((orderData) => ({
-//         ...orderData,
-//     }));
-// } else {
-//     // If data is not an array, process it as a single object
-
-
-
-
-
-// const fetchDetails = async () => {
-//     if (orderDetails) {
-//         try {
-//             console.log("Sender Id:", orderDetails.senderId);
-//             const sender = await getSenderById(orderDetails.senderId);
-//             console.log("Sender details:", sender);
-//             setSenderDetails(sender);
-
-
-//             const receiver = await getReceiverById(orderDetails.receiverId); // Accessing receiverId directly
-//             setReceiverDetails(receiver.data);
-//             console.log("Receiver details:", receiver.data);
-
-//             const item = await getItemById(orderDetails.itemId); // Accessing itemId directly
-//             setItem(item.data);
-//             console.log("Item details:", item.data);
-
-//             if (orderDetails && itemDetails && senderDetails && receiverDetails && isViewClicked) {
-//                 setLoading(false); // End loading regardless of outcome
-//             } else {
-//                 console.log("errror")
-//             }
-//             // const documents = await getAllSubmittedDocumentByItemId(orderDetails.itemId, "itemId"); // Using itemId to fetch documents
-//             // setDocumentDetails(documents);
-//             // console.log("Document details:", documents);
-//         } catch (error) {
-//             console.error("Error fetching related details:", error);
-//         }
-//     }
-// };
