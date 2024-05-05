@@ -14,7 +14,7 @@ import { IAccess } from "@app_interfaces/IAccess";
 import EditDialog from "@app_components/dialog/employee/EmployeeEditDialog";
 import AddDialog from "@app_components/dialog/employee/EmployeeAddDialog";
 import DeleteDialog from "@app_components/dialog/employee/EmployeeDeleteDialog";
-
+import accessGeneralSchema from "@app_schemas/generalAccess.Schema";
 const columns: IColumn[] = [
   {
     id: "accessLevelId",
@@ -187,6 +187,7 @@ const EmployeeAccessBox: React.FC = () => {
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
         entity={currentAccess}
+        schema={accessGeneralSchema}
         fields={[
           {
             name: "accessLevelId",

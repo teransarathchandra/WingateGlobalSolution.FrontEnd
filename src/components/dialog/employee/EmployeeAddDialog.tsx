@@ -10,32 +10,8 @@ import InputLabel from '@mui/material/InputLabel';
 import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
 import logo from "@app_assets/images/logo.png";
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import { Chip } from '@mui/material';
-
-interface ChipData {
-    key: number;
-    label: string;
-}
-
-const ListItem = styled('li')(({ theme }) => ({
-    margin: theme.spacing(0.5),
-}));
-
-const ListSItem = styled('li')(({ theme }) => ({
-    margin: theme.spacing(0.9),
-}));
-
-
-const chipData: ChipData[] = ([
-    { key: 0, label: 'Angular' },
-    { key: 1, label: 'jQuery' },
-    { key: 2, label: 'Polymer' },
-    { key: 3, label: 'React' },
-    { key: 4, label: 'Vue.js' },
-]);
+import { yupResolver } from '@hookform/resolvers/yup';
 
 interface FieldConfig {
     name: string;
@@ -58,30 +34,30 @@ interface AddDialogProps {
     fields: FieldConfig[];
     onSave: (data: any) => void;
     title?: string;
+    schema?: any;
 }
 
 const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, title, schema }) => {
-
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: schema ? yupResolver(schema) : undefined,
-        // defaultValues: entity || {},
-    });
-
     const [formData, setFormData] = useState(entity || {});
 
     useEffect(() => {
         setFormData(entity || {});
     }, [entity]);
 
-    const onSubmit = data => {
-        onSave(data);
-        handleClose();
-    };
-
     const handleChange = (event: SelectChangeEvent) => {
         const name = event.target.name;
         const value = event.target.value;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: schema ? yupResolver(schema) : undefined,
+    });
+
+    const onSubmit = data => {
+        console.log("asdasd");
+        onSave(data);
+        handleClose();
     };
 
     return (
@@ -106,6 +82,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                                     value={formData[field.name] || ''}
                                     disabled={field.disabled}
                                     onChange={handleChange}
+                                    defaultValue='66249f563706e28304ffac91'
                                 >
                                     {field.options && field.options.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -124,22 +101,19 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
                                 type={field.type}
                                 fullWidth
                                 variant="outlined"
+                                {...register(field.name)}
                                 value={formData[field.name] || ''}
                                 disabled={field.disabled}
-                                {...register(field.name)}
-                                name={field.name}
                                 onChange={(e) => handleChange(e as SelectChangeEvent)}
                                 error={!!errors[field.name]}
                                 helperText={errors[field.name]?.message as string}
                             />
                         )
                     ))}
-
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="secondary">Add</Button>
-                    {/* <Button onClick={() => onSave(formData)} color="secondary">Add</Button> */}
+                    <Button type="submit" color="secondary">Save</Button>
                 </DialogActions>
             </form>
         </Dialog >
@@ -147,5 +121,3 @@ const AddDialog: React.FC<AddDialogProps> = ({ isOpen, handleClose, entity, fiel
 };
 
 export default AddDialog;
-
-

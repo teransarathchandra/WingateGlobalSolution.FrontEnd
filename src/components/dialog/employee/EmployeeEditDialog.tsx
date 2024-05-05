@@ -9,9 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { DialogHeaderContainer, DialogHeaderImage } from '@app_styles/shared/editDialog.styles';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
-import Select, { SelectChangeEvent } from '@mui/material/Select'; // Import SelectChangeEvent
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
+import Select from '@mui/material/Select'; // Import SelectChangeEvent
 
 interface FieldConfig {
     name: string;
@@ -28,26 +26,16 @@ interface EditDialogProps {
     fields: FieldConfig[];
     onSave: any;
     onDelete: (data: any) => void;
-    schema?: any;
 }
 
-const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, onDelete, schema }) => {
+const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fields, onSave, onDelete }) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: schema ? yupResolver(schema) : undefined,
-        // defaultValues: entity || {},
-    });
-
+    // State to manage local form data, initialized with entity or empty object
     const [formData, setFormData] = useState(entity || {});
     console.log(formData.name?.firstName)
     useEffect(() => {
         setFormData(entity || {});
     }, [entity]);
-
-    const onSubmit = data => {
-        onSave(data);
-        handleClose();
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -76,61 +64,54 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <form onSubmit={schema ? handleSubmit(onSubmit) : onSubmit}>
-                <DialogHeaderContainer>
-                    <DialogHeaderImage src={logo}></DialogHeaderImage>
-                </DialogHeaderContainer>
-                <DialogContent>
-                    {fields && fields.map((field) => (
-                        field.type === 'dropdown' ? (
-                            <div key={field.name}>
-                                <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
-                                <Select
-                                    labelId={`${field.name}-label`}
-                                    margin="dense"
-                                    id={field.name}
-                                    fullWidth
-                                    variant="outlined"
-                                    {...register(field.name)}
-                                    name={field.name}
-                                    value={formData[field.name] || ''}
-                                    disabled={field.disabled}
-                                    onChange={handleChange}
-                                >
-                                    {field.options && field.options.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </div>
-                        ) : (<TextField
-                            key={field.name}
-                            autoFocus
-                            margin="dense"
-                            id={field.name}
-                            label={field.label}
-                            type={field.type}
-                            fullWidth
-                            variant="outlined"
-                            value={getNestedValue(formData, field.name) || ''}
-                            disabled={field.disabled}
-                            {...register(field.name)}
-                            name={field.name}
-                            onChange={(e) => handleChange(e as SelectChangeEvent)}
-                            error={!!errors[field.name]}
-                            helperText={errors[field.name]?.message as string}
-
-                        />
-                        )
-                    ))}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">Cancel</Button>
-                    <Button type="submit" color="secondary">Save</Button>
-                    {onDelete && <Button onClick={() => onDelete(entity)} color="error">Delete</Button>}
-                </DialogActions>
-            </form>
+            <DialogHeaderContainer>
+                <DialogHeaderImage src={logo}></DialogHeaderImage>
+            </DialogHeaderContainer>
+            <DialogContent>
+                {fields && fields.map((field) => (
+                    field.type === 'dropdown' ? (
+                        <div key={field.name}>
+                            <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
+                            <Select
+                                labelId={`${field.name}-label`}
+                                margin="dense"
+                                id={field.name}
+                                fullWidth
+                                variant="outlined"
+                                name={field.name}
+                                value={formData[field.name] || ''}
+                                disabled={field.disabled}
+                                onChange={handleChange}
+                            >
+                                {field.options && field.options.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                    ) : (<TextField
+                        key={field.name}
+                        autoFocus
+                        margin="dense"
+                        id={field.name}
+                        label={field.label}
+                        type={field.type}
+                        fullWidth
+                        variant="outlined"
+                        name={field.name}
+                        value={getNestedValue(formData, field.name) || ''}
+                        disabled={field.disabled}
+                        onChange={handleChange}
+                    />
+                    )
+                ))}
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} color="primary">Cancel</Button>
+                <Button onClick={() => onSave(formData)} color="secondary">Save</Button>
+                {onDelete && <Button onClick={() => onDelete(entity)} color="error">Delete</Button>}
+            </DialogActions>
         </Dialog>
     );
 };

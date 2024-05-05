@@ -120,7 +120,6 @@ const EditDialog: React.FC<EditDialogProps> = ({ isOpen, handleClose, entity, fi
                             onChange={(e) => handleChange(e as SelectChangeEvent)}
                             error={!!errors[field.name]}
                             helperText={errors[field.name]?.message as string}
-
                         />
                         )
                     ))}

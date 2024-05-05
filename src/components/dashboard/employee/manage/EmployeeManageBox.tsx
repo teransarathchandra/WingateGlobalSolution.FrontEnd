@@ -10,8 +10,8 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "@app_services/employeeService";
-import EditDialog from "@app_components/dialog/EditDialog";
-import AddDialog from "@app_components/dialog/AddDialog";
+import EditDialog from "@app_components/dialog/employee/EmployeeEditDialog";
+import AddDialog from "@app_components/dialog/employee/EmployeeAddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import Button from '@mui/material/Button';
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
@@ -336,8 +336,6 @@ const EmployeeManageBox: React.FC = () => {
           }
         ]}
         onSave={saveAccess}
-        onDelete={ondeleteEmployee}
-        schema={employeeEditSchema}
       />
       <AddDialog
         title="Add Employee"
