@@ -24,4 +24,7 @@ dist-ssr
 *.sw?
 
 # dotenv environment variables file
+.env
 .env.development
+.env.test
+.env.production
