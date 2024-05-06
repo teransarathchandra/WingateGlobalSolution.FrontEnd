@@ -16,12 +16,12 @@ import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import PDFLayout from "@app_components/pdf/PDFLayout";
 import ReactDOMServer from "react-dom/server";
 import WarehouseReport from "@app_components/pdf/pdfTemplates/WarehouseReport";
-import { warehouseSchema } from "@app_schemas/warehouse.Schema";
-
+import { warehouseSchema } from "@app_schemas/warehouseSchema"
 const columns: IColumn[] = [
   { id: "warehouseId", label: "Warehouse ID", numeric: false, disablePadding: true },
   { id: "storageCapacity", label: "Capacity", numeric: true, disablePadding: false },
   { id: "location", label: "Location", numeric: false, disablePadding: false },
+  { id: "availability", label: "Availability", numeric: true, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
@@ -33,7 +33,6 @@ const WarehouseInfo: React.FC = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [showPDFDialog, setShowPDFDialog] = useState(false);
   const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
@@ -135,8 +134,8 @@ const WarehouseInfo: React.FC = () => {
   };
 
   const availabiltyOptions = [
-    { value: true, label: 'Available' },
-    { value: false, label: 'Unavailable' }
+    { value: true, label: "Available" },
+    { value: false, label: "Unavailable" }
   ];
 
   return (
@@ -181,21 +180,22 @@ const WarehouseInfo: React.FC = () => {
         ]}
         onSave={addWarehouse}
         schema={warehouseSchema}
+
       />
 
-                <ReportBtn onClick={() =>     setShowPDFDialog(true)} color="secondary">
-                <FontAwesomeIcon icon={faFile} style={{ cursor: "pointer", color: "#fffff" }} />&nbsp;&nbsp;  Export PDF
-                </ReportBtn>
+      <ReportBtn onClick={() => setShowPDFDialog(true)} color="secondary">
+        <FontAwesomeIcon icon={faFile} style={{ cursor: "pointer", color: "#fffff" }} />&nbsp;&nbsp;  Export PDF
+      </ReportBtn>
 
-                {showPDFDialog && (
-                <PDFExportDialog
-                    open={showPDFDialog}
-                    onClose={() => setShowPDFDialog(false)}
-                    htmlContent={pdfHtmlContent}
-                    filename="Warehouse Report.pdf"
-                />
-            )}
-    </> 
+      {showPDFDialog && (
+        <PDFExportDialog
+          open={showPDFDialog}
+          onClose={() => setShowPDFDialog(false)}
+          htmlContent={pdfHtmlContent}
+          filename="Warehouse Report.pdf"
+        />
+      )}
+    </>
   );
 };
 
