@@ -1,47 +1,77 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useSelector } from 'react-redux';
 import {
   Nav,
   NavbarNav,
   NavItem,
   NavLink,
   LinkText,
-} from "../../styles/navbar.styles";
+} from "@app_styles/navbar.styles";
+import { useEffect, useState } from "react";
 
-const Navbar = () => {
+interface NavbarProps {
+  isVisible: boolean;
+  homeRef: any;
+  servicesRef: any;
+  aboutUsRef: any;
+  contactUsRef: any;
+}
 
-  const username = useSelector((state: any) => state.auth?.user?.user?.name?.firstName);
+const Navbar: React.FC<NavbarProps> = ({
+  isVisible,
+  homeRef,
+  servicesRef,
+  aboutUsRef,
+  contactUsRef,
+}) => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 50; // You can adjust the scroll distance as needed
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrolled]);
+
+  if (!isVisible) {
+    return null;
+  }
+
+  const scrollToSection = (sectionRef) => {
+    if (sectionRef && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <Nav>
+    <Nav scrolled={scrolled}>
       <NavbarNav>
         <NavItem>
-          <NavLink to="/home">
+          <NavLink onClick={() => scrollToSection(homeRef)} to=''>
             <LinkText>Home</LinkText>
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/services">
+          <NavLink onClick={() => scrollToSection(servicesRef)} to=''>
             <LinkText>Services</LinkText>
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/aboutus">
+          <NavLink onClick={() => scrollToSection(aboutUsRef)} to=''>
             <LinkText>About Us</LinkText>
           </NavLink>
         </NavItem>
         <NavItem>
-          <NavLink to="/contactus">
+          <NavLink onClick={() => scrollToSection(contactUsRef)} to=''>
             <LinkText>Contact Us</LinkText>
           </NavLink>
         </NavItem>
-        {username && (
-          <NavItem>
-            <NavLink to="/profile">
-              <LinkText>{username}</LinkText>
-            </NavLink>
-          </NavItem>
-        )}
       </NavbarNav>
     </Nav>
   );
