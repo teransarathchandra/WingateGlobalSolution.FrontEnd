@@ -16,10 +16,10 @@ import { FlexRow } from "@app_styles/signForm.styles";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import AddButton from "./AddButton";
 
-interface ChipData {
-  key: number;
-  label: string;
-}
+// interface ChipData {
+//   key: number;
+//   label: string;
+// }
 
 const ListItem = styled('li')(({ theme }) => ({
   display: 'inline-block',
@@ -50,7 +50,7 @@ const AccessReusableTable: React.FC<AccessReusableTableProps> = ({ columns, rows
     return path.split('.').reduce((acc, part) => acc && acc[part], obj);
   };
 
-  const getChips = (string: String) => {
+  const getChips = (string: string) => {
     return string.split(';')
   };
 
@@ -125,7 +125,7 @@ const AccessReusableTable: React.FC<AccessReusableTableProps> = ({ columns, rows
                       {columns.map((column: IColumn) => (
                         column.type == "chips" ? (
                           <TableCell>
-                            {getChips(row[column.id]).map((chipName, index) => (
+                            {getChips(row[column.id]).map((chipName) => (
 
                               <ListItem key={chipName}>
                                 <Chip

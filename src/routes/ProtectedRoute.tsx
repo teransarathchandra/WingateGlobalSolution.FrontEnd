@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 // import { useSelector } from 'react-redux';
 // import IRootState from "@app_interfaces/IRootState";
 import toastUtil from "@app_utils/toastUtil";
@@ -10,7 +10,7 @@ import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployee
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
 import { useAppNavigation } from "@app_utils/appNavigation";
 import { IRoute } from "@app_interfaces/IRoute"
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface IRouteX {
   route: IRoute;
@@ -29,12 +29,12 @@ const ProtectedRoute = ({ route, children }: IRouteX) => {
   const { shouldContinueAppNavigation } = useAppNavigation();
   const [isAllowed, setIsAllowed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [checkPageAccess, setCheckPageAccess] = useState(false);
+  const [checkPageAccess,] = useState(false);
 
   useEffect(() => {
     const checkAccess = async () => {
       if (route.forEmployeeOnly && employee && employeeToken && isAllowed == false) {
-        await shouldContinueAppNavigation(route.path, employeeToken).then(resp => {
+        await shouldContinueAppNavigation(route.path, employeeToken).then(() => {
           setIsAllowed(true);
           setIsLoading(true);
         });

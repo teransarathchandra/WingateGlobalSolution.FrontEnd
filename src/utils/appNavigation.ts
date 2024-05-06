@@ -34,7 +34,7 @@ export function useAppNavigation() {
     };
 
     const shouldContinueAppNavigation = async (eventKey, accessToken) => {
-        debugger;
+
         if (accessToken) {
             const route = eventKey;
             const accessData = {
@@ -42,7 +42,7 @@ export function useAppNavigation() {
                 destination: route
             }
             toastUtil.info("Waiting For Access!");
-            const fallback = "app/portal-welcome"
+            // const fallback = "app/portal-welcome"
             return await canAccess(accessData).then(response => {
 
                 console.log('Resp:', response);
@@ -56,7 +56,7 @@ export function useAppNavigation() {
                 .catch(error => {
                     console.error('Error accessing data:', error);
                     return false;
-                });;
+                });
 
         } else {
             toastUtil.error("Access Denied!");

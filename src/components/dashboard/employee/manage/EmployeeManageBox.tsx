@@ -22,7 +22,7 @@ import IEmployee from "@app_interfaces/IEmployee";
 import { getAllAccess } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
 import employeeGeneralSchema from "@app_schemas/generalEmployee.Schema";
-import employeeEditSchema from "@app_schemas/editEmployee.Schema";
+// import employeeEditSchema from "@app_schemas/editEmployee.Schema";
 
 // import { password } from "@app_constants/regExp";
 
@@ -335,6 +335,7 @@ const EmployeeManageBox: React.FC = () => {
             options: accessLevels
           }
         ]}
+        onDelete={ondeleteEmployee}
         onSave={saveAccess}
       />
       <AddDialog

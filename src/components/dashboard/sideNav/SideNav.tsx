@@ -9,14 +9,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@app_assets/images/logo.png";
 import { useActiveAuthContext } from "@app_contexts/authActiveContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useAppNavigation } from "@app_utils/appNavigation";
 import toastUtil from "@app_utils/toastUtil";
 import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
 import { Box } from "@mui/material";
 
 const SideNav = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { isEmployee } = useActiveAuthContext();
 
   const [expanded, setExpanded] = useState(false);

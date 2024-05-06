@@ -9,8 +9,8 @@ import signInSchema from "@app_schemas/signInSchema";
 
 //MaterialUI
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
 
 //Assets
 import logo from "@app_assets/images/logo.png";
@@ -34,7 +34,7 @@ import {
   CompanyLogo,
   CompanyLogoImage,
   FieldGroup,
-  PasswordHandleSection,
+  // PasswordHandleSection,
   SignButton,
 } from "@app_styles/employee/signForm.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
