@@ -10,8 +10,8 @@ import {
   updateEmployee,
   deleteEmployee,
 } from "@app_services/employeeService";
-import EditDialog from "@app_components/dialog/EditDialog";
-import AddDialog from "@app_components/dialog/AddDialog";
+import EditDialog from "@app_components/dialog/employee/EmployeeEditDialog";
+import AddDialog from "@app_components/dialog/employee/EmployeeAddDialog";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import Button from '@mui/material/Button';
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
@@ -21,6 +21,9 @@ import EmployeesReport from "@app_components/pdf/pdfTemplates/EmployeeReport";
 import IEmployee from "@app_interfaces/IEmployee";
 import { getAllAccess } from "@app_services/accessService";
 import { IAccess } from "@app_interfaces/IAccess";
+import employeeGeneralSchema from "@app_schemas/generalEmployee.Schema";
+// import employeeEditSchema from "@app_schemas/editEmployee.Schema";
+
 // import { password } from "@app_constants/regExp";
 
 const columns: IColumn[] = [
@@ -207,7 +210,7 @@ const EmployeeManageBox: React.FC = () => {
         contactNumber: employee.contactNumber,
         designationId: "65d44e402cdc44e12fe28378",
         focus: employee.focus,
-        accessLevel: employee.accessLevel
+        accessLevel: employee.systemAccessID
       };
 
       if (employeeId) {
@@ -332,14 +335,15 @@ const EmployeeManageBox: React.FC = () => {
             options: accessLevels
           }
         ]}
-        onSave={saveAccess}
         onDelete={ondeleteEmployee}
+        onSave={saveAccess}
       />
       <AddDialog
         title="Add Employee"
         isOpen={isAddEmployeeOpen}
         handleClose={() => setIsAddEmployeeOpen(false)}
-        // entity={currentEmployee}
+        onSave={addEmployee}
+        schema={employeeGeneralSchema}
         fields={[
           {
             name: "firstName",
@@ -409,7 +413,6 @@ const EmployeeManageBox: React.FC = () => {
             options: accessLevels
           }
         ]}
-        onSave={addEmployee}
       />
       <DeleteDialog
         isOpen={isDeleteDialogOpen}

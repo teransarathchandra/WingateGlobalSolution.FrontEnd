@@ -13,9 +13,13 @@ import airline from "@app_assets/images/airline.png"
 import crmIcon from "@app_assets/images/crm.png"
 import userIcon from "@app_assets/images/user.png"
 import warehouseIcon from "@app_assets/images/warehouse.png"
-import driverIcon from "@app_assets/images/driver.png"
 import empManager from "@app_assets/images/empManager.png"
 import empAccessIcon from "@app_assets/images/empAccess.png"
+import quotIcon from "@app_assets/images/quatation.png"
+import payIcon from "@app_assets/images/payments.png"
+import { useAppNavigation } from "@app_utils/appNavigation";
+import { useEmployeeAuthContext } from "@app_contexts/childContexts/authEmployeeContext";
+import toastUtil from "@app_utils/toastUtil";
 
 
 // ProfileImage Component
@@ -52,9 +56,10 @@ const MenuItem = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  padding: 20px;
-  margin: 10px;
-  width: 160px;
+  padding: 10px;
+  margin: 8px;
+  width: 6rem;
+  height: 7rem;
   transition: transform 0.3s ease;
   cursor: pointer;
 
@@ -68,41 +73,53 @@ const MenuItem = styled.div`
 const MenuItemIcon = styled.img`
   width: 60%;
   height: 60%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   object-fit: contain;
 `;
 
 const MenuItemLabel = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   color: #333333;
   text-align: center;
+  padding-bottom: 2px;
 `;
 
 // MenuSection Component
 const MenuSection = styled.section`
   margin-top: 20px;
-  padding: 5px;
+  padding: 0px;
   background: rgba(255, 255, 255, 0.1);  // Lighter background for a more glass-like effect
   backdrop-filter: blur(10px);  // Blurs any content behind the section
-  border-radius: 20px;  // Rounded corners
+  border-radius: 20px;  
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);  // Subtle shadow for depth
-  border: 1px solid rgba(255, 255, 255, 0.18);  // Subtle border can enhance the glass effect
+  border: 1px solid rgba(255, 255, 255, 0.18);
 `;
 
 
 const GridTitle = styled.h2`
   color: #333333;
-  font-size: 22px;
-  margin-bottom: 15px;
+  font-size: 15px;
+  margin-bottom: 0px;
   text-align: left;
-  padding: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
 `;
 
 const MenuGrid = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
   justify-content: flex-start;
-  gap: 20px;
+  gap: 5px;
+  column-count: 5;
+`;
+
+const MenuContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: row;
+  margin-top: 0px;
 `;
 
 // Container for Profile Image and Welcome Message
@@ -122,6 +139,8 @@ const MessageContainer = styled.div`
 
 
 
+
+
 // App Component
 const App = () => {
     const menuItems = [
@@ -130,25 +149,6 @@ const App = () => {
             items: [
                 { label: "Order Management", path: "app/order", icon: orderIcon },
 
-            ]
-        },
-        {
-            sectionName: "Restricted Order",
-            items: [
-                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
-                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
-                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
-                { label: "Category Info", path: "app/category", icon: CategoryIcon },
-            ]
-        },
-        {
-            sectionName: "Transport",
-            items: [
-                { label: "Order Aggregation", path: "app/order-aggregation", icon: orderAggIcon },
-                { label: "Bulk Details", path: "app/bulk-details", icon: bulkDetIcon },
-                { label: "Bulk", path: "app/bulk", icon: truckIcon },
-                { label: "Flight", path: "app/flight", icon: flight},
-                { label: "Airline", path: "app/airline", icon: airline },
             ]
         },
         {
@@ -165,10 +165,28 @@ const App = () => {
             ]
         },
         {
+            sectionName: "Transport",
+            items: [
+                { label: "Order Aggregation", path: "app/order-aggregation", icon: orderAggIcon },
+                { label: "Bulk Details", path: "app/bulk-details", icon: bulkDetIcon },
+                { label: "Bulk", path: "app/bulk", icon: truckIcon },
+                { label: "Flight", path: "app/flight", icon: flight },
+                { label: "Airline", path: "app/airline", icon: airline },
+            ]
+        },
+        {
+            sectionName: "Restricted Order",
+            items: [
+                { label: "Restricted Orders", path: "app/restricted-orders", icon: restrictedIcon },
+                { label: "Restricted Order Types", path: "app/restricted-order-type", icon: ResTypeIcon },
+                { label: "Country Info", path: "app/country", icon: CountryInfoIcon },
+                { label: "Category Info", path: "app/category", icon: CategoryIcon },
+            ]
+        },
+        {
             sectionName: "Warehouse",
             items: [
-                { label: "Warehouse Availability", path: "app/warehouseInfo", icon: warehouseIcon },
-                { label: "Assign Drivers", path: "app/assign-details", icon: driverIcon },
+                { label: "Warehouse Info", path: "app/warehouseInfo", icon: warehouseIcon },
 
 
             ]
@@ -182,9 +200,28 @@ const App = () => {
 
             ]
         },
+        {
+            sectionName: "Finance",
+            items: [
+                { label: "Quotation", path: "app/quotation", icon: quotIcon },
+                { label: "Payments", path: "app/payment", icon: payIcon },
+
+
+            ]
+        },
 
 
     ];
+    const { handleAppNavigation } = useAppNavigation();
+    const { employee } = useEmployeeAuthContext();
+    const handleSelect = async (path) => {
+        if (employee) {
+            const route = path;
+            handleAppNavigation(route, employee.accessToken);
+        } else {
+            toastUtil.error("Access Denied!");
+        }
+    };
 
     return (
         <PageWrapper>
@@ -192,22 +229,24 @@ const App = () => {
                 <ProfileImage />
                 <MessageContainer>
                     <WelcomeMessage>Welcome Back,</WelcomeMessage>
-                    <WelcomeMessage>Prashan!</WelcomeMessage>
+                    <WelcomeMessage>{employee?.name.firstName || "User"}!</WelcomeMessage>
                 </MessageContainer>
             </ProfileContainer>
-            {menuItems.map((section, index) => (
-                <MenuSection key={index}>
-                    <GridTitle>{section.sectionName}</GridTitle>
-                    <MenuGrid>
-                        {section.items.map((item, idx) => (
-                            <MenuItem key={idx} >
+            <MenuContainer>
+                {menuItems.map((section, index) => (
+                    <MenuSection key={index}>
+                        <GridTitle>{section.sectionName}</GridTitle>
+                        <MenuGrid>
+                            {section.items.map((item, idx) => (
+                                <MenuItem key={idx} onClick={() => handleSelect(item.path)}>
                                     <MenuItemIcon src={item.icon} alt={item.label} />
                                     <MenuItemLabel>{item.label}</MenuItemLabel>
-                            </MenuItem>
-                        ))}
-                    </MenuGrid>
-                </MenuSection>
-            ))}
+                                </MenuItem>
+                            ))}
+                        </MenuGrid>
+                    </MenuSection>
+                ))}
+            </MenuContainer>
         </PageWrapper>
     );
 };
@@ -222,7 +261,7 @@ const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 40px 20px;
+  padding: 0px 20px;
   min-height: 100vh;
 `;
 

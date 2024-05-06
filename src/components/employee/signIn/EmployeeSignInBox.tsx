@@ -9,8 +9,8 @@ import signInSchema from "@app_schemas/signInSchema";
 
 //MaterialUI
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Checkbox from "@mui/material/Checkbox";
 
 //Assets
 import logo from "@app_assets/images/logo.png";
@@ -34,7 +34,7 @@ import {
   CompanyLogo,
   CompanyLogoImage,
   FieldGroup,
-  PasswordHandleSection,
+  // PasswordHandleSection,
   SignButton,
 } from "@app_styles/employee/signForm.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -69,7 +69,7 @@ const EmployeeSignInBox = () => {
       setTimeout("", 500);
       const focus = auth.employee.focus || "order";
       navigate("/app/" + focus);
-    }else{
+    } else {
       setEmployee(null);
       setEmployeeToken(null);
       setEmployeeRefreshToken(null);
@@ -129,14 +129,6 @@ const EmployeeSignInBox = () => {
                 helperText={errors.password?.message}
               />
             </FieldGroup>
-            <PasswordHandleSection>
-              <div>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-              </div>
-            </PasswordHandleSection>
             <FieldGroup>
               <SignButton type="submit">Sign in</SignButton>
             </FieldGroup>

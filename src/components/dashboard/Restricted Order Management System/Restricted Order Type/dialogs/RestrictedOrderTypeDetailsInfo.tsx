@@ -9,7 +9,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
 import Grid from '@mui/material/Grid';
 import { TransitionProps } from '@mui/material/transitions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +17,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IRestrictedOrder } from "../../../../../interfaces/IRestrictedOrder";
 import RestrictedOrderTypeEditDialog from './RestrictedOrderTypeEditDialog';
 import { getRestrictedOrderById, deleteRestrictedOrder, updateRestrictedOrder } from "../../../../../services/restrictedOrderService";
+import { Fade } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -25,7 +25,8 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>,
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  // Using Fade instead of Slide for a simple fade-in effect
+  return <Fade in={true} ref={ref} {...props} />;
 });
 
 interface FieldConfig {
@@ -126,7 +127,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, onS
           </Typography>
         </Toolbar>
       </AppBar>
-      <List style={{ width: '500px' }}>
+      <List style={{ width: '600px' }}>
         {fields.map((field, index) => (
           field.type !== Boolean && field.name !== "_id" && ViewData[field.name] && (
             <React.Fragment key={field.name}>
@@ -145,7 +146,7 @@ const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, entity, onS
           )
         ))}
         <List>
-          <ListItem>
+          <ListItem >
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <ListItemText primary="Documents" />

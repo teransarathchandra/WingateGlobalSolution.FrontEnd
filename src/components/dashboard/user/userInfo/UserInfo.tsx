@@ -10,6 +10,7 @@ import EditDialog from "@app_components/dialog/EditDialog";
 import UserDetailsDialog from "../userDialog/UserDetailsDialog";
 import UserReportDialog from "../userDialog/UserReportDialog";
 import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import userUpdateYup from "@app_schemas/userSchema";
 
 
 const columns: IColumn[] = [
@@ -189,6 +190,7 @@ const UserInfo: React.FC = () => {
         ]}
         onSave={saveUser}
         onDelete={deleteUser}
+        schema={userUpdateYup}
       />
 
 

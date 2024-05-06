@@ -3,21 +3,23 @@ import { IColumn, IRow } from "@app_interfaces/ITable";
 import { getAllOrders } from "@app_services/orderService";
 import { IOrder } from "@app_interfaces/IOrder";
 import ReusableTable from "@app_components/shared/ReusableTable";
+//import { Warehouse } from "@mui/icons-material";
 
 const columns: IColumn[] = [
   { id: "orderId", label: "Order ID", numeric: false, disablePadding: true },
   { id: "createdAt", label: "Date", numeric: false, disablePadding: false },
-  { id: "itemId", label: "Weight", numeric: false, disablePadding: false },
+  { id: "status", label: "Status", numeric: false, disablePadding: false },
   {
-    id: "packageCount",
-    label: "Package Count",
+    id: "warehouse",
+    label: "Warehouse",
     numeric: false,
     disablePadding: false,
   },
 ];
 
-const WarehouseAvailability: React.FC = () => {
+const Warehouse: React.FC = () => {
   const [orders, setOrders] = useState<IRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchAndPrepareOrders = async () => {
     try {
@@ -38,23 +40,23 @@ const WarehouseAvailability: React.FC = () => {
     fetchAndPrepareOrders();
   }, []);
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <>
-      {/* { { <TableDropdown }
-        columns={columns}
-        rows={orders}
-        title="Warehouse Availability"
-        rowKey="orderId"
-      /> } */}
       <ReusableTable
         columns={columns}
         rows={orders}
-        title="PickUP Ready Orders"
+        title="Warehouse"
         rowKey="orderId" 
+        searchTerm={searchTerm}
+        handleSearch={handleSearch}
         //filterLabels={undefined} filterSelects={undefined}    
           /> 
     </>
   );
 };
 
-export default WarehouseAvailability;
+export default Warehouse;

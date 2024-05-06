@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus, faFile } from "@fortawesome/free-solid-svg-icons";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { IColumn, IRow } from "@app_interfaces/ITable";
 import ReusableTable from "../../shared/ReusableTable";
@@ -8,18 +9,19 @@ import { createWarehouse, deleteWarehouse, getAllWarehouse, updateWarehouse } fr
 import { IWarehouse } from "@app_interfaces/IWarehouse";
 import EditDropdown from "@app_components/dialog/EditDropdown";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import { UpdateBtn, ReportBtn } from "@app_styles/warehouse.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
-import Button from "@mui/material/Button";
+//import Button from "@mui/material/Button";
 import PDFExportDialog from "@app_components/pdf/PDFPreviewDialog";
 import PDFLayout from "@app_components/pdf/PDFLayout";
 import ReactDOMServer from "react-dom/server";
 import WarehouseReport from "@app_components/pdf/pdfTemplates/WarehouseReport";
-
+import { warehouseSchema } from "@app_schemas/warehouseSchema"
 const columns: IColumn[] = [
   { id: "warehouseId", label: "Warehouse ID", numeric: false, disablePadding: true },
   { id: "storageCapacity", label: "Capacity", numeric: true, disablePadding: false },
   { id: "location", label: "Location", numeric: false, disablePadding: false },
+  { id: "availability", label: "Availability", numeric: true, disablePadding: false },
   { id: "edit", label: "Edit", numeric: false, disablePadding: false },
   { id: "delete", label: "Delete", numeric: false, disablePadding: false },
 ];
@@ -31,7 +33,6 @@ const WarehouseInfo: React.FC = () => {
   const [isDeleteDialogOpen, setisDeleteDialogOpen] = useState(false);
   const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [showPDFDialog, setShowPDFDialog] = useState(false);
   const [pdfHtmlContent, setPdfHtmlContent] = useState('');
 
@@ -100,7 +101,7 @@ const WarehouseInfo: React.FC = () => {
       setIsDialogOpen(false);
 
     } catch (error) {
-      console.error('Failed to update bulk', error);
+      console.error('Failed to update warehouse', error);
 
     }
   };
@@ -123,7 +124,7 @@ const WarehouseInfo: React.FC = () => {
         setWarehouse(warehouses => warehouses.filter(w => w._id !== currentWarehouse._id));
         setisDeleteDialogOpen(false);
       } catch (error) {
-        console.error('Failed to delete bulk', error);
+        console.error('Failed to delete warehouse', error);
       }
     }
   };
@@ -133,8 +134,8 @@ const WarehouseInfo: React.FC = () => {
   };
 
   const availabiltyOptions = [
-    { value: true, label: 'Available' },
-    { value: false, label: 'Unavailable' }
+    { value: true, label: "Available" },
+    { value: false, label: "Unavailable" }
   ];
 
   return (
@@ -147,6 +148,7 @@ const WarehouseInfo: React.FC = () => {
         searchTerm={searchTerm}
         handleSearch={handleSearch}
       />
+
       <EditDropdown
         isOpen={isDialogOpen}
         handleClose={() => setIsDialogOpen(false)}
@@ -165,7 +167,7 @@ const WarehouseInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteWarehouse}
       />
-      <UpdateBtn onClick={handleAddClick}>Add</UpdateBtn>
+      <UpdateBtn onClick={handleAddClick}><FontAwesomeIcon icon={faSquarePlus} style={{ cursor: "pointer", color: "#fffff" }} />&nbsp;&nbsp;Add</UpdateBtn>
       <AddDialog
         isOpen={isAddWarehouseOpen}
         handleClose={() => setIsAddWarehouseOpen(false)}
@@ -177,18 +179,20 @@ const WarehouseInfo: React.FC = () => {
 
         ]}
         onSave={addWarehouse}
+        schema={warehouseSchema}
+
       />
 
-      <Button onClick={() => setShowPDFDialog(true)} color="secondary">
-        Preview & Export PDF
-      </Button>
+      <ReportBtn onClick={() => setShowPDFDialog(true)} color="secondary">
+        <FontAwesomeIcon icon={faFile} style={{ cursor: "pointer", color: "#fffff" }} />&nbsp;&nbsp;  Export PDF
+      </ReportBtn>
 
       {showPDFDialog && (
         <PDFExportDialog
           open={showPDFDialog}
           onClose={() => setShowPDFDialog(false)}
           htmlContent={pdfHtmlContent}
-          filename="OrdersReport.pdf"
+          filename="Warehouse Report.pdf"
         />
       )}
     </>
