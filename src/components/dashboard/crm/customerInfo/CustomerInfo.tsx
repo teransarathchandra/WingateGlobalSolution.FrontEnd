@@ -37,7 +37,7 @@ const columns: IColumn[] = [
 
 // Functional component for managing customer information.
 const CustomerInfo: React.FC = () => {
-  const [selectedUserOrders, setSelectedUserOrders] = useState([]);
+  const [, setSelectedUserOrders] = useState([]);
   const [isUserDetailsDialogOpen, setIsUserDetailsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
@@ -93,8 +93,8 @@ const CustomerInfo: React.FC = () => {
         firstName: customer.name?.firstName || '', // Use optional chaining and nullish coalescing
         lastName: customer.name?.lastName || '',
         email: customer.email,
-        priorityLevel: customer.priorityLevel,
-        birthday: customer.birthday ? customer.birthday.split('T')[0] : '',
+      priorityLevel: customer.priorityLevel,
+      birthday: customer.birthday ? customer.birthday.split('T')[0] : '',//see details button below
         seeDetails: <button onClick={() => handleUserClick(customer)} style={{ cursor: "pointer", backgroundColor: "#e1bd05", color: "#ffffff", border: "2px solid #e1bd05", borderRadius: "10px" }}>See More</button>,
         edit: (
           <button onClick={() => handleEditClick(customer)} style={{ all: "unset" }}>
@@ -265,7 +265,7 @@ const CustomerInfo: React.FC = () => {
       <UserDetailsDialog
         isOpen={isUserDetailsDialogOpen}
         user={selectedUser}
-        orders={selectedUserOrders}
+       
         handleClose={() => setIsUserDetailsDialogOpen(false)}
       />
       <UserReportDialog
@@ -277,8 +277,8 @@ const CustomerInfo: React.FC = () => {
         handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteCustomer}
       />
-      <ReportButtonModified onClick={handleUserReportClick}>Generate Report</ReportButtonModified>
-      <AddButtonModified onClick={handleAddClick}>Add Customer</AddButtonModified>
+      <ReportButtonModified onClick={handleUserReportClick}>Generate<br/>Report</ReportButtonModified>
+      <AddButtonModified onClick={handleAddClick}>Add<br/>Customer</AddButtonModified>
       <AddDialogModified
         isOpen={isAddCustomerOpen}
         handleClose={() => setIsAddCustomerOpen(false)}
