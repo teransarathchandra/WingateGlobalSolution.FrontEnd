@@ -3,7 +3,7 @@ import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
-import { AppBar, Checkbox, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Toolbar, Typography } from '@mui/material';
+import { AppBar, Checkbox, FormControlLabel, FormHelperText, IconButton, InputLabel, MenuItem, Select, Toolbar, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { getAllCategory } from "../../../../../services/categoryService";
 import { getAllCountry } from "../../../../../services/countryService";
@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form';
 
 
 interface FieldConfig {
-    name: string;
+    name;
     label: string;
     type: any;
     disabled?: boolean;
@@ -37,10 +37,10 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
     const [categories, setCategories] = useState<ICategory[]>([]);
     const [countries, setCountries] = useState<ICountry[]>([]);
   //  const [from, setSendingCountries] = useState("");
-   
     const {
         register,
         handleSubmit,
+        formState: { errors },
     } = useForm({
         resolver: yupResolver(restrictedOrderTypeSchema),
     });
@@ -49,6 +49,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
         setFormData(formData);
         fetchCategories();
         fetchCountries();
+       
     }, [entity]);
 
     const handleChange = (e) => {
@@ -59,9 +60,11 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
         }));
     };
 
-    const handleSave = async () => {
+    const handleSave = (formData) => {
+        console.log("handle save called", formData)
+        formData._id = entity._id
         onSave(formData);
-        handleClose
+        handleClose();
     };
 
     const fetchCategories = async () => {
@@ -93,7 +96,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <AppBar sx={{ position: 'relative' }}>
+            <AppBar sx={{ position: 'relative' }} style={{ width: '600px' }}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                         <CloseIcon />
@@ -114,6 +117,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                     style={{ display: 'block' }} 
                                     control={
                                         <Checkbox
+                                          {...register(field.name)}
                                             checked={formData[field.name]}
                                             onChange={handleChange}
                                             name={field.name}
@@ -124,7 +128,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
 
                             ) : field.type === Number ? (
 
-                                <TextField
+                                <><TextField
                                     key={field.name}
                                     autoFocus
                                     margin="dense"
@@ -133,10 +137,11 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                     type="number"
                                     fullWidth
                                     variant="outlined"
-                                    name={field.name}
+                                    {...register(field.name)}
+                                    error={!!errors[field.name]}
                                     value={formData[field.name]}
                                     onChange={handleChange}
-                                />
+                                /><FormHelperText error={!!errors[field.name]}>{errors[field.name]?.message as string}</FormHelperText></>
 
                             ) : field.name === "categoryId" ? (
                                 <>
@@ -156,6 +161,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                             variant="outlined"
                                             value={formData[field.name]}
                                             {...register(field.name)}
+                                        error={!!errors[field.name]}
                                             onChange={handleChange}
                                             >
                                             {categories.map((category) => (
@@ -167,11 +173,13 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                         </Select>
                                     </div>
                                 </>
-                            ) : (
+                            ) : (field.name === "sendingCountryId" || field.name === "receivingCountryId") &&  (
+                                
                                 <>
                                     <div>
                                         <InputLabel id={`${field.name}-label`}>{field.label}</InputLabel>
                                         <Select
+                                            id={field.name}
                                             defaultValue={formData[field.name]}
                                             placeholder={field.label}
                                             style={{
@@ -180,16 +188,16 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                                             }}
                                             key={field.name}
                                             autoFocus
-                                            id={field.name}
                                             fullWidth
                                             type="number"
                                             variant="outlined"
-                                            name={field.name}
+                                            {...register(field.name)}
                                             value={formData[field.name]}
                                             onChange={handleChange}
+                                           
                                         >
-                                            {countries.map((country) => (
-                                                <MenuItem key={country._id} value={country._id}>
+                                            {countries.map((country, index) => ( 
+                                                <MenuItem key={index} value={country._id}>
                                                     {country.name}
                                                 </MenuItem>
                                             ))}
@@ -201,7 +209,7 @@ const RestrictedOrderTypeEditDialog: React.FC<EditDialogProps> = ({ isOpen, enti
                 </DialogContent >
                 <div style={{ display: 'flex', justifyContent: "flex-end", gap: '50px', paddingRight: '40px', paddingBottom: '60px' }}>
                     <Button onClick={handleClose} color="primary">Cancel</Button>
-                    <Button type="submit" onClick={() => onSave(formData)} color="secondary">Save</Button>
+                    <Button type="submit" color="secondary">Save</Button>
                     <Button onClick={() => onDelete(entity._id)} color="error">Delete</Button>
                 </div>
             </form>

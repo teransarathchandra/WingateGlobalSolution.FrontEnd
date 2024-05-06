@@ -76,6 +76,25 @@ export const ReportButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.1s;
+position: relative;
+left: 500px;
+  width: 190px;
+  height: 33px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 30px 20px 0px;
+  background-color: white; // Light yellow background: ;
+  color: #000; // Black text color
+  border: 2px solid #E1BD05; // Solid black border
+  border-radius: 10px; // Rounded corners (adjust radius as needed)
+  padding: 10px 20px; // Padding inside the button (adjust as needed)
+  font-size: 16px; // Font size (adjust as needed)
+  font-weight: bold; // Bold font weight
+  cursor: pointer; // Changes the cursor on hover
+  outline: none; // Removes the outline on focus for aesthetics
+  transition: background-color 0.3s, transform 0.1s; // Smooth transition for visual effects
+
   &:hover {
     background-color: #45a049; // Darker green on hover
   }

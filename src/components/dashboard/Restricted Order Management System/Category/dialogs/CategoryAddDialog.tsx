@@ -21,8 +21,8 @@ interface FormDataConfig {
 const AddCategoryForm: React.FC<AddDialogProps> = ({ isOpen, handleClose, onAdd }) => {
 
     const formFields: FormDataConfig[] = [
-        { key: 'description', label: 'Description', type: 'string', defaultValue: '' },
         { key: 'name', label: 'Name', type: 'string', defaultValue: '' },
+        { key: 'description', label: 'Description', type: 'string', defaultValue: '' },
         { key: 'costPerKilo', label: 'Cost Per Kilo', type: 'number', defaultValue: '' },
     ];
     const defaultFormData = Object.fromEntries(formFields.map(field => [field.key, field.defaultValue]));
@@ -63,7 +63,7 @@ const AddCategoryForm: React.FC<AddDialogProps> = ({ isOpen, handleClose, onAdd 
                         <CloseIcon />
                     </IconButton>
                     <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                        Add new Country
+                        Add new Category    
                     </Typography>
                 </Toolbar>
             </AppBar>

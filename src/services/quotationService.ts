@@ -29,9 +29,14 @@ export const updateQuotation = async (id, quotationData) => {
     return data;
 };
 
-
 export const deleteQuotation = (id) => {
     return api.delete(`/quotation/${id}`)
+        .then((response) => response.data)
+        .catch((error) => error.message);
+};
+
+export const calculateQuotationAmount = (itemId) => {
+    return api.post(`/quotation/calcamount/${itemId}`)
         .then((response) => response.data)
         .catch((error) => error.message);
 };

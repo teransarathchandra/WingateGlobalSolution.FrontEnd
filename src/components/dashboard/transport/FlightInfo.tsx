@@ -7,17 +7,19 @@ import ReusableTable from "../../shared/ReusableTable";
 import { getAllFlights, updateFlight, createFlight, deleteFlight } from "../../../services/flightService";
 import { IFlight } from "../../../interfaces/IFlight";
 import EditDialog from "../../dialog/EditDialog";
-import { UpdateBtn } from "@app_styles/bulkDetails.styles";
+import { ButtonContainer, UpdateBtn } from "@app_styles/bulkDetails.styles";
 import AddDialog from "@app_components/dialog/AddDialog";
 import { getAllAirlines } from "@app_services/airlineService";
 import DeleteDialog from "@app_components/dialog/DeleteDialog";
 import { getAllCountry } from "@app_services/countryService";
+import addFlightSchema from "@app_schemas/bulk/addFlight.Schema";
+import editFlightSchema from "@app_schemas/bulk/editFlight.Schema";
 
 
 const columns: IColumn[] = [
   { id: "flightId", label: "Flight No", numeric: false, disablePadding: false },
   { id: "type", label: "Type", numeric: false, disablePadding: false },
-  { id: "routeCostPerKilo", label: "Route Cost", numeric: false, disablePadding: false },
+  //{ id: "routeCostPerKilo", label: "Route Cost", numeric: false, disablePadding: false },
   { id: "arrival", label: "Arrival", numeric: false, disablePadding: false },
   { id: "arrivalTime", label: "Arrival Time", numeric: false, disablePadding: false },
   { id: "departure", label: "Departure", numeric: false, disablePadding: false },
@@ -49,7 +51,7 @@ const FlightInfo: React.FC = () => {
   };
 
   const handleDeleteClick = (flight: IFlight) => {
-    console.log("Flight" , flight);
+    console.log("Flight", flight);
     setCurrentFlight(flight);
     setisDeleteDialogOpen(true);
   };
@@ -69,16 +71,16 @@ const FlightInfo: React.FC = () => {
       console.error('Failed to fetch flights', error);
     }
   };
-  
-useEffect(() => {
-  
 
-  loadAirlines();
-  loadcountries();
-  loadcountry();
-}, []);
+  useEffect(() => {
 
-const loadAirlines = async () => {
+
+    loadAirlines();
+    loadcountries();
+    loadcountry();
+  }, []);
+
+  const loadAirlines = async () => {
     try {
       const response = await getAllAirlines();
       const options = response.data.map(airline => ({
@@ -123,9 +125,9 @@ const loadAirlines = async () => {
       setCountry([]);
     }
   };
-  
-  
-  
+
+
+
   const addFlight = async (flightData) => {
     try {
       await createFlight(flightData);
@@ -146,37 +148,37 @@ const loadAirlines = async () => {
     setIsDialogOpen(false);
 
 
-  try {
-    const flightId = currentFlight?._id;
-    if (flightId) {
-      await updateFlight(flightId, flightData); 
-      console.log('Flight details updated successfully');
-
-      
-      fetchAndPrepareFlights();
-    }
-    setIsDialogOpen(false); 
-  } catch (error) {
-    console.error('Failed to update flight details', error);
-    
-  }
-};
-const handleDeleteFlight = async () => {
-  if (currentFlight) {
     try {
-      await deleteFlight(currentFlight._id);
-      setFlights(flights => flights.filter(b => b._id !== currentFlight._id));
-      setisDeleteDialogOpen(false);
+      const flightId = currentFlight?._id;
+      if (flightId) {
+        await updateFlight(flightId, flightData);
+        console.log('Flight details updated successfully');
+
+
+        fetchAndPrepareFlights();
+      }
+      setIsDialogOpen(false);
     } catch (error) {
-      console.error('Failed to delete bulk', error);
+      console.error('Failed to update flight details', error);
+
     }
-  }
-};
+  };
+  const handleDeleteFlight = async () => {
+    if (currentFlight) {
+      try {
+        await deleteFlight(currentFlight._id);
+        setFlights(flights => flights.filter(b => b._id !== currentFlight._id));
+        setisDeleteDialogOpen(false);
+      } catch (error) {
+        console.error('Failed to delete bulk', error);
+      }
+    }
+  };
 
 
-const handleSearch = (event) => {
-  setSearchTerm(event.target.value);
-};
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
   return (
     <>
       <ReusableTable
@@ -194,12 +196,16 @@ const handleSearch = (event) => {
         fields={[
           { name: 'arrivalTime', label: 'Arrival time', type: 'text', disabled: false },
           { name: "departureTime", label: "Departure Time", type: 'text', disabled: false },
-          { name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
+          //{ name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
         ]}
         onSave={saveFlight}
         onDelete={deleteFlight}
+        schema={editFlightSchema}
       />
+      <ButtonContainer>
       <UpdateBtn onClick={handleAddClick}>Add Flight</UpdateBtn>
+      </ButtonContainer>
+      
       <AddDialog
         isOpen={isAddFlightOpen}
         handleClose={() => setIsAddFlightOpen(false)}
@@ -207,19 +213,20 @@ const handleSearch = (event) => {
         fields={[
           { name: 'flightId', label: 'Flight No', type: 'text', disabled: false },
           { name: 'type', label: 'Type', type: 'text', disabled: false },
-          { name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
+          //{ name: "routeCostPerKilo", label: "Route Cost", type: 'text', disabled: false },
           { name: "arrival", label: "Arrival", type: 'dropdown', options: countryOptions },
           { name: 'arrivalTime', label: 'Arrival time', type: 'text', disabled: false },
-          { name: "departure", label: "Departure", type: 'dropdown',  options: country },
+          { name: "departure", label: "Departure", type: 'dropdown', options: country },
           { name: 'departureTime', label: 'Departure time', type: 'text', disabled: false },
-          { name: "AirlineId", label: "Airline", type: 'dropdown',options: airlineOptions },
-          
+          { name: "AirlineId", label: "Airline", type: 'dropdown', options: airlineOptions },
+
         ]}
         onSave={addFlight}
+        schema={addFlightSchema}
       />
       <DeleteDialog
-        isOpen= {isDeleteDialogOpen}
-        handleClose={() => setisDeleteDialogOpen(false)}        
+        isOpen={isDeleteDialogOpen}
+        handleClose={() => setisDeleteDialogOpen(false)}
         handleDelete={handleDeleteFlight}
       />
     </>

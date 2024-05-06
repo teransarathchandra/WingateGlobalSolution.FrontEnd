@@ -143,7 +143,7 @@ const BulkDetails = () => {
                         />
 
                     </FieldGroup>
-                    <UpdateBtn type="submit">Update</UpdateBtn>
+                    <UpdateBtn type="submit">Done</UpdateBtn>
                 </Div>
                 
             </Form>

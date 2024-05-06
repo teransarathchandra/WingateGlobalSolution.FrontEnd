@@ -286,9 +286,24 @@ const Home = () => {
           </GetForm>
         </GetInTouchSection>
         <Footer>
-          <Container>
+          <Container style={{ position: 'relative', width: '100%' }}>
             <Logo src={logo} alt="logo" />
             <Text>Wingate Global Solutions</Text>
+            <button style={{ position: 'absolute', right: '0', marginRight: '100px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 4px 0 rgba(0,0,0,0.1), 0 3px 2px 0 rgba(0,0,0,0.19)',
+                backgroundColor: '#fcd703',
+                border: 'none',
+                color: '#000000',
+                padding: '6px 20px',
+                textAlign: 'center',
+                fontSize: '16px',
+                textDecoration: 'none',
+                display: 'inline-block',
+                borderRadius: '15px' }}
+              onClick={() => window.location.href='http://localhost:5173/emp-checkpoint'}>
+              Employee Check Point
+              </button>
           </Container>
           <List>
             <Item>Home</Item>
@@ -296,6 +311,7 @@ const Home = () => {
             <Item>About Us</Item>
             <Item>Contact Us</Item>
           </List>
+
         </Footer>
       </ContactUsSection>
     </>

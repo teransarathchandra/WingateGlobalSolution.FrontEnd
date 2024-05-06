@@ -8,6 +8,7 @@ import { createCategory, getAllCategory, updateCategory, deleteCategory } from "
 import { ICategory } from "../../../../../interfaces/ICategory";
 import EditDialog from "../../../../dialog/EditDialog";
 import AddCategoryForm from "../dialogs/CategoryAddDialog";
+import categorySchema from "@app_schemas/categorySchema";
 
 const columns: IColumn[] = [
   { id: "categoryId", label: "Category ID", numeric: false, disablePadding: true },
@@ -36,9 +37,10 @@ const CategoryInfo: React.FC = () => {
     setEditDialogOpen(true);
   };
   const handleClose = () => {
+    fetchAndPrepareCategory();
     setEditDialogOpen(false);
     setAddCategoryOpen(false);
-    fetchAndPrepareCategory();
+   
   };
   const handleAddClick = () => {
     setAddCategoryOpen(true);
@@ -144,13 +146,14 @@ const CategoryInfo: React.FC = () => {
         handleClose={() => setEditDialogOpen(false)}
         entity={currentCategory}
         fields={[
-          { name: 'categoryId', label: 'Category Id', type: 'text', disabled: false },
+          { name: 'categoryId', label: 'Category Id', type: 'text', disabled: true },
           { name: 'name', label: 'Name', type: 'text', disabled: false },
           { name: 'description', label: 'Description', type: 'text', disabled: false },
           { name: 'costPerKilo', label: 'Cost Per Kilo', type: 'number', disabled: false },
         ]}
         onSave={saveCategory}
         onDelete={deleteCategory}
+        schema={categorySchema}
       />
     </>
   );

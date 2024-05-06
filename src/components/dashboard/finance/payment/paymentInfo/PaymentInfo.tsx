@@ -5,6 +5,7 @@ import { getAllPayments } from "@app_services/paymentService";
 import EditDialog from "../../../../dialog/EditDialog";
 import { IPayment } from "@app_interfaces/IPayment";
 import { separateDateTime } from "@app_utils/separateDateTime";
+import { separateDateTime } from "@app_utils/separateDateTime";
 
 const columns: IColumn[] = [
   {
@@ -56,6 +57,7 @@ const PaymentInfo: React.FC = () => {
   const fetchAndPreparePayments = async () => {
     try {
       const aggType = "paymentIds";
+      const aggType = "paymentIds";
       const { data } = await getAllPayments(aggType);
       const preparedPayments: IRow[] = await Promise.all(data.map(async (payment: IPayment) => {
         const { date } = await separateDateTime(
@@ -80,105 +82,129 @@ const PaymentInfo: React.FC = () => {
             </button>
           ),
         };
-      }));
-      setPayments(preparedPayments);
-    } catch (error) {
-      console.error("Failed to fetch payment", error);
-    }
+        const preparedPayments: IRow[] = await Promise.all(data.map(async (payment: IPayment) => {
+          const { date } = await separateDateTime(
+            payment.paymentDate,
+            "MM-DD-YYYY"
+          );
+          return {
+            ...payment,
+            paymentDate: date,
+            view: (
+              <button
+                onClick={() => handleViewClick(payment)}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "#e1bd05",
+                  color: "#ffffff",
+                  border: "2px solid #e1bd05",
+                  borderRadius: "10px",
+                }}
+              >
+                View
+              </button>
+            ),
+          };
+        }));
+        setPayments(preparedPayments);
+      } catch (error) {
+        console.error("Failed to fetch payment", error);
+        console.error("Failed to fetch payment", error);
+      }
+    };
+
+    const savePayment = async (PaymentData) => {
+      console.log("Saving Payment:", PaymentData);
+    };
+    const deletePayment = async (PaymentData) => {
+      console.log("deleting Payment:", PaymentData);
+    };
+
+    useEffect(() => {
+      fetchAndPreparePayments();
+    }, []);
+
+    const handleSearch = (event) => {
+      setSearchTerm(event.target.value);
+    };
+
+    return (
+      <>
+        <ReusableTable
+          columns={columns}
+          rows={payments}
+          title="Payment Details"
+          rowKey="paymentId"
+          searchTerm={searchTerm}
+          handleSearch={handleSearch}
+        />
+
+        <EditDialog
+          isOpen={isViewOpen}
+          handleClose={() => setIsViewOpen(false)}
+          entity={currentPayment}
+          fields={[
+            {
+              name: "paymentId",
+              label: "Payment ID",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "orderId",
+              label: "Order ID",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "paymentDate",
+              label: "Payment Date",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "description",
+              label: "Description",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "paymentStatus",
+              label: "Payment Status",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "amountDetail.currency",
+              label: "Currency",
+              type: "string",
+              disabled: true,
+            },
+            { name: "amount", label: "Amount", type: "number", disabled: true },
+            {
+              name: "paymentMethod.method",
+              label: "Payment Method",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "paymentMethod.cardCustomerName",
+              label: "Customer Name",
+              type: "string",
+              disabled: true,
+            },
+            {
+              name: "paymentMethod.cardNo",
+              label: "Card No",
+              type: "string",
+              disabled: true,
+            },
+          ]}
+          onSave={savePayment}
+          onDelete={deletePayment}
+        />
+      </>
+    );
   };
 
-  const savePayment = async (PaymentData) => {
-    console.log("Saving Payment:", PaymentData);
-  };
-  const deletePayment = async (PaymentData) => {
-    console.log("deleting Payment:", PaymentData);
-  };
-
-  useEffect(() => {
-    fetchAndPreparePayments();
-  }, []);
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  return (
-    <>
-      <ReusableTable
-        columns={columns}
-        rows={payments}
-        title="Payment Details"
-        rowKey="paymentId"
-        searchTerm={searchTerm}
-        handleSearch={handleSearch}
-      />
-
-      <EditDialog
-        isOpen={isViewOpen}
-        handleClose={() => setIsViewOpen(false)}
-        entity={currentPayment}
-        fields={[
-          {
-            name: "paymentId",
-            label: "Payment ID",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "orderId",
-            label: "Order ID",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "paymentDate",
-            label: "Payment Date",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "description",
-            label: "Description",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "paymentStatus",
-            label: "Payment Status",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "amountDetail.currency",
-            label: "Currency",
-            type: "string",
-            disabled: true,
-          },
-          { name: "amount", label: "Amount", type: "number", disabled: true },
-          {
-            name: "paymentMethod.method",
-            label: "Payment Method",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "paymentMethod.cardCustomerName",
-            label: "Customer Name",
-            type: "string",
-            disabled: true,
-          },
-          {
-            name: "paymentMethod.cardNo",
-            label: "Card No",
-            type: "string",
-            disabled: true,
-          },
-        ]}
-        onSave={savePayment}
-        onDelete={deletePayment}
-      />
-    </>
-  );
-};
-
-export default PaymentInfo;
+  export default PaymentInfo;

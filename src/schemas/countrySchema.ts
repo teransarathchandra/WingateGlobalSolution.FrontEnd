@@ -13,6 +13,11 @@ const countrySchema = yup.object().shape({
         .required('Currency is required.')
         .min(1, 'Currency must be at least 1 character long.')
         .max(5, 'Currency can be no more than 5 characters long.'),
+    cost: yup.number()
+        .nullable().typeError("Enter Some value")
+        .required('Maximum quantity is required.')
+        .positive('Maximum quantity must be a positive number.')
+        .integer('Maximum quantity must be an integer.'),
 });
 
 export default countrySchema;

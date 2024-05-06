@@ -95,12 +95,12 @@ const AddRestrictedOrderForm: React.FC<AddDialogProps> = ({ isOpen, handleClose,
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <AppBar sx={{ position: 'relative' }}>
+            <AppBar sx={{ position: 'relative', backgroundColor: '#e1bd05'}}>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                         <CloseIcon />
                     </IconButton>
-                    <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                    <Typography sx={{ ml: 2, flex: 1  , color: 'inherit'}} variant="h6" component="div">
                         Add new Restricted Order Type
                     </Typography>
                 </Toolbar>
